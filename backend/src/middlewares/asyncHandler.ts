@@ -1,20 +1,10 @@
-import { NextFunction, Request, Response } from 'express';
+// src/middleware/asyncHandler.ts
+import { NextFunction, Request, Response, RequestHandler } from "express";
 
-type AsyncController = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => Promise<any>;
+export type AsyncController = (req: Request, res: Response, next: NextFunction) => Promise<any>;
 
-
-export const asyncHandler = (
-  controller: AsyncController
-): AsyncController => {
-  return async (req, res, next) => {
-    try {
-      await controller(req, res, next);
-    } catch (err) {
-      next(err);
-    }
+export const asyncHandler = (controller: AsyncController): RequestHandler => {
+  return (req, res, next) => {
+    Promise.resolve(controller(req, res, next)).catch(next);
   };
 };

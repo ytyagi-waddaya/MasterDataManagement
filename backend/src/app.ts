@@ -1,3 +1,4 @@
+// src/app.ts
 import "dotenv/config";
 import express from "express";
 import { HTTPSTATUS } from "./config/http.config";
@@ -6,33 +7,78 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import helmet from "helmet";
 import compression from "compression";
-import rateLimit from "express-rate-limit";
 import hpp from "hpp";
-import userRoutes from "./routes/user.route";
+
 import healthRoutes from "./routes/health.route";
+import testRoutes from "./routes/test.route";
+
 import { AppError } from "./utils/appError";
 import { ErrorCodeEnum } from "./enums/error-code.enum";
 import { globalErrorHandler } from "./middlewares/globalErrorHandler";
 import { requestIdMiddleware } from "./middlewares/requestIdMiddleware";
-import { httpLoggerStream } from "./utils/logger";
-import morgan from "morgan";
+
+// use Redis-backed limiter (rate-limiter-flexible)
+import { rateLimitMiddleware } from "./middlewares/rateLimiterRedis";
+
+// typed morgan -> logger wrapper
+import { httpLogger } from "./utils/logger";
+
 
 const app = express();
 
-// Security
+// Security basics
 app.disable("x-powered-by");
 if (config.NODE_ENV === "production") app.set("trust proxy", 1);
 
-app.use(helmet());
-app.use(requestIdMiddleware);
-
+// Helmet defaults (disable CSP here only if you plan to configure it properly later)
 app.use(
-  cors({
-    origin: config.FRONTEND_ORIGIN,
-    credentials: true,
+  helmet({
+    contentSecurityPolicy: false,
   })
 );
 
+// optional: enable HSTS in production
+if (config.NODE_ENV === "production") {
+  app.use(
+    helmet.hsts({
+      maxAge: 31536000,
+      includeSubDomains: true,
+      preload: true,
+    })
+  );
+}
+
+// Ensure requestId is set before logging so all logs include it
+app.use(requestIdMiddleware);
+
+// HTTP logging (morgan -> winston wrapper). Runs early so all requests are logged.
+app.use(httpLogger());
+
+// CORS: safe origin handling (supports CSV in config.FRONTEND_ORIGIN)
+const allowedOrigins = (config.FRONTEND_ORIGIN || "")
+  .split(",")
+  .map((s) => s.trim())
+  .filter(Boolean);
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // allow no-origin (curl, server-to-server)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.length === 0) {
+        // no configured origin list — deny in production
+        if (config.NODE_ENV === "production") return callback(new Error("CORS not allowed"), false);
+        return callback(null, true);
+      }
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error("CORS not allowed"), false);
+    },
+    credentials: true,
+    exposedHeaders: ["X-Request-Id", "Retry-After", "X-RateLimit-Remaining", "X-RateLimit-Reset"],
+  })
+);
+
+// Body parsing
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: true, limit: "1mb" }));
 app.use(cookieParser());
@@ -43,74 +89,23 @@ app.use(hpp());
 // Enable gzip compression
 app.use(compression());
 
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 60 * 1000,
-  max: 100,
-  standardHeaders: true,
-  legacyHeaders: false,
-});
-app.use(limiter);
-
-// ------------------
-// Morgan setup
-// ------------------
-
-// Add request ID token for Morgan
-morgan.token("id", (req: any) => req.requestId || "-");
-
-// Add response time in ms
-morgan.token("response-time-ms", (req, res) => {
-  // default morgan :response-time already gives in ms
-  return "-";
-});
-
-// Use Morgan for logging HTTP requests
-app.use(
-  morgan(":id :method :url :status :response-time ms :remote-addr", {
-    stream: {
-      write: (message: string) => {
-        // Parse the morgan message to extract info
-      const parts = message.trim().split(" ");
-
-      // Provide defaults to ensure they are strings
-      const reqId = parts[0] ?? "-";
-      const method = parts[1] ?? "-";
-      const url = parts[2] ?? "-";
-      const statusStr = parts[3] ?? "0"; // default "0" for parseInt
-      const responseTime = parts[4] ?? "-";
-      const ip = parts[6] ?? "-";
-
-      const status = parseInt(statusStr, 10) || 0;
-
-      httpLoggerStream.write(
-        { method, originalUrl: url, requestId: reqId, ip },
-        { statusCode: status },
-        responseTime
-      );
-      },
-    },
-  })
-);
-
-
-// Routes
+/**
+ * Health routes — keep these BEFORE rate limiting so probes can always succeed.
+ * /health/live and /health/ready should be quick and cheap.
+ */
 app.use("/health", healthRoutes);
-// app.use("/api/test", testRoutes);
-app.use("/api/user", userRoutes);
+app.use("/test", testRoutes);
 
-// 404 handler
-app.use((req, res, next) => {
-  next(
-    new AppError(
-      "Route not found",
-      HTTPSTATUS.NOT_FOUND,
-      ErrorCodeEnum.RESOURCE_NOT_FOUND
-    )
-  );
+// Apply Redis-backed rate limiter to API routes (and others as needed).
+// Example: protect all /api routes (adjust to your routing structure).
+app.use("/api", rateLimitMiddleware);
+
+// 404 handler — returns standard error via your global error handler
+app.use((req, _res, next) => {
+  next(new AppError("Route not found", HTTPSTATUS.NOT_FOUND, ErrorCodeEnum.RESOURCE_NOT_FOUND));
 });
 
-// Global error handler
+// Global error handler (last)
 app.use(globalErrorHandler);
 
 export default app;
