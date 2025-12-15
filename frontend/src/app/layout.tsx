@@ -46,7 +46,9 @@ export default function RootLayout({
               <SocketBootstrap />
               <PresenceInitializer />
               <RealtimeProvider />
-              <AuthGate>{children}</AuthGate>
+            {/* <AuthGate> */}
+              {children}
+              {/* </AuthGate> */}
             </AuthInitializer>
             <Toaster richColors />
           </ReactQueryProvider>
