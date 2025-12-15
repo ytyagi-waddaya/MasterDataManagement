@@ -1,0 +1,8 @@
+export {useMasterObject } from "./useMasterObject"
+export {useUpdateMasterObject} from "./useMasterObject"
+export { useDeleteMasterObject} from "./useMasterObject"
+export { useMasterObjects} from "./useMasterObject"
+export { useArchiveMasterObject} from "./useMasterObject"
+export { useRestoreMasterObject} from "./useMasterObject"
+export { useCreateMasterObject} from "./useMasterObject"
+export { useResourceWithMasterObject} from "./useMasterObject"

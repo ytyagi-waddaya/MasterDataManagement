@@ -7,7 +7,7 @@ import stripAnsi from "strip-ansi";
 
 import { createLogger, format, transports, Logger } from "winston";
 import DailyRotateFile from "winston-daily-rotate-file";
-import { config } from "../config/app.config"; // adjust path
+import { config } from "../config/app.config.js"; // adjust path
 
 const { combine, timestamp, printf, errors } = format;
 

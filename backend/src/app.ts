@@ -1,31 +1,43 @@
 // src/app.ts
 import "dotenv/config";
 import express from "express";
-import { HTTPSTATUS } from "./config/http.config";
-import { config } from "./config/app.config";
+import { HTTPSTATUS } from "./config/http.config.js";
+import { config } from "./config/app.config.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import helmet from "helmet";
 import compression from "compression";
 import hpp from "hpp";
 
-import healthRoutes from "./routes/health.route";
-import testRoutes from "./routes/test.route";
+import healthRoutes from "./routes/health.route.js";
+import testRoutes from "./routes/test.route.js";
+import authRoutes from "./routes/auth.route.js";
+import moduleRoutes from "./modules/module/module.routes.js";
+import resourceRoutes from "./modules/resource/resource.routes.js";
+import actionRoutes from "./modules/action/action.route.js";
+import permissionRoutes from "./modules/permission/permission.route.js";
+import roleRoutes from "./modules/role/role.route.js";
+import userRoutes from "./modules/user/user.route.js";
+import rolePermissionRoutes from "./modules/rolePermission/rolePermission.route.js";
+import userRoleRoutes from "./routes/userRoles.route.js";
+import policyRoutes from "./routes/policy.route.js";
+import auditRoutes from "./routes/auditLog.route.js";
+import workflowRoutes from "./routes/workflow.routes.js";
+import notificationsRoutes from "../src/notifications/notifications.routes.js";
+import masterObjectRoutes from "../src/modules/masterObject/masterObject.route.js";
+import masterRecordRoutes from "../src/modules/masterRecord/masterRecord.route.js";
 
-import { AppError } from "./utils/appError";
-import { ErrorCodeEnum } from "./enums/error-code.enum";
-import { globalErrorHandler } from "./middlewares/globalErrorHandler";
-import { requestIdMiddleware } from "./middlewares/requestIdMiddleware";
 
-// use Redis-backed limiter (rate-limiter-flexible)
-import { rateLimitMiddleware } from "./middlewares/rateLimiterRedis";
+import { AppError } from "./utils/appError.js";
+import { ErrorCodeEnum } from "./enums/error-code.enum.js";
+import { globalErrorHandler } from "./middlewares/globalErrorHandler.js";
+import { requestIdMiddleware } from "./middlewares/requestIdMiddleware.js";
 
 // typed morgan -> logger wrapper
-import { httpLogger } from "./utils/logger";
+import { httpLogger } from "./utils/logger.js";
 
 
 const app = express();
-
 // Security basics
 app.disable("x-powered-by");
 if (config.NODE_ENV === "production") app.set("trust proxy", 1);
@@ -96,16 +108,31 @@ app.use(compression());
 app.use("/health", healthRoutes);
 app.use("/test", testRoutes);
 
-// Apply Redis-backed rate limiter to API routes (and others as needed).
-// Example: protect all /api routes (adjust to your routing structure).
-app.use("/api", rateLimitMiddleware);
+app.use("/api/auth", authRoutes)
+app.use("/api/module", moduleRoutes)
+app.use("/api/user", userRoutes)
+app.use("/api/action", actionRoutes)
+app.use("/api/resource", resourceRoutes)
+app.use("/api/role", roleRoutes)
+app.use("/api/permission", permissionRoutes)
+app.use("/api/role-permission", rolePermissionRoutes)
+app.use("/api/user-role", userRoleRoutes)
+app.use("/api/policy", policyRoutes)
+app.use("/api/audit", auditRoutes)
+app.use("/api/notifications", notificationsRoutes);
+app.use("/api/workflow", workflowRoutes);
+app.use("/api/master-object", masterObjectRoutes);
+app.use("/api/master-record", masterRecordRoutes);
 
 // 404 handler — returns standard error via your global error handler
 app.use((req, _res, next) => {
   next(new AppError("Route not found", HTTPSTATUS.NOT_FOUND, ErrorCodeEnum.RESOURCE_NOT_FOUND));
 });
 
-// Global error handler (last)
+// Global error handler
 app.use(globalErrorHandler);
 
 export default app;
+
+
+// Action → Resource → Permission → Role → RolePermission → User → UserRole → RoleHierarchy → Policy

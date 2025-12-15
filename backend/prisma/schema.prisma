@@ -1,295 +1,545 @@
+// ====================================
+// 1. GENERATOR & DATASOURCE
+// ====================================
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "./generated"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
-// ----------------------
-// Enums
-// ----------------------
-enum RecordStatus { 
-  Draft 
-  Validation 
-  Approval 
-  Published 
-  Archived
-}
-enum TaskStatus { 
-  Pending 
-  Completed 
-  Rejected 
-  Cancelled 
-}
+// ====================================
+// 2. USERS, ROLES, RBAC & ABAC
+// ====================================
 
-enum NotificationType { 
-  INFO 
-  WARNING 
-  TASK_
-  ASSIGNMENT 
-  SYSTEM 
-}
-
-enum NotificationChannel { 
-  IN_APP 
-  EMAIL 
-  PUSH 
-  SMS 
-}
-enum PolicyEffect { 
-  ALLOW 
-  DENY 
-}
-
-// ----------------------
-// Users & Roles
-// ----------------------
 model User {
-  id            String         @id @default(uuid())
-  tenantId      String?        
-  name          String
-  email         String         @unique
-  password      String
-  attributes    Json?                          // flexible attributes for ABAC
-  // denormalized/structured attributes for fast filtering
-  department    String?        
-  location      String?        
-  roles         UserRole[]
-  taskAssignments TaskAssignment[]
-  notifications Notification[] @relation("UserNotifications")
-  createdRecords     MasterRecord[] @relation("UserCreatedRecords")
-  createdBatches     NotificationBatch[] @relation("UserCreatedBatches")
-  deliveries         NotificationDelivery[] @relation("UserDeliveries")
-  // dynamicFormsCreated DynamicForm[] @relation("UserCreatedForms") // <- back-relation
-  // formSubmissions DynamicFormSubmission[] @relation("UserFormSubmissions") // <- back-relation
-  auditLogs     AuditLog[]
-  createdAt     DateTime       @default(now()) 
-  updatedAt     DateTime       @updatedAt
-  deletedAt     DateTime?
+  id       String @id @default(uuid())
+  name     String
+  email    String @unique
+  password String
 
-  @@index([tenantId])
+  type   UserType   @default(INTERNAL)
+  status UserStatus @default(ACTIVE)
+
+  attributes Json?
+  department String?
+  location   String?
+
+  roles               UserRole[]
+  taskAssignments     TaskAssignment[]
+  notifications       Notification[]                  @relation("UserNotifications")
+  createdRecords      MasterRecord[]                  @relation("UserCreatedRecords")
+  createdBatches      NotificationBatch[]             @relation("UserCreatedBatches")
+  deliveries          NotificationDelivery[]          @relation("UserDeliveries")
+  auditLogs           AuditLog[]
+  linkedRecords       MasterRecord[]                  @relation("LinkedUserRecords")
+  RefreshToken        RefreshToken[]
+  workflowDefinitions WorkflowDefinition[]
+  workflowHistories   WorkflowHistory[]               @relation("PerformedByUserHistory")
+  allowedTransitions  WorkflowTransitionAllowedUser[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
   @@index([department])
   @@index([location])
   @@index([createdAt])
+  @@index([status])
+  @@index([type])
 }
 
 model Role {
-  id            String           @id @default(uuid())
-  tenantId      String?         
-  name          String           @unique
-  description   String?
-  users         UserRole[]
-  permissions   RolePermission[]
-  // optional role hierarchy relations
-  parents       RoleHierarchy[]  @relation("ParentRoles")
-  children      RoleHierarchy[]  @relation("ChildRoles")
-  createdAt     DateTime         @default(now())
-  updatedAt     DateTime         @updatedAt
+  id          String  @id @default(uuid())
+  name        String
+  key         String  @unique
+  description String?
+  isSystem    Boolean @default(false)
+  isActive    Boolean @default(true)
 
-  @@index([tenantId])
+  users       UserRole[]
+  permissions RolePermission[]
+
+  parents  RoleHierarchy[] @relation("ParentRoles")
+  children RoleHierarchy[] @relation("ChildRoles")
+
+  allowedTransitions WorkflowTransitionAllowedRole[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@unique([name])
 }
 
-// Role inheritance (optional)
 model RoleHierarchy {
-  id        String @id @default(uuid())
-  tenantId  String?
-  parent    Role   @relation("ParentRoles", fields: [parentId], references: [id])
-  parentId  String
-  child     Role   @relation("ChildRoles", fields: [childId], references: [id])
-  childId   String
+  id       String @id @default(uuid())
+  parent   Role   @relation("ParentRoles", fields: [parentId], references: [id])
+  parentId String
+  child    Role   @relation("ChildRoles", fields: [childId], references: [id])
+  childId  String
 
   @@unique([parentId, childId])
   @@index([parentId])
   @@index([childId])
 }
 
-// mapping table
 model UserRole {
-  id        String   @id @default(uuid())
-  tenantId  String?  
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String   
-  role      Role     @relation(fields: [roleId], references: [id])
-  roleId    String   
+  id         String   @id @default(uuid())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+  role       Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  roleId     String
   assignedAt DateTime @default(now())
 
   @@unique([userId, roleId])
-  @@index([tenantId])
   @@index([userId])
   @@index([roleId])
 }
 
-// ----------------------
-// Actions, Resources, Permissions
-// ----------------------
-model Action {
-  id          String           @id @default(uuid())
-  name        String           @unique
+// ====================================
+// 3. MODULES / ACTIONS / RESOURCES / PERMISSIONS
+// ====================================
+
+model Module {
+  id          String  @id @default(uuid())
+  name        String
+  key         String  @unique
   description String?
-  permissions Permission[] // many-to-many via Permission -> RolePermission
+  isActive    Boolean @default(true)
+  isSystem    Boolean @default(false)
+
+  resources Resource[] @relation("ModuleToResource")
+
+  // opposite side of relation
+  conditionFieldRegistry ConditionFieldRegistry[] @relation("ModuleFieldRegistry")
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([name])
+  @@index([createdAt])
+  @@index([deletedAt])
+  @@index([key])
+  @@index([description])
+}
+
+model Action {
+  id          String  @id @default(uuid())
+  name        String
+  key         String  @unique
+  description String?
+  isActive    Boolean @default(true)
+  isSystem    Boolean @default(false)
+
+  permissions Permission[]
   policies    Policy[]
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@unique([name])
 }
 
 model Resource {
-  id          String           @id @default(uuid())
-  name        String           @unique
+  id          String  @id @default(uuid())
+  name        String
+  key         String  @unique
+  category    String?
   description String?
+  isActive    Boolean @default(true)
+  isSystem    Boolean @default(false)
+
+  moduleId String?
+  module   Module? @relation("ModuleToResource", fields: [moduleId], references: [id])
+
   permissions Permission[]
   policies    Policy[]
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
+
+  conditionFieldRegistry ConditionFieldRegistry[] @relation("ResourceFieldRegistry")
+  workflows              WorkflowDefinition[]
+
+  masterObjectId String?
+  masterObject   MasterObject? @relation(fields: [masterObjectId], references: [id])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 }
 
 model Permission {
-  id           String     @id @default(uuid())
-  tenantId     String?    
-  action       Action     @relation(fields: [actionId], references: [id])
-  actionId     String
-  resource     Resource   @relation(fields: [resourceId], references: [id])
-  resourceId   String
-  // ABAC condition stored as Json (recommend jsonlogic / CEL)
-  conditions   Json?
-  // optional human readable expression
-  expression   String?
-  roles        RolePermission[]
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+  id          String  @id @default(uuid())
+  name        String
+  key         String  @unique
+  category    String?
+  description String?
+  isActive    Boolean @default(true)
+  isSystem    Boolean @default(false)
+
+  resourceId String
+  resource   Resource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+
+  actionId String
+  action   Action @relation(fields: [actionId], references: [id], onDelete: Cascade)
+
+  conditions Json?
+  expression String?
+
+  roles RolePermission[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 
   @@unique([actionId, resourceId])
   @@index([actionId])
   @@index([resourceId])
-  @@index([tenantId])
 }
 
-// Role <-> Permission
 model RolePermission {
   id           String     @id @default(uuid())
-  tenantId     String?    
-  role         Role       @relation(fields: [roleId], references: [id])
-  roleId       String     
-  permission   Permission @relation(fields: [permissionId], references: [id])
-  permissionId String     
-  createdAt    DateTime   @default(now())
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  roleId       String
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  permissionId String
+
+  accessLevel AccessLevel @default(NONE)
+  conditions  Json?
+  expression  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([roleId, permissionId])
   @@index([roleId, permissionId])
-  @@index([tenantId])
 }
 
-// ----------------------
-// Policies (first-class ABAC)
-// ----------------------
+model ConditionFieldRegistry {
+  id        String  @id @default(uuid())
+  // canonical field used inside conditions, e.g. "user.department" or "invoice.total"
+  field     String  @unique
+  // primitive type for validation/evaluator: "string"|"number"|"boolean"|"datetime"|"array"|"enum"
+  fieldType String
+  // optional JSON for UI hints: enum values, displayLabel, placeholder
+  meta      Json?
+  // link to your Module/Resource if applicable
+  module    Module? @relation("ModuleFieldRegistry", fields: [moduleId], references: [id])
+  moduleId  String?
+
+  resource    Resource? @relation("ResourceFieldRegistry", fields: [resourceId], references: [id])
+  resourceId  String?
+  // scoping: GLOBAL | ORG | PROJECT | RESOURCE
+  scope       String?
+  // who created / admin-generated
+  createdById String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+}
+
+// ====================================
+// 4. POLICIES (ABAC)
+// ====================================
+
 model Policy {
   id          String       @id @default(uuid())
-  tenantId    String?      
   description String?
   effect      PolicyEffect @default(ALLOW)
-  // optional scoping to resource/action
-  resource    Resource?    @relation(fields: [resourceId], references: [id])
-  resourceId  String?
-  action      Action?      @relation(fields: [actionId], references: [id])
-  actionId    String?
-  // condition expression as Json (jsonlogic/CEL). Required for ABAC.
-  condition   Json
-  // priority for conflict resolution (lower = higher priority)
-  priority    Int          @default(100)
-  enabled     Boolean      @default(true)
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+
+  resource   Resource? @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  resourceId String?
+  action     Action?   @relation(fields: [actionId], references: [id], onDelete: Cascade)
+  actionId   String?
+
+  condition Json
+  priority  Int     @default(100)
+  enabled   Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([resourceId])
   @@index([actionId])
   @@index([enabled])
-  @@index([tenantId])
 }
 
-// ----------------------
-// Master Objects / Records / Workflows
-// ----------------------
-model MasterObject {
-  id         String         @id @default(uuid())
-  tenantId   String?        
-  name       String         @unique
-  fields     Json           // form/fields definition
-  records    MasterRecord[]
-  workflows  Workflow[]
-  // dynamicForms DynamicForm[]  
-  createdAt  DateTime       @default(now())
-  updatedAt  DateTime       @updatedAt
-  deletedAt  DateTime?
+// ====================================
+// 5. MASTER OBJECTS & RECORDS
+// ====================================
 
-  @@index([tenantId])
+model MasterObject {
+  id     String @id @default(uuid())
+  name   String
+  key    String @unique
+  fields Json
+
+  isActive Boolean @default(true)
+  isSystem Boolean @default(false)
+
+  resources Resource[]
+
+  records MasterRecord[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@unique([name])
 }
 
 model MasterRecord {
-  id             String         @id @default(uuid())
-  tenantId       String?        
-  masterObject   MasterObject   @relation(fields: [masterObjectId], references: [id])
+  id             String       @id @default(uuid())
+  masterObject   MasterObject @relation(fields: [masterObjectId], references: [id], onDelete: Cascade)
   masterObjectId String
-  data           Json
-  status         RecordStatus   @default(Draft) 
-  createdBy      User?          @relation("UserCreatedRecords", fields: [createdById], references: [id])
-  createdById    String?
-  tasks          Task[]
-  auditLogs      AuditLog[]
-    // formSubmissions DynamicFormSubmission[] @relation("MasterRecordSubmissions") // <- back-relation added
-  createdAt      DateTime       @default(now()) 
-  updatedAt      DateTime       @updatedAt
-  deletedAt      DateTime?
 
-  @@index([tenantId])
-  @@index([status])
+  data Json
+
+  /// Workflow current stage — dynamic
+  currentStageId String?
+  currentStage   WorkflowStage? @relation("StageRecordRelation", fields: [currentStageId], references: [id], onDelete: SetNull)
+
+  createdBy   User?   @relation("UserCreatedRecords", fields: [createdById], references: [id], onDelete: SetNull)
+  createdById String?
+
+  linkedUser   User?   @relation("LinkedUserRecords", fields: [linkedUserId], references: [id], onDelete: SetNull)
+  linkedUserId String?
+
+  tasks     Task[]
+  auditLogs AuditLog[]
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  /// Indexes
+  @@index([currentStageId])
+  @@index([createdAt])
+  @@index([linkedUserId])
+}
+
+
+// ====================================
+// 6. ADVANCED WORKFLOW ENGINE
+// ====================================
+
+model WorkflowDefinition {
+  id   String @id @default(uuid())
+  name String
+  code String
+
+  resourceId String
+  resource   Resource @relation(fields: [resourceId], references: [id])
+
+  version     Int     @default(1)
+  description String?
+  isActive    Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  createdById String?
+  createdBy   User?   @relation(fields: [createdById], references: [id])
+
+  stages      WorkflowStage[]
+  transitions WorkflowTransition[]
+  instances   WorkflowInstance[]
+
+  deletedAt DateTime?
+
+  @@unique([code, version])
+}
+
+model WorkflowStage {
+  id String @id @default(uuid())
+
+  name  String
+  code  String
+  order Int
+
+  color String?
+
+  isInitial Boolean  @default(false)
+  isFinal   Boolean  @default(false)
+  metadata  Json?
+  category  Category @default(NORMAL)
+
+  workflowId String
+  workflow   WorkflowDefinition @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+
+  outgoingTransitions WorkflowTransition[] @relation("StageFrom")
+  incomingTransitions WorkflowTransition[] @relation("StageTo")
+
+  instances     WorkflowInstance[] @relation("InstanceCurrentStage")
+  masterRecords MasterRecord[]     @relation("StageRecordRelation")
+
+  historiesFrom WorkflowHistory[] @relation("StageHistoryFrom")
+  historiesTo   WorkflowHistory[] @relation("StageHistoryTo")
+  tasks         Task[]            @relation("StageTaskRelation")
+
+  @@unique([workflowId, code])
+  @@index([workflowId])
+  @@index([code])
+}
+
+model WorkflowTransition {
+  id String @id @default(uuid())
+
+  label String?
+
+  condition        Json?
+  requiresApproval Boolean @default(false)
+  metadata         Json?
+  autoTrigger      Boolean @default(false)
+
+  workflowId String
+  workflow   WorkflowDefinition @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+
+  fromStageId String
+  fromStage   WorkflowStage @relation("StageFrom", fields: [fromStageId], references: [id])
+
+  toStageId String
+  toStage   WorkflowStage @relation("StageTo", fields: [toStageId], references: [id])
+
+  histories    WorkflowHistory[]
+  allowedRoles WorkflowTransitionAllowedRole[]
+  allowedUsers WorkflowTransitionAllowedUser[]
+
+  @@unique([workflowId, fromStageId, toStageId]) // Prevent duplicate transitions
+  @@index([workflowId])
+  @@index([fromStageId])
+  @@index([toStageId])
+}
+
+model WorkflowInstance {
+  id             String @id @default(uuid())
+  workflowId     String
+  resourceType   String
+  resourceId     String
+  currentStageId String
+
+  status WorkflowInstanceStatus @default(RUNNING)
+
+  startedAt DateTime  @default(now())
+  endedAt   DateTime?
+
+  createdById String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  workflow     WorkflowDefinition @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  currentStage WorkflowStage      @relation("InstanceCurrentStage", fields: [currentStageId], references: [id])
+
+  histories WorkflowHistory[]
+  tasks     Task[]            @relation("InstanceTasks")
+
+  @@index([workflowId])
+  @@index([currentStageId])
+  @@index([resourceType, resourceId])
+}
+
+model WorkflowHistory {
+  id                   String  @id @default(uuid())
+  workflowInstanceId   String
+  fromStageId          String?
+  toStageId            String
+  performedById        String?
+  notes                String?
+  workflowTransitionId String?
+  actionLabel          String?
+  metadata             Json?
+
+  createdAt DateTime @default(now())
+
+  workflowInstance WorkflowInstance @relation(fields: [workflowInstanceId], references: [id], onDelete: Cascade)
+
+  fromStage WorkflowStage? @relation("StageHistoryFrom", fields: [fromStageId], references: [id])
+  toStage   WorkflowStage  @relation("StageHistoryTo", fields: [toStageId], references: [id])
+
+  workflowTransition WorkflowTransition? @relation(fields: [workflowTransitionId], references: [id])
+
+  performedBy User? @relation("PerformedByUserHistory", fields: [performedById], references: [id])
+
+  @@index([workflowInstanceId])
+  @@index([workflowTransitionId])
+  @@index([fromStageId])
+  @@index([toStageId])
+  @@index([performedById])
   @@index([createdAt])
 }
 
-// Workflows
-model Workflow {
-  id             String         @id @default(uuid())
-  tenantId       String?        
-  masterObject   MasterObject   @relation(fields: [masterObjectId], references: [id])
-  masterObjectId String
-  name           String
-  steps          Json           // e.g., [{"name":"Validation","role":"Validator"}]
-  tasks          Task[]
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
+model WorkflowTransitionAllowedRole {
+  id String @id @default(uuid())
 
-  @@index([tenantId])
+  transitionId String
+  transition   WorkflowTransition @relation(fields: [transitionId], references: [id], onDelete: Cascade)
+
+  roleId String
+  role   Role   @relation(fields: [roleId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([transitionId, roleId])
 }
 
-// Tasks (workflow runs)
+model WorkflowTransitionAllowedUser {
+  id String @id @default(uuid())
+
+  transitionId String
+  transition   WorkflowTransition @relation(fields: [transitionId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([transitionId, userId])
+}
+
+// ====================================
+// 7. TASKS & ASSIGNMENTS
+// ====================================
+
 model Task {
-  id             String         @id @default(uuid())
-  tenantId       String?        
-  masterRecord   MasterRecord   @relation(fields: [masterRecordId], references: [id])
+  id             String       @id @default(uuid())
+  masterRecord   MasterRecord @relation(fields: [masterRecordId], references: [id], onDelete: Cascade)
   masterRecordId String
-  workflow       Workflow       @relation(fields: [workflowId], references: [id])
-  workflowId     String
-  currentStep    Json
-  status         TaskStatus     @default(Pending) 
-  assignedToId   String?
-  createdAt      DateTime       @default(now()) 
-  updatedAt      DateTime       @updatedAt
-  // soft delete optional
-  deletedAt      DateTime?
 
-   assignees      TaskAssignment[]
+  workflowInstanceId String
+  workflowInstance   WorkflowInstance @relation("InstanceTasks", fields: [workflowInstanceId], references: [id], onDelete: Cascade)
 
-  @@index([tenantId])
+  stageId String
+  stage   WorkflowStage @relation("StageTaskRelation", fields: [stageId], references: [id], onDelete: Cascade)
+
+  currentStep Json
+  status      TaskStatus @default(Pending)
+
+  assignedToId String?
+  assignees    TaskAssignment[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
   @@index([status])
   @@index([createdAt])
 }
 
 model TaskAssignment {
-  id        String   @id @default(uuid())
-  task      Task     @relation(fields: [taskId], references: [id])
-  taskId    String
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
+  id String @id @default(uuid())
+
+  taskId String
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   assignedAt DateTime @default(now())
 
   @@unique([taskId, userId])
@@ -297,191 +547,333 @@ model TaskAssignment {
   @@index([userId])
 }
 
-// ----------------------
-// Audit logs
-// ----------------------
-model AuditLog {
-  id             String       @id @default(uuid())
-  tenantId       String?      
-  masterRecord   MasterRecord @relation(fields: [masterRecordId], references: [id])
-  masterRecordId String
-  user           User?        @relation(fields: [userId], references: [id])
-  userId         String?
-  action         String
-  comment        String?
-  step           Json?
-  // snapshot (before & after) - useful for forensic auditing
-  before         Json?
-  after          Json?
-  createdAt      DateTime     @default(now()) 
+// ====================================
+// 8. AUDIT LOGS
+// ====================================
 
-  @@index([tenantId])
+model AuditLog {
+  id             String        @id @default(uuid())
+  masterRecord   MasterRecord? @relation(fields: [masterRecordId], references: [id], onDelete: Cascade)
+  masterRecordId String?
+
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId String?
+
+  entity AuditEntity
+  action AuditAction
+
+  comment String?
+  step    Json?
+  before  Json?
+  after   Json?
+
+  ipAddress String?
+  userAgent String?
+
+  performedBy PerformedByType @default(USER)
+  createdAt   DateTime        @default(now())
+
+  @@index([entity])
+  @@index([action])
   @@index([createdAt])
 }
 
-// ----------------------
-// Notifications (template, batch, delivery)
-// ----------------------
-model NotificationTemplate {
-  id          String   @id @default(uuid())
-  tenantId    String?  
-  name        String
-  channel     NotificationChannel
-  subject     String?
-  body        String   // template body (can include handlebars/json)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+// ====================================
+// 9. NOTIFICATIONS: TEMPLATE / BATCH / DELIVERY / SIMPLE
+// ====================================
 
-  @@index([tenantId])
+model NotificationTemplate {
+  id      String              @id @default(uuid())
+  name    String
+  channel NotificationChannel
+  subject String?
+  body    String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name])
 }
 
 model NotificationBatch {
-  id          String       @id @default(uuid())
-  tenantId    String?      
-  title       String
-  message     String
-  type        NotificationType @default(INFO)
-  data        Json?
-  createdBy   User?        @relation("UserCreatedBatches", fields: [createdById], references: [id])
-  createdById String?
-  createdAt   DateTime     @default(now())
-  deliveries  NotificationDelivery[]
+  id      String           @id @default(uuid())
+  title   String
+  message String
+  type    NotificationType @default(INFO)
 
-  @@index([tenantId])
+  data Json?
+
+  createdBy   User?   @relation("UserCreatedBatches", fields: [createdById], references: [id], onDelete: SetNull)
+  createdById String?
+
+  createdAt DateTime @default(now())
+
+  deliveries NotificationDelivery[]
+
+  @@index([createdAt])
 }
 
 model NotificationDelivery {
-  id            String               @id @default(uuid())
-  tenantId      String?              
-  batch         NotificationBatch?   @relation(fields: [batchId], references: [id])
-  batchId       String?
-  user          User?                @relation("UserDeliveries", fields: [userId], references: [id])
-  userId        String?              
-  title         String
-  message       String
-  type          NotificationType     @default(INFO)
-  channels      Json                 // e.g. ["IN_APP","EMAIL"]
-  targetType    String?
-  targetId      String?
-  priority      Int                  @default(0)
-  read          Boolean              @default(false) 
-  createdAt     DateTime             @default(now()) 
-  readAt        DateTime?
-  sentAt        DateTime?
-  deliveredAt   DateTime?
-  failedAt      DateTime?
-  retryCount    Int                  @default(0)
-  lastError     String?
-  scheduledAt   DateTime?
+  id      String             @id @default(uuid())
+  batch   NotificationBatch? @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  batchId String?
 
-  @@index([tenantId])
-  @@index([userId])
-  @@index([read])
-  @@index([createdAt])
-  
-  
+  userId String?
+  user   User?   @relation("UserDeliveries", fields: [userId], references: [id], onDelete: SetNull)
 
-}
+  title   String
+  message String
+  type    NotificationType @default(INFO)
 
-// Convenience single-row notifications (if you prefer direct creation)
-model Notification {
-  id          String   @id @default(uuid())
-  tenantId    String?  
-  user        User?    @relation("UserNotifications", fields: [userId], references: [id])
-  userId      String?  
-  title       String
-  message     String
-  type        NotificationType @default(INFO)
-  channels    Json?
-  data        Json?
-  targetType  String?
-  targetId    String?
-  read        Boolean  @default(false) 
-  createdAt   DateTime @default(now()) 
+  channels Json
+  data     Json?
+
+  targetType String?
+  targetId   String?
+
+  priority Int     @default(0)
+  read     Boolean @default(false)
+
+  createdAt   DateTime  @default(now())
   readAt      DateTime?
   sentAt      DateTime?
-  deletedAt   DateTime?
+  deliveredAt DateTime?
+  failedAt    DateTime?
+  retryCount  Int       @default(0)
+  lastError   String?
+  scheduledAt DateTime?
 
-  @@index([tenantId])
   @@index([userId])
   @@index([read])
   @@index([createdAt])
-  
 }
 
+model Notification {
+  id     String  @id @default(uuid())
+  user   User?   @relation("UserNotifications", fields: [userId], references: [id], onDelete: SetNull)
+  userId String?
 
+  title   String
+  message String
+  type    NotificationType @default(INFO)
 
-// ----------------------
-// Dynamic Forms for Master Data
-// ----------------------
-// model DynamicForm {
-//   id              String         @id @default(uuid())
-//   tenantId        String?
-//   masterObject    MasterObject   @relation(fields: [masterObjectId], references: [id])
-//   masterObjectId  String
-//   name            String
-//   description     String?
-//   status          RecordStatus   @default(Draft)
-//   // fields          DynamicField[]
-//   // submissions     DynamicFormSubmission[]
-//   createdBy       User?          @relation("UserCreatedForms",fields: [createdById], references: [id])
-//   createdById     String?
-//   createdAt       DateTime       @default(now())
-//   updatedAt       DateTime       @updatedAt
+  channels Json?
+  data     Json?
 
-//   @@index([tenantId])
-//   @@index([masterObjectId])
-//   @@index([status])
+  targetType String?
+  targetId   String?
+
+  read Boolean @default(false)
+
+  createdAt DateTime  @default(now())
+  readAt    DateTime?
+  sentAt    DateTime?
+  deletedAt DateTime?
+
+  @@index([userId])
+  @@index([read])
+  @@index([createdAt])
+}
+
+model OutboxEvent {
+  id          String    @id @default(uuid())
+  eventName   String
+  entity      String
+  action      String
+  payload     Json
+  targetUsers Json? // JSON array of userIds as string
+  attempts    Int       @default(0)
+  maxAttempts Int       @default(5)
+  processedAt DateTime?
+  lockedAt    DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@index([processedAt])
+  @@index([createdAt])
+}
+
+model EventLog {
+  id        String   @id @default(uuid())
+  outboxId  String
+  eventName String
+  payload   Json
+  result    String? // success / failed message
+  createdAt DateTime @default(now())
+}
+
+// ====================================
+// 10. ATTACHMENTS
+// ====================================
+
+model Attachment {
+  id         String   @id @default(uuid())
+  targetType String
+  targetId   String
+  filename   String
+  mimeType   String?
+  size       Int?
+  uri        String
+  createdAt  DateTime @default(now())
+
+  @@index([targetType, targetId])
+}
+
+// ====================================
+// 11. AUTH TOKENS
+// ====================================
+
+model RefreshToken {
+  id            String    @id @default(uuid())
+  tokenHash     String // hashed token (e.g. SHA256)
+  userId        String
+  deviceInfo    String?
+  ipAddress     String?
+  isInvalidated Boolean   @default(false)
+  revokedAt     DateTime?
+  lastUsedAt    DateTime?
+  expiresAt     DateTime
+  createdAt     DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, tokenHash])
+  @@unique([tokenHash])
+  @@index([userId])
+}
+
+// ====================================
+// 12. ENUMS (GLOBAL)
+// ====================================
+
+enum TaskStatus {
+  Pending
+  Completed
+  Rejected
+  Cancelled
+}
+
+enum NotificationType {
+  INFO
+  WARNING
+  ERROR
+}
+
+enum NotificationChannel {
+  IN_APP
+  EMAIL
+  WEB
+  SMS
+}
+
+enum PolicyEffect {
+  ALLOW
+  DENY
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  SOFT_DELETE
+  DEACTIVATE
+  ACTIVATE
+  READ
+  LOGIN
+  LOGOUT
+  LOGIN_FAILED
+  PASSWORD_CHANGE
+  PASSWORD_RESET
+  RESTORE
+  ROLE_ASSIGN
+  PERMISSION_CHANGE
+  STATUS_CHANGE
+  SLA_BREACH
+  FILE_UPLOAD
+  EXPORT
+  IMPORT
+  TOKEN_REFRESH
+  ARCHIVE
+  GRANT
+}
+
+enum AuditEntity {
+  USER
+  ACTION
+  RESOURCE
+  ROLE
+  PERMISSION
+  USER_ROLE
+  AUDIT_LOG
+  WORKFLOW
+  TASK
+  POLICY
+  MASTER_RECORD
+  MODULE
+  ROLE_PERMISSION
+}
+
+enum PerformedByType {
+  USER // Action initiated by a human user
+  SYSTEM // Automated system process (cron, scheduler, etc.)
+  INTEGRATION // External API or integration service
+}
+
+enum UserType {
+  INTERNAL
+  EXTERNAL
+  SERVICE
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  LOCKED
+}
+
+enum WorkflowInstanceStatus {
+  RUNNING        // Normal active workflow
+  PAUSED         // System-level pause (waiting for external event)
+  ON_HOLD        // User/business-level hold (manager or requester hold)
+  COMPLETED      // Finished
+  CANCELLED      // Manually canceled
+  ERROR          // System/automation failure
+}
+
+enum AccessLevel {
+  FULL
+  CONDITIONAL
+  NONE
+}
+
+enum Category {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  APPROVAL
+  CORRECTION
+  ON_HOLD
+  REJECTED
+  NORMAL
+  COMPLETED
+}
+
+// model Feature {
+//   id          String   @id @default(uuid())
+//   name        String   @unique
+//   description String?
+//   enabledByDefault Boolean @default(false)
+//   tenantFeatures TenantFeature[]
 // }
 
-// model DynamicField {
-//   id           String    @id @default(uuid())
-//   form         DynamicForm @relation(fields: [formId], references: [id])
-//   formId       String
-//   label        String
-//   type         String    // "text", "number", "select", "checkbox", "date", etc.
-//   placeholder  String?
-//   validations  Json?     // e.g., { "required": true, "regex": "^[a-zA-Z]+$" }
-//   order        Int
-//   dependsOnId  String?   // for cascading or conditional fields
-//   options      DynamicFieldOption[]
-//   conditions   Json?     // JSON logic for conditional rendering
-//   createdAt    DateTime  @default(now())
-//   updatedAt    DateTime  @updatedAt
+// model TenantFeature {
+//   id         String   @id @default(uuid())
+//   tenantId   String
+//   featureId  String
+//   enabled    Boolean  @default(false)
 
-//   @@index([formId])
-//   @@index([dependsOnId])
-//   @@index([order])
-// }
+//   tenant     Tenant   @relation(fields: [tenantId], references: [id])
+//   feature    Feature  @relation(fields: [featureId], references: [id])
 
-// model DynamicFieldOption {
-//   id        String       @id @default(uuid())
-//   field     DynamicField @relation(fields: [fieldId], references: [id])
-//   fieldId   String
-//   label     String
-//   value     String
-//   order     Int?
-//   createdAt DateTime     @default(now())
-//   updatedAt DateTime     @updatedAt
-
-//   @@index([fieldId])
-// }
-
-// model DynamicFormSubmission {
-//   id        String       @id @default(uuid())
-//   form      DynamicForm  @relation(fields: [formId], references: [id])
-//   formId    String
-//   masterRecord MasterRecord? @relation("MasterRecordSubmissions",fields: [masterRecordId], references: [id])
-//   masterRecordId String?        // Optional link to your MasterRecord table
-//   user      User?         @relation("UserFormSubmissions",fields: [userId], references: [id])
-//   userId    String?
-//   data      Json          // JSON: { fieldId: value }
-//   status    RecordStatus  @default(Draft)
-//   createdAt DateTime      @default(now())
-//   updatedAt DateTime      @updatedAt
-
-//   @@index([formId])
-//   @@index([masterRecordId])
-//   @@index([userId])
-//   @@index([status])
+//   @@unique([tenantId, featureId])
 // }

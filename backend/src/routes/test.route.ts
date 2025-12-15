@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from "express";
-import { sendResponse } from "../utils/response";
-import { HTTPSTATUS } from "../config/http.config";
-import { BadRequestException } from "../utils/appError"; // or AppError directly
+import { sendResponse } from "../utils/response.js";
+import { HTTPSTATUS } from "../config/http.config.js";
+import { BadRequestException } from "../utils/appError.js"; // or AppError directly
 
 const router = Router();
 

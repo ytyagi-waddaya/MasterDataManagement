@@ -1,0 +1,11 @@
+export {useResources }from "./useResource";
+export {useCreateResource} from "./useResource"
+export {useUpdateResource} from "./useResource"
+export {useDeleteResource} from "./useResource"
+export {useArchiveResource} from "./useResource"
+export {useRestoreResource} from "./useResource"
+export {useBulkDeleteResources} from "./useResource"
+export {useBulkRestoreResources} from "./useResource"
+export {useBulkArchiveResources} from "./useResource"
+export {useResourceList} from "./useResource"
+// export {useBulkCreateResources} from "./useResource"

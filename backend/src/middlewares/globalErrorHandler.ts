@@ -1,8 +1,8 @@
 // src/middlewares/globalErrorHandler.ts
 import { Request, Response, NextFunction } from "express";
-import { HTTPSTATUS } from "../config/http.config";
-import { AppError } from "../utils/appError";
-import logger from "../utils/logger";
+import { HTTPSTATUS } from "../config/http.config.js";
+import { AppError } from "../utils/appError.js";
+import logger from "../utils/logger.js";
 
 /**
  * Placeholder monitoring integration. Replace with Sentry/Honeycomb/Datadog call as needed.

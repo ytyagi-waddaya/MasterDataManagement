@@ -1,8 +1,8 @@
 // src/routes/health.route.ts
 import { Router, Request, Response } from "express";
-import { HTTPSTATUS } from "../config/http.config";
-import { sendResponse } from "../utils/response";
-import { isReady as healthIsReady } from "../utils/health";
+import { HTTPSTATUS } from "../config/http.config.js";
+import { sendResponse } from "../utils/response.js";
+import { isReady as healthIsReady } from "../utils/health.js";
 
 const router = Router();
 

@@ -1,8 +1,8 @@
 import { Client } from "@microsoft/microsoft-graph-client";
 import { ClientSecretCredential } from "@azure/identity";
 import "isomorphic-fetch";
-import { config } from "../config/app.config";
-import logger from "../utils/logger";
+import { config } from "../config/app.config.js";
+import logger from "../utils/logger.js";
 
 const ITSM_MAILBOX = config.SENDER_EMAIL;
 

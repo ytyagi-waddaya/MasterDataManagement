@@ -1,9 +1,14 @@
-import { User } from '@prisma/client';
+import "express";
+import { UserJwtPayload } from "../types/auth"; // adjust path as needed
 
 declare global {
   namespace Express {
     interface Request {
-      user?: Pick<User, 'id'>;
+      /** Authenticated user decoded from JWT */
+      user?: UserJwtPayload;
+
+      /** Cookie-parser injected cookies */
+      cookies: Record<string, string>;
     }
   }
 }

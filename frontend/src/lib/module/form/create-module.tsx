@@ -1,0 +1,87 @@
+"use client";
+
+import { Info } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+
+export function ModuleForm({
+  form,
+  errors,
+  touched,
+  setValue,
+  onBlur,
+}: {
+  form: {
+    name: string;
+    description: string | null;
+    isSystem: boolean;
+    isActive: boolean;
+  };
+  errors: Record<string, string>;
+  touched: Record<string, boolean>;
+  setValue: (field: any, value: any) => void;
+  onBlur: (field: any) => void;
+}) {
+  return (
+    <div className="flex flex-col gap-4 py-2">
+      {/* Name */}
+      <div className="flex flex-col gap-1">
+        <label className="text-sm font-medium">Module Name</label>
+        <input
+          className={`border p-2 rounded ${
+            errors.name ? "border-red-500" : ""
+          }`}
+          value={form.name}
+          onChange={(e) => setValue("name", e.target.value)}
+          onBlur={() => onBlur("name")}
+        />
+        {touched.name && errors.name && (<p className="text-xs text-red-600">{errors.name}</p>)}
+        <p className="text-xs text-gray-600 flex items-center gap-1">
+          <Info className="h-3.5 w-3.5 text-gray-500" />
+          Must be uppercase and use underscores only (e.g.,
+          <strong>CREATE_TICKET</strong>).
+        </p>
+      </div>
+
+      {/* Description */}
+      <div className="flex flex-col gap-1">
+        <label className="text-sm font-medium">Description</label>
+        <Textarea
+          rows={3}
+          className={`border p-2 rounded ${
+            errors.description ? "border-red-500" : ""
+          }`}
+          value={form.description ?? ""}
+          onChange={(e) => setValue("description", e.target.value)}
+          onBlur={() => onBlur("description")}
+        />
+        {errors.description && (
+          <p className="text-xs text-red-600">{errors.description}</p>
+        )}
+        <p className="text-xs text-gray-600 flex items-center gap-1">
+          <Info className="h-3.5 w-3.5 text-gray-500" />
+          Brief summary explaining what this module allows users to do.
+        </p>
+      </div>
+
+      {/* system module */}
+      <div className="flex flex-col gap-1">
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={form.isSystem}
+            onChange={(e) => setValue("isSystem", e.target.checked)}
+            onBlur={() => onBlur("isSystem")}
+          />
+          <span>System Module</span>
+        </label>
+        <p className="text-xs text-gray-600 flex items-center gap-1">
+          <Info className="h-3.5 w-3.5 text-gray-500" />
+          <span>
+            System modules cannot be <strong>deleted</strong>,{" "}
+            <strong>archived</strong>, or <strong>modified</strong>.
+          </span>
+        </p>
+      </div>
+    </div>
+  );
+}

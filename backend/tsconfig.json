@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
-    "rootDir": "./src",
+    "rootDir": "./",
     "outDir": "./dist",
 
     // CommonJS for Node
-    "module": "CommonJS",
-    "moduleResolution": "node",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "target": "ES2022",
     "lib": ["ESNext"],
-    "types": ["node"],
+    "types": ["node", "jest"],
 
     // Outputs
     "sourceMap": true,
@@ -23,9 +23,13 @@
     // Module Handling
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true
+
   },
 
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*.ts", "tests", "__mocks__", "src/broadcast", "src/outbox", "prisma/generated/**/*.d.ts"
+, "prisma/seed.ts"],
+  "exclude": ["node_modules"],
+
 }

@@ -1,6 +1,6 @@
 // src/errors/app-error.ts
-import { HTTPSTATUS, HttpStatusCodeType } from "../config/http.config";
-import { ErrorCodeEnum, ErrorCodeEnumType } from "../enums/error-code.enum";
+import { HTTPSTATUS, HttpStatusCodeType } from "../config/http.config.js";
+import { ErrorCodeEnum, ErrorCodeEnumType } from "../enums/error-code.enum.js";
 
 export interface AppErrorDetails {
   [key: string]: any;
