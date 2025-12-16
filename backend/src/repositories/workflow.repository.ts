@@ -214,10 +214,43 @@ const WorkflowRepository = {
   /* -------------------------------------------------------------------------- */
 
   createTransition: async (
-    data: any,
+    data: {
+      label?: string;
+      fromStageId: string;
+      toStageId: string;
+      workflowId: string;
+      allowedRoleIds?: string[];
+      allowedUserIds?: string[];
+      requiresApproval?: boolean;
+      autoTrigger?: boolean;
+      condition?: any;
+      metadata?: any;
+    },
     tx: Prisma.TransactionClient | typeof prisma = prisma
-  ): Promise<WorkflowTransition> => {
-    return tx.workflowTransition.create({ data });
+  ) => {
+    const {
+      allowedRoleIds = [],
+      allowedUserIds = [],
+      ...rest
+    } = data;
+
+    return tx.workflowTransition.create({
+      data: {
+        ...rest,
+
+        allowedRoles: {
+          create: allowedRoleIds.map(roleId => ({
+            roleId,
+          })),
+        },
+
+        allowedUsers: {
+          create: allowedUserIds.map(userId => ({
+            userId,
+          })),
+        },
+      },
+    });
   },
 
   findById: async (

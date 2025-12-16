@@ -203,6 +203,23 @@ import { useEffect } from "react";
 export function StagesStep({ form, stageArray }: any) {
   const { register, control } = form;
 
+  // ✅ FIX: Watch ALL categories at once
+  const categories = form.watch("stages");
+
+  // ✅ FIX: Single effect updates auto-initial/final
+  useEffect(() => {
+    if (!categories) return;
+
+    categories.forEach((stage: any, index: number) => {
+      if (stage?.category === "DRAFT") {
+        form.setValue(`stages.${index}.isInitial`, true);
+      }
+      if (stage?.category === "COMPLETED") {
+        form.setValue(`stages.${index}.isFinal`, true);
+      }
+    });
+  }, [categories]);
+
   return (
     <Card className="p-6 space-y-2">
       <div className="flex justify-between">
@@ -242,21 +259,7 @@ export function StagesStep({ form, stageArray }: any) {
 
           <TableBody>
             {stageArray.fields.map((field: any, index: number) => {
-              // WATCH CATEGORY FOR THIS ROW
-              const category = form.watch(`stages.${index}.category`);
-
-              // AUTO-SET INITIAL/FINAL WHEN CATEGORY CHANGES
-              useEffect(() => {
-                if (!category) return;
-
-                if (category === "DRAFT") {
-                  form.setValue(`stages.${index}.isInitial`, true);
-                }
-
-                if (category === "COMPLETED") {
-                  form.setValue(`stages.${index}.isFinal`, true);
-                }
-              }, [category]);
+              const category = categories?.[index]?.category;
 
               return (
                 <TableRow key={field.id}>
@@ -306,7 +309,7 @@ export function StagesStep({ form, stageArray }: any) {
                       render={({ field }) => (
                         <Checkbox
                           checked={field.value}
-                          disabled={category === "DRAFT"} // prevent unchecking
+                          disabled={category === "DRAFT"}
                           onCheckedChange={field.onChange}
                         />
                       )}
@@ -320,7 +323,7 @@ export function StagesStep({ form, stageArray }: any) {
                       render={({ field }) => (
                         <Checkbox
                           checked={field.value}
-                          disabled={category === "COMPLETED"} // prevent unchecking
+                          disabled={category === "COMPLETED"}
                           onCheckedChange={field.onChange}
                         />
                       )}
@@ -337,6 +340,7 @@ export function StagesStep({ form, stageArray }: any) {
                       })}
                     />
                   </TableCell>
+
                   <TableCell>
                     <Button
                       type="button"
