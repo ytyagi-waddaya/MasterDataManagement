@@ -267,7 +267,6 @@ const actionsService = {
           data: {
             name: validatedData.name,
             key,
-            fields: {},
           },
         });
 

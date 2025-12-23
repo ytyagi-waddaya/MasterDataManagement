@@ -27,22 +27,33 @@ model User {
   department String?
   location   String?
 
-  roles               UserRole[]
-  taskAssignments     TaskAssignment[]
-  notifications       Notification[]                  @relation("UserNotifications")
-  createdRecords      MasterRecord[]                  @relation("UserCreatedRecords")
-  createdBatches      NotificationBatch[]             @relation("UserCreatedBatches")
-  deliveries          NotificationDelivery[]          @relation("UserDeliveries")
-  auditLogs           AuditLog[]
-  linkedRecords       MasterRecord[]                  @relation("LinkedUserRecords")
-  RefreshToken        RefreshToken[]
-  workflowDefinitions WorkflowDefinition[]
-  workflowHistories   WorkflowHistory[]               @relation("PerformedByUserHistory")
-  allowedTransitions  WorkflowTransitionAllowedUser[]
+  roles              UserRole[]
+  taskAssignments    TaskAssignment[]
+  notifications      Notification[]                  @relation("UserNotifications")
+  createdRecords     MasterRecord[]                  @relation("UserCreatedRecords")
+  createdBatches     NotificationBatch[]             @relation("UserCreatedBatches")
+  deliveries         NotificationDelivery[]          @relation("UserDeliveries")
+  auditLogs          AuditLog[]
+  linkedRecords      MasterRecord[]                  @relation("LinkedUserRecords")
+  RefreshToken       RefreshToken[]
+  workflowHistories  WorkflowHistory[]               @relation("PerformedByUserHistory")
+  allowedTransitions WorkflowTransitionAllowedUser[]
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
+  deletedAt            DateTime?
+  masterObjectSchemas  MasterObjectSchema[]
+  recordPermissions    RecordPermission[]
+  fieldPermissions     FieldPermission[]
+  recordFieldHistories RecordFieldHistory[]
+  workflowApprovals    WorkflowApproval[]   @relation("WorkflowApprovalApprover")
+
+  createdWorkflows         WorkflowDefinition[] @relation("WorkflowCreatedBy")
+  publishedWorkflows       WorkflowDefinition[] @relation("WorkflowPublishedBy")
+  assignedTasks            Task[]               @relation("TaskAssignedBy")
+  startedWorkflows         WorkflowInstance[]   @relation("WorkflowStartedBy")
+  createdWorkflowInstances WorkflowInstance[]   @relation("WorkflowInstanceCreatedBy")
+  primaryTasks             Task[]               @relation("PrimaryTaskAssignee")
 
   @@index([department])
   @@index([location])
@@ -67,9 +78,11 @@ model Role {
 
   allowedTransitions WorkflowTransitionAllowedRole[]
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  deletedAt         DateTime?
+  recordPermissions RecordPermission[]
+  fieldPermissions  FieldPermission[]
 
   @@unique([name])
 }
@@ -272,46 +285,232 @@ model Policy {
 // ====================================
 
 model MasterObject {
-  id     String @id @default(uuid())
-  name   String
-  key    String @unique
-  fields Json
+  id   String @id @default(uuid())
+  name String
+  key  String @unique
 
   isActive Boolean @default(true)
   isSystem Boolean @default(false)
 
   resources Resource[]
 
-  records MasterRecord[]
+  records          MasterRecord[]
+  schemas          MasterObjectSchema[]
+  fieldDefinitions FieldDefinition[]
+
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  deletedAt         DateTime?
+  formEventHooks    FormEventHook[]
+  recordPermissions RecordPermission[]
+  fieldReferences   FieldReference[]   @relation("TargetObjectReferences")
+
+  @@unique([name])
+}
+
+model MasterObjectSchema {
+  id             String       @id @default(uuid())
+  masterObjectId String
+  masterObject   MasterObject @relation(fields: [masterObjectId], references: [id], onDelete: Cascade)
+
+  version Int
+  status  SchemaStatus @default(DRAFT)
+
+  // FULL form schema (sections + fields)
+  layout Json
+
+  checksum String
+
+  createdById String?
+  createdBy   User?   @relation(fields: [createdById], references: [id], onDelete: SetNull)
+
+  fieldDefinitions FieldDefinition[]
+  masterRecords    MasterRecord[]
+  schemaChanges    SchemaChange[]
+  publishedAt      DateTime?
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
-  @@unique([name])
+  @@unique([masterObjectId, version])
+  @@index([masterObjectId])
+  @@index([status])
+}
+
+model FieldDefinition {
+  id String @id @default(uuid())
+
+  masterObjectId String
+  masterObject   MasterObject @relation(fields: [masterObjectId], references: [id], onDelete: Cascade)
+
+  schemaId String
+  schema   MasterObjectSchema @relation(fields: [schemaId], references: [id], onDelete: Cascade)
+  // IMMUTABLE KEY (used in data, formulas, reports)
+  key      String
+  label    String
+
+  category  FieldCategory
+  dataType  FieldDataType
+  fieldType FieldType // text, select, table, reference, etc.
+
+  // All dynamic config (options, visibility, layout, apiSource…)
+  config Json
+  order  Int
+
+  // Governance
+  isRequired Boolean @default(false)
+  isSystem   Boolean @default(false)
+  isActive   Boolean @default(true)
+  isLocked   Boolean @default(false)
+
+  fieldPermissions       FieldPermission[]
+  fieldValidationRules   FieldValidationRule[]
+  fieldFormula           FieldFormula?
+  fieldReference         FieldReference?
+  fieldConditionBindings FieldConditionBinding[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@unique([schemaId, key])
+  @@index([schemaId, isActive])
+  @@index([masterObjectId])
+  @@index([fieldType])
+  @@index([category])
+}
+
+model FieldPermission {
+  id String @id @default(uuid())
+
+  fieldId String
+  field   FieldDefinition @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+
+  /// RBAC
+  roleId String?
+  role   Role?   @relation(fields: [roleId], references: [id], onDelete: SetNull)
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  /// Access
+  canRead  Boolean @default(true)
+  canWrite Boolean @default(false)
+
+  /// ABAC condition (stage, record state, user attributes)
+  condition Json?
+
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  @@unique([fieldId, roleId, userId])
+  @@index([fieldId])
+  @@index([roleId])
+  @@index([userId])
+}
+
+model FieldValidationRule {
+  id String @id @default(uuid())
+
+  fieldId String
+  field   FieldDefinition @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+
+  /// REQUIRED_IF, REGEX, RANGE, LENGTH, CUSTOM
+  type FieldValidationType
+
+  /// { fieldKey, value } | { min, max } | { regex }
+  rule Json
+
+  errorMessage String
+
+  order    Int                @default(0)
+  severity ValidationSeverity @default(ERROR)
+
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  @@index([fieldId])
+}
+
+model FieldFormula {
+  id String @id @default(uuid())
+
+  fieldId String
+  field   FieldDefinition @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+
+  /// JS / DSL expression
+  expression String
+
+  /// Dependent field keys
+  dependencies String[]
+
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  @@unique([fieldId])
+}
+
+model FieldReference {
+  id String @id @default(uuid())
+
+  fieldId String
+  field   FieldDefinition @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+
+  targetObjectId   String
+  targetObject     MasterObject            @relation("TargetObjectReferences", fields: [targetObjectId], references: [id], onDelete: Cascade)
+  displayFieldKey  String
+  relationType     ReferenceRelationType
+  allowMultiple    Boolean                 @default(false)
+  onDeleteBehavior ReferenceDeleteBehavior @default(RESTRICT)
+
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  @@unique([fieldId])
+}
+
+model FieldConditionBinding {
+  id String @id @default(uuid())
+
+  fieldId String
+  field   FieldDefinition @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+
+  // Must match ConditionFieldRegistry.field
+  conditionKey String
+
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  @@unique([fieldId, conditionKey])
+  @@index([conditionKey])
 }
 
 model MasterRecord {
   id             String       @id @default(uuid())
   masterObject   MasterObject @relation(fields: [masterObjectId], references: [id], onDelete: Cascade)
   masterObjectId String
-
-  data Json
+  data           Json
 
   /// Workflow current stage — dynamic
   currentStageId String?
   currentStage   WorkflowStage? @relation("StageRecordRelation", fields: [currentStageId], references: [id], onDelete: SetNull)
 
-  createdBy   User?   @relation("UserCreatedRecords", fields: [createdById], references: [id], onDelete: SetNull)
   createdById String?
+  createdBy   User?   @relation("UserCreatedRecords", fields: [createdById], references: [id], onDelete: SetNull)
 
-  linkedUser   User?   @relation("LinkedUserRecords", fields: [linkedUserId], references: [id], onDelete: SetNull)
   linkedUserId String?
+  linkedUser   User?   @relation("LinkedUserRecords", fields: [linkedUserId], references: [id], onDelete: SetNull)
 
-  tasks     Task[]
-  auditLogs AuditLog[]
+  schemaId String
+  schema   MasterObjectSchema @relation(fields: [schemaId], references: [id])
 
   isActive Boolean @default(true)
+
+  recordFieldHistories RecordFieldHistory[]
+  recordFieldIndexes   RecordFieldIndex[]
+  tasks                Task[]
+  auditLogs            AuditLog[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -323,6 +522,114 @@ model MasterRecord {
   @@index([linkedUserId])
 }
 
+model RecordFieldHistory {
+  id String @id @default(uuid())
+
+  recordId String
+  record   MasterRecord @relation(fields: [recordId], references: [id], onDelete: Cascade)
+
+  fieldKey String
+
+  oldValue Json?
+  newValue Json?
+
+  changedById String?
+  changedBy   User?   @relation(fields: [changedById], references: [id], onDelete: SetNull)
+
+  changedAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  @@index([recordId])
+  @@index([fieldKey])
+  @@index([changedById])
+}
+
+model RecordFieldIndex {
+  id String @id @default(uuid())
+
+  recordId String
+  record   MasterRecord @relation(fields: [recordId], references: [id], onDelete: Cascade)
+
+  fieldKey String
+
+  stringValue String?
+  numberValue Float?
+  dateValue   DateTime?
+
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  @@unique([recordId, fieldKey])
+  @@index([fieldKey, stringValue])
+  @@index([fieldKey, numberValue])
+  @@index([fieldKey, dateValue])
+}
+
+model SchemaChange {
+  id String @id @default(uuid())
+
+  schemaId String
+  schema   MasterObjectSchema @relation(fields: [schemaId], references: [id], onDelete: Cascade)
+
+  type SchemaChangeType
+
+  payload Json
+
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  @@index([schemaId])
+}
+
+model FormEventHook {
+  id String @id @default(uuid())
+
+  masterObjectId String
+  masterObject   MasterObject @relation(fields: [masterObjectId], references: [id], onDelete: Cascade)
+
+  /// ON_CREATE, ON_UPDATE, ON_STAGE_CHANGE
+  event FormEventType
+
+  /// WEBHOOK, QUEUE, FUNCTION
+  handlerType FormEventHandlerType
+
+  config Json
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  @@index([masterObjectId])
+  @@index([event])
+}
+
+model RecordPermission {
+  id String @id @default(uuid())
+
+  masterObjectId String
+  masterObject   MasterObject @relation(fields: [masterObjectId], references: [id], onDelete: Cascade)
+
+  roleId String?
+  role   Role?   @relation(fields: [roleId], references: [id], onDelete: SetNull)
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  canRead   Boolean
+  canWrite  Boolean
+  canDelete Boolean
+
+  condition Json? // ABAC
+
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  @@unique([masterObjectId, roleId, userId])
+  @@index([masterObjectId])
+  @@index([roleId])
+  @@index([userId])
+}
 
 // ====================================
 // 6. ADVANCED WORKFLOW ENGINE
@@ -336,6 +643,8 @@ model WorkflowDefinition {
   resourceId String
   resource   Resource @relation(fields: [resourceId], references: [id])
 
+  status WorkflowDefinitionStatus @default(DRAFT)
+
   version     Int     @default(1)
   description String?
   isActive    Boolean @default(true)
@@ -344,11 +653,14 @@ model WorkflowDefinition {
   updatedAt DateTime @updatedAt
 
   createdById String?
-  createdBy   User?   @relation(fields: [createdById], references: [id])
+  createdBy   User?   @relation("WorkflowCreatedBy", fields: [createdById], references: [id])
 
-  stages      WorkflowStage[]
-  transitions WorkflowTransition[]
-  instances   WorkflowInstance[]
+  stages        WorkflowStage[]
+  transitions   WorkflowTransition[]
+  instances     WorkflowInstance[]
+  publishedAt   DateTime?
+  publishedById String?
+  publishedBy   User?                @relation("WorkflowPublishedBy", fields: [publishedById], references: [id])
 
   deletedAt DateTime?
 
@@ -362,12 +674,15 @@ model WorkflowStage {
   code  String
   order Int
 
-  color String?
+  color    String?
+  position Json?
 
   isInitial Boolean  @default(false)
   isFinal   Boolean  @default(false)
   metadata  Json?
   category  Category @default(NORMAL)
+
+  allowedNextCategories Category[] @default([])
 
   workflowId String
   workflow   WorkflowDefinition @relation(fields: [workflowId], references: [id], onDelete: Cascade)
@@ -383,6 +698,7 @@ model WorkflowStage {
   tasks         Task[]            @relation("StageTaskRelation")
 
   @@unique([workflowId, code])
+  @@index([workflowId, isInitial])
   @@index([workflowId])
   @@index([code])
 }
@@ -392,10 +708,16 @@ model WorkflowTransition {
 
   label String?
 
-  condition        Json?
-  requiresApproval Boolean @default(false)
-  metadata         Json?
-  autoTrigger      Boolean @default(false)
+  condition   Json?
+  metadata    Json?
+  autoTrigger Boolean @default(false)
+
+  transitionType   TransitionType   @default(NORMAL)
+  triggerStrategy  TriggerStrategy  @default(ANY_ALLOWED)
+  
+  approvalConfig   Json?
+  approvalStrategy ApprovalStrategy @default(ALL)
+  priority         Int              @default(0)
 
   workflowId String
   workflow   WorkflowDefinition @relation(fields: [workflowId], references: [id], onDelete: Cascade)
@@ -406,46 +728,63 @@ model WorkflowTransition {
   toStageId String
   toStage   WorkflowStage @relation("StageTo", fields: [toStageId], references: [id])
 
-  histories    WorkflowHistory[]
-  allowedRoles WorkflowTransitionAllowedRole[]
-  allowedUsers WorkflowTransitionAllowedUser[]
+  histories         WorkflowHistory[]
+  allowedRoles      WorkflowTransitionAllowedRole[]
+  allowedUsers      WorkflowTransitionAllowedUser[]
+  workflowApprovals WorkflowApproval[]
 
-  @@unique([workflowId, fromStageId, toStageId]) // Prevent duplicate transitions
   @@index([workflowId])
   @@index([fromStageId])
   @@index([toStageId])
+  @@index([workflowId, fromStageId, toStageId])
 }
 
 model WorkflowInstance {
-  id             String @id @default(uuid())
-  workflowId     String
-  resourceType   String
-  resourceId     String
-  currentStageId String
+  id           String @id @default(uuid())
+  workflowId   String
+  resourceType String
+  resourceId   String
+
+  currentStageId String?
 
   status WorkflowInstanceStatus @default(RUNNING)
 
-  startedAt DateTime  @default(now())
-  endedAt   DateTime?
+  // currentApprovalTransitionId String?
+
+  // approvalMeta Json?
+
+  startedAt    DateTime  @default(now())
+  endedAt      DateTime?
+  endedReason  String?
+  errorDetails Json?
 
   createdById String?
+  createdBy   User?   @relation("WorkflowInstanceCreatedBy", fields: [createdById], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  startedById String?
+  startedBy   User?   @relation("WorkflowStartedBy", fields: [startedById], references: [id])
+
   workflow     WorkflowDefinition @relation(fields: [workflowId], references: [id], onDelete: Cascade)
-  currentStage WorkflowStage      @relation("InstanceCurrentStage", fields: [currentStageId], references: [id])
+  currentStage WorkflowStage?     @relation("InstanceCurrentStage", fields: [currentStageId], references: [id])
 
-  histories WorkflowHistory[]
-  tasks     Task[]            @relation("InstanceTasks")
+  histories         WorkflowHistory[]
+  tasks             Task[]             @relation("InstanceTasks")
+  workflowApprovals WorkflowApproval[]
 
+  lockedAt DateTime?
+  lockedBy String?
+
+  @@index([resourceType, resourceId, status])
   @@index([workflowId])
   @@index([currentStageId])
   @@index([resourceType, resourceId])
 }
 
 model WorkflowHistory {
-  id                   String  @id @default(uuid())
+  id                   String        @id @default(uuid())
   workflowInstanceId   String
   fromStageId          String?
   toStageId            String
@@ -454,6 +793,7 @@ model WorkflowHistory {
   workflowTransitionId String?
   actionLabel          String?
   metadata             Json?
+  actionType           HistoryAction
 
   createdAt DateTime @default(now())
 
@@ -464,7 +804,8 @@ model WorkflowHistory {
 
   workflowTransition WorkflowTransition? @relation(fields: [workflowTransitionId], references: [id])
 
-  performedBy User? @relation("PerformedByUserHistory", fields: [performedById], references: [id])
+  performedBy     User?   @relation("PerformedByUserHistory", fields: [performedById], references: [id])
+  performedByType String?
 
   @@index([workflowInstanceId])
   @@index([workflowTransitionId])
@@ -502,6 +843,30 @@ model WorkflowTransitionAllowedUser {
   @@unique([transitionId, userId])
 }
 
+model WorkflowApproval {
+  id String @id @default(uuid())
+
+  workflowInstanceId String
+  workflowInstance   WorkflowInstance @relation(fields: [workflowInstanceId], references: [id], onDelete: Cascade)
+
+  transitionId String
+  transition   WorkflowTransition @relation(fields: [transitionId], references: [id], onDelete: Cascade)
+
+  approverId String
+  approver   User   @relation("WorkflowApprovalApprover", fields: [approverId], references: [id])
+
+  levelOrder Int?
+  status     ApprovalStatus @default(PENDING) // PENDING | APPROVED | REJECTED
+
+  requestedAt DateTime @default(now())
+
+  decidedAt DateTime?
+  comment   String?
+
+  @@unique([workflowInstanceId, transitionId, approverId])
+  @@index([workflowInstanceId, transitionId])
+}
+
 // ====================================
 // 7. TASKS & ASSIGNMENTS
 // ====================================
@@ -518,11 +883,19 @@ model Task {
   stage   WorkflowStage @relation("StageTaskRelation", fields: [stageId], references: [id], onDelete: Cascade)
 
   currentStep Json
-  status      TaskStatus @default(Pending)
+  status      TaskStatus @default(PENDING)
 
   assignedToId String?
-  assignees    TaskAssignment[]
+  assignedTo   User?   @relation("PrimaryTaskAssignee", fields: [assignedToId], references: [id])
 
+  assignees TaskAssignment[]
+
+  assignedById String?
+  assignedBy   User?   @relation("TaskAssignedBy", fields: [assignedById], references: [id])
+
+  completedAt DateTime?
+
+  dueAt     DateTime?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
@@ -745,13 +1118,6 @@ model RefreshToken {
 // 12. ENUMS (GLOBAL)
 // ====================================
 
-enum TaskStatus {
-  Pending
-  Completed
-  Rejected
-  Cancelled
-}
-
 enum NotificationType {
   INFO
   WARNING
@@ -808,6 +1174,7 @@ enum AuditEntity {
   TASK
   POLICY
   MASTER_RECORD
+  MASTER_OBJECT
   MODULE
   ROLE_PERMISSION
 }
@@ -831,21 +1198,101 @@ enum UserStatus {
   LOCKED
 }
 
-enum WorkflowInstanceStatus {
-  RUNNING        // Normal active workflow
-  PAUSED         // System-level pause (waiting for external event)
-  ON_HOLD        // User/business-level hold (manager or requester hold)
-  COMPLETED      // Finished
-  CANCELLED      // Manually canceled
-  ERROR          // System/automation failure
-}
-
 enum AccessLevel {
   FULL
   CONDITIONAL
   NONE
 }
 
+// masterobject
+enum SchemaStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum FieldCategory {
+  INPUT
+  REFERENCE
+  STRUCTURE
+  CALCULATED
+  SYSTEM
+  PRESENTATION
+  DEPRECATED
+}
+
+enum FieldDataType {
+  STRING
+  NUMBER
+  BOOLEAN
+  DATE
+  DATETIME
+  JSON
+  ARRAY
+}
+
+enum FieldType {
+  TEXT
+  NUMBER
+  SELECT
+  RADIO
+  CHECKBOX
+  DATE
+  TABLE
+  REFERENCE
+  FILE
+  RICH_TEXT
+}
+
+enum FieldValidationType {
+  REQUIRED
+  REQUIRED_IF
+  REGEX
+  RANGE
+  LENGTH
+  CUSTOM
+}
+
+enum SchemaChangeType {
+  ADD_FIELD
+  REMOVE_FIELD
+  UPDATE_CONFIG
+  REORDER_FIELD
+  RENAME_FIELD
+}
+
+enum FormEventType {
+  ON_CREATE
+  ON_UPDATE
+  ON_STAGE_CHANGE
+  ON_DELETE
+  ON_VALIDATE
+  ON_READ
+}
+
+enum FormEventHandlerType {
+  WEBHOOK
+  QUEUE
+  FUNCTION
+}
+
+enum ReferenceRelationType {
+  ONE_TO_ONE
+  ONE_TO_MANY
+}
+
+enum ReferenceDeleteBehavior {
+  RESTRICT
+  CASCADE
+  SET_NULL
+}
+
+enum ValidationSeverity {
+  ERROR
+  WARNING
+}
+
+// workflow
 enum Category {
   DRAFT
   SUBMITTED
@@ -857,6 +1304,68 @@ enum Category {
   NORMAL
   COMPLETED
 }
+
+enum TransitionType {
+  NORMAL // simple move
+  APPROVAL // blocks until approval
+  SEND_BACK // correction / rollback
+  REVIEW // no stage change
+  AUTO // system triggered
+}
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum HistoryAction {
+  TRANSITION
+  APPROVAL_REQUESTED
+  APPROVED
+  REJECTED
+  SENT_BACK
+  REVIEWED
+  AUTO_TRANSITION
+}
+
+enum ApprovalStrategy {
+  ALL
+  ANY
+  MAJORITY
+}
+
+enum WorkflowInstanceStatus {
+  RUNNING // Normal active workflow
+  PAUSED // System-level pause (waiting for external event)
+  ON_HOLD // User/business-level hold (manager or requester hold)
+  COMPLETED // Finished
+  CANCELLED // Manually canceled
+  ERROR // System/automation failure
+}
+
+enum TaskStatus {
+  PENDING
+  COMPLETED
+  REJECTED
+  CANCELLED
+}
+
+enum WorkflowDefinitionStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum TriggerStrategy {
+  ANY_ALLOWED
+  ALL_ALLOWED
+  CREATOR_ONLY
+  ASSIGNEE_ONLY
+  APPROVER_ONLY
+  SYSTEM_ONLY
+}
+
 
 // model Feature {
 //   id          String   @id @default(uuid())
@@ -877,3 +1386,7 @@ enum Category {
 
 //   @@unique([tenantId, featureId])
 // }
+
+// CREATE UNIQUE INDEX IF NOT EXISTS one_published_schema_per_object
+// ON "MasterObjectSchema" ("masterObjectId")
+// WHERE status = 'PUBLISHED';

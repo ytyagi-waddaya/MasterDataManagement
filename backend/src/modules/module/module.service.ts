@@ -173,6 +173,7 @@ const moduleService = {
           moduleId: mod.id,
         },
       });
+      const recipients = ["f88a33da-04fd-45d8-a304-0a47580279e8"] // TEMP: all users
 
       await OutboxService.createOutboxEvent(tx, {
         entity: "module",
@@ -183,6 +184,24 @@ const moduleService = {
           resource: "MODULE",
         },
         tenantId: null,
+      });
+
+      await OutboxService.createOutboxEvent(tx, {
+        entity: "notification",
+        action: "created",
+
+        payload: {
+          title: "Module Updated",
+          message: `Module "${mod.name}" was updated`,
+          data: {
+            moduleId: mod.id,
+            moduleName: mod.name,
+            action: "UPDATED",
+          },
+        },
+
+        tenantId: null,
+        targetUsers: recipients,   // 👈 VERY IMPORTANT
       });
 
       return mod;

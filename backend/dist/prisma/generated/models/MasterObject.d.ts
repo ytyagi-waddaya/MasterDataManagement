@@ -1,0 +1,2068 @@
+import type * as runtime from "@prisma/client/runtime/client";
+import type * as Prisma from "../internal/prismaNamespace.js";
+/**
+ * Model MasterObject
+ *
+ */
+export type MasterObjectModel = runtime.Types.Result.DefaultSelection<Prisma.$MasterObjectPayload>;
+export type AggregateMasterObject = {
+    _count: MasterObjectCountAggregateOutputType | null;
+    _min: MasterObjectMinAggregateOutputType | null;
+    _max: MasterObjectMaxAggregateOutputType | null;
+};
+export type MasterObjectMinAggregateOutputType = {
+    id: string | null;
+    name: string | null;
+    key: string | null;
+    isActive: boolean | null;
+    isSystem: boolean | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+    deletedAt: Date | null;
+};
+export type MasterObjectMaxAggregateOutputType = {
+    id: string | null;
+    name: string | null;
+    key: string | null;
+    isActive: boolean | null;
+    isSystem: boolean | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+    deletedAt: Date | null;
+};
+export type MasterObjectCountAggregateOutputType = {
+    id: number;
+    name: number;
+    key: number;
+    isActive: number;
+    isSystem: number;
+    createdAt: number;
+    updatedAt: number;
+    deletedAt: number;
+    _all: number;
+};
+export type MasterObjectMinAggregateInputType = {
+    id?: true;
+    name?: true;
+    key?: true;
+    isActive?: true;
+    isSystem?: true;
+    createdAt?: true;
+    updatedAt?: true;
+    deletedAt?: true;
+};
+export type MasterObjectMaxAggregateInputType = {
+    id?: true;
+    name?: true;
+    key?: true;
+    isActive?: true;
+    isSystem?: true;
+    createdAt?: true;
+    updatedAt?: true;
+    deletedAt?: true;
+};
+export type MasterObjectCountAggregateInputType = {
+    id?: true;
+    name?: true;
+    key?: true;
+    isActive?: true;
+    isSystem?: true;
+    createdAt?: true;
+    updatedAt?: true;
+    deletedAt?: true;
+    _all?: true;
+};
+export type MasterObjectAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which MasterObject to aggregate.
+     */
+    where?: Prisma.MasterObjectWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of MasterObjects to fetch.
+     */
+    orderBy?: Prisma.MasterObjectOrderByWithRelationInput | Prisma.MasterObjectOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: Prisma.MasterObjectWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` MasterObjects from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` MasterObjects.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned MasterObjects
+    **/
+    _count?: true | MasterObjectCountAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: MasterObjectMinAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: MasterObjectMaxAggregateInputType;
+};
+export type GetMasterObjectAggregateType<T extends MasterObjectAggregateArgs> = {
+    [P in keyof T & keyof AggregateMasterObject]: P extends '_count' | 'count' ? T[P] extends true ? number : Prisma.GetScalarType<T[P], AggregateMasterObject[P]> : Prisma.GetScalarType<T[P], AggregateMasterObject[P]>;
+};
+export type MasterObjectGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.MasterObjectWhereInput;
+    orderBy?: Prisma.MasterObjectOrderByWithAggregationInput | Prisma.MasterObjectOrderByWithAggregationInput[];
+    by: Prisma.MasterObjectScalarFieldEnum[] | Prisma.MasterObjectScalarFieldEnum;
+    having?: Prisma.MasterObjectScalarWhereWithAggregatesInput;
+    take?: number;
+    skip?: number;
+    _count?: MasterObjectCountAggregateInputType | true;
+    _min?: MasterObjectMinAggregateInputType;
+    _max?: MasterObjectMaxAggregateInputType;
+};
+export type MasterObjectGroupByOutputType = {
+    id: string;
+    name: string;
+    key: string;
+    isActive: boolean;
+    isSystem: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt: Date | null;
+    _count: MasterObjectCountAggregateOutputType | null;
+    _min: MasterObjectMinAggregateOutputType | null;
+    _max: MasterObjectMaxAggregateOutputType | null;
+};
+type GetMasterObjectGroupByPayload<T extends MasterObjectGroupByArgs> = Prisma.PrismaPromise<Array<Prisma.PickEnumerable<MasterObjectGroupByOutputType, T['by']> & {
+    [P in ((keyof T) & (keyof MasterObjectGroupByOutputType))]: P extends '_count' ? T[P] extends boolean ? number : Prisma.GetScalarType<T[P], MasterObjectGroupByOutputType[P]> : Prisma.GetScalarType<T[P], MasterObjectGroupByOutputType[P]>;
+}>>;
+export type MasterObjectWhereInput = {
+    AND?: Prisma.MasterObjectWhereInput | Prisma.MasterObjectWhereInput[];
+    OR?: Prisma.MasterObjectWhereInput[];
+    NOT?: Prisma.MasterObjectWhereInput | Prisma.MasterObjectWhereInput[];
+    id?: Prisma.StringFilter<"MasterObject"> | string;
+    name?: Prisma.StringFilter<"MasterObject"> | string;
+    key?: Prisma.StringFilter<"MasterObject"> | string;
+    isActive?: Prisma.BoolFilter<"MasterObject"> | boolean;
+    isSystem?: Prisma.BoolFilter<"MasterObject"> | boolean;
+    createdAt?: Prisma.DateTimeFilter<"MasterObject"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"MasterObject"> | Date | string;
+    deletedAt?: Prisma.DateTimeNullableFilter<"MasterObject"> | Date | string | null;
+    resources?: Prisma.ResourceListRelationFilter;
+    records?: Prisma.MasterRecordListRelationFilter;
+    schemas?: Prisma.MasterObjectSchemaListRelationFilter;
+    fieldDefinitions?: Prisma.FieldDefinitionListRelationFilter;
+    formEventHooks?: Prisma.FormEventHookListRelationFilter;
+    recordPermissions?: Prisma.RecordPermissionListRelationFilter;
+    fieldReferences?: Prisma.FieldReferenceListRelationFilter;
+};
+export type MasterObjectOrderByWithRelationInput = {
+    id?: Prisma.SortOrder;
+    name?: Prisma.SortOrder;
+    key?: Prisma.SortOrder;
+    isActive?: Prisma.SortOrder;
+    isSystem?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    resources?: Prisma.ResourceOrderByRelationAggregateInput;
+    records?: Prisma.MasterRecordOrderByRelationAggregateInput;
+    schemas?: Prisma.MasterObjectSchemaOrderByRelationAggregateInput;
+    fieldDefinitions?: Prisma.FieldDefinitionOrderByRelationAggregateInput;
+    formEventHooks?: Prisma.FormEventHookOrderByRelationAggregateInput;
+    recordPermissions?: Prisma.RecordPermissionOrderByRelationAggregateInput;
+    fieldReferences?: Prisma.FieldReferenceOrderByRelationAggregateInput;
+};
+export type MasterObjectWhereUniqueInput = Prisma.AtLeast<{
+    id?: string;
+    name?: string;
+    key?: string;
+    AND?: Prisma.MasterObjectWhereInput | Prisma.MasterObjectWhereInput[];
+    OR?: Prisma.MasterObjectWhereInput[];
+    NOT?: Prisma.MasterObjectWhereInput | Prisma.MasterObjectWhereInput[];
+    isActive?: Prisma.BoolFilter<"MasterObject"> | boolean;
+    isSystem?: Prisma.BoolFilter<"MasterObject"> | boolean;
+    createdAt?: Prisma.DateTimeFilter<"MasterObject"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"MasterObject"> | Date | string;
+    deletedAt?: Prisma.DateTimeNullableFilter<"MasterObject"> | Date | string | null;
+    resources?: Prisma.ResourceListRelationFilter;
+    records?: Prisma.MasterRecordListRelationFilter;
+    schemas?: Prisma.MasterObjectSchemaListRelationFilter;
+    fieldDefinitions?: Prisma.FieldDefinitionListRelationFilter;
+    formEventHooks?: Prisma.FormEventHookListRelationFilter;
+    recordPermissions?: Prisma.RecordPermissionListRelationFilter;
+    fieldReferences?: Prisma.FieldReferenceListRelationFilter;
+}, "id" | "key" | "name">;
+export type MasterObjectOrderByWithAggregationInput = {
+    id?: Prisma.SortOrder;
+    name?: Prisma.SortOrder;
+    key?: Prisma.SortOrder;
+    isActive?: Prisma.SortOrder;
+    isSystem?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    _count?: Prisma.MasterObjectCountOrderByAggregateInput;
+    _max?: Prisma.MasterObjectMaxOrderByAggregateInput;
+    _min?: Prisma.MasterObjectMinOrderByAggregateInput;
+};
+export type MasterObjectScalarWhereWithAggregatesInput = {
+    AND?: Prisma.MasterObjectScalarWhereWithAggregatesInput | Prisma.MasterObjectScalarWhereWithAggregatesInput[];
+    OR?: Prisma.MasterObjectScalarWhereWithAggregatesInput[];
+    NOT?: Prisma.MasterObjectScalarWhereWithAggregatesInput | Prisma.MasterObjectScalarWhereWithAggregatesInput[];
+    id?: Prisma.StringWithAggregatesFilter<"MasterObject"> | string;
+    name?: Prisma.StringWithAggregatesFilter<"MasterObject"> | string;
+    key?: Prisma.StringWithAggregatesFilter<"MasterObject"> | string;
+    isActive?: Prisma.BoolWithAggregatesFilter<"MasterObject"> | boolean;
+    isSystem?: Prisma.BoolWithAggregatesFilter<"MasterObject"> | boolean;
+    createdAt?: Prisma.DateTimeWithAggregatesFilter<"MasterObject"> | Date | string;
+    updatedAt?: Prisma.DateTimeWithAggregatesFilter<"MasterObject"> | Date | string;
+    deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"MasterObject"> | Date | string | null;
+};
+export type MasterObjectCreateInput = {
+    id?: string;
+    name: string;
+    key: string;
+    isActive?: boolean;
+    isSystem?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    resources?: Prisma.ResourceCreateNestedManyWithoutMasterObjectInput;
+    records?: Prisma.MasterRecordCreateNestedManyWithoutMasterObjectInput;
+    schemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutMasterObjectInput;
+    fieldDefinitions?: Prisma.FieldDefinitionCreateNestedManyWithoutMasterObjectInput;
+    formEventHooks?: Prisma.FormEventHookCreateNestedManyWithoutMasterObjectInput;
+    recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutMasterObjectInput;
+    fieldReferences?: Prisma.FieldReferenceCreateNestedManyWithoutTargetObjectInput;
+};
+export type MasterObjectUncheckedCreateInput = {
+    id?: string;
+    name: string;
+    key: string;
+    isActive?: boolean;
+    isSystem?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    resources?: Prisma.ResourceUncheckedCreateNestedManyWithoutMasterObjectInput;
+    records?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutMasterObjectInput;
+    schemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutMasterObjectInput;
+    fieldDefinitions?: Prisma.FieldDefinitionUncheckedCreateNestedManyWithoutMasterObjectInput;
+    formEventHooks?: Prisma.FormEventHookUncheckedCreateNestedManyWithoutMasterObjectInput;
+    recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutMasterObjectInput;
+    fieldReferences?: Prisma.FieldReferenceUncheckedCreateNestedManyWithoutTargetObjectInput;
+};
+export type MasterObjectUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    resources?: Prisma.ResourceUpdateManyWithoutMasterObjectNestedInput;
+    records?: Prisma.MasterRecordUpdateManyWithoutMasterObjectNestedInput;
+    schemas?: Prisma.MasterObjectSchemaUpdateManyWithoutMasterObjectNestedInput;
+    fieldDefinitions?: Prisma.FieldDefinitionUpdateManyWithoutMasterObjectNestedInput;
+    formEventHooks?: Prisma.FormEventHookUpdateManyWithoutMasterObjectNestedInput;
+    recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutMasterObjectNestedInput;
+    fieldReferences?: Prisma.FieldReferenceUpdateManyWithoutTargetObjectNestedInput;
+};
+export type MasterObjectUncheckedUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    resources?: Prisma.ResourceUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    records?: Prisma.MasterRecordUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    schemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    fieldDefinitions?: Prisma.FieldDefinitionUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    formEventHooks?: Prisma.FormEventHookUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    fieldReferences?: Prisma.FieldReferenceUncheckedUpdateManyWithoutTargetObjectNestedInput;
+};
+export type MasterObjectCreateManyInput = {
+    id?: string;
+    name: string;
+    key: string;
+    isActive?: boolean;
+    isSystem?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+};
+export type MasterObjectUpdateManyMutationInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type MasterObjectUncheckedUpdateManyInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type MasterObjectNullableScalarRelationFilter = {
+    is?: Prisma.MasterObjectWhereInput | null;
+    isNot?: Prisma.MasterObjectWhereInput | null;
+};
+export type MasterObjectCountOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    name?: Prisma.SortOrder;
+    key?: Prisma.SortOrder;
+    isActive?: Prisma.SortOrder;
+    isSystem?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrder;
+};
+export type MasterObjectMaxOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    name?: Prisma.SortOrder;
+    key?: Prisma.SortOrder;
+    isActive?: Prisma.SortOrder;
+    isSystem?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrder;
+};
+export type MasterObjectMinOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    name?: Prisma.SortOrder;
+    key?: Prisma.SortOrder;
+    isActive?: Prisma.SortOrder;
+    isSystem?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrder;
+};
+export type MasterObjectScalarRelationFilter = {
+    is?: Prisma.MasterObjectWhereInput;
+    isNot?: Prisma.MasterObjectWhereInput;
+};
+export type MasterObjectCreateNestedOneWithoutResourcesInput = {
+    create?: Prisma.XOR<Prisma.MasterObjectCreateWithoutResourcesInput, Prisma.MasterObjectUncheckedCreateWithoutResourcesInput>;
+    connectOrCreate?: Prisma.MasterObjectCreateOrConnectWithoutResourcesInput;
+    connect?: Prisma.MasterObjectWhereUniqueInput;
+};
+export type MasterObjectUpdateOneWithoutResourcesNestedInput = {
+    create?: Prisma.XOR<Prisma.MasterObjectCreateWithoutResourcesInput, Prisma.MasterObjectUncheckedCreateWithoutResourcesInput>;
+    connectOrCreate?: Prisma.MasterObjectCreateOrConnectWithoutResourcesInput;
+    upsert?: Prisma.MasterObjectUpsertWithoutResourcesInput;
+    disconnect?: Prisma.MasterObjectWhereInput | boolean;
+    delete?: Prisma.MasterObjectWhereInput | boolean;
+    connect?: Prisma.MasterObjectWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.MasterObjectUpdateToOneWithWhereWithoutResourcesInput, Prisma.MasterObjectUpdateWithoutResourcesInput>, Prisma.MasterObjectUncheckedUpdateWithoutResourcesInput>;
+};
+export type MasterObjectCreateNestedOneWithoutSchemasInput = {
+    create?: Prisma.XOR<Prisma.MasterObjectCreateWithoutSchemasInput, Prisma.MasterObjectUncheckedCreateWithoutSchemasInput>;
+    connectOrCreate?: Prisma.MasterObjectCreateOrConnectWithoutSchemasInput;
+    connect?: Prisma.MasterObjectWhereUniqueInput;
+};
+export type MasterObjectUpdateOneRequiredWithoutSchemasNestedInput = {
+    create?: Prisma.XOR<Prisma.MasterObjectCreateWithoutSchemasInput, Prisma.MasterObjectUncheckedCreateWithoutSchemasInput>;
+    connectOrCreate?: Prisma.MasterObjectCreateOrConnectWithoutSchemasInput;
+    upsert?: Prisma.MasterObjectUpsertWithoutSchemasInput;
+    connect?: Prisma.MasterObjectWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.MasterObjectUpdateToOneWithWhereWithoutSchemasInput, Prisma.MasterObjectUpdateWithoutSchemasInput>, Prisma.MasterObjectUncheckedUpdateWithoutSchemasInput>;
+};
+export type MasterObjectCreateNestedOneWithoutFieldDefinitionsInput = {
+    create?: Prisma.XOR<Prisma.MasterObjectCreateWithoutFieldDefinitionsInput, Prisma.MasterObjectUncheckedCreateWithoutFieldDefinitionsInput>;
+    connectOrCreate?: Prisma.MasterObjectCreateOrConnectWithoutFieldDefinitionsInput;
+    connect?: Prisma.MasterObjectWhereUniqueInput;
+};
+export type MasterObjectUpdateOneRequiredWithoutFieldDefinitionsNestedInput = {
+    create?: Prisma.XOR<Prisma.MasterObjectCreateWithoutFieldDefinitionsInput, Prisma.MasterObjectUncheckedCreateWithoutFieldDefinitionsInput>;
+    connectOrCreate?: Prisma.MasterObjectCreateOrConnectWithoutFieldDefinitionsInput;
+    upsert?: Prisma.MasterObjectUpsertWithoutFieldDefinitionsInput;
+    connect?: Prisma.MasterObjectWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.MasterObjectUpdateToOneWithWhereWithoutFieldDefinitionsInput, Prisma.MasterObjectUpdateWithoutFieldDefinitionsInput>, Prisma.MasterObjectUncheckedUpdateWithoutFieldDefinitionsInput>;
+};
+export type MasterObjectCreateNestedOneWithoutFieldReferencesInput = {
+    create?: Prisma.XOR<Prisma.MasterObjectCreateWithoutFieldReferencesInput, Prisma.MasterObjectUncheckedCreateWithoutFieldReferencesInput>;
+    connectOrCreate?: Prisma.MasterObjectCreateOrConnectWithoutFieldReferencesInput;
+    connect?: Prisma.MasterObjectWhereUniqueInput;
+};
+export type MasterObjectUpdateOneRequiredWithoutFieldReferencesNestedInput = {
+    create?: Prisma.XOR<Prisma.MasterObjectCreateWithoutFieldReferencesInput, Prisma.MasterObjectUncheckedCreateWithoutFieldReferencesInput>;
+    connectOrCreate?: Prisma.MasterObjectCreateOrConnectWithoutFieldReferencesInput;
+    upsert?: Prisma.MasterObjectUpsertWithoutFieldReferencesInput;
+    connect?: Prisma.MasterObjectWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.MasterObjectUpdateToOneWithWhereWithoutFieldReferencesInput, Prisma.MasterObjectUpdateWithoutFieldReferencesInput>, Prisma.MasterObjectUncheckedUpdateWithoutFieldReferencesInput>;
+};
+export type MasterObjectCreateNestedOneWithoutRecordsInput = {
+    create?: Prisma.XOR<Prisma.MasterObjectCreateWithoutRecordsInput, Prisma.MasterObjectUncheckedCreateWithoutRecordsInput>;
+    connectOrCreate?: Prisma.MasterObjectCreateOrConnectWithoutRecordsInput;
+    connect?: Prisma.MasterObjectWhereUniqueInput;
+};
+export type MasterObjectUpdateOneRequiredWithoutRecordsNestedInput = {
+    create?: Prisma.XOR<Prisma.MasterObjectCreateWithoutRecordsInput, Prisma.MasterObjectUncheckedCreateWithoutRecordsInput>;
+    connectOrCreate?: Prisma.MasterObjectCreateOrConnectWithoutRecordsInput;
+    upsert?: Prisma.MasterObjectUpsertWithoutRecordsInput;
+    connect?: Prisma.MasterObjectWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.MasterObjectUpdateToOneWithWhereWithoutRecordsInput, Prisma.MasterObjectUpdateWithoutRecordsInput>, Prisma.MasterObjectUncheckedUpdateWithoutRecordsInput>;
+};
+export type MasterObjectCreateNestedOneWithoutFormEventHooksInput = {
+    create?: Prisma.XOR<Prisma.MasterObjectCreateWithoutFormEventHooksInput, Prisma.MasterObjectUncheckedCreateWithoutFormEventHooksInput>;
+    connectOrCreate?: Prisma.MasterObjectCreateOrConnectWithoutFormEventHooksInput;
+    connect?: Prisma.MasterObjectWhereUniqueInput;
+};
+export type MasterObjectUpdateOneRequiredWithoutFormEventHooksNestedInput = {
+    create?: Prisma.XOR<Prisma.MasterObjectCreateWithoutFormEventHooksInput, Prisma.MasterObjectUncheckedCreateWithoutFormEventHooksInput>;
+    connectOrCreate?: Prisma.MasterObjectCreateOrConnectWithoutFormEventHooksInput;
+    upsert?: Prisma.MasterObjectUpsertWithoutFormEventHooksInput;
+    connect?: Prisma.MasterObjectWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.MasterObjectUpdateToOneWithWhereWithoutFormEventHooksInput, Prisma.MasterObjectUpdateWithoutFormEventHooksInput>, Prisma.MasterObjectUncheckedUpdateWithoutFormEventHooksInput>;
+};
+export type MasterObjectCreateNestedOneWithoutRecordPermissionsInput = {
+    create?: Prisma.XOR<Prisma.MasterObjectCreateWithoutRecordPermissionsInput, Prisma.MasterObjectUncheckedCreateWithoutRecordPermissionsInput>;
+    connectOrCreate?: Prisma.MasterObjectCreateOrConnectWithoutRecordPermissionsInput;
+    connect?: Prisma.MasterObjectWhereUniqueInput;
+};
+export type MasterObjectUpdateOneRequiredWithoutRecordPermissionsNestedInput = {
+    create?: Prisma.XOR<Prisma.MasterObjectCreateWithoutRecordPermissionsInput, Prisma.MasterObjectUncheckedCreateWithoutRecordPermissionsInput>;
+    connectOrCreate?: Prisma.MasterObjectCreateOrConnectWithoutRecordPermissionsInput;
+    upsert?: Prisma.MasterObjectUpsertWithoutRecordPermissionsInput;
+    connect?: Prisma.MasterObjectWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.MasterObjectUpdateToOneWithWhereWithoutRecordPermissionsInput, Prisma.MasterObjectUpdateWithoutRecordPermissionsInput>, Prisma.MasterObjectUncheckedUpdateWithoutRecordPermissionsInput>;
+};
+export type MasterObjectCreateWithoutResourcesInput = {
+    id?: string;
+    name: string;
+    key: string;
+    isActive?: boolean;
+    isSystem?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    records?: Prisma.MasterRecordCreateNestedManyWithoutMasterObjectInput;
+    schemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutMasterObjectInput;
+    fieldDefinitions?: Prisma.FieldDefinitionCreateNestedManyWithoutMasterObjectInput;
+    formEventHooks?: Prisma.FormEventHookCreateNestedManyWithoutMasterObjectInput;
+    recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutMasterObjectInput;
+    fieldReferences?: Prisma.FieldReferenceCreateNestedManyWithoutTargetObjectInput;
+};
+export type MasterObjectUncheckedCreateWithoutResourcesInput = {
+    id?: string;
+    name: string;
+    key: string;
+    isActive?: boolean;
+    isSystem?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    records?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutMasterObjectInput;
+    schemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutMasterObjectInput;
+    fieldDefinitions?: Prisma.FieldDefinitionUncheckedCreateNestedManyWithoutMasterObjectInput;
+    formEventHooks?: Prisma.FormEventHookUncheckedCreateNestedManyWithoutMasterObjectInput;
+    recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutMasterObjectInput;
+    fieldReferences?: Prisma.FieldReferenceUncheckedCreateNestedManyWithoutTargetObjectInput;
+};
+export type MasterObjectCreateOrConnectWithoutResourcesInput = {
+    where: Prisma.MasterObjectWhereUniqueInput;
+    create: Prisma.XOR<Prisma.MasterObjectCreateWithoutResourcesInput, Prisma.MasterObjectUncheckedCreateWithoutResourcesInput>;
+};
+export type MasterObjectUpsertWithoutResourcesInput = {
+    update: Prisma.XOR<Prisma.MasterObjectUpdateWithoutResourcesInput, Prisma.MasterObjectUncheckedUpdateWithoutResourcesInput>;
+    create: Prisma.XOR<Prisma.MasterObjectCreateWithoutResourcesInput, Prisma.MasterObjectUncheckedCreateWithoutResourcesInput>;
+    where?: Prisma.MasterObjectWhereInput;
+};
+export type MasterObjectUpdateToOneWithWhereWithoutResourcesInput = {
+    where?: Prisma.MasterObjectWhereInput;
+    data: Prisma.XOR<Prisma.MasterObjectUpdateWithoutResourcesInput, Prisma.MasterObjectUncheckedUpdateWithoutResourcesInput>;
+};
+export type MasterObjectUpdateWithoutResourcesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    records?: Prisma.MasterRecordUpdateManyWithoutMasterObjectNestedInput;
+    schemas?: Prisma.MasterObjectSchemaUpdateManyWithoutMasterObjectNestedInput;
+    fieldDefinitions?: Prisma.FieldDefinitionUpdateManyWithoutMasterObjectNestedInput;
+    formEventHooks?: Prisma.FormEventHookUpdateManyWithoutMasterObjectNestedInput;
+    recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutMasterObjectNestedInput;
+    fieldReferences?: Prisma.FieldReferenceUpdateManyWithoutTargetObjectNestedInput;
+};
+export type MasterObjectUncheckedUpdateWithoutResourcesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    records?: Prisma.MasterRecordUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    schemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    fieldDefinitions?: Prisma.FieldDefinitionUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    formEventHooks?: Prisma.FormEventHookUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    fieldReferences?: Prisma.FieldReferenceUncheckedUpdateManyWithoutTargetObjectNestedInput;
+};
+export type MasterObjectCreateWithoutSchemasInput = {
+    id?: string;
+    name: string;
+    key: string;
+    isActive?: boolean;
+    isSystem?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    resources?: Prisma.ResourceCreateNestedManyWithoutMasterObjectInput;
+    records?: Prisma.MasterRecordCreateNestedManyWithoutMasterObjectInput;
+    fieldDefinitions?: Prisma.FieldDefinitionCreateNestedManyWithoutMasterObjectInput;
+    formEventHooks?: Prisma.FormEventHookCreateNestedManyWithoutMasterObjectInput;
+    recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutMasterObjectInput;
+    fieldReferences?: Prisma.FieldReferenceCreateNestedManyWithoutTargetObjectInput;
+};
+export type MasterObjectUncheckedCreateWithoutSchemasInput = {
+    id?: string;
+    name: string;
+    key: string;
+    isActive?: boolean;
+    isSystem?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    resources?: Prisma.ResourceUncheckedCreateNestedManyWithoutMasterObjectInput;
+    records?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutMasterObjectInput;
+    fieldDefinitions?: Prisma.FieldDefinitionUncheckedCreateNestedManyWithoutMasterObjectInput;
+    formEventHooks?: Prisma.FormEventHookUncheckedCreateNestedManyWithoutMasterObjectInput;
+    recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutMasterObjectInput;
+    fieldReferences?: Prisma.FieldReferenceUncheckedCreateNestedManyWithoutTargetObjectInput;
+};
+export type MasterObjectCreateOrConnectWithoutSchemasInput = {
+    where: Prisma.MasterObjectWhereUniqueInput;
+    create: Prisma.XOR<Prisma.MasterObjectCreateWithoutSchemasInput, Prisma.MasterObjectUncheckedCreateWithoutSchemasInput>;
+};
+export type MasterObjectUpsertWithoutSchemasInput = {
+    update: Prisma.XOR<Prisma.MasterObjectUpdateWithoutSchemasInput, Prisma.MasterObjectUncheckedUpdateWithoutSchemasInput>;
+    create: Prisma.XOR<Prisma.MasterObjectCreateWithoutSchemasInput, Prisma.MasterObjectUncheckedCreateWithoutSchemasInput>;
+    where?: Prisma.MasterObjectWhereInput;
+};
+export type MasterObjectUpdateToOneWithWhereWithoutSchemasInput = {
+    where?: Prisma.MasterObjectWhereInput;
+    data: Prisma.XOR<Prisma.MasterObjectUpdateWithoutSchemasInput, Prisma.MasterObjectUncheckedUpdateWithoutSchemasInput>;
+};
+export type MasterObjectUpdateWithoutSchemasInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    resources?: Prisma.ResourceUpdateManyWithoutMasterObjectNestedInput;
+    records?: Prisma.MasterRecordUpdateManyWithoutMasterObjectNestedInput;
+    fieldDefinitions?: Prisma.FieldDefinitionUpdateManyWithoutMasterObjectNestedInput;
+    formEventHooks?: Prisma.FormEventHookUpdateManyWithoutMasterObjectNestedInput;
+    recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutMasterObjectNestedInput;
+    fieldReferences?: Prisma.FieldReferenceUpdateManyWithoutTargetObjectNestedInput;
+};
+export type MasterObjectUncheckedUpdateWithoutSchemasInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    resources?: Prisma.ResourceUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    records?: Prisma.MasterRecordUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    fieldDefinitions?: Prisma.FieldDefinitionUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    formEventHooks?: Prisma.FormEventHookUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    fieldReferences?: Prisma.FieldReferenceUncheckedUpdateManyWithoutTargetObjectNestedInput;
+};
+export type MasterObjectCreateWithoutFieldDefinitionsInput = {
+    id?: string;
+    name: string;
+    key: string;
+    isActive?: boolean;
+    isSystem?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    resources?: Prisma.ResourceCreateNestedManyWithoutMasterObjectInput;
+    records?: Prisma.MasterRecordCreateNestedManyWithoutMasterObjectInput;
+    schemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutMasterObjectInput;
+    formEventHooks?: Prisma.FormEventHookCreateNestedManyWithoutMasterObjectInput;
+    recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutMasterObjectInput;
+    fieldReferences?: Prisma.FieldReferenceCreateNestedManyWithoutTargetObjectInput;
+};
+export type MasterObjectUncheckedCreateWithoutFieldDefinitionsInput = {
+    id?: string;
+    name: string;
+    key: string;
+    isActive?: boolean;
+    isSystem?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    resources?: Prisma.ResourceUncheckedCreateNestedManyWithoutMasterObjectInput;
+    records?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutMasterObjectInput;
+    schemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutMasterObjectInput;
+    formEventHooks?: Prisma.FormEventHookUncheckedCreateNestedManyWithoutMasterObjectInput;
+    recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutMasterObjectInput;
+    fieldReferences?: Prisma.FieldReferenceUncheckedCreateNestedManyWithoutTargetObjectInput;
+};
+export type MasterObjectCreateOrConnectWithoutFieldDefinitionsInput = {
+    where: Prisma.MasterObjectWhereUniqueInput;
+    create: Prisma.XOR<Prisma.MasterObjectCreateWithoutFieldDefinitionsInput, Prisma.MasterObjectUncheckedCreateWithoutFieldDefinitionsInput>;
+};
+export type MasterObjectUpsertWithoutFieldDefinitionsInput = {
+    update: Prisma.XOR<Prisma.MasterObjectUpdateWithoutFieldDefinitionsInput, Prisma.MasterObjectUncheckedUpdateWithoutFieldDefinitionsInput>;
+    create: Prisma.XOR<Prisma.MasterObjectCreateWithoutFieldDefinitionsInput, Prisma.MasterObjectUncheckedCreateWithoutFieldDefinitionsInput>;
+    where?: Prisma.MasterObjectWhereInput;
+};
+export type MasterObjectUpdateToOneWithWhereWithoutFieldDefinitionsInput = {
+    where?: Prisma.MasterObjectWhereInput;
+    data: Prisma.XOR<Prisma.MasterObjectUpdateWithoutFieldDefinitionsInput, Prisma.MasterObjectUncheckedUpdateWithoutFieldDefinitionsInput>;
+};
+export type MasterObjectUpdateWithoutFieldDefinitionsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    resources?: Prisma.ResourceUpdateManyWithoutMasterObjectNestedInput;
+    records?: Prisma.MasterRecordUpdateManyWithoutMasterObjectNestedInput;
+    schemas?: Prisma.MasterObjectSchemaUpdateManyWithoutMasterObjectNestedInput;
+    formEventHooks?: Prisma.FormEventHookUpdateManyWithoutMasterObjectNestedInput;
+    recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutMasterObjectNestedInput;
+    fieldReferences?: Prisma.FieldReferenceUpdateManyWithoutTargetObjectNestedInput;
+};
+export type MasterObjectUncheckedUpdateWithoutFieldDefinitionsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    resources?: Prisma.ResourceUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    records?: Prisma.MasterRecordUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    schemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    formEventHooks?: Prisma.FormEventHookUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    fieldReferences?: Prisma.FieldReferenceUncheckedUpdateManyWithoutTargetObjectNestedInput;
+};
+export type MasterObjectCreateWithoutFieldReferencesInput = {
+    id?: string;
+    name: string;
+    key: string;
+    isActive?: boolean;
+    isSystem?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    resources?: Prisma.ResourceCreateNestedManyWithoutMasterObjectInput;
+    records?: Prisma.MasterRecordCreateNestedManyWithoutMasterObjectInput;
+    schemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutMasterObjectInput;
+    fieldDefinitions?: Prisma.FieldDefinitionCreateNestedManyWithoutMasterObjectInput;
+    formEventHooks?: Prisma.FormEventHookCreateNestedManyWithoutMasterObjectInput;
+    recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutMasterObjectInput;
+};
+export type MasterObjectUncheckedCreateWithoutFieldReferencesInput = {
+    id?: string;
+    name: string;
+    key: string;
+    isActive?: boolean;
+    isSystem?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    resources?: Prisma.ResourceUncheckedCreateNestedManyWithoutMasterObjectInput;
+    records?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutMasterObjectInput;
+    schemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutMasterObjectInput;
+    fieldDefinitions?: Prisma.FieldDefinitionUncheckedCreateNestedManyWithoutMasterObjectInput;
+    formEventHooks?: Prisma.FormEventHookUncheckedCreateNestedManyWithoutMasterObjectInput;
+    recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutMasterObjectInput;
+};
+export type MasterObjectCreateOrConnectWithoutFieldReferencesInput = {
+    where: Prisma.MasterObjectWhereUniqueInput;
+    create: Prisma.XOR<Prisma.MasterObjectCreateWithoutFieldReferencesInput, Prisma.MasterObjectUncheckedCreateWithoutFieldReferencesInput>;
+};
+export type MasterObjectUpsertWithoutFieldReferencesInput = {
+    update: Prisma.XOR<Prisma.MasterObjectUpdateWithoutFieldReferencesInput, Prisma.MasterObjectUncheckedUpdateWithoutFieldReferencesInput>;
+    create: Prisma.XOR<Prisma.MasterObjectCreateWithoutFieldReferencesInput, Prisma.MasterObjectUncheckedCreateWithoutFieldReferencesInput>;
+    where?: Prisma.MasterObjectWhereInput;
+};
+export type MasterObjectUpdateToOneWithWhereWithoutFieldReferencesInput = {
+    where?: Prisma.MasterObjectWhereInput;
+    data: Prisma.XOR<Prisma.MasterObjectUpdateWithoutFieldReferencesInput, Prisma.MasterObjectUncheckedUpdateWithoutFieldReferencesInput>;
+};
+export type MasterObjectUpdateWithoutFieldReferencesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    resources?: Prisma.ResourceUpdateManyWithoutMasterObjectNestedInput;
+    records?: Prisma.MasterRecordUpdateManyWithoutMasterObjectNestedInput;
+    schemas?: Prisma.MasterObjectSchemaUpdateManyWithoutMasterObjectNestedInput;
+    fieldDefinitions?: Prisma.FieldDefinitionUpdateManyWithoutMasterObjectNestedInput;
+    formEventHooks?: Prisma.FormEventHookUpdateManyWithoutMasterObjectNestedInput;
+    recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutMasterObjectNestedInput;
+};
+export type MasterObjectUncheckedUpdateWithoutFieldReferencesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    resources?: Prisma.ResourceUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    records?: Prisma.MasterRecordUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    schemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    fieldDefinitions?: Prisma.FieldDefinitionUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    formEventHooks?: Prisma.FormEventHookUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutMasterObjectNestedInput;
+};
+export type MasterObjectCreateWithoutRecordsInput = {
+    id?: string;
+    name: string;
+    key: string;
+    isActive?: boolean;
+    isSystem?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    resources?: Prisma.ResourceCreateNestedManyWithoutMasterObjectInput;
+    schemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutMasterObjectInput;
+    fieldDefinitions?: Prisma.FieldDefinitionCreateNestedManyWithoutMasterObjectInput;
+    formEventHooks?: Prisma.FormEventHookCreateNestedManyWithoutMasterObjectInput;
+    recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutMasterObjectInput;
+    fieldReferences?: Prisma.FieldReferenceCreateNestedManyWithoutTargetObjectInput;
+};
+export type MasterObjectUncheckedCreateWithoutRecordsInput = {
+    id?: string;
+    name: string;
+    key: string;
+    isActive?: boolean;
+    isSystem?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    resources?: Prisma.ResourceUncheckedCreateNestedManyWithoutMasterObjectInput;
+    schemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutMasterObjectInput;
+    fieldDefinitions?: Prisma.FieldDefinitionUncheckedCreateNestedManyWithoutMasterObjectInput;
+    formEventHooks?: Prisma.FormEventHookUncheckedCreateNestedManyWithoutMasterObjectInput;
+    recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutMasterObjectInput;
+    fieldReferences?: Prisma.FieldReferenceUncheckedCreateNestedManyWithoutTargetObjectInput;
+};
+export type MasterObjectCreateOrConnectWithoutRecordsInput = {
+    where: Prisma.MasterObjectWhereUniqueInput;
+    create: Prisma.XOR<Prisma.MasterObjectCreateWithoutRecordsInput, Prisma.MasterObjectUncheckedCreateWithoutRecordsInput>;
+};
+export type MasterObjectUpsertWithoutRecordsInput = {
+    update: Prisma.XOR<Prisma.MasterObjectUpdateWithoutRecordsInput, Prisma.MasterObjectUncheckedUpdateWithoutRecordsInput>;
+    create: Prisma.XOR<Prisma.MasterObjectCreateWithoutRecordsInput, Prisma.MasterObjectUncheckedCreateWithoutRecordsInput>;
+    where?: Prisma.MasterObjectWhereInput;
+};
+export type MasterObjectUpdateToOneWithWhereWithoutRecordsInput = {
+    where?: Prisma.MasterObjectWhereInput;
+    data: Prisma.XOR<Prisma.MasterObjectUpdateWithoutRecordsInput, Prisma.MasterObjectUncheckedUpdateWithoutRecordsInput>;
+};
+export type MasterObjectUpdateWithoutRecordsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    resources?: Prisma.ResourceUpdateManyWithoutMasterObjectNestedInput;
+    schemas?: Prisma.MasterObjectSchemaUpdateManyWithoutMasterObjectNestedInput;
+    fieldDefinitions?: Prisma.FieldDefinitionUpdateManyWithoutMasterObjectNestedInput;
+    formEventHooks?: Prisma.FormEventHookUpdateManyWithoutMasterObjectNestedInput;
+    recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutMasterObjectNestedInput;
+    fieldReferences?: Prisma.FieldReferenceUpdateManyWithoutTargetObjectNestedInput;
+};
+export type MasterObjectUncheckedUpdateWithoutRecordsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    resources?: Prisma.ResourceUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    schemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    fieldDefinitions?: Prisma.FieldDefinitionUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    formEventHooks?: Prisma.FormEventHookUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    fieldReferences?: Prisma.FieldReferenceUncheckedUpdateManyWithoutTargetObjectNestedInput;
+};
+export type MasterObjectCreateWithoutFormEventHooksInput = {
+    id?: string;
+    name: string;
+    key: string;
+    isActive?: boolean;
+    isSystem?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    resources?: Prisma.ResourceCreateNestedManyWithoutMasterObjectInput;
+    records?: Prisma.MasterRecordCreateNestedManyWithoutMasterObjectInput;
+    schemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutMasterObjectInput;
+    fieldDefinitions?: Prisma.FieldDefinitionCreateNestedManyWithoutMasterObjectInput;
+    recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutMasterObjectInput;
+    fieldReferences?: Prisma.FieldReferenceCreateNestedManyWithoutTargetObjectInput;
+};
+export type MasterObjectUncheckedCreateWithoutFormEventHooksInput = {
+    id?: string;
+    name: string;
+    key: string;
+    isActive?: boolean;
+    isSystem?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    resources?: Prisma.ResourceUncheckedCreateNestedManyWithoutMasterObjectInput;
+    records?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutMasterObjectInput;
+    schemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutMasterObjectInput;
+    fieldDefinitions?: Prisma.FieldDefinitionUncheckedCreateNestedManyWithoutMasterObjectInput;
+    recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutMasterObjectInput;
+    fieldReferences?: Prisma.FieldReferenceUncheckedCreateNestedManyWithoutTargetObjectInput;
+};
+export type MasterObjectCreateOrConnectWithoutFormEventHooksInput = {
+    where: Prisma.MasterObjectWhereUniqueInput;
+    create: Prisma.XOR<Prisma.MasterObjectCreateWithoutFormEventHooksInput, Prisma.MasterObjectUncheckedCreateWithoutFormEventHooksInput>;
+};
+export type MasterObjectUpsertWithoutFormEventHooksInput = {
+    update: Prisma.XOR<Prisma.MasterObjectUpdateWithoutFormEventHooksInput, Prisma.MasterObjectUncheckedUpdateWithoutFormEventHooksInput>;
+    create: Prisma.XOR<Prisma.MasterObjectCreateWithoutFormEventHooksInput, Prisma.MasterObjectUncheckedCreateWithoutFormEventHooksInput>;
+    where?: Prisma.MasterObjectWhereInput;
+};
+export type MasterObjectUpdateToOneWithWhereWithoutFormEventHooksInput = {
+    where?: Prisma.MasterObjectWhereInput;
+    data: Prisma.XOR<Prisma.MasterObjectUpdateWithoutFormEventHooksInput, Prisma.MasterObjectUncheckedUpdateWithoutFormEventHooksInput>;
+};
+export type MasterObjectUpdateWithoutFormEventHooksInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    resources?: Prisma.ResourceUpdateManyWithoutMasterObjectNestedInput;
+    records?: Prisma.MasterRecordUpdateManyWithoutMasterObjectNestedInput;
+    schemas?: Prisma.MasterObjectSchemaUpdateManyWithoutMasterObjectNestedInput;
+    fieldDefinitions?: Prisma.FieldDefinitionUpdateManyWithoutMasterObjectNestedInput;
+    recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutMasterObjectNestedInput;
+    fieldReferences?: Prisma.FieldReferenceUpdateManyWithoutTargetObjectNestedInput;
+};
+export type MasterObjectUncheckedUpdateWithoutFormEventHooksInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    resources?: Prisma.ResourceUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    records?: Prisma.MasterRecordUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    schemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    fieldDefinitions?: Prisma.FieldDefinitionUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    fieldReferences?: Prisma.FieldReferenceUncheckedUpdateManyWithoutTargetObjectNestedInput;
+};
+export type MasterObjectCreateWithoutRecordPermissionsInput = {
+    id?: string;
+    name: string;
+    key: string;
+    isActive?: boolean;
+    isSystem?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    resources?: Prisma.ResourceCreateNestedManyWithoutMasterObjectInput;
+    records?: Prisma.MasterRecordCreateNestedManyWithoutMasterObjectInput;
+    schemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutMasterObjectInput;
+    fieldDefinitions?: Prisma.FieldDefinitionCreateNestedManyWithoutMasterObjectInput;
+    formEventHooks?: Prisma.FormEventHookCreateNestedManyWithoutMasterObjectInput;
+    fieldReferences?: Prisma.FieldReferenceCreateNestedManyWithoutTargetObjectInput;
+};
+export type MasterObjectUncheckedCreateWithoutRecordPermissionsInput = {
+    id?: string;
+    name: string;
+    key: string;
+    isActive?: boolean;
+    isSystem?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    resources?: Prisma.ResourceUncheckedCreateNestedManyWithoutMasterObjectInput;
+    records?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutMasterObjectInput;
+    schemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutMasterObjectInput;
+    fieldDefinitions?: Prisma.FieldDefinitionUncheckedCreateNestedManyWithoutMasterObjectInput;
+    formEventHooks?: Prisma.FormEventHookUncheckedCreateNestedManyWithoutMasterObjectInput;
+    fieldReferences?: Prisma.FieldReferenceUncheckedCreateNestedManyWithoutTargetObjectInput;
+};
+export type MasterObjectCreateOrConnectWithoutRecordPermissionsInput = {
+    where: Prisma.MasterObjectWhereUniqueInput;
+    create: Prisma.XOR<Prisma.MasterObjectCreateWithoutRecordPermissionsInput, Prisma.MasterObjectUncheckedCreateWithoutRecordPermissionsInput>;
+};
+export type MasterObjectUpsertWithoutRecordPermissionsInput = {
+    update: Prisma.XOR<Prisma.MasterObjectUpdateWithoutRecordPermissionsInput, Prisma.MasterObjectUncheckedUpdateWithoutRecordPermissionsInput>;
+    create: Prisma.XOR<Prisma.MasterObjectCreateWithoutRecordPermissionsInput, Prisma.MasterObjectUncheckedCreateWithoutRecordPermissionsInput>;
+    where?: Prisma.MasterObjectWhereInput;
+};
+export type MasterObjectUpdateToOneWithWhereWithoutRecordPermissionsInput = {
+    where?: Prisma.MasterObjectWhereInput;
+    data: Prisma.XOR<Prisma.MasterObjectUpdateWithoutRecordPermissionsInput, Prisma.MasterObjectUncheckedUpdateWithoutRecordPermissionsInput>;
+};
+export type MasterObjectUpdateWithoutRecordPermissionsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    resources?: Prisma.ResourceUpdateManyWithoutMasterObjectNestedInput;
+    records?: Prisma.MasterRecordUpdateManyWithoutMasterObjectNestedInput;
+    schemas?: Prisma.MasterObjectSchemaUpdateManyWithoutMasterObjectNestedInput;
+    fieldDefinitions?: Prisma.FieldDefinitionUpdateManyWithoutMasterObjectNestedInput;
+    formEventHooks?: Prisma.FormEventHookUpdateManyWithoutMasterObjectNestedInput;
+    fieldReferences?: Prisma.FieldReferenceUpdateManyWithoutTargetObjectNestedInput;
+};
+export type MasterObjectUncheckedUpdateWithoutRecordPermissionsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    resources?: Prisma.ResourceUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    records?: Prisma.MasterRecordUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    schemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    fieldDefinitions?: Prisma.FieldDefinitionUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    formEventHooks?: Prisma.FormEventHookUncheckedUpdateManyWithoutMasterObjectNestedInput;
+    fieldReferences?: Prisma.FieldReferenceUncheckedUpdateManyWithoutTargetObjectNestedInput;
+};
+/**
+ * Count Type MasterObjectCountOutputType
+ */
+export type MasterObjectCountOutputType = {
+    resources: number;
+    records: number;
+    schemas: number;
+    fieldDefinitions: number;
+    formEventHooks: number;
+    recordPermissions: number;
+    fieldReferences: number;
+};
+export type MasterObjectCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    resources?: boolean | MasterObjectCountOutputTypeCountResourcesArgs;
+    records?: boolean | MasterObjectCountOutputTypeCountRecordsArgs;
+    schemas?: boolean | MasterObjectCountOutputTypeCountSchemasArgs;
+    fieldDefinitions?: boolean | MasterObjectCountOutputTypeCountFieldDefinitionsArgs;
+    formEventHooks?: boolean | MasterObjectCountOutputTypeCountFormEventHooksArgs;
+    recordPermissions?: boolean | MasterObjectCountOutputTypeCountRecordPermissionsArgs;
+    fieldReferences?: boolean | MasterObjectCountOutputTypeCountFieldReferencesArgs;
+};
+/**
+ * MasterObjectCountOutputType without action
+ */
+export type MasterObjectCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterObjectCountOutputType
+     */
+    select?: Prisma.MasterObjectCountOutputTypeSelect<ExtArgs> | null;
+};
+/**
+ * MasterObjectCountOutputType without action
+ */
+export type MasterObjectCountOutputTypeCountResourcesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.ResourceWhereInput;
+};
+/**
+ * MasterObjectCountOutputType without action
+ */
+export type MasterObjectCountOutputTypeCountRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.MasterRecordWhereInput;
+};
+/**
+ * MasterObjectCountOutputType without action
+ */
+export type MasterObjectCountOutputTypeCountSchemasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.MasterObjectSchemaWhereInput;
+};
+/**
+ * MasterObjectCountOutputType without action
+ */
+export type MasterObjectCountOutputTypeCountFieldDefinitionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.FieldDefinitionWhereInput;
+};
+/**
+ * MasterObjectCountOutputType without action
+ */
+export type MasterObjectCountOutputTypeCountFormEventHooksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.FormEventHookWhereInput;
+};
+/**
+ * MasterObjectCountOutputType without action
+ */
+export type MasterObjectCountOutputTypeCountRecordPermissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.RecordPermissionWhereInput;
+};
+/**
+ * MasterObjectCountOutputType without action
+ */
+export type MasterObjectCountOutputTypeCountFieldReferencesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.FieldReferenceWhereInput;
+};
+export type MasterObjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    name?: boolean;
+    key?: boolean;
+    isActive?: boolean;
+    isSystem?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    deletedAt?: boolean;
+    resources?: boolean | Prisma.MasterObject$resourcesArgs<ExtArgs>;
+    records?: boolean | Prisma.MasterObject$recordsArgs<ExtArgs>;
+    schemas?: boolean | Prisma.MasterObject$schemasArgs<ExtArgs>;
+    fieldDefinitions?: boolean | Prisma.MasterObject$fieldDefinitionsArgs<ExtArgs>;
+    formEventHooks?: boolean | Prisma.MasterObject$formEventHooksArgs<ExtArgs>;
+    recordPermissions?: boolean | Prisma.MasterObject$recordPermissionsArgs<ExtArgs>;
+    fieldReferences?: boolean | Prisma.MasterObject$fieldReferencesArgs<ExtArgs>;
+    _count?: boolean | Prisma.MasterObjectCountOutputTypeDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["masterObject"]>;
+export type MasterObjectSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    name?: boolean;
+    key?: boolean;
+    isActive?: boolean;
+    isSystem?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    deletedAt?: boolean;
+}, ExtArgs["result"]["masterObject"]>;
+export type MasterObjectSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    name?: boolean;
+    key?: boolean;
+    isActive?: boolean;
+    isSystem?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    deletedAt?: boolean;
+}, ExtArgs["result"]["masterObject"]>;
+export type MasterObjectSelectScalar = {
+    id?: boolean;
+    name?: boolean;
+    key?: boolean;
+    isActive?: boolean;
+    isSystem?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    deletedAt?: boolean;
+};
+export type MasterObjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "key" | "isActive" | "isSystem" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["masterObject"]>;
+export type MasterObjectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    resources?: boolean | Prisma.MasterObject$resourcesArgs<ExtArgs>;
+    records?: boolean | Prisma.MasterObject$recordsArgs<ExtArgs>;
+    schemas?: boolean | Prisma.MasterObject$schemasArgs<ExtArgs>;
+    fieldDefinitions?: boolean | Prisma.MasterObject$fieldDefinitionsArgs<ExtArgs>;
+    formEventHooks?: boolean | Prisma.MasterObject$formEventHooksArgs<ExtArgs>;
+    recordPermissions?: boolean | Prisma.MasterObject$recordPermissionsArgs<ExtArgs>;
+    fieldReferences?: boolean | Prisma.MasterObject$fieldReferencesArgs<ExtArgs>;
+    _count?: boolean | Prisma.MasterObjectCountOutputTypeDefaultArgs<ExtArgs>;
+};
+export type MasterObjectIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {};
+export type MasterObjectIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {};
+export type $MasterObjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    name: "MasterObject";
+    objects: {
+        resources: Prisma.$ResourcePayload<ExtArgs>[];
+        records: Prisma.$MasterRecordPayload<ExtArgs>[];
+        schemas: Prisma.$MasterObjectSchemaPayload<ExtArgs>[];
+        fieldDefinitions: Prisma.$FieldDefinitionPayload<ExtArgs>[];
+        formEventHooks: Prisma.$FormEventHookPayload<ExtArgs>[];
+        recordPermissions: Prisma.$RecordPermissionPayload<ExtArgs>[];
+        fieldReferences: Prisma.$FieldReferencePayload<ExtArgs>[];
+    };
+    scalars: runtime.Types.Extensions.GetPayloadResult<{
+        id: string;
+        name: string;
+        key: string;
+        isActive: boolean;
+        isSystem: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt: Date | null;
+    }, ExtArgs["result"]["masterObject"]>;
+    composites: {};
+};
+export type MasterObjectGetPayload<S extends boolean | null | undefined | MasterObjectDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$MasterObjectPayload, S>;
+export type MasterObjectCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = Omit<MasterObjectFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    select?: MasterObjectCountAggregateInputType | true;
+};
+export interface MasterObjectDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: {
+        types: Prisma.TypeMap<ExtArgs>['model']['MasterObject'];
+        meta: {
+            name: 'MasterObject';
+        };
+    };
+    /**
+     * Find zero or one MasterObject that matches the filter.
+     * @param {MasterObjectFindUniqueArgs} args - Arguments to find a MasterObject
+     * @example
+     * // Get one MasterObject
+     * const masterObject = await prisma.masterObject.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MasterObjectFindUniqueArgs>(args: Prisma.SelectSubset<T, MasterObjectFindUniqueArgs<ExtArgs>>): Prisma.Prisma__MasterObjectClient<runtime.Types.Result.GetResult<Prisma.$MasterObjectPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find one MasterObject that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MasterObjectFindUniqueOrThrowArgs} args - Arguments to find a MasterObject
+     * @example
+     * // Get one MasterObject
+     * const masterObject = await prisma.masterObject.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MasterObjectFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, MasterObjectFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__MasterObjectClient<runtime.Types.Result.GetResult<Prisma.$MasterObjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first MasterObject that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MasterObjectFindFirstArgs} args - Arguments to find a MasterObject
+     * @example
+     * // Get one MasterObject
+     * const masterObject = await prisma.masterObject.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MasterObjectFindFirstArgs>(args?: Prisma.SelectSubset<T, MasterObjectFindFirstArgs<ExtArgs>>): Prisma.Prisma__MasterObjectClient<runtime.Types.Result.GetResult<Prisma.$MasterObjectPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first MasterObject that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MasterObjectFindFirstOrThrowArgs} args - Arguments to find a MasterObject
+     * @example
+     * // Get one MasterObject
+     * const masterObject = await prisma.masterObject.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MasterObjectFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, MasterObjectFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__MasterObjectClient<runtime.Types.Result.GetResult<Prisma.$MasterObjectPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find zero or more MasterObjects that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MasterObjectFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MasterObjects
+     * const masterObjects = await prisma.masterObject.findMany()
+     *
+     * // Get first 10 MasterObjects
+     * const masterObjects = await prisma.masterObject.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const masterObjectWithIdOnly = await prisma.masterObject.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends MasterObjectFindManyArgs>(args?: Prisma.SelectSubset<T, MasterObjectFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MasterObjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>;
+    /**
+     * Create a MasterObject.
+     * @param {MasterObjectCreateArgs} args - Arguments to create a MasterObject.
+     * @example
+     * // Create one MasterObject
+     * const MasterObject = await prisma.masterObject.create({
+     *   data: {
+     *     // ... data to create a MasterObject
+     *   }
+     * })
+     *
+     */
+    create<T extends MasterObjectCreateArgs>(args: Prisma.SelectSubset<T, MasterObjectCreateArgs<ExtArgs>>): Prisma.Prisma__MasterObjectClient<runtime.Types.Result.GetResult<Prisma.$MasterObjectPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Create many MasterObjects.
+     * @param {MasterObjectCreateManyArgs} args - Arguments to create many MasterObjects.
+     * @example
+     * // Create many MasterObjects
+     * const masterObject = await prisma.masterObject.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends MasterObjectCreateManyArgs>(args?: Prisma.SelectSubset<T, MasterObjectCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Create many MasterObjects and returns the data saved in the database.
+     * @param {MasterObjectCreateManyAndReturnArgs} args - Arguments to create many MasterObjects.
+     * @example
+     * // Create many MasterObjects
+     * const masterObject = await prisma.masterObject.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Create many MasterObjects and only return the `id`
+     * const masterObjectWithIdOnly = await prisma.masterObject.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    createManyAndReturn<T extends MasterObjectCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, MasterObjectCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MasterObjectPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Delete a MasterObject.
+     * @param {MasterObjectDeleteArgs} args - Arguments to delete one MasterObject.
+     * @example
+     * // Delete one MasterObject
+     * const MasterObject = await prisma.masterObject.delete({
+     *   where: {
+     *     // ... filter to delete one MasterObject
+     *   }
+     * })
+     *
+     */
+    delete<T extends MasterObjectDeleteArgs>(args: Prisma.SelectSubset<T, MasterObjectDeleteArgs<ExtArgs>>): Prisma.Prisma__MasterObjectClient<runtime.Types.Result.GetResult<Prisma.$MasterObjectPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Update one MasterObject.
+     * @param {MasterObjectUpdateArgs} args - Arguments to update one MasterObject.
+     * @example
+     * // Update one MasterObject
+     * const masterObject = await prisma.masterObject.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends MasterObjectUpdateArgs>(args: Prisma.SelectSubset<T, MasterObjectUpdateArgs<ExtArgs>>): Prisma.Prisma__MasterObjectClient<runtime.Types.Result.GetResult<Prisma.$MasterObjectPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Delete zero or more MasterObjects.
+     * @param {MasterObjectDeleteManyArgs} args - Arguments to filter MasterObjects to delete.
+     * @example
+     * // Delete a few MasterObjects
+     * const { count } = await prisma.masterObject.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends MasterObjectDeleteManyArgs>(args?: Prisma.SelectSubset<T, MasterObjectDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more MasterObjects.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MasterObjectUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MasterObjects
+     * const masterObject = await prisma.masterObject.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends MasterObjectUpdateManyArgs>(args: Prisma.SelectSubset<T, MasterObjectUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more MasterObjects and returns the data updated in the database.
+     * @param {MasterObjectUpdateManyAndReturnArgs} args - Arguments to update many MasterObjects.
+     * @example
+     * // Update many MasterObjects
+     * const masterObject = await prisma.masterObject.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Update zero or more MasterObjects and only return the `id`
+     * const masterObjectWithIdOnly = await prisma.masterObject.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    updateManyAndReturn<T extends MasterObjectUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, MasterObjectUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MasterObjectPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Create or update one MasterObject.
+     * @param {MasterObjectUpsertArgs} args - Arguments to update or create a MasterObject.
+     * @example
+     * // Update or create a MasterObject
+     * const masterObject = await prisma.masterObject.upsert({
+     *   create: {
+     *     // ... data to create a MasterObject
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MasterObject we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MasterObjectUpsertArgs>(args: Prisma.SelectSubset<T, MasterObjectUpsertArgs<ExtArgs>>): Prisma.Prisma__MasterObjectClient<runtime.Types.Result.GetResult<Prisma.$MasterObjectPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Count the number of MasterObjects.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MasterObjectCountArgs} args - Arguments to filter MasterObjects to count.
+     * @example
+     * // Count the number of MasterObjects
+     * const count = await prisma.masterObject.count({
+     *   where: {
+     *     // ... the filter for the MasterObjects we want to count
+     *   }
+     * })
+    **/
+    count<T extends MasterObjectCountArgs>(args?: Prisma.Subset<T, MasterObjectCountArgs>): Prisma.PrismaPromise<T extends runtime.Types.Utils.Record<'select', any> ? T['select'] extends true ? number : Prisma.GetScalarType<T['select'], MasterObjectCountAggregateOutputType> : number>;
+    /**
+     * Allows you to perform aggregations operations on a MasterObject.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MasterObjectAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MasterObjectAggregateArgs>(args: Prisma.Subset<T, MasterObjectAggregateArgs>): Prisma.PrismaPromise<GetMasterObjectAggregateType<T>>;
+    /**
+     * Group by MasterObject.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MasterObjectGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<T extends MasterObjectGroupByArgs, HasSelectOrTake extends Prisma.Or<Prisma.Extends<'skip', Prisma.Keys<T>>, Prisma.Extends<'take', Prisma.Keys<T>>>, OrderByArg extends Prisma.True extends HasSelectOrTake ? {
+        orderBy: MasterObjectGroupByArgs['orderBy'];
+    } : {
+        orderBy?: MasterObjectGroupByArgs['orderBy'];
+    }, OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>, ByFields extends Prisma.MaybeTupleToUnion<T['by']>, ByValid extends Prisma.Has<ByFields, OrderFields>, HavingFields extends Prisma.GetHavingFields<T['having']>, HavingValid extends Prisma.Has<ByFields, HavingFields>, ByEmpty extends T['by'] extends never[] ? Prisma.True : Prisma.False, InputErrors extends ByEmpty extends Prisma.True ? `Error: "by" must not be empty.` : HavingValid extends Prisma.False ? {
+        [P in HavingFields]: P extends ByFields ? never : P extends string ? `Error: Field "${P}" used in "having" needs to be provided in "by".` : [
+            Error,
+            'Field ',
+            P,
+            ` in "having" needs to be provided in "by"`
+        ];
+    }[HavingFields] : 'take' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "take", you also need to provide "orderBy"' : 'skip' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "skip", you also need to provide "orderBy"' : ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields]>(args: Prisma.SubsetIntersection<T, MasterObjectGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMasterObjectGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>;
+    /**
+     * Fields of the MasterObject model
+     */
+    readonly fields: MasterObjectFieldRefs;
+}
+/**
+ * The delegate class that acts as a "Promise-like" for MasterObject.
+ * Why is this prefixed with `Prisma__`?
+ * Because we want to prevent naming conflicts as mentioned in
+ * https://github.com/prisma/prisma-client-js/issues/707
+ */
+export interface Prisma__MasterObjectClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise";
+    resources<T extends Prisma.MasterObject$resourcesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MasterObject$resourcesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ResourcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    records<T extends Prisma.MasterObject$recordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MasterObject$recordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MasterRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    schemas<T extends Prisma.MasterObject$schemasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MasterObject$schemasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MasterObjectSchemaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    fieldDefinitions<T extends Prisma.MasterObject$fieldDefinitionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MasterObject$fieldDefinitionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FieldDefinitionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    formEventHooks<T extends Prisma.MasterObject$formEventHooksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MasterObject$formEventHooksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FormEventHookPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    recordPermissions<T extends Prisma.MasterObject$recordPermissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MasterObject$recordPermissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordPermissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    fieldReferences<T extends Prisma.MasterObject$fieldReferencesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MasterObject$fieldReferencesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FieldReferencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
+}
+/**
+ * Fields of the MasterObject model
+ */
+export interface MasterObjectFieldRefs {
+    readonly id: Prisma.FieldRef<"MasterObject", 'String'>;
+    readonly name: Prisma.FieldRef<"MasterObject", 'String'>;
+    readonly key: Prisma.FieldRef<"MasterObject", 'String'>;
+    readonly isActive: Prisma.FieldRef<"MasterObject", 'Boolean'>;
+    readonly isSystem: Prisma.FieldRef<"MasterObject", 'Boolean'>;
+    readonly createdAt: Prisma.FieldRef<"MasterObject", 'DateTime'>;
+    readonly updatedAt: Prisma.FieldRef<"MasterObject", 'DateTime'>;
+    readonly deletedAt: Prisma.FieldRef<"MasterObject", 'DateTime'>;
+}
+/**
+ * MasterObject findUnique
+ */
+export type MasterObjectFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterObject
+     */
+    select?: Prisma.MasterObjectSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the MasterObject
+     */
+    omit?: Prisma.MasterObjectOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MasterObjectInclude<ExtArgs> | null;
+    /**
+     * Filter, which MasterObject to fetch.
+     */
+    where: Prisma.MasterObjectWhereUniqueInput;
+};
+/**
+ * MasterObject findUniqueOrThrow
+ */
+export type MasterObjectFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterObject
+     */
+    select?: Prisma.MasterObjectSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the MasterObject
+     */
+    omit?: Prisma.MasterObjectOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MasterObjectInclude<ExtArgs> | null;
+    /**
+     * Filter, which MasterObject to fetch.
+     */
+    where: Prisma.MasterObjectWhereUniqueInput;
+};
+/**
+ * MasterObject findFirst
+ */
+export type MasterObjectFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterObject
+     */
+    select?: Prisma.MasterObjectSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the MasterObject
+     */
+    omit?: Prisma.MasterObjectOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MasterObjectInclude<ExtArgs> | null;
+    /**
+     * Filter, which MasterObject to fetch.
+     */
+    where?: Prisma.MasterObjectWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of MasterObjects to fetch.
+     */
+    orderBy?: Prisma.MasterObjectOrderByWithRelationInput | Prisma.MasterObjectOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for MasterObjects.
+     */
+    cursor?: Prisma.MasterObjectWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` MasterObjects from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` MasterObjects.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of MasterObjects.
+     */
+    distinct?: Prisma.MasterObjectScalarFieldEnum | Prisma.MasterObjectScalarFieldEnum[];
+};
+/**
+ * MasterObject findFirstOrThrow
+ */
+export type MasterObjectFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterObject
+     */
+    select?: Prisma.MasterObjectSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the MasterObject
+     */
+    omit?: Prisma.MasterObjectOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MasterObjectInclude<ExtArgs> | null;
+    /**
+     * Filter, which MasterObject to fetch.
+     */
+    where?: Prisma.MasterObjectWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of MasterObjects to fetch.
+     */
+    orderBy?: Prisma.MasterObjectOrderByWithRelationInput | Prisma.MasterObjectOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for MasterObjects.
+     */
+    cursor?: Prisma.MasterObjectWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` MasterObjects from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` MasterObjects.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of MasterObjects.
+     */
+    distinct?: Prisma.MasterObjectScalarFieldEnum | Prisma.MasterObjectScalarFieldEnum[];
+};
+/**
+ * MasterObject findMany
+ */
+export type MasterObjectFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterObject
+     */
+    select?: Prisma.MasterObjectSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the MasterObject
+     */
+    omit?: Prisma.MasterObjectOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MasterObjectInclude<ExtArgs> | null;
+    /**
+     * Filter, which MasterObjects to fetch.
+     */
+    where?: Prisma.MasterObjectWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of MasterObjects to fetch.
+     */
+    orderBy?: Prisma.MasterObjectOrderByWithRelationInput | Prisma.MasterObjectOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing MasterObjects.
+     */
+    cursor?: Prisma.MasterObjectWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` MasterObjects from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` MasterObjects.
+     */
+    skip?: number;
+    distinct?: Prisma.MasterObjectScalarFieldEnum | Prisma.MasterObjectScalarFieldEnum[];
+};
+/**
+ * MasterObject create
+ */
+export type MasterObjectCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterObject
+     */
+    select?: Prisma.MasterObjectSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the MasterObject
+     */
+    omit?: Prisma.MasterObjectOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MasterObjectInclude<ExtArgs> | null;
+    /**
+     * The data needed to create a MasterObject.
+     */
+    data: Prisma.XOR<Prisma.MasterObjectCreateInput, Prisma.MasterObjectUncheckedCreateInput>;
+};
+/**
+ * MasterObject createMany
+ */
+export type MasterObjectCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MasterObjects.
+     */
+    data: Prisma.MasterObjectCreateManyInput | Prisma.MasterObjectCreateManyInput[];
+    skipDuplicates?: boolean;
+};
+/**
+ * MasterObject createManyAndReturn
+ */
+export type MasterObjectCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterObject
+     */
+    select?: Prisma.MasterObjectSelectCreateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the MasterObject
+     */
+    omit?: Prisma.MasterObjectOmit<ExtArgs> | null;
+    /**
+     * The data used to create many MasterObjects.
+     */
+    data: Prisma.MasterObjectCreateManyInput | Prisma.MasterObjectCreateManyInput[];
+    skipDuplicates?: boolean;
+};
+/**
+ * MasterObject update
+ */
+export type MasterObjectUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterObject
+     */
+    select?: Prisma.MasterObjectSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the MasterObject
+     */
+    omit?: Prisma.MasterObjectOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MasterObjectInclude<ExtArgs> | null;
+    /**
+     * The data needed to update a MasterObject.
+     */
+    data: Prisma.XOR<Prisma.MasterObjectUpdateInput, Prisma.MasterObjectUncheckedUpdateInput>;
+    /**
+     * Choose, which MasterObject to update.
+     */
+    where: Prisma.MasterObjectWhereUniqueInput;
+};
+/**
+ * MasterObject updateMany
+ */
+export type MasterObjectUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MasterObjects.
+     */
+    data: Prisma.XOR<Prisma.MasterObjectUpdateManyMutationInput, Prisma.MasterObjectUncheckedUpdateManyInput>;
+    /**
+     * Filter which MasterObjects to update
+     */
+    where?: Prisma.MasterObjectWhereInput;
+    /**
+     * Limit how many MasterObjects to update.
+     */
+    limit?: number;
+};
+/**
+ * MasterObject updateManyAndReturn
+ */
+export type MasterObjectUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterObject
+     */
+    select?: Prisma.MasterObjectSelectUpdateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the MasterObject
+     */
+    omit?: Prisma.MasterObjectOmit<ExtArgs> | null;
+    /**
+     * The data used to update MasterObjects.
+     */
+    data: Prisma.XOR<Prisma.MasterObjectUpdateManyMutationInput, Prisma.MasterObjectUncheckedUpdateManyInput>;
+    /**
+     * Filter which MasterObjects to update
+     */
+    where?: Prisma.MasterObjectWhereInput;
+    /**
+     * Limit how many MasterObjects to update.
+     */
+    limit?: number;
+};
+/**
+ * MasterObject upsert
+ */
+export type MasterObjectUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterObject
+     */
+    select?: Prisma.MasterObjectSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the MasterObject
+     */
+    omit?: Prisma.MasterObjectOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MasterObjectInclude<ExtArgs> | null;
+    /**
+     * The filter to search for the MasterObject to update in case it exists.
+     */
+    where: Prisma.MasterObjectWhereUniqueInput;
+    /**
+     * In case the MasterObject found by the `where` argument doesn't exist, create a new MasterObject with this data.
+     */
+    create: Prisma.XOR<Prisma.MasterObjectCreateInput, Prisma.MasterObjectUncheckedCreateInput>;
+    /**
+     * In case the MasterObject was found with the provided `where` argument, update it with this data.
+     */
+    update: Prisma.XOR<Prisma.MasterObjectUpdateInput, Prisma.MasterObjectUncheckedUpdateInput>;
+};
+/**
+ * MasterObject delete
+ */
+export type MasterObjectDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterObject
+     */
+    select?: Prisma.MasterObjectSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the MasterObject
+     */
+    omit?: Prisma.MasterObjectOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MasterObjectInclude<ExtArgs> | null;
+    /**
+     * Filter which MasterObject to delete.
+     */
+    where: Prisma.MasterObjectWhereUniqueInput;
+};
+/**
+ * MasterObject deleteMany
+ */
+export type MasterObjectDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which MasterObjects to delete
+     */
+    where?: Prisma.MasterObjectWhereInput;
+    /**
+     * Limit how many MasterObjects to delete.
+     */
+    limit?: number;
+};
+/**
+ * MasterObject.resources
+ */
+export type MasterObject$resourcesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resource
+     */
+    select?: Prisma.ResourceSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Resource
+     */
+    omit?: Prisma.ResourceOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ResourceInclude<ExtArgs> | null;
+    where?: Prisma.ResourceWhereInput;
+    orderBy?: Prisma.ResourceOrderByWithRelationInput | Prisma.ResourceOrderByWithRelationInput[];
+    cursor?: Prisma.ResourceWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.ResourceScalarFieldEnum | Prisma.ResourceScalarFieldEnum[];
+};
+/**
+ * MasterObject.records
+ */
+export type MasterObject$recordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterRecord
+     */
+    select?: Prisma.MasterRecordSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the MasterRecord
+     */
+    omit?: Prisma.MasterRecordOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MasterRecordInclude<ExtArgs> | null;
+    where?: Prisma.MasterRecordWhereInput;
+    orderBy?: Prisma.MasterRecordOrderByWithRelationInput | Prisma.MasterRecordOrderByWithRelationInput[];
+    cursor?: Prisma.MasterRecordWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.MasterRecordScalarFieldEnum | Prisma.MasterRecordScalarFieldEnum[];
+};
+/**
+ * MasterObject.schemas
+ */
+export type MasterObject$schemasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterObjectSchema
+     */
+    select?: Prisma.MasterObjectSchemaSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the MasterObjectSchema
+     */
+    omit?: Prisma.MasterObjectSchemaOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MasterObjectSchemaInclude<ExtArgs> | null;
+    where?: Prisma.MasterObjectSchemaWhereInput;
+    orderBy?: Prisma.MasterObjectSchemaOrderByWithRelationInput | Prisma.MasterObjectSchemaOrderByWithRelationInput[];
+    cursor?: Prisma.MasterObjectSchemaWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.MasterObjectSchemaScalarFieldEnum | Prisma.MasterObjectSchemaScalarFieldEnum[];
+};
+/**
+ * MasterObject.fieldDefinitions
+ */
+export type MasterObject$fieldDefinitionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldDefinition
+     */
+    select?: Prisma.FieldDefinitionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FieldDefinition
+     */
+    omit?: Prisma.FieldDefinitionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FieldDefinitionInclude<ExtArgs> | null;
+    where?: Prisma.FieldDefinitionWhereInput;
+    orderBy?: Prisma.FieldDefinitionOrderByWithRelationInput | Prisma.FieldDefinitionOrderByWithRelationInput[];
+    cursor?: Prisma.FieldDefinitionWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.FieldDefinitionScalarFieldEnum | Prisma.FieldDefinitionScalarFieldEnum[];
+};
+/**
+ * MasterObject.formEventHooks
+ */
+export type MasterObject$formEventHooksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FormEventHook
+     */
+    select?: Prisma.FormEventHookSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FormEventHook
+     */
+    omit?: Prisma.FormEventHookOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FormEventHookInclude<ExtArgs> | null;
+    where?: Prisma.FormEventHookWhereInput;
+    orderBy?: Prisma.FormEventHookOrderByWithRelationInput | Prisma.FormEventHookOrderByWithRelationInput[];
+    cursor?: Prisma.FormEventHookWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.FormEventHookScalarFieldEnum | Prisma.FormEventHookScalarFieldEnum[];
+};
+/**
+ * MasterObject.recordPermissions
+ */
+export type MasterObject$recordPermissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecordPermission
+     */
+    select?: Prisma.RecordPermissionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the RecordPermission
+     */
+    omit?: Prisma.RecordPermissionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.RecordPermissionInclude<ExtArgs> | null;
+    where?: Prisma.RecordPermissionWhereInput;
+    orderBy?: Prisma.RecordPermissionOrderByWithRelationInput | Prisma.RecordPermissionOrderByWithRelationInput[];
+    cursor?: Prisma.RecordPermissionWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.RecordPermissionScalarFieldEnum | Prisma.RecordPermissionScalarFieldEnum[];
+};
+/**
+ * MasterObject.fieldReferences
+ */
+export type MasterObject$fieldReferencesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldReference
+     */
+    select?: Prisma.FieldReferenceSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FieldReference
+     */
+    omit?: Prisma.FieldReferenceOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FieldReferenceInclude<ExtArgs> | null;
+    where?: Prisma.FieldReferenceWhereInput;
+    orderBy?: Prisma.FieldReferenceOrderByWithRelationInput | Prisma.FieldReferenceOrderByWithRelationInput[];
+    cursor?: Prisma.FieldReferenceWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.FieldReferenceScalarFieldEnum | Prisma.FieldReferenceScalarFieldEnum[];
+};
+/**
+ * MasterObject without action
+ */
+export type MasterObjectDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterObject
+     */
+    select?: Prisma.MasterObjectSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the MasterObject
+     */
+    omit?: Prisma.MasterObjectOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.MasterObjectInclude<ExtArgs> | null;
+};
+export {};
+//# sourceMappingURL=MasterObject.d.ts.map

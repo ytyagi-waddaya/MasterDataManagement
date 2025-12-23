@@ -9,16 +9,6 @@
 * 🟢 You can import this file directly.
 */
 
-export const TaskStatus = {
-  Pending: 'Pending',
-  Completed: 'Completed',
-  Rejected: 'Rejected',
-  Cancelled: 'Cancelled'
-} as const
-
-export type TaskStatus = (typeof TaskStatus)[keyof typeof TaskStatus]
-
-
 export const NotificationType = {
   INFO: 'INFO',
   WARNING: 'WARNING',
@@ -87,6 +77,7 @@ export const AuditEntity = {
   TASK: 'TASK',
   POLICY: 'POLICY',
   MASTER_RECORD: 'MASTER_RECORD',
+  MASTER_OBJECT: 'MASTER_OBJECT',
   MODULE: 'MODULE',
   ROLE_PERMISSION: 'ROLE_PERMISSION'
 } as const
@@ -122,18 +113,6 @@ export const UserStatus = {
 export type UserStatus = (typeof UserStatus)[keyof typeof UserStatus]
 
 
-export const WorkflowInstanceStatus = {
-  RUNNING: 'RUNNING',
-  PAUSED: 'PAUSED',
-  ON_HOLD: 'ON_HOLD',
-  COMPLETED: 'COMPLETED',
-  CANCELLED: 'CANCELLED',
-  ERROR: 'ERROR'
-} as const
-
-export type WorkflowInstanceStatus = (typeof WorkflowInstanceStatus)[keyof typeof WorkflowInstanceStatus]
-
-
 export const AccessLevel = {
   FULL: 'FULL',
   CONDITIONAL: 'CONDITIONAL',
@@ -141,6 +120,126 @@ export const AccessLevel = {
 } as const
 
 export type AccessLevel = (typeof AccessLevel)[keyof typeof AccessLevel]
+
+
+export const SchemaStatus = {
+  DRAFT: 'DRAFT',
+  PUBLISHED: 'PUBLISHED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type SchemaStatus = (typeof SchemaStatus)[keyof typeof SchemaStatus]
+
+
+export const FieldCategory = {
+  INPUT: 'INPUT',
+  REFERENCE: 'REFERENCE',
+  STRUCTURE: 'STRUCTURE',
+  CALCULATED: 'CALCULATED',
+  SYSTEM: 'SYSTEM',
+  PRESENTATION: 'PRESENTATION',
+  DEPRECATED: 'DEPRECATED'
+} as const
+
+export type FieldCategory = (typeof FieldCategory)[keyof typeof FieldCategory]
+
+
+export const FieldDataType = {
+  STRING: 'STRING',
+  NUMBER: 'NUMBER',
+  BOOLEAN: 'BOOLEAN',
+  DATE: 'DATE',
+  DATETIME: 'DATETIME',
+  JSON: 'JSON',
+  ARRAY: 'ARRAY'
+} as const
+
+export type FieldDataType = (typeof FieldDataType)[keyof typeof FieldDataType]
+
+
+export const FieldType = {
+  TEXT: 'TEXT',
+  NUMBER: 'NUMBER',
+  SELECT: 'SELECT',
+  RADIO: 'RADIO',
+  CHECKBOX: 'CHECKBOX',
+  DATE: 'DATE',
+  TABLE: 'TABLE',
+  REFERENCE: 'REFERENCE',
+  FILE: 'FILE',
+  RICH_TEXT: 'RICH_TEXT'
+} as const
+
+export type FieldType = (typeof FieldType)[keyof typeof FieldType]
+
+
+export const FieldValidationType = {
+  REQUIRED: 'REQUIRED',
+  REQUIRED_IF: 'REQUIRED_IF',
+  REGEX: 'REGEX',
+  RANGE: 'RANGE',
+  LENGTH: 'LENGTH',
+  CUSTOM: 'CUSTOM'
+} as const
+
+export type FieldValidationType = (typeof FieldValidationType)[keyof typeof FieldValidationType]
+
+
+export const SchemaChangeType = {
+  ADD_FIELD: 'ADD_FIELD',
+  REMOVE_FIELD: 'REMOVE_FIELD',
+  UPDATE_CONFIG: 'UPDATE_CONFIG',
+  REORDER_FIELD: 'REORDER_FIELD',
+  RENAME_FIELD: 'RENAME_FIELD'
+} as const
+
+export type SchemaChangeType = (typeof SchemaChangeType)[keyof typeof SchemaChangeType]
+
+
+export const FormEventType = {
+  ON_CREATE: 'ON_CREATE',
+  ON_UPDATE: 'ON_UPDATE',
+  ON_STAGE_CHANGE: 'ON_STAGE_CHANGE',
+  ON_DELETE: 'ON_DELETE',
+  ON_VALIDATE: 'ON_VALIDATE',
+  ON_READ: 'ON_READ'
+} as const
+
+export type FormEventType = (typeof FormEventType)[keyof typeof FormEventType]
+
+
+export const FormEventHandlerType = {
+  WEBHOOK: 'WEBHOOK',
+  QUEUE: 'QUEUE',
+  FUNCTION: 'FUNCTION'
+} as const
+
+export type FormEventHandlerType = (typeof FormEventHandlerType)[keyof typeof FormEventHandlerType]
+
+
+export const ReferenceRelationType = {
+  ONE_TO_ONE: 'ONE_TO_ONE',
+  ONE_TO_MANY: 'ONE_TO_MANY'
+} as const
+
+export type ReferenceRelationType = (typeof ReferenceRelationType)[keyof typeof ReferenceRelationType]
+
+
+export const ReferenceDeleteBehavior = {
+  RESTRICT: 'RESTRICT',
+  CASCADE: 'CASCADE',
+  SET_NULL: 'SET_NULL'
+} as const
+
+export type ReferenceDeleteBehavior = (typeof ReferenceDeleteBehavior)[keyof typeof ReferenceDeleteBehavior]
+
+
+export const ValidationSeverity = {
+  ERROR: 'ERROR',
+  WARNING: 'WARNING'
+} as const
+
+export type ValidationSeverity = (typeof ValidationSeverity)[keyof typeof ValidationSeverity]
 
 
 export const Category = {
@@ -156,3 +255,88 @@ export const Category = {
 } as const
 
 export type Category = (typeof Category)[keyof typeof Category]
+
+
+export const TransitionType = {
+  NORMAL: 'NORMAL',
+  APPROVAL: 'APPROVAL',
+  SEND_BACK: 'SEND_BACK',
+  REVIEW: 'REVIEW',
+  AUTO: 'AUTO'
+} as const
+
+export type TransitionType = (typeof TransitionType)[keyof typeof TransitionType]
+
+
+export const ApprovalStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type ApprovalStatus = (typeof ApprovalStatus)[keyof typeof ApprovalStatus]
+
+
+export const HistoryAction = {
+  TRANSITION: 'TRANSITION',
+  APPROVAL_REQUESTED: 'APPROVAL_REQUESTED',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  SENT_BACK: 'SENT_BACK',
+  REVIEWED: 'REVIEWED',
+  AUTO_TRANSITION: 'AUTO_TRANSITION'
+} as const
+
+export type HistoryAction = (typeof HistoryAction)[keyof typeof HistoryAction]
+
+
+export const ApprovalStrategy = {
+  ALL: 'ALL',
+  ANY: 'ANY',
+  MAJORITY: 'MAJORITY'
+} as const
+
+export type ApprovalStrategy = (typeof ApprovalStrategy)[keyof typeof ApprovalStrategy]
+
+
+export const WorkflowInstanceStatus = {
+  RUNNING: 'RUNNING',
+  PAUSED: 'PAUSED',
+  ON_HOLD: 'ON_HOLD',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED',
+  ERROR: 'ERROR'
+} as const
+
+export type WorkflowInstanceStatus = (typeof WorkflowInstanceStatus)[keyof typeof WorkflowInstanceStatus]
+
+
+export const TaskStatus = {
+  PENDING: 'PENDING',
+  COMPLETED: 'COMPLETED',
+  REJECTED: 'REJECTED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type TaskStatus = (typeof TaskStatus)[keyof typeof TaskStatus]
+
+
+export const WorkflowDefinitionStatus = {
+  DRAFT: 'DRAFT',
+  PUBLISHED: 'PUBLISHED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type WorkflowDefinitionStatus = (typeof WorkflowDefinitionStatus)[keyof typeof WorkflowDefinitionStatus]
+
+
+export const TriggerStrategy = {
+  ANY_ALLOWED: 'ANY_ALLOWED',
+  ALL_ALLOWED: 'ALL_ALLOWED',
+  CREATOR_ONLY: 'CREATOR_ONLY',
+  ASSIGNEE_ONLY: 'ASSIGNEE_ONLY',
+  APPROVER_ONLY: 'APPROVER_ONLY',
+  SYSTEM_ONLY: 'SYSTEM_ONLY'
+} as const
+
+export type TriggerStrategy = (typeof TriggerStrategy)[keyof typeof TriggerStrategy]

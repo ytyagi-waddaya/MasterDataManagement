@@ -1,0 +1,1653 @@
+import type * as runtime from "@prisma/client/runtime/client";
+import type * as Prisma from "../internal/prismaNamespace.js";
+/**
+ * Model RecordPermission
+ *
+ */
+export type RecordPermissionModel = runtime.Types.Result.DefaultSelection<Prisma.$RecordPermissionPayload>;
+export type AggregateRecordPermission = {
+    _count: RecordPermissionCountAggregateOutputType | null;
+    _min: RecordPermissionMinAggregateOutputType | null;
+    _max: RecordPermissionMaxAggregateOutputType | null;
+};
+export type RecordPermissionMinAggregateOutputType = {
+    id: string | null;
+    masterObjectId: string | null;
+    roleId: string | null;
+    userId: string | null;
+    canRead: boolean | null;
+    canWrite: boolean | null;
+    canDelete: boolean | null;
+    createdAt: Date | null;
+    deletedAt: Date | null;
+};
+export type RecordPermissionMaxAggregateOutputType = {
+    id: string | null;
+    masterObjectId: string | null;
+    roleId: string | null;
+    userId: string | null;
+    canRead: boolean | null;
+    canWrite: boolean | null;
+    canDelete: boolean | null;
+    createdAt: Date | null;
+    deletedAt: Date | null;
+};
+export type RecordPermissionCountAggregateOutputType = {
+    id: number;
+    masterObjectId: number;
+    roleId: number;
+    userId: number;
+    canRead: number;
+    canWrite: number;
+    canDelete: number;
+    condition: number;
+    createdAt: number;
+    deletedAt: number;
+    _all: number;
+};
+export type RecordPermissionMinAggregateInputType = {
+    id?: true;
+    masterObjectId?: true;
+    roleId?: true;
+    userId?: true;
+    canRead?: true;
+    canWrite?: true;
+    canDelete?: true;
+    createdAt?: true;
+    deletedAt?: true;
+};
+export type RecordPermissionMaxAggregateInputType = {
+    id?: true;
+    masterObjectId?: true;
+    roleId?: true;
+    userId?: true;
+    canRead?: true;
+    canWrite?: true;
+    canDelete?: true;
+    createdAt?: true;
+    deletedAt?: true;
+};
+export type RecordPermissionCountAggregateInputType = {
+    id?: true;
+    masterObjectId?: true;
+    roleId?: true;
+    userId?: true;
+    canRead?: true;
+    canWrite?: true;
+    canDelete?: true;
+    condition?: true;
+    createdAt?: true;
+    deletedAt?: true;
+    _all?: true;
+};
+export type RecordPermissionAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which RecordPermission to aggregate.
+     */
+    where?: Prisma.RecordPermissionWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of RecordPermissions to fetch.
+     */
+    orderBy?: Prisma.RecordPermissionOrderByWithRelationInput | Prisma.RecordPermissionOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: Prisma.RecordPermissionWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` RecordPermissions from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` RecordPermissions.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned RecordPermissions
+    **/
+    _count?: true | RecordPermissionCountAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: RecordPermissionMinAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: RecordPermissionMaxAggregateInputType;
+};
+export type GetRecordPermissionAggregateType<T extends RecordPermissionAggregateArgs> = {
+    [P in keyof T & keyof AggregateRecordPermission]: P extends '_count' | 'count' ? T[P] extends true ? number : Prisma.GetScalarType<T[P], AggregateRecordPermission[P]> : Prisma.GetScalarType<T[P], AggregateRecordPermission[P]>;
+};
+export type RecordPermissionGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.RecordPermissionWhereInput;
+    orderBy?: Prisma.RecordPermissionOrderByWithAggregationInput | Prisma.RecordPermissionOrderByWithAggregationInput[];
+    by: Prisma.RecordPermissionScalarFieldEnum[] | Prisma.RecordPermissionScalarFieldEnum;
+    having?: Prisma.RecordPermissionScalarWhereWithAggregatesInput;
+    take?: number;
+    skip?: number;
+    _count?: RecordPermissionCountAggregateInputType | true;
+    _min?: RecordPermissionMinAggregateInputType;
+    _max?: RecordPermissionMaxAggregateInputType;
+};
+export type RecordPermissionGroupByOutputType = {
+    id: string;
+    masterObjectId: string;
+    roleId: string | null;
+    userId: string | null;
+    canRead: boolean;
+    canWrite: boolean;
+    canDelete: boolean;
+    condition: runtime.JsonValue | null;
+    createdAt: Date;
+    deletedAt: Date | null;
+    _count: RecordPermissionCountAggregateOutputType | null;
+    _min: RecordPermissionMinAggregateOutputType | null;
+    _max: RecordPermissionMaxAggregateOutputType | null;
+};
+type GetRecordPermissionGroupByPayload<T extends RecordPermissionGroupByArgs> = Prisma.PrismaPromise<Array<Prisma.PickEnumerable<RecordPermissionGroupByOutputType, T['by']> & {
+    [P in ((keyof T) & (keyof RecordPermissionGroupByOutputType))]: P extends '_count' ? T[P] extends boolean ? number : Prisma.GetScalarType<T[P], RecordPermissionGroupByOutputType[P]> : Prisma.GetScalarType<T[P], RecordPermissionGroupByOutputType[P]>;
+}>>;
+export type RecordPermissionWhereInput = {
+    AND?: Prisma.RecordPermissionWhereInput | Prisma.RecordPermissionWhereInput[];
+    OR?: Prisma.RecordPermissionWhereInput[];
+    NOT?: Prisma.RecordPermissionWhereInput | Prisma.RecordPermissionWhereInput[];
+    id?: Prisma.StringFilter<"RecordPermission"> | string;
+    masterObjectId?: Prisma.StringFilter<"RecordPermission"> | string;
+    roleId?: Prisma.StringNullableFilter<"RecordPermission"> | string | null;
+    userId?: Prisma.StringNullableFilter<"RecordPermission"> | string | null;
+    canRead?: Prisma.BoolFilter<"RecordPermission"> | boolean;
+    canWrite?: Prisma.BoolFilter<"RecordPermission"> | boolean;
+    canDelete?: Prisma.BoolFilter<"RecordPermission"> | boolean;
+    condition?: Prisma.JsonNullableFilter<"RecordPermission">;
+    createdAt?: Prisma.DateTimeFilter<"RecordPermission"> | Date | string;
+    deletedAt?: Prisma.DateTimeNullableFilter<"RecordPermission"> | Date | string | null;
+    masterObject?: Prisma.XOR<Prisma.MasterObjectScalarRelationFilter, Prisma.MasterObjectWhereInput>;
+    role?: Prisma.XOR<Prisma.RoleNullableScalarRelationFilter, Prisma.RoleWhereInput> | null;
+    user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null;
+};
+export type RecordPermissionOrderByWithRelationInput = {
+    id?: Prisma.SortOrder;
+    masterObjectId?: Prisma.SortOrder;
+    roleId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    userId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    canRead?: Prisma.SortOrder;
+    canWrite?: Prisma.SortOrder;
+    canDelete?: Prisma.SortOrder;
+    condition?: Prisma.SortOrderInput | Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    masterObject?: Prisma.MasterObjectOrderByWithRelationInput;
+    role?: Prisma.RoleOrderByWithRelationInput;
+    user?: Prisma.UserOrderByWithRelationInput;
+};
+export type RecordPermissionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string;
+    masterObjectId_roleId_userId?: Prisma.RecordPermissionMasterObjectIdRoleIdUserIdCompoundUniqueInput;
+    AND?: Prisma.RecordPermissionWhereInput | Prisma.RecordPermissionWhereInput[];
+    OR?: Prisma.RecordPermissionWhereInput[];
+    NOT?: Prisma.RecordPermissionWhereInput | Prisma.RecordPermissionWhereInput[];
+    masterObjectId?: Prisma.StringFilter<"RecordPermission"> | string;
+    roleId?: Prisma.StringNullableFilter<"RecordPermission"> | string | null;
+    userId?: Prisma.StringNullableFilter<"RecordPermission"> | string | null;
+    canRead?: Prisma.BoolFilter<"RecordPermission"> | boolean;
+    canWrite?: Prisma.BoolFilter<"RecordPermission"> | boolean;
+    canDelete?: Prisma.BoolFilter<"RecordPermission"> | boolean;
+    condition?: Prisma.JsonNullableFilter<"RecordPermission">;
+    createdAt?: Prisma.DateTimeFilter<"RecordPermission"> | Date | string;
+    deletedAt?: Prisma.DateTimeNullableFilter<"RecordPermission"> | Date | string | null;
+    masterObject?: Prisma.XOR<Prisma.MasterObjectScalarRelationFilter, Prisma.MasterObjectWhereInput>;
+    role?: Prisma.XOR<Prisma.RoleNullableScalarRelationFilter, Prisma.RoleWhereInput> | null;
+    user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null;
+}, "id" | "masterObjectId_roleId_userId">;
+export type RecordPermissionOrderByWithAggregationInput = {
+    id?: Prisma.SortOrder;
+    masterObjectId?: Prisma.SortOrder;
+    roleId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    userId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    canRead?: Prisma.SortOrder;
+    canWrite?: Prisma.SortOrder;
+    canDelete?: Prisma.SortOrder;
+    condition?: Prisma.SortOrderInput | Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    _count?: Prisma.RecordPermissionCountOrderByAggregateInput;
+    _max?: Prisma.RecordPermissionMaxOrderByAggregateInput;
+    _min?: Prisma.RecordPermissionMinOrderByAggregateInput;
+};
+export type RecordPermissionScalarWhereWithAggregatesInput = {
+    AND?: Prisma.RecordPermissionScalarWhereWithAggregatesInput | Prisma.RecordPermissionScalarWhereWithAggregatesInput[];
+    OR?: Prisma.RecordPermissionScalarWhereWithAggregatesInput[];
+    NOT?: Prisma.RecordPermissionScalarWhereWithAggregatesInput | Prisma.RecordPermissionScalarWhereWithAggregatesInput[];
+    id?: Prisma.StringWithAggregatesFilter<"RecordPermission"> | string;
+    masterObjectId?: Prisma.StringWithAggregatesFilter<"RecordPermission"> | string;
+    roleId?: Prisma.StringNullableWithAggregatesFilter<"RecordPermission"> | string | null;
+    userId?: Prisma.StringNullableWithAggregatesFilter<"RecordPermission"> | string | null;
+    canRead?: Prisma.BoolWithAggregatesFilter<"RecordPermission"> | boolean;
+    canWrite?: Prisma.BoolWithAggregatesFilter<"RecordPermission"> | boolean;
+    canDelete?: Prisma.BoolWithAggregatesFilter<"RecordPermission"> | boolean;
+    condition?: Prisma.JsonNullableWithAggregatesFilter<"RecordPermission">;
+    createdAt?: Prisma.DateTimeWithAggregatesFilter<"RecordPermission"> | Date | string;
+    deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"RecordPermission"> | Date | string | null;
+};
+export type RecordPermissionCreateInput = {
+    id?: string;
+    canRead: boolean;
+    canWrite: boolean;
+    canDelete: boolean;
+    condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    deletedAt?: Date | string | null;
+    masterObject: Prisma.MasterObjectCreateNestedOneWithoutRecordPermissionsInput;
+    role?: Prisma.RoleCreateNestedOneWithoutRecordPermissionsInput;
+    user?: Prisma.UserCreateNestedOneWithoutRecordPermissionsInput;
+};
+export type RecordPermissionUncheckedCreateInput = {
+    id?: string;
+    masterObjectId: string;
+    roleId?: string | null;
+    userId?: string | null;
+    canRead: boolean;
+    canWrite: boolean;
+    canDelete: boolean;
+    condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    deletedAt?: Date | string | null;
+};
+export type RecordPermissionUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    canRead?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    canWrite?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    canDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    masterObject?: Prisma.MasterObjectUpdateOneRequiredWithoutRecordPermissionsNestedInput;
+    role?: Prisma.RoleUpdateOneWithoutRecordPermissionsNestedInput;
+    user?: Prisma.UserUpdateOneWithoutRecordPermissionsNestedInput;
+};
+export type RecordPermissionUncheckedUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    masterObjectId?: Prisma.StringFieldUpdateOperationsInput | string;
+    roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    canRead?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    canWrite?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    canDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type RecordPermissionCreateManyInput = {
+    id?: string;
+    masterObjectId: string;
+    roleId?: string | null;
+    userId?: string | null;
+    canRead: boolean;
+    canWrite: boolean;
+    canDelete: boolean;
+    condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    deletedAt?: Date | string | null;
+};
+export type RecordPermissionUpdateManyMutationInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    canRead?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    canWrite?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    canDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type RecordPermissionUncheckedUpdateManyInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    masterObjectId?: Prisma.StringFieldUpdateOperationsInput | string;
+    roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    canRead?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    canWrite?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    canDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type RecordPermissionListRelationFilter = {
+    every?: Prisma.RecordPermissionWhereInput;
+    some?: Prisma.RecordPermissionWhereInput;
+    none?: Prisma.RecordPermissionWhereInput;
+};
+export type RecordPermissionOrderByRelationAggregateInput = {
+    _count?: Prisma.SortOrder;
+};
+export type RecordPermissionMasterObjectIdRoleIdUserIdCompoundUniqueInput = {
+    masterObjectId: string;
+    roleId: string;
+    userId: string;
+};
+export type RecordPermissionCountOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    masterObjectId?: Prisma.SortOrder;
+    roleId?: Prisma.SortOrder;
+    userId?: Prisma.SortOrder;
+    canRead?: Prisma.SortOrder;
+    canWrite?: Prisma.SortOrder;
+    canDelete?: Prisma.SortOrder;
+    condition?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrder;
+};
+export type RecordPermissionMaxOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    masterObjectId?: Prisma.SortOrder;
+    roleId?: Prisma.SortOrder;
+    userId?: Prisma.SortOrder;
+    canRead?: Prisma.SortOrder;
+    canWrite?: Prisma.SortOrder;
+    canDelete?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrder;
+};
+export type RecordPermissionMinOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    masterObjectId?: Prisma.SortOrder;
+    roleId?: Prisma.SortOrder;
+    userId?: Prisma.SortOrder;
+    canRead?: Prisma.SortOrder;
+    canWrite?: Prisma.SortOrder;
+    canDelete?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrder;
+};
+export type RecordPermissionCreateNestedManyWithoutUserInput = {
+    create?: Prisma.XOR<Prisma.RecordPermissionCreateWithoutUserInput, Prisma.RecordPermissionUncheckedCreateWithoutUserInput> | Prisma.RecordPermissionCreateWithoutUserInput[] | Prisma.RecordPermissionUncheckedCreateWithoutUserInput[];
+    connectOrCreate?: Prisma.RecordPermissionCreateOrConnectWithoutUserInput | Prisma.RecordPermissionCreateOrConnectWithoutUserInput[];
+    createMany?: Prisma.RecordPermissionCreateManyUserInputEnvelope;
+    connect?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+};
+export type RecordPermissionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: Prisma.XOR<Prisma.RecordPermissionCreateWithoutUserInput, Prisma.RecordPermissionUncheckedCreateWithoutUserInput> | Prisma.RecordPermissionCreateWithoutUserInput[] | Prisma.RecordPermissionUncheckedCreateWithoutUserInput[];
+    connectOrCreate?: Prisma.RecordPermissionCreateOrConnectWithoutUserInput | Prisma.RecordPermissionCreateOrConnectWithoutUserInput[];
+    createMany?: Prisma.RecordPermissionCreateManyUserInputEnvelope;
+    connect?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+};
+export type RecordPermissionUpdateManyWithoutUserNestedInput = {
+    create?: Prisma.XOR<Prisma.RecordPermissionCreateWithoutUserInput, Prisma.RecordPermissionUncheckedCreateWithoutUserInput> | Prisma.RecordPermissionCreateWithoutUserInput[] | Prisma.RecordPermissionUncheckedCreateWithoutUserInput[];
+    connectOrCreate?: Prisma.RecordPermissionCreateOrConnectWithoutUserInput | Prisma.RecordPermissionCreateOrConnectWithoutUserInput[];
+    upsert?: Prisma.RecordPermissionUpsertWithWhereUniqueWithoutUserInput | Prisma.RecordPermissionUpsertWithWhereUniqueWithoutUserInput[];
+    createMany?: Prisma.RecordPermissionCreateManyUserInputEnvelope;
+    set?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+    disconnect?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+    delete?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+    connect?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+    update?: Prisma.RecordPermissionUpdateWithWhereUniqueWithoutUserInput | Prisma.RecordPermissionUpdateWithWhereUniqueWithoutUserInput[];
+    updateMany?: Prisma.RecordPermissionUpdateManyWithWhereWithoutUserInput | Prisma.RecordPermissionUpdateManyWithWhereWithoutUserInput[];
+    deleteMany?: Prisma.RecordPermissionScalarWhereInput | Prisma.RecordPermissionScalarWhereInput[];
+};
+export type RecordPermissionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: Prisma.XOR<Prisma.RecordPermissionCreateWithoutUserInput, Prisma.RecordPermissionUncheckedCreateWithoutUserInput> | Prisma.RecordPermissionCreateWithoutUserInput[] | Prisma.RecordPermissionUncheckedCreateWithoutUserInput[];
+    connectOrCreate?: Prisma.RecordPermissionCreateOrConnectWithoutUserInput | Prisma.RecordPermissionCreateOrConnectWithoutUserInput[];
+    upsert?: Prisma.RecordPermissionUpsertWithWhereUniqueWithoutUserInput | Prisma.RecordPermissionUpsertWithWhereUniqueWithoutUserInput[];
+    createMany?: Prisma.RecordPermissionCreateManyUserInputEnvelope;
+    set?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+    disconnect?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+    delete?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+    connect?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+    update?: Prisma.RecordPermissionUpdateWithWhereUniqueWithoutUserInput | Prisma.RecordPermissionUpdateWithWhereUniqueWithoutUserInput[];
+    updateMany?: Prisma.RecordPermissionUpdateManyWithWhereWithoutUserInput | Prisma.RecordPermissionUpdateManyWithWhereWithoutUserInput[];
+    deleteMany?: Prisma.RecordPermissionScalarWhereInput | Prisma.RecordPermissionScalarWhereInput[];
+};
+export type RecordPermissionCreateNestedManyWithoutRoleInput = {
+    create?: Prisma.XOR<Prisma.RecordPermissionCreateWithoutRoleInput, Prisma.RecordPermissionUncheckedCreateWithoutRoleInput> | Prisma.RecordPermissionCreateWithoutRoleInput[] | Prisma.RecordPermissionUncheckedCreateWithoutRoleInput[];
+    connectOrCreate?: Prisma.RecordPermissionCreateOrConnectWithoutRoleInput | Prisma.RecordPermissionCreateOrConnectWithoutRoleInput[];
+    createMany?: Prisma.RecordPermissionCreateManyRoleInputEnvelope;
+    connect?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+};
+export type RecordPermissionUncheckedCreateNestedManyWithoutRoleInput = {
+    create?: Prisma.XOR<Prisma.RecordPermissionCreateWithoutRoleInput, Prisma.RecordPermissionUncheckedCreateWithoutRoleInput> | Prisma.RecordPermissionCreateWithoutRoleInput[] | Prisma.RecordPermissionUncheckedCreateWithoutRoleInput[];
+    connectOrCreate?: Prisma.RecordPermissionCreateOrConnectWithoutRoleInput | Prisma.RecordPermissionCreateOrConnectWithoutRoleInput[];
+    createMany?: Prisma.RecordPermissionCreateManyRoleInputEnvelope;
+    connect?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+};
+export type RecordPermissionUpdateManyWithoutRoleNestedInput = {
+    create?: Prisma.XOR<Prisma.RecordPermissionCreateWithoutRoleInput, Prisma.RecordPermissionUncheckedCreateWithoutRoleInput> | Prisma.RecordPermissionCreateWithoutRoleInput[] | Prisma.RecordPermissionUncheckedCreateWithoutRoleInput[];
+    connectOrCreate?: Prisma.RecordPermissionCreateOrConnectWithoutRoleInput | Prisma.RecordPermissionCreateOrConnectWithoutRoleInput[];
+    upsert?: Prisma.RecordPermissionUpsertWithWhereUniqueWithoutRoleInput | Prisma.RecordPermissionUpsertWithWhereUniqueWithoutRoleInput[];
+    createMany?: Prisma.RecordPermissionCreateManyRoleInputEnvelope;
+    set?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+    disconnect?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+    delete?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+    connect?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+    update?: Prisma.RecordPermissionUpdateWithWhereUniqueWithoutRoleInput | Prisma.RecordPermissionUpdateWithWhereUniqueWithoutRoleInput[];
+    updateMany?: Prisma.RecordPermissionUpdateManyWithWhereWithoutRoleInput | Prisma.RecordPermissionUpdateManyWithWhereWithoutRoleInput[];
+    deleteMany?: Prisma.RecordPermissionScalarWhereInput | Prisma.RecordPermissionScalarWhereInput[];
+};
+export type RecordPermissionUncheckedUpdateManyWithoutRoleNestedInput = {
+    create?: Prisma.XOR<Prisma.RecordPermissionCreateWithoutRoleInput, Prisma.RecordPermissionUncheckedCreateWithoutRoleInput> | Prisma.RecordPermissionCreateWithoutRoleInput[] | Prisma.RecordPermissionUncheckedCreateWithoutRoleInput[];
+    connectOrCreate?: Prisma.RecordPermissionCreateOrConnectWithoutRoleInput | Prisma.RecordPermissionCreateOrConnectWithoutRoleInput[];
+    upsert?: Prisma.RecordPermissionUpsertWithWhereUniqueWithoutRoleInput | Prisma.RecordPermissionUpsertWithWhereUniqueWithoutRoleInput[];
+    createMany?: Prisma.RecordPermissionCreateManyRoleInputEnvelope;
+    set?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+    disconnect?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+    delete?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+    connect?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+    update?: Prisma.RecordPermissionUpdateWithWhereUniqueWithoutRoleInput | Prisma.RecordPermissionUpdateWithWhereUniqueWithoutRoleInput[];
+    updateMany?: Prisma.RecordPermissionUpdateManyWithWhereWithoutRoleInput | Prisma.RecordPermissionUpdateManyWithWhereWithoutRoleInput[];
+    deleteMany?: Prisma.RecordPermissionScalarWhereInput | Prisma.RecordPermissionScalarWhereInput[];
+};
+export type RecordPermissionCreateNestedManyWithoutMasterObjectInput = {
+    create?: Prisma.XOR<Prisma.RecordPermissionCreateWithoutMasterObjectInput, Prisma.RecordPermissionUncheckedCreateWithoutMasterObjectInput> | Prisma.RecordPermissionCreateWithoutMasterObjectInput[] | Prisma.RecordPermissionUncheckedCreateWithoutMasterObjectInput[];
+    connectOrCreate?: Prisma.RecordPermissionCreateOrConnectWithoutMasterObjectInput | Prisma.RecordPermissionCreateOrConnectWithoutMasterObjectInput[];
+    createMany?: Prisma.RecordPermissionCreateManyMasterObjectInputEnvelope;
+    connect?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+};
+export type RecordPermissionUncheckedCreateNestedManyWithoutMasterObjectInput = {
+    create?: Prisma.XOR<Prisma.RecordPermissionCreateWithoutMasterObjectInput, Prisma.RecordPermissionUncheckedCreateWithoutMasterObjectInput> | Prisma.RecordPermissionCreateWithoutMasterObjectInput[] | Prisma.RecordPermissionUncheckedCreateWithoutMasterObjectInput[];
+    connectOrCreate?: Prisma.RecordPermissionCreateOrConnectWithoutMasterObjectInput | Prisma.RecordPermissionCreateOrConnectWithoutMasterObjectInput[];
+    createMany?: Prisma.RecordPermissionCreateManyMasterObjectInputEnvelope;
+    connect?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+};
+export type RecordPermissionUpdateManyWithoutMasterObjectNestedInput = {
+    create?: Prisma.XOR<Prisma.RecordPermissionCreateWithoutMasterObjectInput, Prisma.RecordPermissionUncheckedCreateWithoutMasterObjectInput> | Prisma.RecordPermissionCreateWithoutMasterObjectInput[] | Prisma.RecordPermissionUncheckedCreateWithoutMasterObjectInput[];
+    connectOrCreate?: Prisma.RecordPermissionCreateOrConnectWithoutMasterObjectInput | Prisma.RecordPermissionCreateOrConnectWithoutMasterObjectInput[];
+    upsert?: Prisma.RecordPermissionUpsertWithWhereUniqueWithoutMasterObjectInput | Prisma.RecordPermissionUpsertWithWhereUniqueWithoutMasterObjectInput[];
+    createMany?: Prisma.RecordPermissionCreateManyMasterObjectInputEnvelope;
+    set?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+    disconnect?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+    delete?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+    connect?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+    update?: Prisma.RecordPermissionUpdateWithWhereUniqueWithoutMasterObjectInput | Prisma.RecordPermissionUpdateWithWhereUniqueWithoutMasterObjectInput[];
+    updateMany?: Prisma.RecordPermissionUpdateManyWithWhereWithoutMasterObjectInput | Prisma.RecordPermissionUpdateManyWithWhereWithoutMasterObjectInput[];
+    deleteMany?: Prisma.RecordPermissionScalarWhereInput | Prisma.RecordPermissionScalarWhereInput[];
+};
+export type RecordPermissionUncheckedUpdateManyWithoutMasterObjectNestedInput = {
+    create?: Prisma.XOR<Prisma.RecordPermissionCreateWithoutMasterObjectInput, Prisma.RecordPermissionUncheckedCreateWithoutMasterObjectInput> | Prisma.RecordPermissionCreateWithoutMasterObjectInput[] | Prisma.RecordPermissionUncheckedCreateWithoutMasterObjectInput[];
+    connectOrCreate?: Prisma.RecordPermissionCreateOrConnectWithoutMasterObjectInput | Prisma.RecordPermissionCreateOrConnectWithoutMasterObjectInput[];
+    upsert?: Prisma.RecordPermissionUpsertWithWhereUniqueWithoutMasterObjectInput | Prisma.RecordPermissionUpsertWithWhereUniqueWithoutMasterObjectInput[];
+    createMany?: Prisma.RecordPermissionCreateManyMasterObjectInputEnvelope;
+    set?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+    disconnect?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+    delete?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+    connect?: Prisma.RecordPermissionWhereUniqueInput | Prisma.RecordPermissionWhereUniqueInput[];
+    update?: Prisma.RecordPermissionUpdateWithWhereUniqueWithoutMasterObjectInput | Prisma.RecordPermissionUpdateWithWhereUniqueWithoutMasterObjectInput[];
+    updateMany?: Prisma.RecordPermissionUpdateManyWithWhereWithoutMasterObjectInput | Prisma.RecordPermissionUpdateManyWithWhereWithoutMasterObjectInput[];
+    deleteMany?: Prisma.RecordPermissionScalarWhereInput | Prisma.RecordPermissionScalarWhereInput[];
+};
+export type RecordPermissionCreateWithoutUserInput = {
+    id?: string;
+    canRead: boolean;
+    canWrite: boolean;
+    canDelete: boolean;
+    condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    deletedAt?: Date | string | null;
+    masterObject: Prisma.MasterObjectCreateNestedOneWithoutRecordPermissionsInput;
+    role?: Prisma.RoleCreateNestedOneWithoutRecordPermissionsInput;
+};
+export type RecordPermissionUncheckedCreateWithoutUserInput = {
+    id?: string;
+    masterObjectId: string;
+    roleId?: string | null;
+    canRead: boolean;
+    canWrite: boolean;
+    canDelete: boolean;
+    condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    deletedAt?: Date | string | null;
+};
+export type RecordPermissionCreateOrConnectWithoutUserInput = {
+    where: Prisma.RecordPermissionWhereUniqueInput;
+    create: Prisma.XOR<Prisma.RecordPermissionCreateWithoutUserInput, Prisma.RecordPermissionUncheckedCreateWithoutUserInput>;
+};
+export type RecordPermissionCreateManyUserInputEnvelope = {
+    data: Prisma.RecordPermissionCreateManyUserInput | Prisma.RecordPermissionCreateManyUserInput[];
+    skipDuplicates?: boolean;
+};
+export type RecordPermissionUpsertWithWhereUniqueWithoutUserInput = {
+    where: Prisma.RecordPermissionWhereUniqueInput;
+    update: Prisma.XOR<Prisma.RecordPermissionUpdateWithoutUserInput, Prisma.RecordPermissionUncheckedUpdateWithoutUserInput>;
+    create: Prisma.XOR<Prisma.RecordPermissionCreateWithoutUserInput, Prisma.RecordPermissionUncheckedCreateWithoutUserInput>;
+};
+export type RecordPermissionUpdateWithWhereUniqueWithoutUserInput = {
+    where: Prisma.RecordPermissionWhereUniqueInput;
+    data: Prisma.XOR<Prisma.RecordPermissionUpdateWithoutUserInput, Prisma.RecordPermissionUncheckedUpdateWithoutUserInput>;
+};
+export type RecordPermissionUpdateManyWithWhereWithoutUserInput = {
+    where: Prisma.RecordPermissionScalarWhereInput;
+    data: Prisma.XOR<Prisma.RecordPermissionUpdateManyMutationInput, Prisma.RecordPermissionUncheckedUpdateManyWithoutUserInput>;
+};
+export type RecordPermissionScalarWhereInput = {
+    AND?: Prisma.RecordPermissionScalarWhereInput | Prisma.RecordPermissionScalarWhereInput[];
+    OR?: Prisma.RecordPermissionScalarWhereInput[];
+    NOT?: Prisma.RecordPermissionScalarWhereInput | Prisma.RecordPermissionScalarWhereInput[];
+    id?: Prisma.StringFilter<"RecordPermission"> | string;
+    masterObjectId?: Prisma.StringFilter<"RecordPermission"> | string;
+    roleId?: Prisma.StringNullableFilter<"RecordPermission"> | string | null;
+    userId?: Prisma.StringNullableFilter<"RecordPermission"> | string | null;
+    canRead?: Prisma.BoolFilter<"RecordPermission"> | boolean;
+    canWrite?: Prisma.BoolFilter<"RecordPermission"> | boolean;
+    canDelete?: Prisma.BoolFilter<"RecordPermission"> | boolean;
+    condition?: Prisma.JsonNullableFilter<"RecordPermission">;
+    createdAt?: Prisma.DateTimeFilter<"RecordPermission"> | Date | string;
+    deletedAt?: Prisma.DateTimeNullableFilter<"RecordPermission"> | Date | string | null;
+};
+export type RecordPermissionCreateWithoutRoleInput = {
+    id?: string;
+    canRead: boolean;
+    canWrite: boolean;
+    canDelete: boolean;
+    condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    deletedAt?: Date | string | null;
+    masterObject: Prisma.MasterObjectCreateNestedOneWithoutRecordPermissionsInput;
+    user?: Prisma.UserCreateNestedOneWithoutRecordPermissionsInput;
+};
+export type RecordPermissionUncheckedCreateWithoutRoleInput = {
+    id?: string;
+    masterObjectId: string;
+    userId?: string | null;
+    canRead: boolean;
+    canWrite: boolean;
+    canDelete: boolean;
+    condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    deletedAt?: Date | string | null;
+};
+export type RecordPermissionCreateOrConnectWithoutRoleInput = {
+    where: Prisma.RecordPermissionWhereUniqueInput;
+    create: Prisma.XOR<Prisma.RecordPermissionCreateWithoutRoleInput, Prisma.RecordPermissionUncheckedCreateWithoutRoleInput>;
+};
+export type RecordPermissionCreateManyRoleInputEnvelope = {
+    data: Prisma.RecordPermissionCreateManyRoleInput | Prisma.RecordPermissionCreateManyRoleInput[];
+    skipDuplicates?: boolean;
+};
+export type RecordPermissionUpsertWithWhereUniqueWithoutRoleInput = {
+    where: Prisma.RecordPermissionWhereUniqueInput;
+    update: Prisma.XOR<Prisma.RecordPermissionUpdateWithoutRoleInput, Prisma.RecordPermissionUncheckedUpdateWithoutRoleInput>;
+    create: Prisma.XOR<Prisma.RecordPermissionCreateWithoutRoleInput, Prisma.RecordPermissionUncheckedCreateWithoutRoleInput>;
+};
+export type RecordPermissionUpdateWithWhereUniqueWithoutRoleInput = {
+    where: Prisma.RecordPermissionWhereUniqueInput;
+    data: Prisma.XOR<Prisma.RecordPermissionUpdateWithoutRoleInput, Prisma.RecordPermissionUncheckedUpdateWithoutRoleInput>;
+};
+export type RecordPermissionUpdateManyWithWhereWithoutRoleInput = {
+    where: Prisma.RecordPermissionScalarWhereInput;
+    data: Prisma.XOR<Prisma.RecordPermissionUpdateManyMutationInput, Prisma.RecordPermissionUncheckedUpdateManyWithoutRoleInput>;
+};
+export type RecordPermissionCreateWithoutMasterObjectInput = {
+    id?: string;
+    canRead: boolean;
+    canWrite: boolean;
+    canDelete: boolean;
+    condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    deletedAt?: Date | string | null;
+    role?: Prisma.RoleCreateNestedOneWithoutRecordPermissionsInput;
+    user?: Prisma.UserCreateNestedOneWithoutRecordPermissionsInput;
+};
+export type RecordPermissionUncheckedCreateWithoutMasterObjectInput = {
+    id?: string;
+    roleId?: string | null;
+    userId?: string | null;
+    canRead: boolean;
+    canWrite: boolean;
+    canDelete: boolean;
+    condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    deletedAt?: Date | string | null;
+};
+export type RecordPermissionCreateOrConnectWithoutMasterObjectInput = {
+    where: Prisma.RecordPermissionWhereUniqueInput;
+    create: Prisma.XOR<Prisma.RecordPermissionCreateWithoutMasterObjectInput, Prisma.RecordPermissionUncheckedCreateWithoutMasterObjectInput>;
+};
+export type RecordPermissionCreateManyMasterObjectInputEnvelope = {
+    data: Prisma.RecordPermissionCreateManyMasterObjectInput | Prisma.RecordPermissionCreateManyMasterObjectInput[];
+    skipDuplicates?: boolean;
+};
+export type RecordPermissionUpsertWithWhereUniqueWithoutMasterObjectInput = {
+    where: Prisma.RecordPermissionWhereUniqueInput;
+    update: Prisma.XOR<Prisma.RecordPermissionUpdateWithoutMasterObjectInput, Prisma.RecordPermissionUncheckedUpdateWithoutMasterObjectInput>;
+    create: Prisma.XOR<Prisma.RecordPermissionCreateWithoutMasterObjectInput, Prisma.RecordPermissionUncheckedCreateWithoutMasterObjectInput>;
+};
+export type RecordPermissionUpdateWithWhereUniqueWithoutMasterObjectInput = {
+    where: Prisma.RecordPermissionWhereUniqueInput;
+    data: Prisma.XOR<Prisma.RecordPermissionUpdateWithoutMasterObjectInput, Prisma.RecordPermissionUncheckedUpdateWithoutMasterObjectInput>;
+};
+export type RecordPermissionUpdateManyWithWhereWithoutMasterObjectInput = {
+    where: Prisma.RecordPermissionScalarWhereInput;
+    data: Prisma.XOR<Prisma.RecordPermissionUpdateManyMutationInput, Prisma.RecordPermissionUncheckedUpdateManyWithoutMasterObjectInput>;
+};
+export type RecordPermissionCreateManyUserInput = {
+    id?: string;
+    masterObjectId: string;
+    roleId?: string | null;
+    canRead: boolean;
+    canWrite: boolean;
+    canDelete: boolean;
+    condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    deletedAt?: Date | string | null;
+};
+export type RecordPermissionUpdateWithoutUserInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    canRead?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    canWrite?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    canDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    masterObject?: Prisma.MasterObjectUpdateOneRequiredWithoutRecordPermissionsNestedInput;
+    role?: Prisma.RoleUpdateOneWithoutRecordPermissionsNestedInput;
+};
+export type RecordPermissionUncheckedUpdateWithoutUserInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    masterObjectId?: Prisma.StringFieldUpdateOperationsInput | string;
+    roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    canRead?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    canWrite?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    canDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type RecordPermissionUncheckedUpdateManyWithoutUserInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    masterObjectId?: Prisma.StringFieldUpdateOperationsInput | string;
+    roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    canRead?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    canWrite?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    canDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type RecordPermissionCreateManyRoleInput = {
+    id?: string;
+    masterObjectId: string;
+    userId?: string | null;
+    canRead: boolean;
+    canWrite: boolean;
+    canDelete: boolean;
+    condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    deletedAt?: Date | string | null;
+};
+export type RecordPermissionUpdateWithoutRoleInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    canRead?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    canWrite?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    canDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    masterObject?: Prisma.MasterObjectUpdateOneRequiredWithoutRecordPermissionsNestedInput;
+    user?: Prisma.UserUpdateOneWithoutRecordPermissionsNestedInput;
+};
+export type RecordPermissionUncheckedUpdateWithoutRoleInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    masterObjectId?: Prisma.StringFieldUpdateOperationsInput | string;
+    userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    canRead?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    canWrite?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    canDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type RecordPermissionUncheckedUpdateManyWithoutRoleInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    masterObjectId?: Prisma.StringFieldUpdateOperationsInput | string;
+    userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    canRead?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    canWrite?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    canDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type RecordPermissionCreateManyMasterObjectInput = {
+    id?: string;
+    roleId?: string | null;
+    userId?: string | null;
+    canRead: boolean;
+    canWrite: boolean;
+    canDelete: boolean;
+    condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Date | string;
+    deletedAt?: Date | string | null;
+};
+export type RecordPermissionUpdateWithoutMasterObjectInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    canRead?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    canWrite?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    canDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    role?: Prisma.RoleUpdateOneWithoutRecordPermissionsNestedInput;
+    user?: Prisma.UserUpdateOneWithoutRecordPermissionsNestedInput;
+};
+export type RecordPermissionUncheckedUpdateWithoutMasterObjectInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    canRead?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    canWrite?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    canDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type RecordPermissionUncheckedUpdateManyWithoutMasterObjectInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    canRead?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    canWrite?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    canDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type RecordPermissionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    masterObjectId?: boolean;
+    roleId?: boolean;
+    userId?: boolean;
+    canRead?: boolean;
+    canWrite?: boolean;
+    canDelete?: boolean;
+    condition?: boolean;
+    createdAt?: boolean;
+    deletedAt?: boolean;
+    masterObject?: boolean | Prisma.MasterObjectDefaultArgs<ExtArgs>;
+    role?: boolean | Prisma.RecordPermission$roleArgs<ExtArgs>;
+    user?: boolean | Prisma.RecordPermission$userArgs<ExtArgs>;
+}, ExtArgs["result"]["recordPermission"]>;
+export type RecordPermissionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    masterObjectId?: boolean;
+    roleId?: boolean;
+    userId?: boolean;
+    canRead?: boolean;
+    canWrite?: boolean;
+    canDelete?: boolean;
+    condition?: boolean;
+    createdAt?: boolean;
+    deletedAt?: boolean;
+    masterObject?: boolean | Prisma.MasterObjectDefaultArgs<ExtArgs>;
+    role?: boolean | Prisma.RecordPermission$roleArgs<ExtArgs>;
+    user?: boolean | Prisma.RecordPermission$userArgs<ExtArgs>;
+}, ExtArgs["result"]["recordPermission"]>;
+export type RecordPermissionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    masterObjectId?: boolean;
+    roleId?: boolean;
+    userId?: boolean;
+    canRead?: boolean;
+    canWrite?: boolean;
+    canDelete?: boolean;
+    condition?: boolean;
+    createdAt?: boolean;
+    deletedAt?: boolean;
+    masterObject?: boolean | Prisma.MasterObjectDefaultArgs<ExtArgs>;
+    role?: boolean | Prisma.RecordPermission$roleArgs<ExtArgs>;
+    user?: boolean | Prisma.RecordPermission$userArgs<ExtArgs>;
+}, ExtArgs["result"]["recordPermission"]>;
+export type RecordPermissionSelectScalar = {
+    id?: boolean;
+    masterObjectId?: boolean;
+    roleId?: boolean;
+    userId?: boolean;
+    canRead?: boolean;
+    canWrite?: boolean;
+    canDelete?: boolean;
+    condition?: boolean;
+    createdAt?: boolean;
+    deletedAt?: boolean;
+};
+export type RecordPermissionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "masterObjectId" | "roleId" | "userId" | "canRead" | "canWrite" | "canDelete" | "condition" | "createdAt" | "deletedAt", ExtArgs["result"]["recordPermission"]>;
+export type RecordPermissionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    masterObject?: boolean | Prisma.MasterObjectDefaultArgs<ExtArgs>;
+    role?: boolean | Prisma.RecordPermission$roleArgs<ExtArgs>;
+    user?: boolean | Prisma.RecordPermission$userArgs<ExtArgs>;
+};
+export type RecordPermissionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    masterObject?: boolean | Prisma.MasterObjectDefaultArgs<ExtArgs>;
+    role?: boolean | Prisma.RecordPermission$roleArgs<ExtArgs>;
+    user?: boolean | Prisma.RecordPermission$userArgs<ExtArgs>;
+};
+export type RecordPermissionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    masterObject?: boolean | Prisma.MasterObjectDefaultArgs<ExtArgs>;
+    role?: boolean | Prisma.RecordPermission$roleArgs<ExtArgs>;
+    user?: boolean | Prisma.RecordPermission$userArgs<ExtArgs>;
+};
+export type $RecordPermissionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    name: "RecordPermission";
+    objects: {
+        masterObject: Prisma.$MasterObjectPayload<ExtArgs>;
+        role: Prisma.$RolePayload<ExtArgs> | null;
+        user: Prisma.$UserPayload<ExtArgs> | null;
+    };
+    scalars: runtime.Types.Extensions.GetPayloadResult<{
+        id: string;
+        masterObjectId: string;
+        roleId: string | null;
+        userId: string | null;
+        canRead: boolean;
+        canWrite: boolean;
+        canDelete: boolean;
+        condition: runtime.JsonValue | null;
+        createdAt: Date;
+        deletedAt: Date | null;
+    }, ExtArgs["result"]["recordPermission"]>;
+    composites: {};
+};
+export type RecordPermissionGetPayload<S extends boolean | null | undefined | RecordPermissionDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$RecordPermissionPayload, S>;
+export type RecordPermissionCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = Omit<RecordPermissionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    select?: RecordPermissionCountAggregateInputType | true;
+};
+export interface RecordPermissionDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: {
+        types: Prisma.TypeMap<ExtArgs>['model']['RecordPermission'];
+        meta: {
+            name: 'RecordPermission';
+        };
+    };
+    /**
+     * Find zero or one RecordPermission that matches the filter.
+     * @param {RecordPermissionFindUniqueArgs} args - Arguments to find a RecordPermission
+     * @example
+     * // Get one RecordPermission
+     * const recordPermission = await prisma.recordPermission.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RecordPermissionFindUniqueArgs>(args: Prisma.SelectSubset<T, RecordPermissionFindUniqueArgs<ExtArgs>>): Prisma.Prisma__RecordPermissionClient<runtime.Types.Result.GetResult<Prisma.$RecordPermissionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find one RecordPermission that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RecordPermissionFindUniqueOrThrowArgs} args - Arguments to find a RecordPermission
+     * @example
+     * // Get one RecordPermission
+     * const recordPermission = await prisma.recordPermission.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RecordPermissionFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, RecordPermissionFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__RecordPermissionClient<runtime.Types.Result.GetResult<Prisma.$RecordPermissionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first RecordPermission that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecordPermissionFindFirstArgs} args - Arguments to find a RecordPermission
+     * @example
+     * // Get one RecordPermission
+     * const recordPermission = await prisma.recordPermission.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RecordPermissionFindFirstArgs>(args?: Prisma.SelectSubset<T, RecordPermissionFindFirstArgs<ExtArgs>>): Prisma.Prisma__RecordPermissionClient<runtime.Types.Result.GetResult<Prisma.$RecordPermissionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first RecordPermission that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecordPermissionFindFirstOrThrowArgs} args - Arguments to find a RecordPermission
+     * @example
+     * // Get one RecordPermission
+     * const recordPermission = await prisma.recordPermission.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RecordPermissionFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, RecordPermissionFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__RecordPermissionClient<runtime.Types.Result.GetResult<Prisma.$RecordPermissionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find zero or more RecordPermissions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecordPermissionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RecordPermissions
+     * const recordPermissions = await prisma.recordPermission.findMany()
+     *
+     * // Get first 10 RecordPermissions
+     * const recordPermissions = await prisma.recordPermission.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const recordPermissionWithIdOnly = await prisma.recordPermission.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends RecordPermissionFindManyArgs>(args?: Prisma.SelectSubset<T, RecordPermissionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordPermissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>;
+    /**
+     * Create a RecordPermission.
+     * @param {RecordPermissionCreateArgs} args - Arguments to create a RecordPermission.
+     * @example
+     * // Create one RecordPermission
+     * const RecordPermission = await prisma.recordPermission.create({
+     *   data: {
+     *     // ... data to create a RecordPermission
+     *   }
+     * })
+     *
+     */
+    create<T extends RecordPermissionCreateArgs>(args: Prisma.SelectSubset<T, RecordPermissionCreateArgs<ExtArgs>>): Prisma.Prisma__RecordPermissionClient<runtime.Types.Result.GetResult<Prisma.$RecordPermissionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Create many RecordPermissions.
+     * @param {RecordPermissionCreateManyArgs} args - Arguments to create many RecordPermissions.
+     * @example
+     * // Create many RecordPermissions
+     * const recordPermission = await prisma.recordPermission.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends RecordPermissionCreateManyArgs>(args?: Prisma.SelectSubset<T, RecordPermissionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Create many RecordPermissions and returns the data saved in the database.
+     * @param {RecordPermissionCreateManyAndReturnArgs} args - Arguments to create many RecordPermissions.
+     * @example
+     * // Create many RecordPermissions
+     * const recordPermission = await prisma.recordPermission.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Create many RecordPermissions and only return the `id`
+     * const recordPermissionWithIdOnly = await prisma.recordPermission.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    createManyAndReturn<T extends RecordPermissionCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, RecordPermissionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordPermissionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Delete a RecordPermission.
+     * @param {RecordPermissionDeleteArgs} args - Arguments to delete one RecordPermission.
+     * @example
+     * // Delete one RecordPermission
+     * const RecordPermission = await prisma.recordPermission.delete({
+     *   where: {
+     *     // ... filter to delete one RecordPermission
+     *   }
+     * })
+     *
+     */
+    delete<T extends RecordPermissionDeleteArgs>(args: Prisma.SelectSubset<T, RecordPermissionDeleteArgs<ExtArgs>>): Prisma.Prisma__RecordPermissionClient<runtime.Types.Result.GetResult<Prisma.$RecordPermissionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Update one RecordPermission.
+     * @param {RecordPermissionUpdateArgs} args - Arguments to update one RecordPermission.
+     * @example
+     * // Update one RecordPermission
+     * const recordPermission = await prisma.recordPermission.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends RecordPermissionUpdateArgs>(args: Prisma.SelectSubset<T, RecordPermissionUpdateArgs<ExtArgs>>): Prisma.Prisma__RecordPermissionClient<runtime.Types.Result.GetResult<Prisma.$RecordPermissionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Delete zero or more RecordPermissions.
+     * @param {RecordPermissionDeleteManyArgs} args - Arguments to filter RecordPermissions to delete.
+     * @example
+     * // Delete a few RecordPermissions
+     * const { count } = await prisma.recordPermission.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends RecordPermissionDeleteManyArgs>(args?: Prisma.SelectSubset<T, RecordPermissionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more RecordPermissions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecordPermissionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RecordPermissions
+     * const recordPermission = await prisma.recordPermission.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends RecordPermissionUpdateManyArgs>(args: Prisma.SelectSubset<T, RecordPermissionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more RecordPermissions and returns the data updated in the database.
+     * @param {RecordPermissionUpdateManyAndReturnArgs} args - Arguments to update many RecordPermissions.
+     * @example
+     * // Update many RecordPermissions
+     * const recordPermission = await prisma.recordPermission.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Update zero or more RecordPermissions and only return the `id`
+     * const recordPermissionWithIdOnly = await prisma.recordPermission.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    updateManyAndReturn<T extends RecordPermissionUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, RecordPermissionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordPermissionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Create or update one RecordPermission.
+     * @param {RecordPermissionUpsertArgs} args - Arguments to update or create a RecordPermission.
+     * @example
+     * // Update or create a RecordPermission
+     * const recordPermission = await prisma.recordPermission.upsert({
+     *   create: {
+     *     // ... data to create a RecordPermission
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RecordPermission we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RecordPermissionUpsertArgs>(args: Prisma.SelectSubset<T, RecordPermissionUpsertArgs<ExtArgs>>): Prisma.Prisma__RecordPermissionClient<runtime.Types.Result.GetResult<Prisma.$RecordPermissionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Count the number of RecordPermissions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecordPermissionCountArgs} args - Arguments to filter RecordPermissions to count.
+     * @example
+     * // Count the number of RecordPermissions
+     * const count = await prisma.recordPermission.count({
+     *   where: {
+     *     // ... the filter for the RecordPermissions we want to count
+     *   }
+     * })
+    **/
+    count<T extends RecordPermissionCountArgs>(args?: Prisma.Subset<T, RecordPermissionCountArgs>): Prisma.PrismaPromise<T extends runtime.Types.Utils.Record<'select', any> ? T['select'] extends true ? number : Prisma.GetScalarType<T['select'], RecordPermissionCountAggregateOutputType> : number>;
+    /**
+     * Allows you to perform aggregations operations on a RecordPermission.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecordPermissionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RecordPermissionAggregateArgs>(args: Prisma.Subset<T, RecordPermissionAggregateArgs>): Prisma.PrismaPromise<GetRecordPermissionAggregateType<T>>;
+    /**
+     * Group by RecordPermission.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecordPermissionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<T extends RecordPermissionGroupByArgs, HasSelectOrTake extends Prisma.Or<Prisma.Extends<'skip', Prisma.Keys<T>>, Prisma.Extends<'take', Prisma.Keys<T>>>, OrderByArg extends Prisma.True extends HasSelectOrTake ? {
+        orderBy: RecordPermissionGroupByArgs['orderBy'];
+    } : {
+        orderBy?: RecordPermissionGroupByArgs['orderBy'];
+    }, OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>, ByFields extends Prisma.MaybeTupleToUnion<T['by']>, ByValid extends Prisma.Has<ByFields, OrderFields>, HavingFields extends Prisma.GetHavingFields<T['having']>, HavingValid extends Prisma.Has<ByFields, HavingFields>, ByEmpty extends T['by'] extends never[] ? Prisma.True : Prisma.False, InputErrors extends ByEmpty extends Prisma.True ? `Error: "by" must not be empty.` : HavingValid extends Prisma.False ? {
+        [P in HavingFields]: P extends ByFields ? never : P extends string ? `Error: Field "${P}" used in "having" needs to be provided in "by".` : [
+            Error,
+            'Field ',
+            P,
+            ` in "having" needs to be provided in "by"`
+        ];
+    }[HavingFields] : 'take' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "take", you also need to provide "orderBy"' : 'skip' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "skip", you also need to provide "orderBy"' : ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields]>(args: Prisma.SubsetIntersection<T, RecordPermissionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRecordPermissionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>;
+    /**
+     * Fields of the RecordPermission model
+     */
+    readonly fields: RecordPermissionFieldRefs;
+}
+/**
+ * The delegate class that acts as a "Promise-like" for RecordPermission.
+ * Why is this prefixed with `Prisma__`?
+ * Because we want to prevent naming conflicts as mentioned in
+ * https://github.com/prisma/prisma-client-js/issues/707
+ */
+export interface Prisma__RecordPermissionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise";
+    masterObject<T extends Prisma.MasterObjectDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MasterObjectDefaultArgs<ExtArgs>>): Prisma.Prisma__MasterObjectClient<runtime.Types.Result.GetResult<Prisma.$MasterObjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    role<T extends Prisma.RecordPermission$roleArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RecordPermission$roleArgs<ExtArgs>>): Prisma.Prisma__RoleClient<runtime.Types.Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    user<T extends Prisma.RecordPermission$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RecordPermission$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
+}
+/**
+ * Fields of the RecordPermission model
+ */
+export interface RecordPermissionFieldRefs {
+    readonly id: Prisma.FieldRef<"RecordPermission", 'String'>;
+    readonly masterObjectId: Prisma.FieldRef<"RecordPermission", 'String'>;
+    readonly roleId: Prisma.FieldRef<"RecordPermission", 'String'>;
+    readonly userId: Prisma.FieldRef<"RecordPermission", 'String'>;
+    readonly canRead: Prisma.FieldRef<"RecordPermission", 'Boolean'>;
+    readonly canWrite: Prisma.FieldRef<"RecordPermission", 'Boolean'>;
+    readonly canDelete: Prisma.FieldRef<"RecordPermission", 'Boolean'>;
+    readonly condition: Prisma.FieldRef<"RecordPermission", 'Json'>;
+    readonly createdAt: Prisma.FieldRef<"RecordPermission", 'DateTime'>;
+    readonly deletedAt: Prisma.FieldRef<"RecordPermission", 'DateTime'>;
+}
+/**
+ * RecordPermission findUnique
+ */
+export type RecordPermissionFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecordPermission
+     */
+    select?: Prisma.RecordPermissionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the RecordPermission
+     */
+    omit?: Prisma.RecordPermissionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.RecordPermissionInclude<ExtArgs> | null;
+    /**
+     * Filter, which RecordPermission to fetch.
+     */
+    where: Prisma.RecordPermissionWhereUniqueInput;
+};
+/**
+ * RecordPermission findUniqueOrThrow
+ */
+export type RecordPermissionFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecordPermission
+     */
+    select?: Prisma.RecordPermissionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the RecordPermission
+     */
+    omit?: Prisma.RecordPermissionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.RecordPermissionInclude<ExtArgs> | null;
+    /**
+     * Filter, which RecordPermission to fetch.
+     */
+    where: Prisma.RecordPermissionWhereUniqueInput;
+};
+/**
+ * RecordPermission findFirst
+ */
+export type RecordPermissionFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecordPermission
+     */
+    select?: Prisma.RecordPermissionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the RecordPermission
+     */
+    omit?: Prisma.RecordPermissionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.RecordPermissionInclude<ExtArgs> | null;
+    /**
+     * Filter, which RecordPermission to fetch.
+     */
+    where?: Prisma.RecordPermissionWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of RecordPermissions to fetch.
+     */
+    orderBy?: Prisma.RecordPermissionOrderByWithRelationInput | Prisma.RecordPermissionOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for RecordPermissions.
+     */
+    cursor?: Prisma.RecordPermissionWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` RecordPermissions from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` RecordPermissions.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of RecordPermissions.
+     */
+    distinct?: Prisma.RecordPermissionScalarFieldEnum | Prisma.RecordPermissionScalarFieldEnum[];
+};
+/**
+ * RecordPermission findFirstOrThrow
+ */
+export type RecordPermissionFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecordPermission
+     */
+    select?: Prisma.RecordPermissionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the RecordPermission
+     */
+    omit?: Prisma.RecordPermissionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.RecordPermissionInclude<ExtArgs> | null;
+    /**
+     * Filter, which RecordPermission to fetch.
+     */
+    where?: Prisma.RecordPermissionWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of RecordPermissions to fetch.
+     */
+    orderBy?: Prisma.RecordPermissionOrderByWithRelationInput | Prisma.RecordPermissionOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for RecordPermissions.
+     */
+    cursor?: Prisma.RecordPermissionWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` RecordPermissions from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` RecordPermissions.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of RecordPermissions.
+     */
+    distinct?: Prisma.RecordPermissionScalarFieldEnum | Prisma.RecordPermissionScalarFieldEnum[];
+};
+/**
+ * RecordPermission findMany
+ */
+export type RecordPermissionFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecordPermission
+     */
+    select?: Prisma.RecordPermissionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the RecordPermission
+     */
+    omit?: Prisma.RecordPermissionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.RecordPermissionInclude<ExtArgs> | null;
+    /**
+     * Filter, which RecordPermissions to fetch.
+     */
+    where?: Prisma.RecordPermissionWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of RecordPermissions to fetch.
+     */
+    orderBy?: Prisma.RecordPermissionOrderByWithRelationInput | Prisma.RecordPermissionOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing RecordPermissions.
+     */
+    cursor?: Prisma.RecordPermissionWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` RecordPermissions from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` RecordPermissions.
+     */
+    skip?: number;
+    distinct?: Prisma.RecordPermissionScalarFieldEnum | Prisma.RecordPermissionScalarFieldEnum[];
+};
+/**
+ * RecordPermission create
+ */
+export type RecordPermissionCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecordPermission
+     */
+    select?: Prisma.RecordPermissionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the RecordPermission
+     */
+    omit?: Prisma.RecordPermissionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.RecordPermissionInclude<ExtArgs> | null;
+    /**
+     * The data needed to create a RecordPermission.
+     */
+    data: Prisma.XOR<Prisma.RecordPermissionCreateInput, Prisma.RecordPermissionUncheckedCreateInput>;
+};
+/**
+ * RecordPermission createMany
+ */
+export type RecordPermissionCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RecordPermissions.
+     */
+    data: Prisma.RecordPermissionCreateManyInput | Prisma.RecordPermissionCreateManyInput[];
+    skipDuplicates?: boolean;
+};
+/**
+ * RecordPermission createManyAndReturn
+ */
+export type RecordPermissionCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecordPermission
+     */
+    select?: Prisma.RecordPermissionSelectCreateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the RecordPermission
+     */
+    omit?: Prisma.RecordPermissionOmit<ExtArgs> | null;
+    /**
+     * The data used to create many RecordPermissions.
+     */
+    data: Prisma.RecordPermissionCreateManyInput | Prisma.RecordPermissionCreateManyInput[];
+    skipDuplicates?: boolean;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.RecordPermissionIncludeCreateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * RecordPermission update
+ */
+export type RecordPermissionUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecordPermission
+     */
+    select?: Prisma.RecordPermissionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the RecordPermission
+     */
+    omit?: Prisma.RecordPermissionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.RecordPermissionInclude<ExtArgs> | null;
+    /**
+     * The data needed to update a RecordPermission.
+     */
+    data: Prisma.XOR<Prisma.RecordPermissionUpdateInput, Prisma.RecordPermissionUncheckedUpdateInput>;
+    /**
+     * Choose, which RecordPermission to update.
+     */
+    where: Prisma.RecordPermissionWhereUniqueInput;
+};
+/**
+ * RecordPermission updateMany
+ */
+export type RecordPermissionUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RecordPermissions.
+     */
+    data: Prisma.XOR<Prisma.RecordPermissionUpdateManyMutationInput, Prisma.RecordPermissionUncheckedUpdateManyInput>;
+    /**
+     * Filter which RecordPermissions to update
+     */
+    where?: Prisma.RecordPermissionWhereInput;
+    /**
+     * Limit how many RecordPermissions to update.
+     */
+    limit?: number;
+};
+/**
+ * RecordPermission updateManyAndReturn
+ */
+export type RecordPermissionUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecordPermission
+     */
+    select?: Prisma.RecordPermissionSelectUpdateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the RecordPermission
+     */
+    omit?: Prisma.RecordPermissionOmit<ExtArgs> | null;
+    /**
+     * The data used to update RecordPermissions.
+     */
+    data: Prisma.XOR<Prisma.RecordPermissionUpdateManyMutationInput, Prisma.RecordPermissionUncheckedUpdateManyInput>;
+    /**
+     * Filter which RecordPermissions to update
+     */
+    where?: Prisma.RecordPermissionWhereInput;
+    /**
+     * Limit how many RecordPermissions to update.
+     */
+    limit?: number;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.RecordPermissionIncludeUpdateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * RecordPermission upsert
+ */
+export type RecordPermissionUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecordPermission
+     */
+    select?: Prisma.RecordPermissionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the RecordPermission
+     */
+    omit?: Prisma.RecordPermissionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.RecordPermissionInclude<ExtArgs> | null;
+    /**
+     * The filter to search for the RecordPermission to update in case it exists.
+     */
+    where: Prisma.RecordPermissionWhereUniqueInput;
+    /**
+     * In case the RecordPermission found by the `where` argument doesn't exist, create a new RecordPermission with this data.
+     */
+    create: Prisma.XOR<Prisma.RecordPermissionCreateInput, Prisma.RecordPermissionUncheckedCreateInput>;
+    /**
+     * In case the RecordPermission was found with the provided `where` argument, update it with this data.
+     */
+    update: Prisma.XOR<Prisma.RecordPermissionUpdateInput, Prisma.RecordPermissionUncheckedUpdateInput>;
+};
+/**
+ * RecordPermission delete
+ */
+export type RecordPermissionDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecordPermission
+     */
+    select?: Prisma.RecordPermissionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the RecordPermission
+     */
+    omit?: Prisma.RecordPermissionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.RecordPermissionInclude<ExtArgs> | null;
+    /**
+     * Filter which RecordPermission to delete.
+     */
+    where: Prisma.RecordPermissionWhereUniqueInput;
+};
+/**
+ * RecordPermission deleteMany
+ */
+export type RecordPermissionDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which RecordPermissions to delete
+     */
+    where?: Prisma.RecordPermissionWhereInput;
+    /**
+     * Limit how many RecordPermissions to delete.
+     */
+    limit?: number;
+};
+/**
+ * RecordPermission.role
+ */
+export type RecordPermission$roleArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Role
+     */
+    select?: Prisma.RoleSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Role
+     */
+    omit?: Prisma.RoleOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.RoleInclude<ExtArgs> | null;
+    where?: Prisma.RoleWhereInput;
+};
+/**
+ * RecordPermission.user
+ */
+export type RecordPermission$userArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: Prisma.UserSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: Prisma.UserOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.UserInclude<ExtArgs> | null;
+    where?: Prisma.UserWhereInput;
+};
+/**
+ * RecordPermission without action
+ */
+export type RecordPermissionDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecordPermission
+     */
+    select?: Prisma.RecordPermissionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the RecordPermission
+     */
+    omit?: Prisma.RecordPermissionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.RecordPermissionInclude<ExtArgs> | null;
+};
+export {};
+//# sourceMappingURL=RecordPermission.d.ts.map

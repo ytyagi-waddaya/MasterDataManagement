@@ -79,7 +79,7 @@ const resourcesRepository = {
             id: true,
             name: true,
             key: true,
-            fields: true,
+            fieldDefinitions: true,
           },
         },
       },

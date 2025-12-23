@@ -3,11 +3,10 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import apiClient from "@/lib/api/apiClient";
 import { toast } from "sonner";
-import { updateMasterObjectInput } from "../schema/masterObject.schema";
+import { UpdateMasterObjectInput } from "../schema/masterObject.schema";
 import { serializeFiltersForApi } from "@/hooks/useServerDataTable";
 import { useMemo } from "react";
 import { useDebounce } from "@/hooks/useDebounce";
-import { CreateResourceInput } from "@/lib/resource/schema/resource-schema";
 
 export interface MasterObjectFilters {
   status?: "active" | "inactive" | "all";
@@ -80,6 +79,213 @@ export function useMasterObjects<T = any>({
   });
 }
 
+export function useMasterObjectForEditor(masterObjectId: string) {
+  return useQuery({
+    queryKey: ["masterObject", "editor", masterObjectId],
+    enabled: !!masterObjectId,
+    queryFn: async () => {
+      const masterObject = await fetchMasterObject(masterObjectId);
+
+      const latestSchema = masterObject.schemas?.[0] ?? null;
+
+      return {
+        ...masterObject,
+        activeSchema: latestSchema,
+        hasSchema: Boolean(latestSchema),
+      };
+    },
+  });
+}
+
+export function useMasterObjectForRuntime(masterObjectId: string) {
+  return useQuery({
+    queryKey: ["masterObject", "runtime", masterObjectId],
+    enabled: !!masterObjectId,
+    staleTime: 60 * 1000,
+
+    queryFn: async () => {
+      const masterObject = await fetchMasterObject(masterObjectId);
+
+      const publishedSchema = masterObject.schemas.find(
+        (s: any) => s.status === "PUBLISHED"
+      );
+
+      return {
+        ...masterObject,
+        activeSchema: publishedSchema ?? null,
+        isRunnable: Boolean(publishedSchema),
+      };
+    },
+  });
+}
+
+export function useUpdateMasterObject() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      masterObjectId,
+      payload,
+    }: {
+      masterObjectId: string;
+      payload: UpdateMasterObjectInput;
+    }) => {
+      console.log("MasterobjectId:", masterObjectId);
+      console.log("Payload Object:", payload);
+
+      const res = await apiClient.put(
+        `/master-object/${masterObjectId}`,
+        payload
+      );
+      return res.data;
+    },
+
+    onSuccess: (data) => {
+      const status = data?.schema?.status;
+
+      toast.success(
+        status === "PUBLISHED"
+          ? "Schema published successfully"
+          : "Schema saved successfully"
+      );
+
+      queryClient.invalidateQueries({
+        queryKey: ["masterObject", data?.id],
+      });
+    },
+
+    onError: (err: any) => {
+      toast.error(
+        err?.response?.data?.message || "Failed to update Master Object"
+      );
+    },
+  });
+}
+
+export function useDeleteMasterObject() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (masterObjectId: string) => {
+      const res = await apiClient.delete(`/master-object/${masterObjectId}`);
+      return res.data;
+    },
+
+    onSuccess: () => {
+      toast.success("Master Object deleted successfully");
+      queryClient.invalidateQueries({ queryKey: ["masterObject"] });
+    },
+
+    onError: (err: any) => {
+      toast.error(
+        err.response?.data?.message || "Failed to delete Master Object"
+      );
+    },
+  });
+}
+
+export function useArchiveMasterObject() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (masterObjectId: string) => {
+      const res = await apiClient.delete(
+        `/master-object/${masterObjectId}/archive`
+      );
+      return res.data;
+    },
+
+    onSuccess: () => {
+      toast.success("Master Object archived successfully");
+      queryClient.invalidateQueries({ queryKey: ["masterObject"] });
+    },
+
+    onError: (err: any) => {
+      toast.error(
+        err.response?.data?.message || "Failed to archive Master Object"
+      );
+    },
+  });
+}
+
+export function useRestoreMasterObject() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (masterObjectId: string) => {
+      const res = await apiClient.delete(
+        `/master-object/${masterObjectId}/restore`
+      );
+      return res.data;
+    },
+
+    onSuccess: () => {
+      toast.success("Master Object restored successfully");
+      queryClient.invalidateQueries({ queryKey: ["masterObject"] });
+    },
+
+    onError: (err: any) => {
+      toast.error(
+        err.response?.data?.message || "Failed to restore Master Object"
+      );
+    },
+  });
+}
+
+export function useResourceWithMasterObject(id: string) {
+  return useQuery({
+    queryKey: ["resource-with-masterobject", id],
+    queryFn: async () => {
+      const res = await apiClient.get(`/resources/${id}`);
+      return res.data;
+    },
+  });
+}
+
+export function useCreateMasterObject() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ name, fields }: { name: string; fields: any }) => {
+      const res = await apiClient.put(`/master-object/`);
+      return res.data;
+    },
+
+    onSuccess: () => {
+      toast.success("Master Object updated successfully");
+      queryClient.invalidateQueries({ queryKey: ["masterObject"] });
+    },
+
+    onError: (err: any) => {
+      toast.error(
+        err.response?.data?.message || "Failed to update Master Object"
+      );
+    },
+  });
+}
+
+// Base fetch (internal)
+async function fetchMasterObject(masterObjectId: string) {
+  const res = await apiClient.get(`/master-object/${masterObjectId}`);
+  return res.data.data.masterObject;
+}
+
+/**
+ * OPTIONAL: FETCH LIST (if needed later)
+ * ------------------------------------------------------------------
+ */
+// export function useMasterObjects() {
+//   return useQuery({
+//     queryKey: ["masterObjects"],
+//     queryFn: async () => {
+//       const res = await apiClient.get(`/master-object`, {
+//         params: { skip: 0, take: 100 },
+//       });
+
+//       return res.data.data.masterObjects ?? [];
+//     },
+//   });
+// }
+
 // export function useMasterObjects<T = any>({
 //   page,
 //   limit,
@@ -150,166 +356,17 @@ export function useMasterObjects<T = any>({
 //   });
 // }
 
-
-export function useMasterObject(masterObjectId: string) {
-  return useQuery({
-    queryKey: ["masterObject", masterObjectId],
-    queryFn: async () => {
-      const res = await apiClient.get(`/master-object/${masterObjectId}`);
-      return res.data.data.masterObject; 
-    },
-    enabled: !!masterObjectId,
-  });
-}
-
-export function useCreateMasterObject() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: async ({ name, fields }: { name: string; fields: any }) => {
-      const res = await apiClient.put(`/master-object/`);
-      return res.data;
-    },
-
-    onSuccess: () => {
-      toast.success("Master Object updated successfully");
-      queryClient.invalidateQueries({ queryKey: ["masterObject"] });
-    },
-
-    onError: (err: any) => {
-      toast.error(
-        err.response?.data?.message || "Failed to update Master Object"
-      );
-    },
-  });
-}
-
-export function useUpdateMasterObject() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async ({
-      masterObjectId,
-      payload,
-    }: {
-      masterObjectId: string;
-      payload: updateMasterObjectInput;
-    }) => {
-      const res = await apiClient.put(
-        `/master-object/${masterObjectId}`,
-        payload
-      );
-      return res.data;
-    },
-
-    onSuccess: () => {
-      toast.success("Master Object updated successfully");
-      queryClient.invalidateQueries({ queryKey: ["masterObject"] });
-    },
-
-    onError: (err: any) => {
-      toast.error(
-        err.response?.data?.message || "Failed to update Master Object"
-      );
-    },
-  });
-}
-
-export function useDeleteMasterObject() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async (masterObjectId: string) => {
-      const res = await apiClient.delete(`/master-object/${masterObjectId}`);
-      return res.data;
-    },
-
-    onSuccess: () => {
-      toast.success("Master Object deleted successfully");
-      queryClient.invalidateQueries({ queryKey: ["masterObject"] });
-    },
-
-    onError: (err: any) => {
-      toast.error(
-        err.response?.data?.message || "Failed to delete Master Object"
-      );
-    },
-  });
-}
-export function useArchiveMasterObject() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async (masterObjectId: string) => {
-      const res = await apiClient.delete(
-        `/master-object/${masterObjectId}/archive`
-      );
-      return res.data;
-    },
-
-    onSuccess: () => {
-      toast.success("Master Object archived successfully");
-      queryClient.invalidateQueries({ queryKey: ["masterObject"] });
-    },
-
-    onError: (err: any) => {
-      toast.error(
-        err.response?.data?.message || "Failed to archive Master Object"
-      );
-    },
-  });
-}
-export function useRestoreMasterObject() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async (masterObjectId: string) => {
-      const res = await apiClient.delete(
-        `/master-object/${masterObjectId}/restore`
-      );
-      return res.data;
-    },
-
-    onSuccess: () => {
-      toast.success("Master Object restored successfully");
-      queryClient.invalidateQueries({ queryKey: ["masterObject"] });
-    },
-
-    onError: (err: any) => {
-      toast.error(
-        err.response?.data?.message || "Failed to restore Master Object"
-      );
-    },
-  });
-}
-
-export function useResourceWithMasterObject(id: string) {
-  return useQuery({
-    queryKey: ["resource-with-masterobject", id],
-    queryFn: async () => {
-      const res = await apiClient.get(`/resources/${id}`);
-      return res.data;
-    },
-  });
-}
-
-
-
-/**
- * OPTIONAL: FETCH LIST (if needed later)
- * ------------------------------------------------------------------
- */
-// export function useMasterObjects() {
+// export function useMasterObject(masterObjectId: string) {
 //   return useQuery({
-//     queryKey: ["masterObjects"],
+//     queryKey: ["masterObject", masterObjectId],
 //     queryFn: async () => {
-//       const res = await apiClient.get(`/master-object`, {
-//         params: { skip: 0, take: 100 },
-//       });
-
-//       return res.data.data.masterObjects ?? [];
+//       const res = await apiClient.get(`/master-object/${masterObjectId}`);
+//       return res.data.data.masterObject;
 //     },
+//     enabled: !!masterObjectId,
 //   });
 // }
 
-
-
+// if (!data?.isRunnable) {
+//   return <EmptyState message="Schema not published yet" />;
+// }

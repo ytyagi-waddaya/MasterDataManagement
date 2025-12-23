@@ -64,10 +64,12 @@ export type WorkflowStageCountAggregateOutputType = {
   code: number
   order: number
   color: number
+  position: number
   isInitial: number
   isFinal: number
   metadata: number
   category: number
+  allowedNextCategories: number
   workflowId: number
   _all: number
 }
@@ -111,10 +113,12 @@ export type WorkflowStageCountAggregateInputType = {
   code?: true
   order?: true
   color?: true
+  position?: true
   isInitial?: true
   isFinal?: true
   metadata?: true
   category?: true
+  allowedNextCategories?: true
   workflowId?: true
   _all?: true
 }
@@ -211,10 +215,12 @@ export type WorkflowStageGroupByOutputType = {
   code: string
   order: number
   color: string | null
+  position: runtime.JsonValue | null
   isInitial: boolean
   isFinal: boolean
   metadata: runtime.JsonValue | null
   category: $Enums.Category
+  allowedNextCategories: $Enums.Category[]
   workflowId: string
   _count: WorkflowStageCountAggregateOutputType | null
   _avg: WorkflowStageAvgAggregateOutputType | null
@@ -247,10 +253,12 @@ export type WorkflowStageWhereInput = {
   code?: Prisma.StringFilter<"WorkflowStage"> | string
   order?: Prisma.IntFilter<"WorkflowStage"> | number
   color?: Prisma.StringNullableFilter<"WorkflowStage"> | string | null
+  position?: Prisma.JsonNullableFilter<"WorkflowStage">
   isInitial?: Prisma.BoolFilter<"WorkflowStage"> | boolean
   isFinal?: Prisma.BoolFilter<"WorkflowStage"> | boolean
   metadata?: Prisma.JsonNullableFilter<"WorkflowStage">
   category?: Prisma.EnumCategoryFilter<"WorkflowStage"> | $Enums.Category
+  allowedNextCategories?: Prisma.EnumCategoryNullableListFilter<"WorkflowStage">
   workflowId?: Prisma.StringFilter<"WorkflowStage"> | string
   workflow?: Prisma.XOR<Prisma.WorkflowDefinitionScalarRelationFilter, Prisma.WorkflowDefinitionWhereInput>
   outgoingTransitions?: Prisma.WorkflowTransitionListRelationFilter
@@ -268,10 +276,12 @@ export type WorkflowStageOrderByWithRelationInput = {
   code?: Prisma.SortOrder
   order?: Prisma.SortOrder
   color?: Prisma.SortOrderInput | Prisma.SortOrder
+  position?: Prisma.SortOrderInput | Prisma.SortOrder
   isInitial?: Prisma.SortOrder
   isFinal?: Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   category?: Prisma.SortOrder
+  allowedNextCategories?: Prisma.SortOrder
   workflowId?: Prisma.SortOrder
   workflow?: Prisma.WorkflowDefinitionOrderByWithRelationInput
   outgoingTransitions?: Prisma.WorkflowTransitionOrderByRelationAggregateInput
@@ -293,10 +303,12 @@ export type WorkflowStageWhereUniqueInput = Prisma.AtLeast<{
   code?: Prisma.StringFilter<"WorkflowStage"> | string
   order?: Prisma.IntFilter<"WorkflowStage"> | number
   color?: Prisma.StringNullableFilter<"WorkflowStage"> | string | null
+  position?: Prisma.JsonNullableFilter<"WorkflowStage">
   isInitial?: Prisma.BoolFilter<"WorkflowStage"> | boolean
   isFinal?: Prisma.BoolFilter<"WorkflowStage"> | boolean
   metadata?: Prisma.JsonNullableFilter<"WorkflowStage">
   category?: Prisma.EnumCategoryFilter<"WorkflowStage"> | $Enums.Category
+  allowedNextCategories?: Prisma.EnumCategoryNullableListFilter<"WorkflowStage">
   workflowId?: Prisma.StringFilter<"WorkflowStage"> | string
   workflow?: Prisma.XOR<Prisma.WorkflowDefinitionScalarRelationFilter, Prisma.WorkflowDefinitionWhereInput>
   outgoingTransitions?: Prisma.WorkflowTransitionListRelationFilter
@@ -314,10 +326,12 @@ export type WorkflowStageOrderByWithAggregationInput = {
   code?: Prisma.SortOrder
   order?: Prisma.SortOrder
   color?: Prisma.SortOrderInput | Prisma.SortOrder
+  position?: Prisma.SortOrderInput | Prisma.SortOrder
   isInitial?: Prisma.SortOrder
   isFinal?: Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   category?: Prisma.SortOrder
+  allowedNextCategories?: Prisma.SortOrder
   workflowId?: Prisma.SortOrder
   _count?: Prisma.WorkflowStageCountOrderByAggregateInput
   _avg?: Prisma.WorkflowStageAvgOrderByAggregateInput
@@ -335,10 +349,12 @@ export type WorkflowStageScalarWhereWithAggregatesInput = {
   code?: Prisma.StringWithAggregatesFilter<"WorkflowStage"> | string
   order?: Prisma.IntWithAggregatesFilter<"WorkflowStage"> | number
   color?: Prisma.StringNullableWithAggregatesFilter<"WorkflowStage"> | string | null
+  position?: Prisma.JsonNullableWithAggregatesFilter<"WorkflowStage">
   isInitial?: Prisma.BoolWithAggregatesFilter<"WorkflowStage"> | boolean
   isFinal?: Prisma.BoolWithAggregatesFilter<"WorkflowStage"> | boolean
   metadata?: Prisma.JsonNullableWithAggregatesFilter<"WorkflowStage">
   category?: Prisma.EnumCategoryWithAggregatesFilter<"WorkflowStage"> | $Enums.Category
+  allowedNextCategories?: Prisma.EnumCategoryNullableListFilter<"WorkflowStage">
   workflowId?: Prisma.StringWithAggregatesFilter<"WorkflowStage"> | string
 }
 
@@ -348,10 +364,12 @@ export type WorkflowStageCreateInput = {
   code: string
   order: number
   color?: string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: boolean
   isFinal?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageCreateallowedNextCategoriesInput | $Enums.Category[]
   workflow: Prisma.WorkflowDefinitionCreateNestedOneWithoutStagesInput
   outgoingTransitions?: Prisma.WorkflowTransitionCreateNestedManyWithoutFromStageInput
   incomingTransitions?: Prisma.WorkflowTransitionCreateNestedManyWithoutToStageInput
@@ -368,10 +386,12 @@ export type WorkflowStageUncheckedCreateInput = {
   code: string
   order: number
   color?: string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: boolean
   isFinal?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageCreateallowedNextCategoriesInput | $Enums.Category[]
   workflowId: string
   outgoingTransitions?: Prisma.WorkflowTransitionUncheckedCreateNestedManyWithoutFromStageInput
   incomingTransitions?: Prisma.WorkflowTransitionUncheckedCreateNestedManyWithoutToStageInput
@@ -388,10 +408,12 @@ export type WorkflowStageUpdateInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageUpdateallowedNextCategoriesInput | $Enums.Category[]
   workflow?: Prisma.WorkflowDefinitionUpdateOneRequiredWithoutStagesNestedInput
   outgoingTransitions?: Prisma.WorkflowTransitionUpdateManyWithoutFromStageNestedInput
   incomingTransitions?: Prisma.WorkflowTransitionUpdateManyWithoutToStageNestedInput
@@ -408,10 +430,12 @@ export type WorkflowStageUncheckedUpdateInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageUpdateallowedNextCategoriesInput | $Enums.Category[]
   workflowId?: Prisma.StringFieldUpdateOperationsInput | string
   outgoingTransitions?: Prisma.WorkflowTransitionUncheckedUpdateManyWithoutFromStageNestedInput
   incomingTransitions?: Prisma.WorkflowTransitionUncheckedUpdateManyWithoutToStageNestedInput
@@ -428,10 +452,12 @@ export type WorkflowStageCreateManyInput = {
   code: string
   order: number
   color?: string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: boolean
   isFinal?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageCreateallowedNextCategoriesInput | $Enums.Category[]
   workflowId: string
 }
 
@@ -441,10 +467,12 @@ export type WorkflowStageUpdateManyMutationInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageUpdateallowedNextCategoriesInput | $Enums.Category[]
 }
 
 export type WorkflowStageUncheckedUpdateManyInput = {
@@ -453,10 +481,12 @@ export type WorkflowStageUncheckedUpdateManyInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageUpdateallowedNextCategoriesInput | $Enums.Category[]
   workflowId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -475,6 +505,14 @@ export type WorkflowStageOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type EnumCategoryNullableListFilter<$PrismaModel = never> = {
+  equals?: $Enums.Category[] | Prisma.ListEnumCategoryFieldRefInput<$PrismaModel> | null
+  has?: $Enums.Category | Prisma.EnumCategoryFieldRefInput<$PrismaModel> | null
+  hasEvery?: $Enums.Category[] | Prisma.ListEnumCategoryFieldRefInput<$PrismaModel>
+  hasSome?: $Enums.Category[] | Prisma.ListEnumCategoryFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
+}
+
 export type WorkflowStageWorkflowIdCodeCompoundUniqueInput = {
   workflowId: string
   code: string
@@ -486,10 +524,12 @@ export type WorkflowStageCountOrderByAggregateInput = {
   code?: Prisma.SortOrder
   order?: Prisma.SortOrder
   color?: Prisma.SortOrder
+  position?: Prisma.SortOrder
   isInitial?: Prisma.SortOrder
   isFinal?: Prisma.SortOrder
   metadata?: Prisma.SortOrder
   category?: Prisma.SortOrder
+  allowedNextCategories?: Prisma.SortOrder
   workflowId?: Prisma.SortOrder
 }
 
@@ -588,8 +628,17 @@ export type WorkflowStageUncheckedUpdateManyWithoutWorkflowNestedInput = {
   deleteMany?: Prisma.WorkflowStageScalarWhereInput | Prisma.WorkflowStageScalarWhereInput[]
 }
 
+export type WorkflowStageCreateallowedNextCategoriesInput = {
+  set: $Enums.Category[]
+}
+
 export type EnumCategoryFieldUpdateOperationsInput = {
   set?: $Enums.Category
+}
+
+export type WorkflowStageUpdateallowedNextCategoriesInput = {
+  set?: $Enums.Category[]
+  push?: $Enums.Category | $Enums.Category[]
 }
 
 export type WorkflowStageCreateNestedOneWithoutOutgoingTransitionsInput = {
@@ -626,10 +675,12 @@ export type WorkflowStageCreateNestedOneWithoutInstancesInput = {
   connect?: Prisma.WorkflowStageWhereUniqueInput
 }
 
-export type WorkflowStageUpdateOneRequiredWithoutInstancesNestedInput = {
+export type WorkflowStageUpdateOneWithoutInstancesNestedInput = {
   create?: Prisma.XOR<Prisma.WorkflowStageCreateWithoutInstancesInput, Prisma.WorkflowStageUncheckedCreateWithoutInstancesInput>
   connectOrCreate?: Prisma.WorkflowStageCreateOrConnectWithoutInstancesInput
   upsert?: Prisma.WorkflowStageUpsertWithoutInstancesInput
+  disconnect?: Prisma.WorkflowStageWhereInput | boolean
+  delete?: Prisma.WorkflowStageWhereInput | boolean
   connect?: Prisma.WorkflowStageWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.WorkflowStageUpdateToOneWithWhereWithoutInstancesInput, Prisma.WorkflowStageUpdateWithoutInstancesInput>, Prisma.WorkflowStageUncheckedUpdateWithoutInstancesInput>
 }
@@ -684,10 +735,12 @@ export type WorkflowStageCreateWithoutMasterRecordsInput = {
   code: string
   order: number
   color?: string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: boolean
   isFinal?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageCreateallowedNextCategoriesInput | $Enums.Category[]
   workflow: Prisma.WorkflowDefinitionCreateNestedOneWithoutStagesInput
   outgoingTransitions?: Prisma.WorkflowTransitionCreateNestedManyWithoutFromStageInput
   incomingTransitions?: Prisma.WorkflowTransitionCreateNestedManyWithoutToStageInput
@@ -703,10 +756,12 @@ export type WorkflowStageUncheckedCreateWithoutMasterRecordsInput = {
   code: string
   order: number
   color?: string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: boolean
   isFinal?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageCreateallowedNextCategoriesInput | $Enums.Category[]
   workflowId: string
   outgoingTransitions?: Prisma.WorkflowTransitionUncheckedCreateNestedManyWithoutFromStageInput
   incomingTransitions?: Prisma.WorkflowTransitionUncheckedCreateNestedManyWithoutToStageInput
@@ -738,10 +793,12 @@ export type WorkflowStageUpdateWithoutMasterRecordsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageUpdateallowedNextCategoriesInput | $Enums.Category[]
   workflow?: Prisma.WorkflowDefinitionUpdateOneRequiredWithoutStagesNestedInput
   outgoingTransitions?: Prisma.WorkflowTransitionUpdateManyWithoutFromStageNestedInput
   incomingTransitions?: Prisma.WorkflowTransitionUpdateManyWithoutToStageNestedInput
@@ -757,10 +814,12 @@ export type WorkflowStageUncheckedUpdateWithoutMasterRecordsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageUpdateallowedNextCategoriesInput | $Enums.Category[]
   workflowId?: Prisma.StringFieldUpdateOperationsInput | string
   outgoingTransitions?: Prisma.WorkflowTransitionUncheckedUpdateManyWithoutFromStageNestedInput
   incomingTransitions?: Prisma.WorkflowTransitionUncheckedUpdateManyWithoutToStageNestedInput
@@ -776,10 +835,12 @@ export type WorkflowStageCreateWithoutWorkflowInput = {
   code: string
   order: number
   color?: string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: boolean
   isFinal?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageCreateallowedNextCategoriesInput | $Enums.Category[]
   outgoingTransitions?: Prisma.WorkflowTransitionCreateNestedManyWithoutFromStageInput
   incomingTransitions?: Prisma.WorkflowTransitionCreateNestedManyWithoutToStageInput
   instances?: Prisma.WorkflowInstanceCreateNestedManyWithoutCurrentStageInput
@@ -795,10 +856,12 @@ export type WorkflowStageUncheckedCreateWithoutWorkflowInput = {
   code: string
   order: number
   color?: string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: boolean
   isFinal?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageCreateallowedNextCategoriesInput | $Enums.Category[]
   outgoingTransitions?: Prisma.WorkflowTransitionUncheckedCreateNestedManyWithoutFromStageInput
   incomingTransitions?: Prisma.WorkflowTransitionUncheckedCreateNestedManyWithoutToStageInput
   instances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutCurrentStageInput
@@ -843,10 +906,12 @@ export type WorkflowStageScalarWhereInput = {
   code?: Prisma.StringFilter<"WorkflowStage"> | string
   order?: Prisma.IntFilter<"WorkflowStage"> | number
   color?: Prisma.StringNullableFilter<"WorkflowStage"> | string | null
+  position?: Prisma.JsonNullableFilter<"WorkflowStage">
   isInitial?: Prisma.BoolFilter<"WorkflowStage"> | boolean
   isFinal?: Prisma.BoolFilter<"WorkflowStage"> | boolean
   metadata?: Prisma.JsonNullableFilter<"WorkflowStage">
   category?: Prisma.EnumCategoryFilter<"WorkflowStage"> | $Enums.Category
+  allowedNextCategories?: Prisma.EnumCategoryNullableListFilter<"WorkflowStage">
   workflowId?: Prisma.StringFilter<"WorkflowStage"> | string
 }
 
@@ -856,10 +921,12 @@ export type WorkflowStageCreateWithoutOutgoingTransitionsInput = {
   code: string
   order: number
   color?: string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: boolean
   isFinal?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageCreateallowedNextCategoriesInput | $Enums.Category[]
   workflow: Prisma.WorkflowDefinitionCreateNestedOneWithoutStagesInput
   incomingTransitions?: Prisma.WorkflowTransitionCreateNestedManyWithoutToStageInput
   instances?: Prisma.WorkflowInstanceCreateNestedManyWithoutCurrentStageInput
@@ -875,10 +942,12 @@ export type WorkflowStageUncheckedCreateWithoutOutgoingTransitionsInput = {
   code: string
   order: number
   color?: string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: boolean
   isFinal?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageCreateallowedNextCategoriesInput | $Enums.Category[]
   workflowId: string
   incomingTransitions?: Prisma.WorkflowTransitionUncheckedCreateNestedManyWithoutToStageInput
   instances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutCurrentStageInput
@@ -899,10 +968,12 @@ export type WorkflowStageCreateWithoutIncomingTransitionsInput = {
   code: string
   order: number
   color?: string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: boolean
   isFinal?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageCreateallowedNextCategoriesInput | $Enums.Category[]
   workflow: Prisma.WorkflowDefinitionCreateNestedOneWithoutStagesInput
   outgoingTransitions?: Prisma.WorkflowTransitionCreateNestedManyWithoutFromStageInput
   instances?: Prisma.WorkflowInstanceCreateNestedManyWithoutCurrentStageInput
@@ -918,10 +989,12 @@ export type WorkflowStageUncheckedCreateWithoutIncomingTransitionsInput = {
   code: string
   order: number
   color?: string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: boolean
   isFinal?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageCreateallowedNextCategoriesInput | $Enums.Category[]
   workflowId: string
   outgoingTransitions?: Prisma.WorkflowTransitionUncheckedCreateNestedManyWithoutFromStageInput
   instances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutCurrentStageInput
@@ -953,10 +1026,12 @@ export type WorkflowStageUpdateWithoutOutgoingTransitionsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageUpdateallowedNextCategoriesInput | $Enums.Category[]
   workflow?: Prisma.WorkflowDefinitionUpdateOneRequiredWithoutStagesNestedInput
   incomingTransitions?: Prisma.WorkflowTransitionUpdateManyWithoutToStageNestedInput
   instances?: Prisma.WorkflowInstanceUpdateManyWithoutCurrentStageNestedInput
@@ -972,10 +1047,12 @@ export type WorkflowStageUncheckedUpdateWithoutOutgoingTransitionsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageUpdateallowedNextCategoriesInput | $Enums.Category[]
   workflowId?: Prisma.StringFieldUpdateOperationsInput | string
   incomingTransitions?: Prisma.WorkflowTransitionUncheckedUpdateManyWithoutToStageNestedInput
   instances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutCurrentStageNestedInput
@@ -1002,10 +1079,12 @@ export type WorkflowStageUpdateWithoutIncomingTransitionsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageUpdateallowedNextCategoriesInput | $Enums.Category[]
   workflow?: Prisma.WorkflowDefinitionUpdateOneRequiredWithoutStagesNestedInput
   outgoingTransitions?: Prisma.WorkflowTransitionUpdateManyWithoutFromStageNestedInput
   instances?: Prisma.WorkflowInstanceUpdateManyWithoutCurrentStageNestedInput
@@ -1021,10 +1100,12 @@ export type WorkflowStageUncheckedUpdateWithoutIncomingTransitionsInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageUpdateallowedNextCategoriesInput | $Enums.Category[]
   workflowId?: Prisma.StringFieldUpdateOperationsInput | string
   outgoingTransitions?: Prisma.WorkflowTransitionUncheckedUpdateManyWithoutFromStageNestedInput
   instances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutCurrentStageNestedInput
@@ -1040,10 +1121,12 @@ export type WorkflowStageCreateWithoutInstancesInput = {
   code: string
   order: number
   color?: string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: boolean
   isFinal?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageCreateallowedNextCategoriesInput | $Enums.Category[]
   workflow: Prisma.WorkflowDefinitionCreateNestedOneWithoutStagesInput
   outgoingTransitions?: Prisma.WorkflowTransitionCreateNestedManyWithoutFromStageInput
   incomingTransitions?: Prisma.WorkflowTransitionCreateNestedManyWithoutToStageInput
@@ -1059,10 +1142,12 @@ export type WorkflowStageUncheckedCreateWithoutInstancesInput = {
   code: string
   order: number
   color?: string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: boolean
   isFinal?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageCreateallowedNextCategoriesInput | $Enums.Category[]
   workflowId: string
   outgoingTransitions?: Prisma.WorkflowTransitionUncheckedCreateNestedManyWithoutFromStageInput
   incomingTransitions?: Prisma.WorkflowTransitionUncheckedCreateNestedManyWithoutToStageInput
@@ -1094,10 +1179,12 @@ export type WorkflowStageUpdateWithoutInstancesInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageUpdateallowedNextCategoriesInput | $Enums.Category[]
   workflow?: Prisma.WorkflowDefinitionUpdateOneRequiredWithoutStagesNestedInput
   outgoingTransitions?: Prisma.WorkflowTransitionUpdateManyWithoutFromStageNestedInput
   incomingTransitions?: Prisma.WorkflowTransitionUpdateManyWithoutToStageNestedInput
@@ -1113,10 +1200,12 @@ export type WorkflowStageUncheckedUpdateWithoutInstancesInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageUpdateallowedNextCategoriesInput | $Enums.Category[]
   workflowId?: Prisma.StringFieldUpdateOperationsInput | string
   outgoingTransitions?: Prisma.WorkflowTransitionUncheckedUpdateManyWithoutFromStageNestedInput
   incomingTransitions?: Prisma.WorkflowTransitionUncheckedUpdateManyWithoutToStageNestedInput
@@ -1132,10 +1221,12 @@ export type WorkflowStageCreateWithoutHistoriesFromInput = {
   code: string
   order: number
   color?: string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: boolean
   isFinal?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageCreateallowedNextCategoriesInput | $Enums.Category[]
   workflow: Prisma.WorkflowDefinitionCreateNestedOneWithoutStagesInput
   outgoingTransitions?: Prisma.WorkflowTransitionCreateNestedManyWithoutFromStageInput
   incomingTransitions?: Prisma.WorkflowTransitionCreateNestedManyWithoutToStageInput
@@ -1151,10 +1242,12 @@ export type WorkflowStageUncheckedCreateWithoutHistoriesFromInput = {
   code: string
   order: number
   color?: string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: boolean
   isFinal?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageCreateallowedNextCategoriesInput | $Enums.Category[]
   workflowId: string
   outgoingTransitions?: Prisma.WorkflowTransitionUncheckedCreateNestedManyWithoutFromStageInput
   incomingTransitions?: Prisma.WorkflowTransitionUncheckedCreateNestedManyWithoutToStageInput
@@ -1175,10 +1268,12 @@ export type WorkflowStageCreateWithoutHistoriesToInput = {
   code: string
   order: number
   color?: string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: boolean
   isFinal?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageCreateallowedNextCategoriesInput | $Enums.Category[]
   workflow: Prisma.WorkflowDefinitionCreateNestedOneWithoutStagesInput
   outgoingTransitions?: Prisma.WorkflowTransitionCreateNestedManyWithoutFromStageInput
   incomingTransitions?: Prisma.WorkflowTransitionCreateNestedManyWithoutToStageInput
@@ -1194,10 +1289,12 @@ export type WorkflowStageUncheckedCreateWithoutHistoriesToInput = {
   code: string
   order: number
   color?: string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: boolean
   isFinal?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageCreateallowedNextCategoriesInput | $Enums.Category[]
   workflowId: string
   outgoingTransitions?: Prisma.WorkflowTransitionUncheckedCreateNestedManyWithoutFromStageInput
   incomingTransitions?: Prisma.WorkflowTransitionUncheckedCreateNestedManyWithoutToStageInput
@@ -1229,10 +1326,12 @@ export type WorkflowStageUpdateWithoutHistoriesFromInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageUpdateallowedNextCategoriesInput | $Enums.Category[]
   workflow?: Prisma.WorkflowDefinitionUpdateOneRequiredWithoutStagesNestedInput
   outgoingTransitions?: Prisma.WorkflowTransitionUpdateManyWithoutFromStageNestedInput
   incomingTransitions?: Prisma.WorkflowTransitionUpdateManyWithoutToStageNestedInput
@@ -1248,10 +1347,12 @@ export type WorkflowStageUncheckedUpdateWithoutHistoriesFromInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageUpdateallowedNextCategoriesInput | $Enums.Category[]
   workflowId?: Prisma.StringFieldUpdateOperationsInput | string
   outgoingTransitions?: Prisma.WorkflowTransitionUncheckedUpdateManyWithoutFromStageNestedInput
   incomingTransitions?: Prisma.WorkflowTransitionUncheckedUpdateManyWithoutToStageNestedInput
@@ -1278,10 +1379,12 @@ export type WorkflowStageUpdateWithoutHistoriesToInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageUpdateallowedNextCategoriesInput | $Enums.Category[]
   workflow?: Prisma.WorkflowDefinitionUpdateOneRequiredWithoutStagesNestedInput
   outgoingTransitions?: Prisma.WorkflowTransitionUpdateManyWithoutFromStageNestedInput
   incomingTransitions?: Prisma.WorkflowTransitionUpdateManyWithoutToStageNestedInput
@@ -1297,10 +1400,12 @@ export type WorkflowStageUncheckedUpdateWithoutHistoriesToInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageUpdateallowedNextCategoriesInput | $Enums.Category[]
   workflowId?: Prisma.StringFieldUpdateOperationsInput | string
   outgoingTransitions?: Prisma.WorkflowTransitionUncheckedUpdateManyWithoutFromStageNestedInput
   incomingTransitions?: Prisma.WorkflowTransitionUncheckedUpdateManyWithoutToStageNestedInput
@@ -1316,10 +1421,12 @@ export type WorkflowStageCreateWithoutTasksInput = {
   code: string
   order: number
   color?: string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: boolean
   isFinal?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageCreateallowedNextCategoriesInput | $Enums.Category[]
   workflow: Prisma.WorkflowDefinitionCreateNestedOneWithoutStagesInput
   outgoingTransitions?: Prisma.WorkflowTransitionCreateNestedManyWithoutFromStageInput
   incomingTransitions?: Prisma.WorkflowTransitionCreateNestedManyWithoutToStageInput
@@ -1335,10 +1442,12 @@ export type WorkflowStageUncheckedCreateWithoutTasksInput = {
   code: string
   order: number
   color?: string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: boolean
   isFinal?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageCreateallowedNextCategoriesInput | $Enums.Category[]
   workflowId: string
   outgoingTransitions?: Prisma.WorkflowTransitionUncheckedCreateNestedManyWithoutFromStageInput
   incomingTransitions?: Prisma.WorkflowTransitionUncheckedCreateNestedManyWithoutToStageInput
@@ -1370,10 +1479,12 @@ export type WorkflowStageUpdateWithoutTasksInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageUpdateallowedNextCategoriesInput | $Enums.Category[]
   workflow?: Prisma.WorkflowDefinitionUpdateOneRequiredWithoutStagesNestedInput
   outgoingTransitions?: Prisma.WorkflowTransitionUpdateManyWithoutFromStageNestedInput
   incomingTransitions?: Prisma.WorkflowTransitionUpdateManyWithoutToStageNestedInput
@@ -1389,10 +1500,12 @@ export type WorkflowStageUncheckedUpdateWithoutTasksInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageUpdateallowedNextCategoriesInput | $Enums.Category[]
   workflowId?: Prisma.StringFieldUpdateOperationsInput | string
   outgoingTransitions?: Prisma.WorkflowTransitionUncheckedUpdateManyWithoutFromStageNestedInput
   incomingTransitions?: Prisma.WorkflowTransitionUncheckedUpdateManyWithoutToStageNestedInput
@@ -1408,10 +1521,12 @@ export type WorkflowStageCreateManyWorkflowInput = {
   code: string
   order: number
   color?: string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: boolean
   isFinal?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageCreateallowedNextCategoriesInput | $Enums.Category[]
 }
 
 export type WorkflowStageUpdateWithoutWorkflowInput = {
@@ -1420,10 +1535,12 @@ export type WorkflowStageUpdateWithoutWorkflowInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageUpdateallowedNextCategoriesInput | $Enums.Category[]
   outgoingTransitions?: Prisma.WorkflowTransitionUpdateManyWithoutFromStageNestedInput
   incomingTransitions?: Prisma.WorkflowTransitionUpdateManyWithoutToStageNestedInput
   instances?: Prisma.WorkflowInstanceUpdateManyWithoutCurrentStageNestedInput
@@ -1439,10 +1556,12 @@ export type WorkflowStageUncheckedUpdateWithoutWorkflowInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageUpdateallowedNextCategoriesInput | $Enums.Category[]
   outgoingTransitions?: Prisma.WorkflowTransitionUncheckedUpdateManyWithoutFromStageNestedInput
   incomingTransitions?: Prisma.WorkflowTransitionUncheckedUpdateManyWithoutToStageNestedInput
   instances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutCurrentStageNestedInput
@@ -1458,10 +1577,12 @@ export type WorkflowStageUncheckedUpdateManyWithoutWorkflowInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isInitial?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFinal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+  allowedNextCategories?: Prisma.WorkflowStageUpdateallowedNextCategoriesInput | $Enums.Category[]
 }
 
 
@@ -1555,10 +1676,12 @@ export type WorkflowStageSelect<ExtArgs extends runtime.Types.Extensions.Interna
   code?: boolean
   order?: boolean
   color?: boolean
+  position?: boolean
   isInitial?: boolean
   isFinal?: boolean
   metadata?: boolean
   category?: boolean
+  allowedNextCategories?: boolean
   workflowId?: boolean
   workflow?: boolean | Prisma.WorkflowDefinitionDefaultArgs<ExtArgs>
   outgoingTransitions?: boolean | Prisma.WorkflowStage$outgoingTransitionsArgs<ExtArgs>
@@ -1577,10 +1700,12 @@ export type WorkflowStageSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   code?: boolean
   order?: boolean
   color?: boolean
+  position?: boolean
   isInitial?: boolean
   isFinal?: boolean
   metadata?: boolean
   category?: boolean
+  allowedNextCategories?: boolean
   workflowId?: boolean
   workflow?: boolean | Prisma.WorkflowDefinitionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["workflowStage"]>
@@ -1591,10 +1716,12 @@ export type WorkflowStageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   code?: boolean
   order?: boolean
   color?: boolean
+  position?: boolean
   isInitial?: boolean
   isFinal?: boolean
   metadata?: boolean
   category?: boolean
+  allowedNextCategories?: boolean
   workflowId?: boolean
   workflow?: boolean | Prisma.WorkflowDefinitionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["workflowStage"]>
@@ -1605,14 +1732,16 @@ export type WorkflowStageSelectScalar = {
   code?: boolean
   order?: boolean
   color?: boolean
+  position?: boolean
   isInitial?: boolean
   isFinal?: boolean
   metadata?: boolean
   category?: boolean
+  allowedNextCategories?: boolean
   workflowId?: boolean
 }
 
-export type WorkflowStageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "code" | "order" | "color" | "isInitial" | "isFinal" | "metadata" | "category" | "workflowId", ExtArgs["result"]["workflowStage"]>
+export type WorkflowStageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "code" | "order" | "color" | "position" | "isInitial" | "isFinal" | "metadata" | "category" | "allowedNextCategories" | "workflowId", ExtArgs["result"]["workflowStage"]>
 export type WorkflowStageInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   workflow?: boolean | Prisma.WorkflowDefinitionDefaultArgs<ExtArgs>
   outgoingTransitions?: boolean | Prisma.WorkflowStage$outgoingTransitionsArgs<ExtArgs>
@@ -1649,10 +1778,12 @@ export type $WorkflowStagePayload<ExtArgs extends runtime.Types.Extensions.Inter
     code: string
     order: number
     color: string | null
+    position: runtime.JsonValue | null
     isInitial: boolean
     isFinal: boolean
     metadata: runtime.JsonValue | null
     category: $Enums.Category
+    allowedNextCategories: $Enums.Category[]
     workflowId: string
   }, ExtArgs["result"]["workflowStage"]>
   composites: {}
@@ -2090,10 +2221,12 @@ export interface WorkflowStageFieldRefs {
   readonly code: Prisma.FieldRef<"WorkflowStage", 'String'>
   readonly order: Prisma.FieldRef<"WorkflowStage", 'Int'>
   readonly color: Prisma.FieldRef<"WorkflowStage", 'String'>
+  readonly position: Prisma.FieldRef<"WorkflowStage", 'Json'>
   readonly isInitial: Prisma.FieldRef<"WorkflowStage", 'Boolean'>
   readonly isFinal: Prisma.FieldRef<"WorkflowStage", 'Boolean'>
   readonly metadata: Prisma.FieldRef<"WorkflowStage", 'Json'>
   readonly category: Prisma.FieldRef<"WorkflowStage", 'Category'>
+  readonly allowedNextCategories: Prisma.FieldRef<"WorkflowStage", 'Category[]'>
   readonly workflowId: Prisma.FieldRef<"WorkflowStage", 'String'>
 }
     

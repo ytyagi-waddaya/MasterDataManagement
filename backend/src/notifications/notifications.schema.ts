@@ -19,7 +19,7 @@ export const markReadSchema = z.object({
 });
 
 export const listSchema = z.object({
-  userId: z.string(),
+  userId: z.uuid(),
   take: z.string().optional(),
   skip: z.string().optional(),
 });

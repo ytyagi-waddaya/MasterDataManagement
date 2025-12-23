@@ -5,85 +5,224 @@ export const nameSchema = z
   .min(2, "Name must be at least 2 characters")
   .max(50, "Name cannot exceed 50 characters");
 
-const fieldOptionSchema = z.object({
-  label: z.string(),
-  value: z.string(),
-});
+export const fieldConfigSchema = z
+  .object({
+    /* ================= META ================= */
 
-const dynamicFieldSchema = z.object({
-  id: z.string(),
-  label: z.string(),
-  type: z.enum([
-    "text",
-    "textarea",
-    "number",
-    "select",
-    "checkbox",
-    "date",
-    "datetime",
-    "email",
-    "phone",
-    "currency",
-    "radio",
-  ]),
-  required: z.boolean().optional(),
-  placeholder: z.string().optional().nullable(),
-  defaultValue: z.any().optional(),
-  order: z.number(),
+    meta: z
+      .object({
+        key: z.string().min(1),
+        label: z.string().min(1),
+        category: z.enum([
+          "INPUT",
+          "SYSTEM",
+          "CALCULATED",
+          "REFERENCE",
+        ]),
+        system: z.boolean().optional(),
+        locked: z.boolean().optional(),
+        deprecated: z.boolean().optional(),
+      })
+      .strict(),
 
-  layout: z.enum(["full", "half", "third", "quarter", "two-third"]).optional(),
+    /* ================= DATA ================= */
 
-  min: z.number().nullable().optional(),
-  max: z.number().nullable().optional(),
+    data: z
+      .object({
+        type: z.enum([
+          "STRING",
+          "NUMBER",
+          "BOOLEAN",
+          "DATE",
+          "DATETIME",
+          "JSON",
+        ]),
+        default: z.any().optional(),
+        nullable: z.boolean().optional(),
+        precision: z.number().optional(),
+        scale: z.number().optional(),
+      })
+      .strict(),
 
-  options: z.array(fieldOptionSchema).optional(),
+    /* ================= UI ================= */
 
-  visibleIf: z
-    .object({
-      fieldId: z.string().nullable(),
-      value: z.any(),
-    })
-    .nullable()
-    .optional(),
+    ui: z
+      .object({
+        widget: z.enum([
+          "TEXT",
+          "TEXTAREA",
+          "NUMBER",
+          "CURRENCY",
+          "SELECT",
+          "RADIO",
+          "CHECKBOX",
+          "DATE",
+          "DATETIME",
+        ]),
+        placeholder: z.string().optional(),
+        helpText: z.string().optional(),
 
-  permissions: z
-    .object({
-      read: z.array(z.string()).optional(),
-      write: z.array(z.string()).optional(),
-    })
-    .optional(),
-  key: z
-    .string()
-    .min(1, "Field key is required")
-    .regex(
-      /^[a-zA-Z0-9_]+$/,
-      "Key must use letters, numbers, and underscores only"
-    ),
-  showInList: z.boolean().optional().default(false),
-});
+        layout: z
+          .object({
+            width: z
+              .enum([
+                "full",
+                "half",
+                "third",
+                "quarter",
+                "two-third",
+              ])
+              .optional(),
+            order: z.number().optional(),
+            section: z.string().optional(),
+          })
+          .strict()
+          .optional(),
+      })
+      .strict()
+      .optional(),
 
-const formSectionSchema = z.object({
-  id: z.string(),
-  title: z.string(),
-  order: z.number(),
-  collapsed: z.boolean().optional(),
-  fields: z.array(dynamicFieldSchema),
-});
+    /* ================= VALIDATION ================= */
 
-export const updateFieldsSchema = z.array(formSectionSchema);
+    validation: z
+      .object({
+        required: z.boolean().optional(),
+        rules: z
+          .array(
+            z
+              .object({
+                type: z.enum([
+                  "REQUIRED",
+                  "RANGE",
+                  "MIN",
+                  "MAX",
+                  "REGEX",
+                  "REQUIRED_IF",
+                ]),
+                params: z.any().optional(),
+                message: z.string(),
+                severity: z.enum(["ERROR", "WARN"]).optional(),
+              })
+              .strict()
+          )
+          .optional(),
+      })
+      .strict()
+      .optional(),
 
-export const createMasterObjectSchema = z.object({
-  name: nameSchema,
-  key: z.string().min(2),
-  fields: updateFieldsSchema.optional,
-});
+    /* ================= VISIBILITY ================= */
 
-export const updateMasterObjectSchema = z.object({
-  name: nameSchema.optional(),
-  fields: updateFieldsSchema.optional(),
-  isActive: z.boolean().optional().default(true),
-  isSystem: z.boolean().optional().default(false),
-});
+    visibility: z
+      .object({
+        visible: z.boolean().optional(),
+        conditions: z
+          .array(
+            z
+              .object({
+                field: z.string(),
+                operator: z.enum(["EQUALS", "IN", "GT", "LT"]),
+                value: z.any(),
+              })
+              .strict()
+          )
+          .optional(),
+      })
+      .strict()
+      .optional(),
+
+    /* ================= PERMISSIONS ================= */
+
+    permissions: z
+      .object({
+        read: z
+          .object({
+            roles: z.array(z.string()).optional(),
+            users: z.array(z.string()).optional(),
+            conditions: z
+              .array(
+                z
+                  .object({
+                    field: z.string(),
+                    equals: z.any(),
+                  })
+                  .strict()
+              )
+              .optional(),
+          })
+          .strict()
+          .optional(),
+
+        write: z
+          .object({
+            roles: z.array(z.string()).optional(),
+            users: z.array(z.string()).optional(),
+            conditions: z
+              .array(
+                z
+                  .object({
+                    field: z.string(),
+                    equals: z.any(),
+                  })
+                  .strict()
+              )
+              .optional(),
+          })
+          .strict()
+          .optional(),
+      })
+      .strict()
+      .optional(),
+
+    /* ================= BEHAVIOR ================= */
+
+    behavior: z
+      .object({
+        readOnly: z.boolean().optional(),
+
+        lockWhen: z
+          .object({
+            field: z.string(),
+            equals: z.any(),
+          })
+          .strict()
+          .optional(),
+
+        formula: z
+          .object({
+            expression: z.string().min(1),
+            dependencies: z.array(z.string()).min(1),
+          })
+          .strict()
+          .optional(),
+      })
+      .strict()
+      .optional(),
+  })
+  .strict();
+
+
+export const updateMasterObjectSchema = z
+  .object({
+    name: nameSchema.optional(),
+    isActive: z.boolean().optional(),
+
+    schema: z.array(fieldConfigSchema).optional(),
+
+    publish: z.boolean().optional(),
+  })
+  .strict();
+
+export const createMasterObjectSchema = z
+  .object({
+    name: nameSchema,
+    key: z.string().min(2),
+    // fields: updateFieldsSchema.optional(),
+  })
+  .strict();
+
+/* ======================================================
+   PARAMS / FILTERS
+====================================================== */
 
 export const masterObjectIdSchema = z.object({
   masterObjectId: z.uuid("Invalid MasterObject ID"),
@@ -122,20 +261,24 @@ export const masterObjectFilterSchema = z
     createdFrom: z
       .string()
       .optional()
-      .refine((val) => !val || !isNaN(Date.parse(val)), "Invalid date format"),
+      .refine((val) => !val || !isNaN(Date.parse(val)), "Invalid date"),
 
     createdTo: z
       .string()
       .optional()
-      .refine((val) => !val || !isNaN(Date.parse(val)), "Invalid date format"),
+      .refine((val) => !val || !isNaN(Date.parse(val)), "Invalid date"),
 
     sortBy: z.enum(allowedSortColumns).default("createdAt"),
     sortOrder: z.enum(["asc", "desc"]).default("desc"),
   })
   .strict();
 
-export type createMasterObjectInput = z.infer<typeof createMasterObjectSchema>;
-export type updateMasterObjectInput = z.infer<typeof updateMasterObjectSchema>;
+/* ======================================================
+   TYPES
+====================================================== */
+
+export type CreateMasterObjectInput = z.infer<typeof createMasterObjectSchema>;
+export type UpdateMasterObjectInput = z.infer<typeof updateMasterObjectSchema>;
 export type masterObjectId = z.infer<typeof masterObjectIdSchema>;
 export type masterObjectFilterInput = z.infer<typeof masterObjectFilterSchema>;
 export type SortColumn = (typeof allowedSortColumns)[number];

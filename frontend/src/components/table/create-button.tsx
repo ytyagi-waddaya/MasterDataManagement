@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useRef } from "react";
-import { GenericDialog } from "@/components/dialog/genericDialog";
+import React, { useState } from "react";
+import { GenericDialog, DialogSize } from "@/components/dialog/genericDialog";
 import { Button } from "../ui/button";
 import { Plus } from "lucide-react";
 
@@ -20,14 +20,15 @@ export function CreateButton<T extends Record<string, any>>({
   onSubmit: (close: () => void) => void;
   confirmDisabled?: boolean;
   onOpenReset?: () => void;
-  size?: "sm" | "md" | "lg";
+  size?: DialogSize; // 👈 FIX
 }) {
   const [open, setOpen] = useState(false);
+
   const handleOpenChange = (isOpen: boolean) => {
     if (isOpen) {
-      onOpenReset?.(); 
+      onOpenReset?.();
     }
-    setOpen(isOpen); 
+    setOpen(isOpen);
   };
 
   return (
@@ -35,7 +36,7 @@ export function CreateButton<T extends Record<string, any>>({
       title={title}
       open={open}
       onOpenChange={handleOpenChange}
-      size={size}
+      size={size} // 👈 now supports custom Tailwind
       trigger={
         <Button className="flex items-center gap-2">
           <Plus className="w-4 h-4" /> {triggerText}

@@ -1,0 +1,2647 @@
+import type * as runtime from "@prisma/client/runtime/client";
+import type * as $Enums from "../enums.js";
+import type * as Prisma from "../internal/prismaNamespace.js";
+/**
+ * Model FieldDefinition
+ *
+ */
+export type FieldDefinitionModel = runtime.Types.Result.DefaultSelection<Prisma.$FieldDefinitionPayload>;
+export type AggregateFieldDefinition = {
+    _count: FieldDefinitionCountAggregateOutputType | null;
+    _avg: FieldDefinitionAvgAggregateOutputType | null;
+    _sum: FieldDefinitionSumAggregateOutputType | null;
+    _min: FieldDefinitionMinAggregateOutputType | null;
+    _max: FieldDefinitionMaxAggregateOutputType | null;
+};
+export type FieldDefinitionAvgAggregateOutputType = {
+    order: number | null;
+};
+export type FieldDefinitionSumAggregateOutputType = {
+    order: number | null;
+};
+export type FieldDefinitionMinAggregateOutputType = {
+    id: string | null;
+    masterObjectId: string | null;
+    schemaId: string | null;
+    key: string | null;
+    label: string | null;
+    category: $Enums.FieldCategory | null;
+    dataType: $Enums.FieldDataType | null;
+    fieldType: $Enums.FieldType | null;
+    order: number | null;
+    isRequired: boolean | null;
+    isSystem: boolean | null;
+    isActive: boolean | null;
+    isLocked: boolean | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+    deletedAt: Date | null;
+};
+export type FieldDefinitionMaxAggregateOutputType = {
+    id: string | null;
+    masterObjectId: string | null;
+    schemaId: string | null;
+    key: string | null;
+    label: string | null;
+    category: $Enums.FieldCategory | null;
+    dataType: $Enums.FieldDataType | null;
+    fieldType: $Enums.FieldType | null;
+    order: number | null;
+    isRequired: boolean | null;
+    isSystem: boolean | null;
+    isActive: boolean | null;
+    isLocked: boolean | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+    deletedAt: Date | null;
+};
+export type FieldDefinitionCountAggregateOutputType = {
+    id: number;
+    masterObjectId: number;
+    schemaId: number;
+    key: number;
+    label: number;
+    category: number;
+    dataType: number;
+    fieldType: number;
+    config: number;
+    order: number;
+    isRequired: number;
+    isSystem: number;
+    isActive: number;
+    isLocked: number;
+    createdAt: number;
+    updatedAt: number;
+    deletedAt: number;
+    _all: number;
+};
+export type FieldDefinitionAvgAggregateInputType = {
+    order?: true;
+};
+export type FieldDefinitionSumAggregateInputType = {
+    order?: true;
+};
+export type FieldDefinitionMinAggregateInputType = {
+    id?: true;
+    masterObjectId?: true;
+    schemaId?: true;
+    key?: true;
+    label?: true;
+    category?: true;
+    dataType?: true;
+    fieldType?: true;
+    order?: true;
+    isRequired?: true;
+    isSystem?: true;
+    isActive?: true;
+    isLocked?: true;
+    createdAt?: true;
+    updatedAt?: true;
+    deletedAt?: true;
+};
+export type FieldDefinitionMaxAggregateInputType = {
+    id?: true;
+    masterObjectId?: true;
+    schemaId?: true;
+    key?: true;
+    label?: true;
+    category?: true;
+    dataType?: true;
+    fieldType?: true;
+    order?: true;
+    isRequired?: true;
+    isSystem?: true;
+    isActive?: true;
+    isLocked?: true;
+    createdAt?: true;
+    updatedAt?: true;
+    deletedAt?: true;
+};
+export type FieldDefinitionCountAggregateInputType = {
+    id?: true;
+    masterObjectId?: true;
+    schemaId?: true;
+    key?: true;
+    label?: true;
+    category?: true;
+    dataType?: true;
+    fieldType?: true;
+    config?: true;
+    order?: true;
+    isRequired?: true;
+    isSystem?: true;
+    isActive?: true;
+    isLocked?: true;
+    createdAt?: true;
+    updatedAt?: true;
+    deletedAt?: true;
+    _all?: true;
+};
+export type FieldDefinitionAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which FieldDefinition to aggregate.
+     */
+    where?: Prisma.FieldDefinitionWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of FieldDefinitions to fetch.
+     */
+    orderBy?: Prisma.FieldDefinitionOrderByWithRelationInput | Prisma.FieldDefinitionOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: Prisma.FieldDefinitionWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` FieldDefinitions from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` FieldDefinitions.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned FieldDefinitions
+    **/
+    _count?: true | FieldDefinitionCountAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to average
+    **/
+    _avg?: FieldDefinitionAvgAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to sum
+    **/
+    _sum?: FieldDefinitionSumAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: FieldDefinitionMinAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: FieldDefinitionMaxAggregateInputType;
+};
+export type GetFieldDefinitionAggregateType<T extends FieldDefinitionAggregateArgs> = {
+    [P in keyof T & keyof AggregateFieldDefinition]: P extends '_count' | 'count' ? T[P] extends true ? number : Prisma.GetScalarType<T[P], AggregateFieldDefinition[P]> : Prisma.GetScalarType<T[P], AggregateFieldDefinition[P]>;
+};
+export type FieldDefinitionGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.FieldDefinitionWhereInput;
+    orderBy?: Prisma.FieldDefinitionOrderByWithAggregationInput | Prisma.FieldDefinitionOrderByWithAggregationInput[];
+    by: Prisma.FieldDefinitionScalarFieldEnum[] | Prisma.FieldDefinitionScalarFieldEnum;
+    having?: Prisma.FieldDefinitionScalarWhereWithAggregatesInput;
+    take?: number;
+    skip?: number;
+    _count?: FieldDefinitionCountAggregateInputType | true;
+    _avg?: FieldDefinitionAvgAggregateInputType;
+    _sum?: FieldDefinitionSumAggregateInputType;
+    _min?: FieldDefinitionMinAggregateInputType;
+    _max?: FieldDefinitionMaxAggregateInputType;
+};
+export type FieldDefinitionGroupByOutputType = {
+    id: string;
+    masterObjectId: string;
+    schemaId: string;
+    key: string;
+    label: string;
+    category: $Enums.FieldCategory;
+    dataType: $Enums.FieldDataType;
+    fieldType: $Enums.FieldType;
+    config: runtime.JsonValue;
+    order: number;
+    isRequired: boolean;
+    isSystem: boolean;
+    isActive: boolean;
+    isLocked: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt: Date | null;
+    _count: FieldDefinitionCountAggregateOutputType | null;
+    _avg: FieldDefinitionAvgAggregateOutputType | null;
+    _sum: FieldDefinitionSumAggregateOutputType | null;
+    _min: FieldDefinitionMinAggregateOutputType | null;
+    _max: FieldDefinitionMaxAggregateOutputType | null;
+};
+type GetFieldDefinitionGroupByPayload<T extends FieldDefinitionGroupByArgs> = Prisma.PrismaPromise<Array<Prisma.PickEnumerable<FieldDefinitionGroupByOutputType, T['by']> & {
+    [P in ((keyof T) & (keyof FieldDefinitionGroupByOutputType))]: P extends '_count' ? T[P] extends boolean ? number : Prisma.GetScalarType<T[P], FieldDefinitionGroupByOutputType[P]> : Prisma.GetScalarType<T[P], FieldDefinitionGroupByOutputType[P]>;
+}>>;
+export type FieldDefinitionWhereInput = {
+    AND?: Prisma.FieldDefinitionWhereInput | Prisma.FieldDefinitionWhereInput[];
+    OR?: Prisma.FieldDefinitionWhereInput[];
+    NOT?: Prisma.FieldDefinitionWhereInput | Prisma.FieldDefinitionWhereInput[];
+    id?: Prisma.StringFilter<"FieldDefinition"> | string;
+    masterObjectId?: Prisma.StringFilter<"FieldDefinition"> | string;
+    schemaId?: Prisma.StringFilter<"FieldDefinition"> | string;
+    key?: Prisma.StringFilter<"FieldDefinition"> | string;
+    label?: Prisma.StringFilter<"FieldDefinition"> | string;
+    category?: Prisma.EnumFieldCategoryFilter<"FieldDefinition"> | $Enums.FieldCategory;
+    dataType?: Prisma.EnumFieldDataTypeFilter<"FieldDefinition"> | $Enums.FieldDataType;
+    fieldType?: Prisma.EnumFieldTypeFilter<"FieldDefinition"> | $Enums.FieldType;
+    config?: Prisma.JsonFilter<"FieldDefinition">;
+    order?: Prisma.IntFilter<"FieldDefinition"> | number;
+    isRequired?: Prisma.BoolFilter<"FieldDefinition"> | boolean;
+    isSystem?: Prisma.BoolFilter<"FieldDefinition"> | boolean;
+    isActive?: Prisma.BoolFilter<"FieldDefinition"> | boolean;
+    isLocked?: Prisma.BoolFilter<"FieldDefinition"> | boolean;
+    createdAt?: Prisma.DateTimeFilter<"FieldDefinition"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"FieldDefinition"> | Date | string;
+    deletedAt?: Prisma.DateTimeNullableFilter<"FieldDefinition"> | Date | string | null;
+    masterObject?: Prisma.XOR<Prisma.MasterObjectScalarRelationFilter, Prisma.MasterObjectWhereInput>;
+    schema?: Prisma.XOR<Prisma.MasterObjectSchemaScalarRelationFilter, Prisma.MasterObjectSchemaWhereInput>;
+    fieldPermissions?: Prisma.FieldPermissionListRelationFilter;
+    fieldValidationRules?: Prisma.FieldValidationRuleListRelationFilter;
+    fieldFormula?: Prisma.XOR<Prisma.FieldFormulaNullableScalarRelationFilter, Prisma.FieldFormulaWhereInput> | null;
+    fieldReference?: Prisma.XOR<Prisma.FieldReferenceNullableScalarRelationFilter, Prisma.FieldReferenceWhereInput> | null;
+    fieldConditionBindings?: Prisma.FieldConditionBindingListRelationFilter;
+};
+export type FieldDefinitionOrderByWithRelationInput = {
+    id?: Prisma.SortOrder;
+    masterObjectId?: Prisma.SortOrder;
+    schemaId?: Prisma.SortOrder;
+    key?: Prisma.SortOrder;
+    label?: Prisma.SortOrder;
+    category?: Prisma.SortOrder;
+    dataType?: Prisma.SortOrder;
+    fieldType?: Prisma.SortOrder;
+    config?: Prisma.SortOrder;
+    order?: Prisma.SortOrder;
+    isRequired?: Prisma.SortOrder;
+    isSystem?: Prisma.SortOrder;
+    isActive?: Prisma.SortOrder;
+    isLocked?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    masterObject?: Prisma.MasterObjectOrderByWithRelationInput;
+    schema?: Prisma.MasterObjectSchemaOrderByWithRelationInput;
+    fieldPermissions?: Prisma.FieldPermissionOrderByRelationAggregateInput;
+    fieldValidationRules?: Prisma.FieldValidationRuleOrderByRelationAggregateInput;
+    fieldFormula?: Prisma.FieldFormulaOrderByWithRelationInput;
+    fieldReference?: Prisma.FieldReferenceOrderByWithRelationInput;
+    fieldConditionBindings?: Prisma.FieldConditionBindingOrderByRelationAggregateInput;
+};
+export type FieldDefinitionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string;
+    schemaId_key?: Prisma.FieldDefinitionSchemaIdKeyCompoundUniqueInput;
+    AND?: Prisma.FieldDefinitionWhereInput | Prisma.FieldDefinitionWhereInput[];
+    OR?: Prisma.FieldDefinitionWhereInput[];
+    NOT?: Prisma.FieldDefinitionWhereInput | Prisma.FieldDefinitionWhereInput[];
+    masterObjectId?: Prisma.StringFilter<"FieldDefinition"> | string;
+    schemaId?: Prisma.StringFilter<"FieldDefinition"> | string;
+    key?: Prisma.StringFilter<"FieldDefinition"> | string;
+    label?: Prisma.StringFilter<"FieldDefinition"> | string;
+    category?: Prisma.EnumFieldCategoryFilter<"FieldDefinition"> | $Enums.FieldCategory;
+    dataType?: Prisma.EnumFieldDataTypeFilter<"FieldDefinition"> | $Enums.FieldDataType;
+    fieldType?: Prisma.EnumFieldTypeFilter<"FieldDefinition"> | $Enums.FieldType;
+    config?: Prisma.JsonFilter<"FieldDefinition">;
+    order?: Prisma.IntFilter<"FieldDefinition"> | number;
+    isRequired?: Prisma.BoolFilter<"FieldDefinition"> | boolean;
+    isSystem?: Prisma.BoolFilter<"FieldDefinition"> | boolean;
+    isActive?: Prisma.BoolFilter<"FieldDefinition"> | boolean;
+    isLocked?: Prisma.BoolFilter<"FieldDefinition"> | boolean;
+    createdAt?: Prisma.DateTimeFilter<"FieldDefinition"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"FieldDefinition"> | Date | string;
+    deletedAt?: Prisma.DateTimeNullableFilter<"FieldDefinition"> | Date | string | null;
+    masterObject?: Prisma.XOR<Prisma.MasterObjectScalarRelationFilter, Prisma.MasterObjectWhereInput>;
+    schema?: Prisma.XOR<Prisma.MasterObjectSchemaScalarRelationFilter, Prisma.MasterObjectSchemaWhereInput>;
+    fieldPermissions?: Prisma.FieldPermissionListRelationFilter;
+    fieldValidationRules?: Prisma.FieldValidationRuleListRelationFilter;
+    fieldFormula?: Prisma.XOR<Prisma.FieldFormulaNullableScalarRelationFilter, Prisma.FieldFormulaWhereInput> | null;
+    fieldReference?: Prisma.XOR<Prisma.FieldReferenceNullableScalarRelationFilter, Prisma.FieldReferenceWhereInput> | null;
+    fieldConditionBindings?: Prisma.FieldConditionBindingListRelationFilter;
+}, "id" | "schemaId_key">;
+export type FieldDefinitionOrderByWithAggregationInput = {
+    id?: Prisma.SortOrder;
+    masterObjectId?: Prisma.SortOrder;
+    schemaId?: Prisma.SortOrder;
+    key?: Prisma.SortOrder;
+    label?: Prisma.SortOrder;
+    category?: Prisma.SortOrder;
+    dataType?: Prisma.SortOrder;
+    fieldType?: Prisma.SortOrder;
+    config?: Prisma.SortOrder;
+    order?: Prisma.SortOrder;
+    isRequired?: Prisma.SortOrder;
+    isSystem?: Prisma.SortOrder;
+    isActive?: Prisma.SortOrder;
+    isLocked?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    _count?: Prisma.FieldDefinitionCountOrderByAggregateInput;
+    _avg?: Prisma.FieldDefinitionAvgOrderByAggregateInput;
+    _max?: Prisma.FieldDefinitionMaxOrderByAggregateInput;
+    _min?: Prisma.FieldDefinitionMinOrderByAggregateInput;
+    _sum?: Prisma.FieldDefinitionSumOrderByAggregateInput;
+};
+export type FieldDefinitionScalarWhereWithAggregatesInput = {
+    AND?: Prisma.FieldDefinitionScalarWhereWithAggregatesInput | Prisma.FieldDefinitionScalarWhereWithAggregatesInput[];
+    OR?: Prisma.FieldDefinitionScalarWhereWithAggregatesInput[];
+    NOT?: Prisma.FieldDefinitionScalarWhereWithAggregatesInput | Prisma.FieldDefinitionScalarWhereWithAggregatesInput[];
+    id?: Prisma.StringWithAggregatesFilter<"FieldDefinition"> | string;
+    masterObjectId?: Prisma.StringWithAggregatesFilter<"FieldDefinition"> | string;
+    schemaId?: Prisma.StringWithAggregatesFilter<"FieldDefinition"> | string;
+    key?: Prisma.StringWithAggregatesFilter<"FieldDefinition"> | string;
+    label?: Prisma.StringWithAggregatesFilter<"FieldDefinition"> | string;
+    category?: Prisma.EnumFieldCategoryWithAggregatesFilter<"FieldDefinition"> | $Enums.FieldCategory;
+    dataType?: Prisma.EnumFieldDataTypeWithAggregatesFilter<"FieldDefinition"> | $Enums.FieldDataType;
+    fieldType?: Prisma.EnumFieldTypeWithAggregatesFilter<"FieldDefinition"> | $Enums.FieldType;
+    config?: Prisma.JsonWithAggregatesFilter<"FieldDefinition">;
+    order?: Prisma.IntWithAggregatesFilter<"FieldDefinition"> | number;
+    isRequired?: Prisma.BoolWithAggregatesFilter<"FieldDefinition"> | boolean;
+    isSystem?: Prisma.BoolWithAggregatesFilter<"FieldDefinition"> | boolean;
+    isActive?: Prisma.BoolWithAggregatesFilter<"FieldDefinition"> | boolean;
+    isLocked?: Prisma.BoolWithAggregatesFilter<"FieldDefinition"> | boolean;
+    createdAt?: Prisma.DateTimeWithAggregatesFilter<"FieldDefinition"> | Date | string;
+    updatedAt?: Prisma.DateTimeWithAggregatesFilter<"FieldDefinition"> | Date | string;
+    deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"FieldDefinition"> | Date | string | null;
+};
+export type FieldDefinitionCreateInput = {
+    id?: string;
+    key: string;
+    label: string;
+    category: $Enums.FieldCategory;
+    dataType: $Enums.FieldDataType;
+    fieldType: $Enums.FieldType;
+    config: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order: number;
+    isRequired?: boolean;
+    isSystem?: boolean;
+    isActive?: boolean;
+    isLocked?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    masterObject: Prisma.MasterObjectCreateNestedOneWithoutFieldDefinitionsInput;
+    schema: Prisma.MasterObjectSchemaCreateNestedOneWithoutFieldDefinitionsInput;
+    fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutFieldInput;
+    fieldValidationRules?: Prisma.FieldValidationRuleCreateNestedManyWithoutFieldInput;
+    fieldFormula?: Prisma.FieldFormulaCreateNestedOneWithoutFieldInput;
+    fieldReference?: Prisma.FieldReferenceCreateNestedOneWithoutFieldInput;
+    fieldConditionBindings?: Prisma.FieldConditionBindingCreateNestedManyWithoutFieldInput;
+};
+export type FieldDefinitionUncheckedCreateInput = {
+    id?: string;
+    masterObjectId: string;
+    schemaId: string;
+    key: string;
+    label: string;
+    category: $Enums.FieldCategory;
+    dataType: $Enums.FieldDataType;
+    fieldType: $Enums.FieldType;
+    config: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order: number;
+    isRequired?: boolean;
+    isSystem?: boolean;
+    isActive?: boolean;
+    isLocked?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutFieldInput;
+    fieldValidationRules?: Prisma.FieldValidationRuleUncheckedCreateNestedManyWithoutFieldInput;
+    fieldFormula?: Prisma.FieldFormulaUncheckedCreateNestedOneWithoutFieldInput;
+    fieldReference?: Prisma.FieldReferenceUncheckedCreateNestedOneWithoutFieldInput;
+    fieldConditionBindings?: Prisma.FieldConditionBindingUncheckedCreateNestedManyWithoutFieldInput;
+};
+export type FieldDefinitionUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    label?: Prisma.StringFieldUpdateOperationsInput | string;
+    category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory;
+    dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType;
+    fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType;
+    config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order?: Prisma.IntFieldUpdateOperationsInput | number;
+    isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    masterObject?: Prisma.MasterObjectUpdateOneRequiredWithoutFieldDefinitionsNestedInput;
+    schema?: Prisma.MasterObjectSchemaUpdateOneRequiredWithoutFieldDefinitionsNestedInput;
+    fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutFieldNestedInput;
+    fieldValidationRules?: Prisma.FieldValidationRuleUpdateManyWithoutFieldNestedInput;
+    fieldFormula?: Prisma.FieldFormulaUpdateOneWithoutFieldNestedInput;
+    fieldReference?: Prisma.FieldReferenceUpdateOneWithoutFieldNestedInput;
+    fieldConditionBindings?: Prisma.FieldConditionBindingUpdateManyWithoutFieldNestedInput;
+};
+export type FieldDefinitionUncheckedUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    masterObjectId?: Prisma.StringFieldUpdateOperationsInput | string;
+    schemaId?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    label?: Prisma.StringFieldUpdateOperationsInput | string;
+    category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory;
+    dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType;
+    fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType;
+    config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order?: Prisma.IntFieldUpdateOperationsInput | number;
+    isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutFieldNestedInput;
+    fieldValidationRules?: Prisma.FieldValidationRuleUncheckedUpdateManyWithoutFieldNestedInput;
+    fieldFormula?: Prisma.FieldFormulaUncheckedUpdateOneWithoutFieldNestedInput;
+    fieldReference?: Prisma.FieldReferenceUncheckedUpdateOneWithoutFieldNestedInput;
+    fieldConditionBindings?: Prisma.FieldConditionBindingUncheckedUpdateManyWithoutFieldNestedInput;
+};
+export type FieldDefinitionCreateManyInput = {
+    id?: string;
+    masterObjectId: string;
+    schemaId: string;
+    key: string;
+    label: string;
+    category: $Enums.FieldCategory;
+    dataType: $Enums.FieldDataType;
+    fieldType: $Enums.FieldType;
+    config: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order: number;
+    isRequired?: boolean;
+    isSystem?: boolean;
+    isActive?: boolean;
+    isLocked?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+};
+export type FieldDefinitionUpdateManyMutationInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    label?: Prisma.StringFieldUpdateOperationsInput | string;
+    category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory;
+    dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType;
+    fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType;
+    config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order?: Prisma.IntFieldUpdateOperationsInput | number;
+    isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type FieldDefinitionUncheckedUpdateManyInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    masterObjectId?: Prisma.StringFieldUpdateOperationsInput | string;
+    schemaId?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    label?: Prisma.StringFieldUpdateOperationsInput | string;
+    category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory;
+    dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType;
+    fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType;
+    config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order?: Prisma.IntFieldUpdateOperationsInput | number;
+    isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type FieldDefinitionListRelationFilter = {
+    every?: Prisma.FieldDefinitionWhereInput;
+    some?: Prisma.FieldDefinitionWhereInput;
+    none?: Prisma.FieldDefinitionWhereInput;
+};
+export type FieldDefinitionOrderByRelationAggregateInput = {
+    _count?: Prisma.SortOrder;
+};
+export type FieldDefinitionSchemaIdKeyCompoundUniqueInput = {
+    schemaId: string;
+    key: string;
+};
+export type FieldDefinitionCountOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    masterObjectId?: Prisma.SortOrder;
+    schemaId?: Prisma.SortOrder;
+    key?: Prisma.SortOrder;
+    label?: Prisma.SortOrder;
+    category?: Prisma.SortOrder;
+    dataType?: Prisma.SortOrder;
+    fieldType?: Prisma.SortOrder;
+    config?: Prisma.SortOrder;
+    order?: Prisma.SortOrder;
+    isRequired?: Prisma.SortOrder;
+    isSystem?: Prisma.SortOrder;
+    isActive?: Prisma.SortOrder;
+    isLocked?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrder;
+};
+export type FieldDefinitionAvgOrderByAggregateInput = {
+    order?: Prisma.SortOrder;
+};
+export type FieldDefinitionMaxOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    masterObjectId?: Prisma.SortOrder;
+    schemaId?: Prisma.SortOrder;
+    key?: Prisma.SortOrder;
+    label?: Prisma.SortOrder;
+    category?: Prisma.SortOrder;
+    dataType?: Prisma.SortOrder;
+    fieldType?: Prisma.SortOrder;
+    order?: Prisma.SortOrder;
+    isRequired?: Prisma.SortOrder;
+    isSystem?: Prisma.SortOrder;
+    isActive?: Prisma.SortOrder;
+    isLocked?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrder;
+};
+export type FieldDefinitionMinOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    masterObjectId?: Prisma.SortOrder;
+    schemaId?: Prisma.SortOrder;
+    key?: Prisma.SortOrder;
+    label?: Prisma.SortOrder;
+    category?: Prisma.SortOrder;
+    dataType?: Prisma.SortOrder;
+    fieldType?: Prisma.SortOrder;
+    order?: Prisma.SortOrder;
+    isRequired?: Prisma.SortOrder;
+    isSystem?: Prisma.SortOrder;
+    isActive?: Prisma.SortOrder;
+    isLocked?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrder;
+};
+export type FieldDefinitionSumOrderByAggregateInput = {
+    order?: Prisma.SortOrder;
+};
+export type FieldDefinitionScalarRelationFilter = {
+    is?: Prisma.FieldDefinitionWhereInput;
+    isNot?: Prisma.FieldDefinitionWhereInput;
+};
+export type FieldDefinitionCreateNestedManyWithoutMasterObjectInput = {
+    create?: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutMasterObjectInput, Prisma.FieldDefinitionUncheckedCreateWithoutMasterObjectInput> | Prisma.FieldDefinitionCreateWithoutMasterObjectInput[] | Prisma.FieldDefinitionUncheckedCreateWithoutMasterObjectInput[];
+    connectOrCreate?: Prisma.FieldDefinitionCreateOrConnectWithoutMasterObjectInput | Prisma.FieldDefinitionCreateOrConnectWithoutMasterObjectInput[];
+    createMany?: Prisma.FieldDefinitionCreateManyMasterObjectInputEnvelope;
+    connect?: Prisma.FieldDefinitionWhereUniqueInput | Prisma.FieldDefinitionWhereUniqueInput[];
+};
+export type FieldDefinitionUncheckedCreateNestedManyWithoutMasterObjectInput = {
+    create?: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutMasterObjectInput, Prisma.FieldDefinitionUncheckedCreateWithoutMasterObjectInput> | Prisma.FieldDefinitionCreateWithoutMasterObjectInput[] | Prisma.FieldDefinitionUncheckedCreateWithoutMasterObjectInput[];
+    connectOrCreate?: Prisma.FieldDefinitionCreateOrConnectWithoutMasterObjectInput | Prisma.FieldDefinitionCreateOrConnectWithoutMasterObjectInput[];
+    createMany?: Prisma.FieldDefinitionCreateManyMasterObjectInputEnvelope;
+    connect?: Prisma.FieldDefinitionWhereUniqueInput | Prisma.FieldDefinitionWhereUniqueInput[];
+};
+export type FieldDefinitionUpdateManyWithoutMasterObjectNestedInput = {
+    create?: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutMasterObjectInput, Prisma.FieldDefinitionUncheckedCreateWithoutMasterObjectInput> | Prisma.FieldDefinitionCreateWithoutMasterObjectInput[] | Prisma.FieldDefinitionUncheckedCreateWithoutMasterObjectInput[];
+    connectOrCreate?: Prisma.FieldDefinitionCreateOrConnectWithoutMasterObjectInput | Prisma.FieldDefinitionCreateOrConnectWithoutMasterObjectInput[];
+    upsert?: Prisma.FieldDefinitionUpsertWithWhereUniqueWithoutMasterObjectInput | Prisma.FieldDefinitionUpsertWithWhereUniqueWithoutMasterObjectInput[];
+    createMany?: Prisma.FieldDefinitionCreateManyMasterObjectInputEnvelope;
+    set?: Prisma.FieldDefinitionWhereUniqueInput | Prisma.FieldDefinitionWhereUniqueInput[];
+    disconnect?: Prisma.FieldDefinitionWhereUniqueInput | Prisma.FieldDefinitionWhereUniqueInput[];
+    delete?: Prisma.FieldDefinitionWhereUniqueInput | Prisma.FieldDefinitionWhereUniqueInput[];
+    connect?: Prisma.FieldDefinitionWhereUniqueInput | Prisma.FieldDefinitionWhereUniqueInput[];
+    update?: Prisma.FieldDefinitionUpdateWithWhereUniqueWithoutMasterObjectInput | Prisma.FieldDefinitionUpdateWithWhereUniqueWithoutMasterObjectInput[];
+    updateMany?: Prisma.FieldDefinitionUpdateManyWithWhereWithoutMasterObjectInput | Prisma.FieldDefinitionUpdateManyWithWhereWithoutMasterObjectInput[];
+    deleteMany?: Prisma.FieldDefinitionScalarWhereInput | Prisma.FieldDefinitionScalarWhereInput[];
+};
+export type FieldDefinitionUncheckedUpdateManyWithoutMasterObjectNestedInput = {
+    create?: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutMasterObjectInput, Prisma.FieldDefinitionUncheckedCreateWithoutMasterObjectInput> | Prisma.FieldDefinitionCreateWithoutMasterObjectInput[] | Prisma.FieldDefinitionUncheckedCreateWithoutMasterObjectInput[];
+    connectOrCreate?: Prisma.FieldDefinitionCreateOrConnectWithoutMasterObjectInput | Prisma.FieldDefinitionCreateOrConnectWithoutMasterObjectInput[];
+    upsert?: Prisma.FieldDefinitionUpsertWithWhereUniqueWithoutMasterObjectInput | Prisma.FieldDefinitionUpsertWithWhereUniqueWithoutMasterObjectInput[];
+    createMany?: Prisma.FieldDefinitionCreateManyMasterObjectInputEnvelope;
+    set?: Prisma.FieldDefinitionWhereUniqueInput | Prisma.FieldDefinitionWhereUniqueInput[];
+    disconnect?: Prisma.FieldDefinitionWhereUniqueInput | Prisma.FieldDefinitionWhereUniqueInput[];
+    delete?: Prisma.FieldDefinitionWhereUniqueInput | Prisma.FieldDefinitionWhereUniqueInput[];
+    connect?: Prisma.FieldDefinitionWhereUniqueInput | Prisma.FieldDefinitionWhereUniqueInput[];
+    update?: Prisma.FieldDefinitionUpdateWithWhereUniqueWithoutMasterObjectInput | Prisma.FieldDefinitionUpdateWithWhereUniqueWithoutMasterObjectInput[];
+    updateMany?: Prisma.FieldDefinitionUpdateManyWithWhereWithoutMasterObjectInput | Prisma.FieldDefinitionUpdateManyWithWhereWithoutMasterObjectInput[];
+    deleteMany?: Prisma.FieldDefinitionScalarWhereInput | Prisma.FieldDefinitionScalarWhereInput[];
+};
+export type FieldDefinitionCreateNestedManyWithoutSchemaInput = {
+    create?: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutSchemaInput, Prisma.FieldDefinitionUncheckedCreateWithoutSchemaInput> | Prisma.FieldDefinitionCreateWithoutSchemaInput[] | Prisma.FieldDefinitionUncheckedCreateWithoutSchemaInput[];
+    connectOrCreate?: Prisma.FieldDefinitionCreateOrConnectWithoutSchemaInput | Prisma.FieldDefinitionCreateOrConnectWithoutSchemaInput[];
+    createMany?: Prisma.FieldDefinitionCreateManySchemaInputEnvelope;
+    connect?: Prisma.FieldDefinitionWhereUniqueInput | Prisma.FieldDefinitionWhereUniqueInput[];
+};
+export type FieldDefinitionUncheckedCreateNestedManyWithoutSchemaInput = {
+    create?: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutSchemaInput, Prisma.FieldDefinitionUncheckedCreateWithoutSchemaInput> | Prisma.FieldDefinitionCreateWithoutSchemaInput[] | Prisma.FieldDefinitionUncheckedCreateWithoutSchemaInput[];
+    connectOrCreate?: Prisma.FieldDefinitionCreateOrConnectWithoutSchemaInput | Prisma.FieldDefinitionCreateOrConnectWithoutSchemaInput[];
+    createMany?: Prisma.FieldDefinitionCreateManySchemaInputEnvelope;
+    connect?: Prisma.FieldDefinitionWhereUniqueInput | Prisma.FieldDefinitionWhereUniqueInput[];
+};
+export type FieldDefinitionUpdateManyWithoutSchemaNestedInput = {
+    create?: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutSchemaInput, Prisma.FieldDefinitionUncheckedCreateWithoutSchemaInput> | Prisma.FieldDefinitionCreateWithoutSchemaInput[] | Prisma.FieldDefinitionUncheckedCreateWithoutSchemaInput[];
+    connectOrCreate?: Prisma.FieldDefinitionCreateOrConnectWithoutSchemaInput | Prisma.FieldDefinitionCreateOrConnectWithoutSchemaInput[];
+    upsert?: Prisma.FieldDefinitionUpsertWithWhereUniqueWithoutSchemaInput | Prisma.FieldDefinitionUpsertWithWhereUniqueWithoutSchemaInput[];
+    createMany?: Prisma.FieldDefinitionCreateManySchemaInputEnvelope;
+    set?: Prisma.FieldDefinitionWhereUniqueInput | Prisma.FieldDefinitionWhereUniqueInput[];
+    disconnect?: Prisma.FieldDefinitionWhereUniqueInput | Prisma.FieldDefinitionWhereUniqueInput[];
+    delete?: Prisma.FieldDefinitionWhereUniqueInput | Prisma.FieldDefinitionWhereUniqueInput[];
+    connect?: Prisma.FieldDefinitionWhereUniqueInput | Prisma.FieldDefinitionWhereUniqueInput[];
+    update?: Prisma.FieldDefinitionUpdateWithWhereUniqueWithoutSchemaInput | Prisma.FieldDefinitionUpdateWithWhereUniqueWithoutSchemaInput[];
+    updateMany?: Prisma.FieldDefinitionUpdateManyWithWhereWithoutSchemaInput | Prisma.FieldDefinitionUpdateManyWithWhereWithoutSchemaInput[];
+    deleteMany?: Prisma.FieldDefinitionScalarWhereInput | Prisma.FieldDefinitionScalarWhereInput[];
+};
+export type FieldDefinitionUncheckedUpdateManyWithoutSchemaNestedInput = {
+    create?: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutSchemaInput, Prisma.FieldDefinitionUncheckedCreateWithoutSchemaInput> | Prisma.FieldDefinitionCreateWithoutSchemaInput[] | Prisma.FieldDefinitionUncheckedCreateWithoutSchemaInput[];
+    connectOrCreate?: Prisma.FieldDefinitionCreateOrConnectWithoutSchemaInput | Prisma.FieldDefinitionCreateOrConnectWithoutSchemaInput[];
+    upsert?: Prisma.FieldDefinitionUpsertWithWhereUniqueWithoutSchemaInput | Prisma.FieldDefinitionUpsertWithWhereUniqueWithoutSchemaInput[];
+    createMany?: Prisma.FieldDefinitionCreateManySchemaInputEnvelope;
+    set?: Prisma.FieldDefinitionWhereUniqueInput | Prisma.FieldDefinitionWhereUniqueInput[];
+    disconnect?: Prisma.FieldDefinitionWhereUniqueInput | Prisma.FieldDefinitionWhereUniqueInput[];
+    delete?: Prisma.FieldDefinitionWhereUniqueInput | Prisma.FieldDefinitionWhereUniqueInput[];
+    connect?: Prisma.FieldDefinitionWhereUniqueInput | Prisma.FieldDefinitionWhereUniqueInput[];
+    update?: Prisma.FieldDefinitionUpdateWithWhereUniqueWithoutSchemaInput | Prisma.FieldDefinitionUpdateWithWhereUniqueWithoutSchemaInput[];
+    updateMany?: Prisma.FieldDefinitionUpdateManyWithWhereWithoutSchemaInput | Prisma.FieldDefinitionUpdateManyWithWhereWithoutSchemaInput[];
+    deleteMany?: Prisma.FieldDefinitionScalarWhereInput | Prisma.FieldDefinitionScalarWhereInput[];
+};
+export type EnumFieldCategoryFieldUpdateOperationsInput = {
+    set?: $Enums.FieldCategory;
+};
+export type EnumFieldDataTypeFieldUpdateOperationsInput = {
+    set?: $Enums.FieldDataType;
+};
+export type EnumFieldTypeFieldUpdateOperationsInput = {
+    set?: $Enums.FieldType;
+};
+export type FieldDefinitionCreateNestedOneWithoutFieldPermissionsInput = {
+    create?: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutFieldPermissionsInput, Prisma.FieldDefinitionUncheckedCreateWithoutFieldPermissionsInput>;
+    connectOrCreate?: Prisma.FieldDefinitionCreateOrConnectWithoutFieldPermissionsInput;
+    connect?: Prisma.FieldDefinitionWhereUniqueInput;
+};
+export type FieldDefinitionUpdateOneRequiredWithoutFieldPermissionsNestedInput = {
+    create?: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutFieldPermissionsInput, Prisma.FieldDefinitionUncheckedCreateWithoutFieldPermissionsInput>;
+    connectOrCreate?: Prisma.FieldDefinitionCreateOrConnectWithoutFieldPermissionsInput;
+    upsert?: Prisma.FieldDefinitionUpsertWithoutFieldPermissionsInput;
+    connect?: Prisma.FieldDefinitionWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.FieldDefinitionUpdateToOneWithWhereWithoutFieldPermissionsInput, Prisma.FieldDefinitionUpdateWithoutFieldPermissionsInput>, Prisma.FieldDefinitionUncheckedUpdateWithoutFieldPermissionsInput>;
+};
+export type FieldDefinitionCreateNestedOneWithoutFieldValidationRulesInput = {
+    create?: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutFieldValidationRulesInput, Prisma.FieldDefinitionUncheckedCreateWithoutFieldValidationRulesInput>;
+    connectOrCreate?: Prisma.FieldDefinitionCreateOrConnectWithoutFieldValidationRulesInput;
+    connect?: Prisma.FieldDefinitionWhereUniqueInput;
+};
+export type FieldDefinitionUpdateOneRequiredWithoutFieldValidationRulesNestedInput = {
+    create?: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutFieldValidationRulesInput, Prisma.FieldDefinitionUncheckedCreateWithoutFieldValidationRulesInput>;
+    connectOrCreate?: Prisma.FieldDefinitionCreateOrConnectWithoutFieldValidationRulesInput;
+    upsert?: Prisma.FieldDefinitionUpsertWithoutFieldValidationRulesInput;
+    connect?: Prisma.FieldDefinitionWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.FieldDefinitionUpdateToOneWithWhereWithoutFieldValidationRulesInput, Prisma.FieldDefinitionUpdateWithoutFieldValidationRulesInput>, Prisma.FieldDefinitionUncheckedUpdateWithoutFieldValidationRulesInput>;
+};
+export type FieldDefinitionCreateNestedOneWithoutFieldFormulaInput = {
+    create?: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutFieldFormulaInput, Prisma.FieldDefinitionUncheckedCreateWithoutFieldFormulaInput>;
+    connectOrCreate?: Prisma.FieldDefinitionCreateOrConnectWithoutFieldFormulaInput;
+    connect?: Prisma.FieldDefinitionWhereUniqueInput;
+};
+export type FieldDefinitionUpdateOneRequiredWithoutFieldFormulaNestedInput = {
+    create?: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutFieldFormulaInput, Prisma.FieldDefinitionUncheckedCreateWithoutFieldFormulaInput>;
+    connectOrCreate?: Prisma.FieldDefinitionCreateOrConnectWithoutFieldFormulaInput;
+    upsert?: Prisma.FieldDefinitionUpsertWithoutFieldFormulaInput;
+    connect?: Prisma.FieldDefinitionWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.FieldDefinitionUpdateToOneWithWhereWithoutFieldFormulaInput, Prisma.FieldDefinitionUpdateWithoutFieldFormulaInput>, Prisma.FieldDefinitionUncheckedUpdateWithoutFieldFormulaInput>;
+};
+export type FieldDefinitionCreateNestedOneWithoutFieldReferenceInput = {
+    create?: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutFieldReferenceInput, Prisma.FieldDefinitionUncheckedCreateWithoutFieldReferenceInput>;
+    connectOrCreate?: Prisma.FieldDefinitionCreateOrConnectWithoutFieldReferenceInput;
+    connect?: Prisma.FieldDefinitionWhereUniqueInput;
+};
+export type FieldDefinitionUpdateOneRequiredWithoutFieldReferenceNestedInput = {
+    create?: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutFieldReferenceInput, Prisma.FieldDefinitionUncheckedCreateWithoutFieldReferenceInput>;
+    connectOrCreate?: Prisma.FieldDefinitionCreateOrConnectWithoutFieldReferenceInput;
+    upsert?: Prisma.FieldDefinitionUpsertWithoutFieldReferenceInput;
+    connect?: Prisma.FieldDefinitionWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.FieldDefinitionUpdateToOneWithWhereWithoutFieldReferenceInput, Prisma.FieldDefinitionUpdateWithoutFieldReferenceInput>, Prisma.FieldDefinitionUncheckedUpdateWithoutFieldReferenceInput>;
+};
+export type FieldDefinitionCreateNestedOneWithoutFieldConditionBindingsInput = {
+    create?: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutFieldConditionBindingsInput, Prisma.FieldDefinitionUncheckedCreateWithoutFieldConditionBindingsInput>;
+    connectOrCreate?: Prisma.FieldDefinitionCreateOrConnectWithoutFieldConditionBindingsInput;
+    connect?: Prisma.FieldDefinitionWhereUniqueInput;
+};
+export type FieldDefinitionUpdateOneRequiredWithoutFieldConditionBindingsNestedInput = {
+    create?: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutFieldConditionBindingsInput, Prisma.FieldDefinitionUncheckedCreateWithoutFieldConditionBindingsInput>;
+    connectOrCreate?: Prisma.FieldDefinitionCreateOrConnectWithoutFieldConditionBindingsInput;
+    upsert?: Prisma.FieldDefinitionUpsertWithoutFieldConditionBindingsInput;
+    connect?: Prisma.FieldDefinitionWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.FieldDefinitionUpdateToOneWithWhereWithoutFieldConditionBindingsInput, Prisma.FieldDefinitionUpdateWithoutFieldConditionBindingsInput>, Prisma.FieldDefinitionUncheckedUpdateWithoutFieldConditionBindingsInput>;
+};
+export type FieldDefinitionCreateWithoutMasterObjectInput = {
+    id?: string;
+    key: string;
+    label: string;
+    category: $Enums.FieldCategory;
+    dataType: $Enums.FieldDataType;
+    fieldType: $Enums.FieldType;
+    config: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order: number;
+    isRequired?: boolean;
+    isSystem?: boolean;
+    isActive?: boolean;
+    isLocked?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    schema: Prisma.MasterObjectSchemaCreateNestedOneWithoutFieldDefinitionsInput;
+    fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutFieldInput;
+    fieldValidationRules?: Prisma.FieldValidationRuleCreateNestedManyWithoutFieldInput;
+    fieldFormula?: Prisma.FieldFormulaCreateNestedOneWithoutFieldInput;
+    fieldReference?: Prisma.FieldReferenceCreateNestedOneWithoutFieldInput;
+    fieldConditionBindings?: Prisma.FieldConditionBindingCreateNestedManyWithoutFieldInput;
+};
+export type FieldDefinitionUncheckedCreateWithoutMasterObjectInput = {
+    id?: string;
+    schemaId: string;
+    key: string;
+    label: string;
+    category: $Enums.FieldCategory;
+    dataType: $Enums.FieldDataType;
+    fieldType: $Enums.FieldType;
+    config: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order: number;
+    isRequired?: boolean;
+    isSystem?: boolean;
+    isActive?: boolean;
+    isLocked?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutFieldInput;
+    fieldValidationRules?: Prisma.FieldValidationRuleUncheckedCreateNestedManyWithoutFieldInput;
+    fieldFormula?: Prisma.FieldFormulaUncheckedCreateNestedOneWithoutFieldInput;
+    fieldReference?: Prisma.FieldReferenceUncheckedCreateNestedOneWithoutFieldInput;
+    fieldConditionBindings?: Prisma.FieldConditionBindingUncheckedCreateNestedManyWithoutFieldInput;
+};
+export type FieldDefinitionCreateOrConnectWithoutMasterObjectInput = {
+    where: Prisma.FieldDefinitionWhereUniqueInput;
+    create: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutMasterObjectInput, Prisma.FieldDefinitionUncheckedCreateWithoutMasterObjectInput>;
+};
+export type FieldDefinitionCreateManyMasterObjectInputEnvelope = {
+    data: Prisma.FieldDefinitionCreateManyMasterObjectInput | Prisma.FieldDefinitionCreateManyMasterObjectInput[];
+    skipDuplicates?: boolean;
+};
+export type FieldDefinitionUpsertWithWhereUniqueWithoutMasterObjectInput = {
+    where: Prisma.FieldDefinitionWhereUniqueInput;
+    update: Prisma.XOR<Prisma.FieldDefinitionUpdateWithoutMasterObjectInput, Prisma.FieldDefinitionUncheckedUpdateWithoutMasterObjectInput>;
+    create: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutMasterObjectInput, Prisma.FieldDefinitionUncheckedCreateWithoutMasterObjectInput>;
+};
+export type FieldDefinitionUpdateWithWhereUniqueWithoutMasterObjectInput = {
+    where: Prisma.FieldDefinitionWhereUniqueInput;
+    data: Prisma.XOR<Prisma.FieldDefinitionUpdateWithoutMasterObjectInput, Prisma.FieldDefinitionUncheckedUpdateWithoutMasterObjectInput>;
+};
+export type FieldDefinitionUpdateManyWithWhereWithoutMasterObjectInput = {
+    where: Prisma.FieldDefinitionScalarWhereInput;
+    data: Prisma.XOR<Prisma.FieldDefinitionUpdateManyMutationInput, Prisma.FieldDefinitionUncheckedUpdateManyWithoutMasterObjectInput>;
+};
+export type FieldDefinitionScalarWhereInput = {
+    AND?: Prisma.FieldDefinitionScalarWhereInput | Prisma.FieldDefinitionScalarWhereInput[];
+    OR?: Prisma.FieldDefinitionScalarWhereInput[];
+    NOT?: Prisma.FieldDefinitionScalarWhereInput | Prisma.FieldDefinitionScalarWhereInput[];
+    id?: Prisma.StringFilter<"FieldDefinition"> | string;
+    masterObjectId?: Prisma.StringFilter<"FieldDefinition"> | string;
+    schemaId?: Prisma.StringFilter<"FieldDefinition"> | string;
+    key?: Prisma.StringFilter<"FieldDefinition"> | string;
+    label?: Prisma.StringFilter<"FieldDefinition"> | string;
+    category?: Prisma.EnumFieldCategoryFilter<"FieldDefinition"> | $Enums.FieldCategory;
+    dataType?: Prisma.EnumFieldDataTypeFilter<"FieldDefinition"> | $Enums.FieldDataType;
+    fieldType?: Prisma.EnumFieldTypeFilter<"FieldDefinition"> | $Enums.FieldType;
+    config?: Prisma.JsonFilter<"FieldDefinition">;
+    order?: Prisma.IntFilter<"FieldDefinition"> | number;
+    isRequired?: Prisma.BoolFilter<"FieldDefinition"> | boolean;
+    isSystem?: Prisma.BoolFilter<"FieldDefinition"> | boolean;
+    isActive?: Prisma.BoolFilter<"FieldDefinition"> | boolean;
+    isLocked?: Prisma.BoolFilter<"FieldDefinition"> | boolean;
+    createdAt?: Prisma.DateTimeFilter<"FieldDefinition"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"FieldDefinition"> | Date | string;
+    deletedAt?: Prisma.DateTimeNullableFilter<"FieldDefinition"> | Date | string | null;
+};
+export type FieldDefinitionCreateWithoutSchemaInput = {
+    id?: string;
+    key: string;
+    label: string;
+    category: $Enums.FieldCategory;
+    dataType: $Enums.FieldDataType;
+    fieldType: $Enums.FieldType;
+    config: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order: number;
+    isRequired?: boolean;
+    isSystem?: boolean;
+    isActive?: boolean;
+    isLocked?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    masterObject: Prisma.MasterObjectCreateNestedOneWithoutFieldDefinitionsInput;
+    fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutFieldInput;
+    fieldValidationRules?: Prisma.FieldValidationRuleCreateNestedManyWithoutFieldInput;
+    fieldFormula?: Prisma.FieldFormulaCreateNestedOneWithoutFieldInput;
+    fieldReference?: Prisma.FieldReferenceCreateNestedOneWithoutFieldInput;
+    fieldConditionBindings?: Prisma.FieldConditionBindingCreateNestedManyWithoutFieldInput;
+};
+export type FieldDefinitionUncheckedCreateWithoutSchemaInput = {
+    id?: string;
+    masterObjectId: string;
+    key: string;
+    label: string;
+    category: $Enums.FieldCategory;
+    dataType: $Enums.FieldDataType;
+    fieldType: $Enums.FieldType;
+    config: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order: number;
+    isRequired?: boolean;
+    isSystem?: boolean;
+    isActive?: boolean;
+    isLocked?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutFieldInput;
+    fieldValidationRules?: Prisma.FieldValidationRuleUncheckedCreateNestedManyWithoutFieldInput;
+    fieldFormula?: Prisma.FieldFormulaUncheckedCreateNestedOneWithoutFieldInput;
+    fieldReference?: Prisma.FieldReferenceUncheckedCreateNestedOneWithoutFieldInput;
+    fieldConditionBindings?: Prisma.FieldConditionBindingUncheckedCreateNestedManyWithoutFieldInput;
+};
+export type FieldDefinitionCreateOrConnectWithoutSchemaInput = {
+    where: Prisma.FieldDefinitionWhereUniqueInput;
+    create: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutSchemaInput, Prisma.FieldDefinitionUncheckedCreateWithoutSchemaInput>;
+};
+export type FieldDefinitionCreateManySchemaInputEnvelope = {
+    data: Prisma.FieldDefinitionCreateManySchemaInput | Prisma.FieldDefinitionCreateManySchemaInput[];
+    skipDuplicates?: boolean;
+};
+export type FieldDefinitionUpsertWithWhereUniqueWithoutSchemaInput = {
+    where: Prisma.FieldDefinitionWhereUniqueInput;
+    update: Prisma.XOR<Prisma.FieldDefinitionUpdateWithoutSchemaInput, Prisma.FieldDefinitionUncheckedUpdateWithoutSchemaInput>;
+    create: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutSchemaInput, Prisma.FieldDefinitionUncheckedCreateWithoutSchemaInput>;
+};
+export type FieldDefinitionUpdateWithWhereUniqueWithoutSchemaInput = {
+    where: Prisma.FieldDefinitionWhereUniqueInput;
+    data: Prisma.XOR<Prisma.FieldDefinitionUpdateWithoutSchemaInput, Prisma.FieldDefinitionUncheckedUpdateWithoutSchemaInput>;
+};
+export type FieldDefinitionUpdateManyWithWhereWithoutSchemaInput = {
+    where: Prisma.FieldDefinitionScalarWhereInput;
+    data: Prisma.XOR<Prisma.FieldDefinitionUpdateManyMutationInput, Prisma.FieldDefinitionUncheckedUpdateManyWithoutSchemaInput>;
+};
+export type FieldDefinitionCreateWithoutFieldPermissionsInput = {
+    id?: string;
+    key: string;
+    label: string;
+    category: $Enums.FieldCategory;
+    dataType: $Enums.FieldDataType;
+    fieldType: $Enums.FieldType;
+    config: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order: number;
+    isRequired?: boolean;
+    isSystem?: boolean;
+    isActive?: boolean;
+    isLocked?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    masterObject: Prisma.MasterObjectCreateNestedOneWithoutFieldDefinitionsInput;
+    schema: Prisma.MasterObjectSchemaCreateNestedOneWithoutFieldDefinitionsInput;
+    fieldValidationRules?: Prisma.FieldValidationRuleCreateNestedManyWithoutFieldInput;
+    fieldFormula?: Prisma.FieldFormulaCreateNestedOneWithoutFieldInput;
+    fieldReference?: Prisma.FieldReferenceCreateNestedOneWithoutFieldInput;
+    fieldConditionBindings?: Prisma.FieldConditionBindingCreateNestedManyWithoutFieldInput;
+};
+export type FieldDefinitionUncheckedCreateWithoutFieldPermissionsInput = {
+    id?: string;
+    masterObjectId: string;
+    schemaId: string;
+    key: string;
+    label: string;
+    category: $Enums.FieldCategory;
+    dataType: $Enums.FieldDataType;
+    fieldType: $Enums.FieldType;
+    config: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order: number;
+    isRequired?: boolean;
+    isSystem?: boolean;
+    isActive?: boolean;
+    isLocked?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    fieldValidationRules?: Prisma.FieldValidationRuleUncheckedCreateNestedManyWithoutFieldInput;
+    fieldFormula?: Prisma.FieldFormulaUncheckedCreateNestedOneWithoutFieldInput;
+    fieldReference?: Prisma.FieldReferenceUncheckedCreateNestedOneWithoutFieldInput;
+    fieldConditionBindings?: Prisma.FieldConditionBindingUncheckedCreateNestedManyWithoutFieldInput;
+};
+export type FieldDefinitionCreateOrConnectWithoutFieldPermissionsInput = {
+    where: Prisma.FieldDefinitionWhereUniqueInput;
+    create: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutFieldPermissionsInput, Prisma.FieldDefinitionUncheckedCreateWithoutFieldPermissionsInput>;
+};
+export type FieldDefinitionUpsertWithoutFieldPermissionsInput = {
+    update: Prisma.XOR<Prisma.FieldDefinitionUpdateWithoutFieldPermissionsInput, Prisma.FieldDefinitionUncheckedUpdateWithoutFieldPermissionsInput>;
+    create: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutFieldPermissionsInput, Prisma.FieldDefinitionUncheckedCreateWithoutFieldPermissionsInput>;
+    where?: Prisma.FieldDefinitionWhereInput;
+};
+export type FieldDefinitionUpdateToOneWithWhereWithoutFieldPermissionsInput = {
+    where?: Prisma.FieldDefinitionWhereInput;
+    data: Prisma.XOR<Prisma.FieldDefinitionUpdateWithoutFieldPermissionsInput, Prisma.FieldDefinitionUncheckedUpdateWithoutFieldPermissionsInput>;
+};
+export type FieldDefinitionUpdateWithoutFieldPermissionsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    label?: Prisma.StringFieldUpdateOperationsInput | string;
+    category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory;
+    dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType;
+    fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType;
+    config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order?: Prisma.IntFieldUpdateOperationsInput | number;
+    isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    masterObject?: Prisma.MasterObjectUpdateOneRequiredWithoutFieldDefinitionsNestedInput;
+    schema?: Prisma.MasterObjectSchemaUpdateOneRequiredWithoutFieldDefinitionsNestedInput;
+    fieldValidationRules?: Prisma.FieldValidationRuleUpdateManyWithoutFieldNestedInput;
+    fieldFormula?: Prisma.FieldFormulaUpdateOneWithoutFieldNestedInput;
+    fieldReference?: Prisma.FieldReferenceUpdateOneWithoutFieldNestedInput;
+    fieldConditionBindings?: Prisma.FieldConditionBindingUpdateManyWithoutFieldNestedInput;
+};
+export type FieldDefinitionUncheckedUpdateWithoutFieldPermissionsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    masterObjectId?: Prisma.StringFieldUpdateOperationsInput | string;
+    schemaId?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    label?: Prisma.StringFieldUpdateOperationsInput | string;
+    category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory;
+    dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType;
+    fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType;
+    config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order?: Prisma.IntFieldUpdateOperationsInput | number;
+    isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    fieldValidationRules?: Prisma.FieldValidationRuleUncheckedUpdateManyWithoutFieldNestedInput;
+    fieldFormula?: Prisma.FieldFormulaUncheckedUpdateOneWithoutFieldNestedInput;
+    fieldReference?: Prisma.FieldReferenceUncheckedUpdateOneWithoutFieldNestedInput;
+    fieldConditionBindings?: Prisma.FieldConditionBindingUncheckedUpdateManyWithoutFieldNestedInput;
+};
+export type FieldDefinitionCreateWithoutFieldValidationRulesInput = {
+    id?: string;
+    key: string;
+    label: string;
+    category: $Enums.FieldCategory;
+    dataType: $Enums.FieldDataType;
+    fieldType: $Enums.FieldType;
+    config: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order: number;
+    isRequired?: boolean;
+    isSystem?: boolean;
+    isActive?: boolean;
+    isLocked?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    masterObject: Prisma.MasterObjectCreateNestedOneWithoutFieldDefinitionsInput;
+    schema: Prisma.MasterObjectSchemaCreateNestedOneWithoutFieldDefinitionsInput;
+    fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutFieldInput;
+    fieldFormula?: Prisma.FieldFormulaCreateNestedOneWithoutFieldInput;
+    fieldReference?: Prisma.FieldReferenceCreateNestedOneWithoutFieldInput;
+    fieldConditionBindings?: Prisma.FieldConditionBindingCreateNestedManyWithoutFieldInput;
+};
+export type FieldDefinitionUncheckedCreateWithoutFieldValidationRulesInput = {
+    id?: string;
+    masterObjectId: string;
+    schemaId: string;
+    key: string;
+    label: string;
+    category: $Enums.FieldCategory;
+    dataType: $Enums.FieldDataType;
+    fieldType: $Enums.FieldType;
+    config: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order: number;
+    isRequired?: boolean;
+    isSystem?: boolean;
+    isActive?: boolean;
+    isLocked?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutFieldInput;
+    fieldFormula?: Prisma.FieldFormulaUncheckedCreateNestedOneWithoutFieldInput;
+    fieldReference?: Prisma.FieldReferenceUncheckedCreateNestedOneWithoutFieldInput;
+    fieldConditionBindings?: Prisma.FieldConditionBindingUncheckedCreateNestedManyWithoutFieldInput;
+};
+export type FieldDefinitionCreateOrConnectWithoutFieldValidationRulesInput = {
+    where: Prisma.FieldDefinitionWhereUniqueInput;
+    create: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutFieldValidationRulesInput, Prisma.FieldDefinitionUncheckedCreateWithoutFieldValidationRulesInput>;
+};
+export type FieldDefinitionUpsertWithoutFieldValidationRulesInput = {
+    update: Prisma.XOR<Prisma.FieldDefinitionUpdateWithoutFieldValidationRulesInput, Prisma.FieldDefinitionUncheckedUpdateWithoutFieldValidationRulesInput>;
+    create: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutFieldValidationRulesInput, Prisma.FieldDefinitionUncheckedCreateWithoutFieldValidationRulesInput>;
+    where?: Prisma.FieldDefinitionWhereInput;
+};
+export type FieldDefinitionUpdateToOneWithWhereWithoutFieldValidationRulesInput = {
+    where?: Prisma.FieldDefinitionWhereInput;
+    data: Prisma.XOR<Prisma.FieldDefinitionUpdateWithoutFieldValidationRulesInput, Prisma.FieldDefinitionUncheckedUpdateWithoutFieldValidationRulesInput>;
+};
+export type FieldDefinitionUpdateWithoutFieldValidationRulesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    label?: Prisma.StringFieldUpdateOperationsInput | string;
+    category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory;
+    dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType;
+    fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType;
+    config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order?: Prisma.IntFieldUpdateOperationsInput | number;
+    isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    masterObject?: Prisma.MasterObjectUpdateOneRequiredWithoutFieldDefinitionsNestedInput;
+    schema?: Prisma.MasterObjectSchemaUpdateOneRequiredWithoutFieldDefinitionsNestedInput;
+    fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutFieldNestedInput;
+    fieldFormula?: Prisma.FieldFormulaUpdateOneWithoutFieldNestedInput;
+    fieldReference?: Prisma.FieldReferenceUpdateOneWithoutFieldNestedInput;
+    fieldConditionBindings?: Prisma.FieldConditionBindingUpdateManyWithoutFieldNestedInput;
+};
+export type FieldDefinitionUncheckedUpdateWithoutFieldValidationRulesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    masterObjectId?: Prisma.StringFieldUpdateOperationsInput | string;
+    schemaId?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    label?: Prisma.StringFieldUpdateOperationsInput | string;
+    category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory;
+    dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType;
+    fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType;
+    config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order?: Prisma.IntFieldUpdateOperationsInput | number;
+    isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutFieldNestedInput;
+    fieldFormula?: Prisma.FieldFormulaUncheckedUpdateOneWithoutFieldNestedInput;
+    fieldReference?: Prisma.FieldReferenceUncheckedUpdateOneWithoutFieldNestedInput;
+    fieldConditionBindings?: Prisma.FieldConditionBindingUncheckedUpdateManyWithoutFieldNestedInput;
+};
+export type FieldDefinitionCreateWithoutFieldFormulaInput = {
+    id?: string;
+    key: string;
+    label: string;
+    category: $Enums.FieldCategory;
+    dataType: $Enums.FieldDataType;
+    fieldType: $Enums.FieldType;
+    config: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order: number;
+    isRequired?: boolean;
+    isSystem?: boolean;
+    isActive?: boolean;
+    isLocked?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    masterObject: Prisma.MasterObjectCreateNestedOneWithoutFieldDefinitionsInput;
+    schema: Prisma.MasterObjectSchemaCreateNestedOneWithoutFieldDefinitionsInput;
+    fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutFieldInput;
+    fieldValidationRules?: Prisma.FieldValidationRuleCreateNestedManyWithoutFieldInput;
+    fieldReference?: Prisma.FieldReferenceCreateNestedOneWithoutFieldInput;
+    fieldConditionBindings?: Prisma.FieldConditionBindingCreateNestedManyWithoutFieldInput;
+};
+export type FieldDefinitionUncheckedCreateWithoutFieldFormulaInput = {
+    id?: string;
+    masterObjectId: string;
+    schemaId: string;
+    key: string;
+    label: string;
+    category: $Enums.FieldCategory;
+    dataType: $Enums.FieldDataType;
+    fieldType: $Enums.FieldType;
+    config: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order: number;
+    isRequired?: boolean;
+    isSystem?: boolean;
+    isActive?: boolean;
+    isLocked?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutFieldInput;
+    fieldValidationRules?: Prisma.FieldValidationRuleUncheckedCreateNestedManyWithoutFieldInput;
+    fieldReference?: Prisma.FieldReferenceUncheckedCreateNestedOneWithoutFieldInput;
+    fieldConditionBindings?: Prisma.FieldConditionBindingUncheckedCreateNestedManyWithoutFieldInput;
+};
+export type FieldDefinitionCreateOrConnectWithoutFieldFormulaInput = {
+    where: Prisma.FieldDefinitionWhereUniqueInput;
+    create: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutFieldFormulaInput, Prisma.FieldDefinitionUncheckedCreateWithoutFieldFormulaInput>;
+};
+export type FieldDefinitionUpsertWithoutFieldFormulaInput = {
+    update: Prisma.XOR<Prisma.FieldDefinitionUpdateWithoutFieldFormulaInput, Prisma.FieldDefinitionUncheckedUpdateWithoutFieldFormulaInput>;
+    create: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutFieldFormulaInput, Prisma.FieldDefinitionUncheckedCreateWithoutFieldFormulaInput>;
+    where?: Prisma.FieldDefinitionWhereInput;
+};
+export type FieldDefinitionUpdateToOneWithWhereWithoutFieldFormulaInput = {
+    where?: Prisma.FieldDefinitionWhereInput;
+    data: Prisma.XOR<Prisma.FieldDefinitionUpdateWithoutFieldFormulaInput, Prisma.FieldDefinitionUncheckedUpdateWithoutFieldFormulaInput>;
+};
+export type FieldDefinitionUpdateWithoutFieldFormulaInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    label?: Prisma.StringFieldUpdateOperationsInput | string;
+    category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory;
+    dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType;
+    fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType;
+    config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order?: Prisma.IntFieldUpdateOperationsInput | number;
+    isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    masterObject?: Prisma.MasterObjectUpdateOneRequiredWithoutFieldDefinitionsNestedInput;
+    schema?: Prisma.MasterObjectSchemaUpdateOneRequiredWithoutFieldDefinitionsNestedInput;
+    fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutFieldNestedInput;
+    fieldValidationRules?: Prisma.FieldValidationRuleUpdateManyWithoutFieldNestedInput;
+    fieldReference?: Prisma.FieldReferenceUpdateOneWithoutFieldNestedInput;
+    fieldConditionBindings?: Prisma.FieldConditionBindingUpdateManyWithoutFieldNestedInput;
+};
+export type FieldDefinitionUncheckedUpdateWithoutFieldFormulaInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    masterObjectId?: Prisma.StringFieldUpdateOperationsInput | string;
+    schemaId?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    label?: Prisma.StringFieldUpdateOperationsInput | string;
+    category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory;
+    dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType;
+    fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType;
+    config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order?: Prisma.IntFieldUpdateOperationsInput | number;
+    isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutFieldNestedInput;
+    fieldValidationRules?: Prisma.FieldValidationRuleUncheckedUpdateManyWithoutFieldNestedInput;
+    fieldReference?: Prisma.FieldReferenceUncheckedUpdateOneWithoutFieldNestedInput;
+    fieldConditionBindings?: Prisma.FieldConditionBindingUncheckedUpdateManyWithoutFieldNestedInput;
+};
+export type FieldDefinitionCreateWithoutFieldReferenceInput = {
+    id?: string;
+    key: string;
+    label: string;
+    category: $Enums.FieldCategory;
+    dataType: $Enums.FieldDataType;
+    fieldType: $Enums.FieldType;
+    config: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order: number;
+    isRequired?: boolean;
+    isSystem?: boolean;
+    isActive?: boolean;
+    isLocked?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    masterObject: Prisma.MasterObjectCreateNestedOneWithoutFieldDefinitionsInput;
+    schema: Prisma.MasterObjectSchemaCreateNestedOneWithoutFieldDefinitionsInput;
+    fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutFieldInput;
+    fieldValidationRules?: Prisma.FieldValidationRuleCreateNestedManyWithoutFieldInput;
+    fieldFormula?: Prisma.FieldFormulaCreateNestedOneWithoutFieldInput;
+    fieldConditionBindings?: Prisma.FieldConditionBindingCreateNestedManyWithoutFieldInput;
+};
+export type FieldDefinitionUncheckedCreateWithoutFieldReferenceInput = {
+    id?: string;
+    masterObjectId: string;
+    schemaId: string;
+    key: string;
+    label: string;
+    category: $Enums.FieldCategory;
+    dataType: $Enums.FieldDataType;
+    fieldType: $Enums.FieldType;
+    config: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order: number;
+    isRequired?: boolean;
+    isSystem?: boolean;
+    isActive?: boolean;
+    isLocked?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutFieldInput;
+    fieldValidationRules?: Prisma.FieldValidationRuleUncheckedCreateNestedManyWithoutFieldInput;
+    fieldFormula?: Prisma.FieldFormulaUncheckedCreateNestedOneWithoutFieldInput;
+    fieldConditionBindings?: Prisma.FieldConditionBindingUncheckedCreateNestedManyWithoutFieldInput;
+};
+export type FieldDefinitionCreateOrConnectWithoutFieldReferenceInput = {
+    where: Prisma.FieldDefinitionWhereUniqueInput;
+    create: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutFieldReferenceInput, Prisma.FieldDefinitionUncheckedCreateWithoutFieldReferenceInput>;
+};
+export type FieldDefinitionUpsertWithoutFieldReferenceInput = {
+    update: Prisma.XOR<Prisma.FieldDefinitionUpdateWithoutFieldReferenceInput, Prisma.FieldDefinitionUncheckedUpdateWithoutFieldReferenceInput>;
+    create: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutFieldReferenceInput, Prisma.FieldDefinitionUncheckedCreateWithoutFieldReferenceInput>;
+    where?: Prisma.FieldDefinitionWhereInput;
+};
+export type FieldDefinitionUpdateToOneWithWhereWithoutFieldReferenceInput = {
+    where?: Prisma.FieldDefinitionWhereInput;
+    data: Prisma.XOR<Prisma.FieldDefinitionUpdateWithoutFieldReferenceInput, Prisma.FieldDefinitionUncheckedUpdateWithoutFieldReferenceInput>;
+};
+export type FieldDefinitionUpdateWithoutFieldReferenceInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    label?: Prisma.StringFieldUpdateOperationsInput | string;
+    category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory;
+    dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType;
+    fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType;
+    config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order?: Prisma.IntFieldUpdateOperationsInput | number;
+    isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    masterObject?: Prisma.MasterObjectUpdateOneRequiredWithoutFieldDefinitionsNestedInput;
+    schema?: Prisma.MasterObjectSchemaUpdateOneRequiredWithoutFieldDefinitionsNestedInput;
+    fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutFieldNestedInput;
+    fieldValidationRules?: Prisma.FieldValidationRuleUpdateManyWithoutFieldNestedInput;
+    fieldFormula?: Prisma.FieldFormulaUpdateOneWithoutFieldNestedInput;
+    fieldConditionBindings?: Prisma.FieldConditionBindingUpdateManyWithoutFieldNestedInput;
+};
+export type FieldDefinitionUncheckedUpdateWithoutFieldReferenceInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    masterObjectId?: Prisma.StringFieldUpdateOperationsInput | string;
+    schemaId?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    label?: Prisma.StringFieldUpdateOperationsInput | string;
+    category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory;
+    dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType;
+    fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType;
+    config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order?: Prisma.IntFieldUpdateOperationsInput | number;
+    isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutFieldNestedInput;
+    fieldValidationRules?: Prisma.FieldValidationRuleUncheckedUpdateManyWithoutFieldNestedInput;
+    fieldFormula?: Prisma.FieldFormulaUncheckedUpdateOneWithoutFieldNestedInput;
+    fieldConditionBindings?: Prisma.FieldConditionBindingUncheckedUpdateManyWithoutFieldNestedInput;
+};
+export type FieldDefinitionCreateWithoutFieldConditionBindingsInput = {
+    id?: string;
+    key: string;
+    label: string;
+    category: $Enums.FieldCategory;
+    dataType: $Enums.FieldDataType;
+    fieldType: $Enums.FieldType;
+    config: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order: number;
+    isRequired?: boolean;
+    isSystem?: boolean;
+    isActive?: boolean;
+    isLocked?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    masterObject: Prisma.MasterObjectCreateNestedOneWithoutFieldDefinitionsInput;
+    schema: Prisma.MasterObjectSchemaCreateNestedOneWithoutFieldDefinitionsInput;
+    fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutFieldInput;
+    fieldValidationRules?: Prisma.FieldValidationRuleCreateNestedManyWithoutFieldInput;
+    fieldFormula?: Prisma.FieldFormulaCreateNestedOneWithoutFieldInput;
+    fieldReference?: Prisma.FieldReferenceCreateNestedOneWithoutFieldInput;
+};
+export type FieldDefinitionUncheckedCreateWithoutFieldConditionBindingsInput = {
+    id?: string;
+    masterObjectId: string;
+    schemaId: string;
+    key: string;
+    label: string;
+    category: $Enums.FieldCategory;
+    dataType: $Enums.FieldDataType;
+    fieldType: $Enums.FieldType;
+    config: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order: number;
+    isRequired?: boolean;
+    isSystem?: boolean;
+    isActive?: boolean;
+    isLocked?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutFieldInput;
+    fieldValidationRules?: Prisma.FieldValidationRuleUncheckedCreateNestedManyWithoutFieldInput;
+    fieldFormula?: Prisma.FieldFormulaUncheckedCreateNestedOneWithoutFieldInput;
+    fieldReference?: Prisma.FieldReferenceUncheckedCreateNestedOneWithoutFieldInput;
+};
+export type FieldDefinitionCreateOrConnectWithoutFieldConditionBindingsInput = {
+    where: Prisma.FieldDefinitionWhereUniqueInput;
+    create: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutFieldConditionBindingsInput, Prisma.FieldDefinitionUncheckedCreateWithoutFieldConditionBindingsInput>;
+};
+export type FieldDefinitionUpsertWithoutFieldConditionBindingsInput = {
+    update: Prisma.XOR<Prisma.FieldDefinitionUpdateWithoutFieldConditionBindingsInput, Prisma.FieldDefinitionUncheckedUpdateWithoutFieldConditionBindingsInput>;
+    create: Prisma.XOR<Prisma.FieldDefinitionCreateWithoutFieldConditionBindingsInput, Prisma.FieldDefinitionUncheckedCreateWithoutFieldConditionBindingsInput>;
+    where?: Prisma.FieldDefinitionWhereInput;
+};
+export type FieldDefinitionUpdateToOneWithWhereWithoutFieldConditionBindingsInput = {
+    where?: Prisma.FieldDefinitionWhereInput;
+    data: Prisma.XOR<Prisma.FieldDefinitionUpdateWithoutFieldConditionBindingsInput, Prisma.FieldDefinitionUncheckedUpdateWithoutFieldConditionBindingsInput>;
+};
+export type FieldDefinitionUpdateWithoutFieldConditionBindingsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    label?: Prisma.StringFieldUpdateOperationsInput | string;
+    category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory;
+    dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType;
+    fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType;
+    config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order?: Prisma.IntFieldUpdateOperationsInput | number;
+    isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    masterObject?: Prisma.MasterObjectUpdateOneRequiredWithoutFieldDefinitionsNestedInput;
+    schema?: Prisma.MasterObjectSchemaUpdateOneRequiredWithoutFieldDefinitionsNestedInput;
+    fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutFieldNestedInput;
+    fieldValidationRules?: Prisma.FieldValidationRuleUpdateManyWithoutFieldNestedInput;
+    fieldFormula?: Prisma.FieldFormulaUpdateOneWithoutFieldNestedInput;
+    fieldReference?: Prisma.FieldReferenceUpdateOneWithoutFieldNestedInput;
+};
+export type FieldDefinitionUncheckedUpdateWithoutFieldConditionBindingsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    masterObjectId?: Prisma.StringFieldUpdateOperationsInput | string;
+    schemaId?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    label?: Prisma.StringFieldUpdateOperationsInput | string;
+    category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory;
+    dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType;
+    fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType;
+    config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order?: Prisma.IntFieldUpdateOperationsInput | number;
+    isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutFieldNestedInput;
+    fieldValidationRules?: Prisma.FieldValidationRuleUncheckedUpdateManyWithoutFieldNestedInput;
+    fieldFormula?: Prisma.FieldFormulaUncheckedUpdateOneWithoutFieldNestedInput;
+    fieldReference?: Prisma.FieldReferenceUncheckedUpdateOneWithoutFieldNestedInput;
+};
+export type FieldDefinitionCreateManyMasterObjectInput = {
+    id?: string;
+    schemaId: string;
+    key: string;
+    label: string;
+    category: $Enums.FieldCategory;
+    dataType: $Enums.FieldDataType;
+    fieldType: $Enums.FieldType;
+    config: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order: number;
+    isRequired?: boolean;
+    isSystem?: boolean;
+    isActive?: boolean;
+    isLocked?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+};
+export type FieldDefinitionUpdateWithoutMasterObjectInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    label?: Prisma.StringFieldUpdateOperationsInput | string;
+    category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory;
+    dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType;
+    fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType;
+    config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order?: Prisma.IntFieldUpdateOperationsInput | number;
+    isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    schema?: Prisma.MasterObjectSchemaUpdateOneRequiredWithoutFieldDefinitionsNestedInput;
+    fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutFieldNestedInput;
+    fieldValidationRules?: Prisma.FieldValidationRuleUpdateManyWithoutFieldNestedInput;
+    fieldFormula?: Prisma.FieldFormulaUpdateOneWithoutFieldNestedInput;
+    fieldReference?: Prisma.FieldReferenceUpdateOneWithoutFieldNestedInput;
+    fieldConditionBindings?: Prisma.FieldConditionBindingUpdateManyWithoutFieldNestedInput;
+};
+export type FieldDefinitionUncheckedUpdateWithoutMasterObjectInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    schemaId?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    label?: Prisma.StringFieldUpdateOperationsInput | string;
+    category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory;
+    dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType;
+    fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType;
+    config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order?: Prisma.IntFieldUpdateOperationsInput | number;
+    isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutFieldNestedInput;
+    fieldValidationRules?: Prisma.FieldValidationRuleUncheckedUpdateManyWithoutFieldNestedInput;
+    fieldFormula?: Prisma.FieldFormulaUncheckedUpdateOneWithoutFieldNestedInput;
+    fieldReference?: Prisma.FieldReferenceUncheckedUpdateOneWithoutFieldNestedInput;
+    fieldConditionBindings?: Prisma.FieldConditionBindingUncheckedUpdateManyWithoutFieldNestedInput;
+};
+export type FieldDefinitionUncheckedUpdateManyWithoutMasterObjectInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    schemaId?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    label?: Prisma.StringFieldUpdateOperationsInput | string;
+    category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory;
+    dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType;
+    fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType;
+    config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order?: Prisma.IntFieldUpdateOperationsInput | number;
+    isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type FieldDefinitionCreateManySchemaInput = {
+    id?: string;
+    masterObjectId: string;
+    key: string;
+    label: string;
+    category: $Enums.FieldCategory;
+    dataType: $Enums.FieldDataType;
+    fieldType: $Enums.FieldType;
+    config: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order: number;
+    isRequired?: boolean;
+    isSystem?: boolean;
+    isActive?: boolean;
+    isLocked?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+};
+export type FieldDefinitionUpdateWithoutSchemaInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    label?: Prisma.StringFieldUpdateOperationsInput | string;
+    category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory;
+    dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType;
+    fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType;
+    config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order?: Prisma.IntFieldUpdateOperationsInput | number;
+    isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    masterObject?: Prisma.MasterObjectUpdateOneRequiredWithoutFieldDefinitionsNestedInput;
+    fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutFieldNestedInput;
+    fieldValidationRules?: Prisma.FieldValidationRuleUpdateManyWithoutFieldNestedInput;
+    fieldFormula?: Prisma.FieldFormulaUpdateOneWithoutFieldNestedInput;
+    fieldReference?: Prisma.FieldReferenceUpdateOneWithoutFieldNestedInput;
+    fieldConditionBindings?: Prisma.FieldConditionBindingUpdateManyWithoutFieldNestedInput;
+};
+export type FieldDefinitionUncheckedUpdateWithoutSchemaInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    masterObjectId?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    label?: Prisma.StringFieldUpdateOperationsInput | string;
+    category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory;
+    dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType;
+    fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType;
+    config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order?: Prisma.IntFieldUpdateOperationsInput | number;
+    isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutFieldNestedInput;
+    fieldValidationRules?: Prisma.FieldValidationRuleUncheckedUpdateManyWithoutFieldNestedInput;
+    fieldFormula?: Prisma.FieldFormulaUncheckedUpdateOneWithoutFieldNestedInput;
+    fieldReference?: Prisma.FieldReferenceUncheckedUpdateOneWithoutFieldNestedInput;
+    fieldConditionBindings?: Prisma.FieldConditionBindingUncheckedUpdateManyWithoutFieldNestedInput;
+};
+export type FieldDefinitionUncheckedUpdateManyWithoutSchemaInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    masterObjectId?: Prisma.StringFieldUpdateOperationsInput | string;
+    key?: Prisma.StringFieldUpdateOperationsInput | string;
+    label?: Prisma.StringFieldUpdateOperationsInput | string;
+    category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory;
+    dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType;
+    fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType;
+    config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+    order?: Prisma.IntFieldUpdateOperationsInput | number;
+    isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+/**
+ * Count Type FieldDefinitionCountOutputType
+ */
+export type FieldDefinitionCountOutputType = {
+    fieldPermissions: number;
+    fieldValidationRules: number;
+    fieldConditionBindings: number;
+};
+export type FieldDefinitionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    fieldPermissions?: boolean | FieldDefinitionCountOutputTypeCountFieldPermissionsArgs;
+    fieldValidationRules?: boolean | FieldDefinitionCountOutputTypeCountFieldValidationRulesArgs;
+    fieldConditionBindings?: boolean | FieldDefinitionCountOutputTypeCountFieldConditionBindingsArgs;
+};
+/**
+ * FieldDefinitionCountOutputType without action
+ */
+export type FieldDefinitionCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldDefinitionCountOutputType
+     */
+    select?: Prisma.FieldDefinitionCountOutputTypeSelect<ExtArgs> | null;
+};
+/**
+ * FieldDefinitionCountOutputType without action
+ */
+export type FieldDefinitionCountOutputTypeCountFieldPermissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.FieldPermissionWhereInput;
+};
+/**
+ * FieldDefinitionCountOutputType without action
+ */
+export type FieldDefinitionCountOutputTypeCountFieldValidationRulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.FieldValidationRuleWhereInput;
+};
+/**
+ * FieldDefinitionCountOutputType without action
+ */
+export type FieldDefinitionCountOutputTypeCountFieldConditionBindingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.FieldConditionBindingWhereInput;
+};
+export type FieldDefinitionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    masterObjectId?: boolean;
+    schemaId?: boolean;
+    key?: boolean;
+    label?: boolean;
+    category?: boolean;
+    dataType?: boolean;
+    fieldType?: boolean;
+    config?: boolean;
+    order?: boolean;
+    isRequired?: boolean;
+    isSystem?: boolean;
+    isActive?: boolean;
+    isLocked?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    deletedAt?: boolean;
+    masterObject?: boolean | Prisma.MasterObjectDefaultArgs<ExtArgs>;
+    schema?: boolean | Prisma.MasterObjectSchemaDefaultArgs<ExtArgs>;
+    fieldPermissions?: boolean | Prisma.FieldDefinition$fieldPermissionsArgs<ExtArgs>;
+    fieldValidationRules?: boolean | Prisma.FieldDefinition$fieldValidationRulesArgs<ExtArgs>;
+    fieldFormula?: boolean | Prisma.FieldDefinition$fieldFormulaArgs<ExtArgs>;
+    fieldReference?: boolean | Prisma.FieldDefinition$fieldReferenceArgs<ExtArgs>;
+    fieldConditionBindings?: boolean | Prisma.FieldDefinition$fieldConditionBindingsArgs<ExtArgs>;
+    _count?: boolean | Prisma.FieldDefinitionCountOutputTypeDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["fieldDefinition"]>;
+export type FieldDefinitionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    masterObjectId?: boolean;
+    schemaId?: boolean;
+    key?: boolean;
+    label?: boolean;
+    category?: boolean;
+    dataType?: boolean;
+    fieldType?: boolean;
+    config?: boolean;
+    order?: boolean;
+    isRequired?: boolean;
+    isSystem?: boolean;
+    isActive?: boolean;
+    isLocked?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    deletedAt?: boolean;
+    masterObject?: boolean | Prisma.MasterObjectDefaultArgs<ExtArgs>;
+    schema?: boolean | Prisma.MasterObjectSchemaDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["fieldDefinition"]>;
+export type FieldDefinitionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    masterObjectId?: boolean;
+    schemaId?: boolean;
+    key?: boolean;
+    label?: boolean;
+    category?: boolean;
+    dataType?: boolean;
+    fieldType?: boolean;
+    config?: boolean;
+    order?: boolean;
+    isRequired?: boolean;
+    isSystem?: boolean;
+    isActive?: boolean;
+    isLocked?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    deletedAt?: boolean;
+    masterObject?: boolean | Prisma.MasterObjectDefaultArgs<ExtArgs>;
+    schema?: boolean | Prisma.MasterObjectSchemaDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["fieldDefinition"]>;
+export type FieldDefinitionSelectScalar = {
+    id?: boolean;
+    masterObjectId?: boolean;
+    schemaId?: boolean;
+    key?: boolean;
+    label?: boolean;
+    category?: boolean;
+    dataType?: boolean;
+    fieldType?: boolean;
+    config?: boolean;
+    order?: boolean;
+    isRequired?: boolean;
+    isSystem?: boolean;
+    isActive?: boolean;
+    isLocked?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    deletedAt?: boolean;
+};
+export type FieldDefinitionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "masterObjectId" | "schemaId" | "key" | "label" | "category" | "dataType" | "fieldType" | "config" | "order" | "isRequired" | "isSystem" | "isActive" | "isLocked" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["fieldDefinition"]>;
+export type FieldDefinitionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    masterObject?: boolean | Prisma.MasterObjectDefaultArgs<ExtArgs>;
+    schema?: boolean | Prisma.MasterObjectSchemaDefaultArgs<ExtArgs>;
+    fieldPermissions?: boolean | Prisma.FieldDefinition$fieldPermissionsArgs<ExtArgs>;
+    fieldValidationRules?: boolean | Prisma.FieldDefinition$fieldValidationRulesArgs<ExtArgs>;
+    fieldFormula?: boolean | Prisma.FieldDefinition$fieldFormulaArgs<ExtArgs>;
+    fieldReference?: boolean | Prisma.FieldDefinition$fieldReferenceArgs<ExtArgs>;
+    fieldConditionBindings?: boolean | Prisma.FieldDefinition$fieldConditionBindingsArgs<ExtArgs>;
+    _count?: boolean | Prisma.FieldDefinitionCountOutputTypeDefaultArgs<ExtArgs>;
+};
+export type FieldDefinitionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    masterObject?: boolean | Prisma.MasterObjectDefaultArgs<ExtArgs>;
+    schema?: boolean | Prisma.MasterObjectSchemaDefaultArgs<ExtArgs>;
+};
+export type FieldDefinitionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    masterObject?: boolean | Prisma.MasterObjectDefaultArgs<ExtArgs>;
+    schema?: boolean | Prisma.MasterObjectSchemaDefaultArgs<ExtArgs>;
+};
+export type $FieldDefinitionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    name: "FieldDefinition";
+    objects: {
+        masterObject: Prisma.$MasterObjectPayload<ExtArgs>;
+        schema: Prisma.$MasterObjectSchemaPayload<ExtArgs>;
+        fieldPermissions: Prisma.$FieldPermissionPayload<ExtArgs>[];
+        fieldValidationRules: Prisma.$FieldValidationRulePayload<ExtArgs>[];
+        fieldFormula: Prisma.$FieldFormulaPayload<ExtArgs> | null;
+        fieldReference: Prisma.$FieldReferencePayload<ExtArgs> | null;
+        fieldConditionBindings: Prisma.$FieldConditionBindingPayload<ExtArgs>[];
+    };
+    scalars: runtime.Types.Extensions.GetPayloadResult<{
+        id: string;
+        masterObjectId: string;
+        schemaId: string;
+        key: string;
+        label: string;
+        category: $Enums.FieldCategory;
+        dataType: $Enums.FieldDataType;
+        fieldType: $Enums.FieldType;
+        config: runtime.JsonValue;
+        order: number;
+        isRequired: boolean;
+        isSystem: boolean;
+        isActive: boolean;
+        isLocked: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt: Date | null;
+    }, ExtArgs["result"]["fieldDefinition"]>;
+    composites: {};
+};
+export type FieldDefinitionGetPayload<S extends boolean | null | undefined | FieldDefinitionDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$FieldDefinitionPayload, S>;
+export type FieldDefinitionCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = Omit<FieldDefinitionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    select?: FieldDefinitionCountAggregateInputType | true;
+};
+export interface FieldDefinitionDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: {
+        types: Prisma.TypeMap<ExtArgs>['model']['FieldDefinition'];
+        meta: {
+            name: 'FieldDefinition';
+        };
+    };
+    /**
+     * Find zero or one FieldDefinition that matches the filter.
+     * @param {FieldDefinitionFindUniqueArgs} args - Arguments to find a FieldDefinition
+     * @example
+     * // Get one FieldDefinition
+     * const fieldDefinition = await prisma.fieldDefinition.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FieldDefinitionFindUniqueArgs>(args: Prisma.SelectSubset<T, FieldDefinitionFindUniqueArgs<ExtArgs>>): Prisma.Prisma__FieldDefinitionClient<runtime.Types.Result.GetResult<Prisma.$FieldDefinitionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find one FieldDefinition that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FieldDefinitionFindUniqueOrThrowArgs} args - Arguments to find a FieldDefinition
+     * @example
+     * // Get one FieldDefinition
+     * const fieldDefinition = await prisma.fieldDefinition.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FieldDefinitionFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, FieldDefinitionFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__FieldDefinitionClient<runtime.Types.Result.GetResult<Prisma.$FieldDefinitionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first FieldDefinition that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FieldDefinitionFindFirstArgs} args - Arguments to find a FieldDefinition
+     * @example
+     * // Get one FieldDefinition
+     * const fieldDefinition = await prisma.fieldDefinition.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FieldDefinitionFindFirstArgs>(args?: Prisma.SelectSubset<T, FieldDefinitionFindFirstArgs<ExtArgs>>): Prisma.Prisma__FieldDefinitionClient<runtime.Types.Result.GetResult<Prisma.$FieldDefinitionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first FieldDefinition that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FieldDefinitionFindFirstOrThrowArgs} args - Arguments to find a FieldDefinition
+     * @example
+     * // Get one FieldDefinition
+     * const fieldDefinition = await prisma.fieldDefinition.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FieldDefinitionFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, FieldDefinitionFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__FieldDefinitionClient<runtime.Types.Result.GetResult<Prisma.$FieldDefinitionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find zero or more FieldDefinitions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FieldDefinitionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FieldDefinitions
+     * const fieldDefinitions = await prisma.fieldDefinition.findMany()
+     *
+     * // Get first 10 FieldDefinitions
+     * const fieldDefinitions = await prisma.fieldDefinition.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const fieldDefinitionWithIdOnly = await prisma.fieldDefinition.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends FieldDefinitionFindManyArgs>(args?: Prisma.SelectSubset<T, FieldDefinitionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FieldDefinitionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>;
+    /**
+     * Create a FieldDefinition.
+     * @param {FieldDefinitionCreateArgs} args - Arguments to create a FieldDefinition.
+     * @example
+     * // Create one FieldDefinition
+     * const FieldDefinition = await prisma.fieldDefinition.create({
+     *   data: {
+     *     // ... data to create a FieldDefinition
+     *   }
+     * })
+     *
+     */
+    create<T extends FieldDefinitionCreateArgs>(args: Prisma.SelectSubset<T, FieldDefinitionCreateArgs<ExtArgs>>): Prisma.Prisma__FieldDefinitionClient<runtime.Types.Result.GetResult<Prisma.$FieldDefinitionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Create many FieldDefinitions.
+     * @param {FieldDefinitionCreateManyArgs} args - Arguments to create many FieldDefinitions.
+     * @example
+     * // Create many FieldDefinitions
+     * const fieldDefinition = await prisma.fieldDefinition.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends FieldDefinitionCreateManyArgs>(args?: Prisma.SelectSubset<T, FieldDefinitionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Create many FieldDefinitions and returns the data saved in the database.
+     * @param {FieldDefinitionCreateManyAndReturnArgs} args - Arguments to create many FieldDefinitions.
+     * @example
+     * // Create many FieldDefinitions
+     * const fieldDefinition = await prisma.fieldDefinition.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Create many FieldDefinitions and only return the `id`
+     * const fieldDefinitionWithIdOnly = await prisma.fieldDefinition.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    createManyAndReturn<T extends FieldDefinitionCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, FieldDefinitionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FieldDefinitionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Delete a FieldDefinition.
+     * @param {FieldDefinitionDeleteArgs} args - Arguments to delete one FieldDefinition.
+     * @example
+     * // Delete one FieldDefinition
+     * const FieldDefinition = await prisma.fieldDefinition.delete({
+     *   where: {
+     *     // ... filter to delete one FieldDefinition
+     *   }
+     * })
+     *
+     */
+    delete<T extends FieldDefinitionDeleteArgs>(args: Prisma.SelectSubset<T, FieldDefinitionDeleteArgs<ExtArgs>>): Prisma.Prisma__FieldDefinitionClient<runtime.Types.Result.GetResult<Prisma.$FieldDefinitionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Update one FieldDefinition.
+     * @param {FieldDefinitionUpdateArgs} args - Arguments to update one FieldDefinition.
+     * @example
+     * // Update one FieldDefinition
+     * const fieldDefinition = await prisma.fieldDefinition.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends FieldDefinitionUpdateArgs>(args: Prisma.SelectSubset<T, FieldDefinitionUpdateArgs<ExtArgs>>): Prisma.Prisma__FieldDefinitionClient<runtime.Types.Result.GetResult<Prisma.$FieldDefinitionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Delete zero or more FieldDefinitions.
+     * @param {FieldDefinitionDeleteManyArgs} args - Arguments to filter FieldDefinitions to delete.
+     * @example
+     * // Delete a few FieldDefinitions
+     * const { count } = await prisma.fieldDefinition.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends FieldDefinitionDeleteManyArgs>(args?: Prisma.SelectSubset<T, FieldDefinitionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more FieldDefinitions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FieldDefinitionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FieldDefinitions
+     * const fieldDefinition = await prisma.fieldDefinition.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends FieldDefinitionUpdateManyArgs>(args: Prisma.SelectSubset<T, FieldDefinitionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more FieldDefinitions and returns the data updated in the database.
+     * @param {FieldDefinitionUpdateManyAndReturnArgs} args - Arguments to update many FieldDefinitions.
+     * @example
+     * // Update many FieldDefinitions
+     * const fieldDefinition = await prisma.fieldDefinition.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Update zero or more FieldDefinitions and only return the `id`
+     * const fieldDefinitionWithIdOnly = await prisma.fieldDefinition.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    updateManyAndReturn<T extends FieldDefinitionUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, FieldDefinitionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FieldDefinitionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Create or update one FieldDefinition.
+     * @param {FieldDefinitionUpsertArgs} args - Arguments to update or create a FieldDefinition.
+     * @example
+     * // Update or create a FieldDefinition
+     * const fieldDefinition = await prisma.fieldDefinition.upsert({
+     *   create: {
+     *     // ... data to create a FieldDefinition
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FieldDefinition we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FieldDefinitionUpsertArgs>(args: Prisma.SelectSubset<T, FieldDefinitionUpsertArgs<ExtArgs>>): Prisma.Prisma__FieldDefinitionClient<runtime.Types.Result.GetResult<Prisma.$FieldDefinitionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Count the number of FieldDefinitions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FieldDefinitionCountArgs} args - Arguments to filter FieldDefinitions to count.
+     * @example
+     * // Count the number of FieldDefinitions
+     * const count = await prisma.fieldDefinition.count({
+     *   where: {
+     *     // ... the filter for the FieldDefinitions we want to count
+     *   }
+     * })
+    **/
+    count<T extends FieldDefinitionCountArgs>(args?: Prisma.Subset<T, FieldDefinitionCountArgs>): Prisma.PrismaPromise<T extends runtime.Types.Utils.Record<'select', any> ? T['select'] extends true ? number : Prisma.GetScalarType<T['select'], FieldDefinitionCountAggregateOutputType> : number>;
+    /**
+     * Allows you to perform aggregations operations on a FieldDefinition.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FieldDefinitionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FieldDefinitionAggregateArgs>(args: Prisma.Subset<T, FieldDefinitionAggregateArgs>): Prisma.PrismaPromise<GetFieldDefinitionAggregateType<T>>;
+    /**
+     * Group by FieldDefinition.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FieldDefinitionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<T extends FieldDefinitionGroupByArgs, HasSelectOrTake extends Prisma.Or<Prisma.Extends<'skip', Prisma.Keys<T>>, Prisma.Extends<'take', Prisma.Keys<T>>>, OrderByArg extends Prisma.True extends HasSelectOrTake ? {
+        orderBy: FieldDefinitionGroupByArgs['orderBy'];
+    } : {
+        orderBy?: FieldDefinitionGroupByArgs['orderBy'];
+    }, OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>, ByFields extends Prisma.MaybeTupleToUnion<T['by']>, ByValid extends Prisma.Has<ByFields, OrderFields>, HavingFields extends Prisma.GetHavingFields<T['having']>, HavingValid extends Prisma.Has<ByFields, HavingFields>, ByEmpty extends T['by'] extends never[] ? Prisma.True : Prisma.False, InputErrors extends ByEmpty extends Prisma.True ? `Error: "by" must not be empty.` : HavingValid extends Prisma.False ? {
+        [P in HavingFields]: P extends ByFields ? never : P extends string ? `Error: Field "${P}" used in "having" needs to be provided in "by".` : [
+            Error,
+            'Field ',
+            P,
+            ` in "having" needs to be provided in "by"`
+        ];
+    }[HavingFields] : 'take' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "take", you also need to provide "orderBy"' : 'skip' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "skip", you also need to provide "orderBy"' : ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields]>(args: Prisma.SubsetIntersection<T, FieldDefinitionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFieldDefinitionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>;
+    /**
+     * Fields of the FieldDefinition model
+     */
+    readonly fields: FieldDefinitionFieldRefs;
+}
+/**
+ * The delegate class that acts as a "Promise-like" for FieldDefinition.
+ * Why is this prefixed with `Prisma__`?
+ * Because we want to prevent naming conflicts as mentioned in
+ * https://github.com/prisma/prisma-client-js/issues/707
+ */
+export interface Prisma__FieldDefinitionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise";
+    masterObject<T extends Prisma.MasterObjectDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MasterObjectDefaultArgs<ExtArgs>>): Prisma.Prisma__MasterObjectClient<runtime.Types.Result.GetResult<Prisma.$MasterObjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    schema<T extends Prisma.MasterObjectSchemaDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MasterObjectSchemaDefaultArgs<ExtArgs>>): Prisma.Prisma__MasterObjectSchemaClient<runtime.Types.Result.GetResult<Prisma.$MasterObjectSchemaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    fieldPermissions<T extends Prisma.FieldDefinition$fieldPermissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FieldDefinition$fieldPermissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FieldPermissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    fieldValidationRules<T extends Prisma.FieldDefinition$fieldValidationRulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FieldDefinition$fieldValidationRulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FieldValidationRulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    fieldFormula<T extends Prisma.FieldDefinition$fieldFormulaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FieldDefinition$fieldFormulaArgs<ExtArgs>>): Prisma.Prisma__FieldFormulaClient<runtime.Types.Result.GetResult<Prisma.$FieldFormulaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    fieldReference<T extends Prisma.FieldDefinition$fieldReferenceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FieldDefinition$fieldReferenceArgs<ExtArgs>>): Prisma.Prisma__FieldReferenceClient<runtime.Types.Result.GetResult<Prisma.$FieldReferencePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    fieldConditionBindings<T extends Prisma.FieldDefinition$fieldConditionBindingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FieldDefinition$fieldConditionBindingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FieldConditionBindingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
+}
+/**
+ * Fields of the FieldDefinition model
+ */
+export interface FieldDefinitionFieldRefs {
+    readonly id: Prisma.FieldRef<"FieldDefinition", 'String'>;
+    readonly masterObjectId: Prisma.FieldRef<"FieldDefinition", 'String'>;
+    readonly schemaId: Prisma.FieldRef<"FieldDefinition", 'String'>;
+    readonly key: Prisma.FieldRef<"FieldDefinition", 'String'>;
+    readonly label: Prisma.FieldRef<"FieldDefinition", 'String'>;
+    readonly category: Prisma.FieldRef<"FieldDefinition", 'FieldCategory'>;
+    readonly dataType: Prisma.FieldRef<"FieldDefinition", 'FieldDataType'>;
+    readonly fieldType: Prisma.FieldRef<"FieldDefinition", 'FieldType'>;
+    readonly config: Prisma.FieldRef<"FieldDefinition", 'Json'>;
+    readonly order: Prisma.FieldRef<"FieldDefinition", 'Int'>;
+    readonly isRequired: Prisma.FieldRef<"FieldDefinition", 'Boolean'>;
+    readonly isSystem: Prisma.FieldRef<"FieldDefinition", 'Boolean'>;
+    readonly isActive: Prisma.FieldRef<"FieldDefinition", 'Boolean'>;
+    readonly isLocked: Prisma.FieldRef<"FieldDefinition", 'Boolean'>;
+    readonly createdAt: Prisma.FieldRef<"FieldDefinition", 'DateTime'>;
+    readonly updatedAt: Prisma.FieldRef<"FieldDefinition", 'DateTime'>;
+    readonly deletedAt: Prisma.FieldRef<"FieldDefinition", 'DateTime'>;
+}
+/**
+ * FieldDefinition findUnique
+ */
+export type FieldDefinitionFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldDefinition
+     */
+    select?: Prisma.FieldDefinitionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FieldDefinition
+     */
+    omit?: Prisma.FieldDefinitionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FieldDefinitionInclude<ExtArgs> | null;
+    /**
+     * Filter, which FieldDefinition to fetch.
+     */
+    where: Prisma.FieldDefinitionWhereUniqueInput;
+};
+/**
+ * FieldDefinition findUniqueOrThrow
+ */
+export type FieldDefinitionFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldDefinition
+     */
+    select?: Prisma.FieldDefinitionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FieldDefinition
+     */
+    omit?: Prisma.FieldDefinitionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FieldDefinitionInclude<ExtArgs> | null;
+    /**
+     * Filter, which FieldDefinition to fetch.
+     */
+    where: Prisma.FieldDefinitionWhereUniqueInput;
+};
+/**
+ * FieldDefinition findFirst
+ */
+export type FieldDefinitionFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldDefinition
+     */
+    select?: Prisma.FieldDefinitionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FieldDefinition
+     */
+    omit?: Prisma.FieldDefinitionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FieldDefinitionInclude<ExtArgs> | null;
+    /**
+     * Filter, which FieldDefinition to fetch.
+     */
+    where?: Prisma.FieldDefinitionWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of FieldDefinitions to fetch.
+     */
+    orderBy?: Prisma.FieldDefinitionOrderByWithRelationInput | Prisma.FieldDefinitionOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for FieldDefinitions.
+     */
+    cursor?: Prisma.FieldDefinitionWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` FieldDefinitions from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` FieldDefinitions.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of FieldDefinitions.
+     */
+    distinct?: Prisma.FieldDefinitionScalarFieldEnum | Prisma.FieldDefinitionScalarFieldEnum[];
+};
+/**
+ * FieldDefinition findFirstOrThrow
+ */
+export type FieldDefinitionFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldDefinition
+     */
+    select?: Prisma.FieldDefinitionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FieldDefinition
+     */
+    omit?: Prisma.FieldDefinitionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FieldDefinitionInclude<ExtArgs> | null;
+    /**
+     * Filter, which FieldDefinition to fetch.
+     */
+    where?: Prisma.FieldDefinitionWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of FieldDefinitions to fetch.
+     */
+    orderBy?: Prisma.FieldDefinitionOrderByWithRelationInput | Prisma.FieldDefinitionOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for FieldDefinitions.
+     */
+    cursor?: Prisma.FieldDefinitionWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` FieldDefinitions from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` FieldDefinitions.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of FieldDefinitions.
+     */
+    distinct?: Prisma.FieldDefinitionScalarFieldEnum | Prisma.FieldDefinitionScalarFieldEnum[];
+};
+/**
+ * FieldDefinition findMany
+ */
+export type FieldDefinitionFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldDefinition
+     */
+    select?: Prisma.FieldDefinitionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FieldDefinition
+     */
+    omit?: Prisma.FieldDefinitionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FieldDefinitionInclude<ExtArgs> | null;
+    /**
+     * Filter, which FieldDefinitions to fetch.
+     */
+    where?: Prisma.FieldDefinitionWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of FieldDefinitions to fetch.
+     */
+    orderBy?: Prisma.FieldDefinitionOrderByWithRelationInput | Prisma.FieldDefinitionOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing FieldDefinitions.
+     */
+    cursor?: Prisma.FieldDefinitionWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` FieldDefinitions from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` FieldDefinitions.
+     */
+    skip?: number;
+    distinct?: Prisma.FieldDefinitionScalarFieldEnum | Prisma.FieldDefinitionScalarFieldEnum[];
+};
+/**
+ * FieldDefinition create
+ */
+export type FieldDefinitionCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldDefinition
+     */
+    select?: Prisma.FieldDefinitionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FieldDefinition
+     */
+    omit?: Prisma.FieldDefinitionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FieldDefinitionInclude<ExtArgs> | null;
+    /**
+     * The data needed to create a FieldDefinition.
+     */
+    data: Prisma.XOR<Prisma.FieldDefinitionCreateInput, Prisma.FieldDefinitionUncheckedCreateInput>;
+};
+/**
+ * FieldDefinition createMany
+ */
+export type FieldDefinitionCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FieldDefinitions.
+     */
+    data: Prisma.FieldDefinitionCreateManyInput | Prisma.FieldDefinitionCreateManyInput[];
+    skipDuplicates?: boolean;
+};
+/**
+ * FieldDefinition createManyAndReturn
+ */
+export type FieldDefinitionCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldDefinition
+     */
+    select?: Prisma.FieldDefinitionSelectCreateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FieldDefinition
+     */
+    omit?: Prisma.FieldDefinitionOmit<ExtArgs> | null;
+    /**
+     * The data used to create many FieldDefinitions.
+     */
+    data: Prisma.FieldDefinitionCreateManyInput | Prisma.FieldDefinitionCreateManyInput[];
+    skipDuplicates?: boolean;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FieldDefinitionIncludeCreateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * FieldDefinition update
+ */
+export type FieldDefinitionUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldDefinition
+     */
+    select?: Prisma.FieldDefinitionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FieldDefinition
+     */
+    omit?: Prisma.FieldDefinitionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FieldDefinitionInclude<ExtArgs> | null;
+    /**
+     * The data needed to update a FieldDefinition.
+     */
+    data: Prisma.XOR<Prisma.FieldDefinitionUpdateInput, Prisma.FieldDefinitionUncheckedUpdateInput>;
+    /**
+     * Choose, which FieldDefinition to update.
+     */
+    where: Prisma.FieldDefinitionWhereUniqueInput;
+};
+/**
+ * FieldDefinition updateMany
+ */
+export type FieldDefinitionUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FieldDefinitions.
+     */
+    data: Prisma.XOR<Prisma.FieldDefinitionUpdateManyMutationInput, Prisma.FieldDefinitionUncheckedUpdateManyInput>;
+    /**
+     * Filter which FieldDefinitions to update
+     */
+    where?: Prisma.FieldDefinitionWhereInput;
+    /**
+     * Limit how many FieldDefinitions to update.
+     */
+    limit?: number;
+};
+/**
+ * FieldDefinition updateManyAndReturn
+ */
+export type FieldDefinitionUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldDefinition
+     */
+    select?: Prisma.FieldDefinitionSelectUpdateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FieldDefinition
+     */
+    omit?: Prisma.FieldDefinitionOmit<ExtArgs> | null;
+    /**
+     * The data used to update FieldDefinitions.
+     */
+    data: Prisma.XOR<Prisma.FieldDefinitionUpdateManyMutationInput, Prisma.FieldDefinitionUncheckedUpdateManyInput>;
+    /**
+     * Filter which FieldDefinitions to update
+     */
+    where?: Prisma.FieldDefinitionWhereInput;
+    /**
+     * Limit how many FieldDefinitions to update.
+     */
+    limit?: number;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FieldDefinitionIncludeUpdateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * FieldDefinition upsert
+ */
+export type FieldDefinitionUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldDefinition
+     */
+    select?: Prisma.FieldDefinitionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FieldDefinition
+     */
+    omit?: Prisma.FieldDefinitionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FieldDefinitionInclude<ExtArgs> | null;
+    /**
+     * The filter to search for the FieldDefinition to update in case it exists.
+     */
+    where: Prisma.FieldDefinitionWhereUniqueInput;
+    /**
+     * In case the FieldDefinition found by the `where` argument doesn't exist, create a new FieldDefinition with this data.
+     */
+    create: Prisma.XOR<Prisma.FieldDefinitionCreateInput, Prisma.FieldDefinitionUncheckedCreateInput>;
+    /**
+     * In case the FieldDefinition was found with the provided `where` argument, update it with this data.
+     */
+    update: Prisma.XOR<Prisma.FieldDefinitionUpdateInput, Prisma.FieldDefinitionUncheckedUpdateInput>;
+};
+/**
+ * FieldDefinition delete
+ */
+export type FieldDefinitionDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldDefinition
+     */
+    select?: Prisma.FieldDefinitionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FieldDefinition
+     */
+    omit?: Prisma.FieldDefinitionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FieldDefinitionInclude<ExtArgs> | null;
+    /**
+     * Filter which FieldDefinition to delete.
+     */
+    where: Prisma.FieldDefinitionWhereUniqueInput;
+};
+/**
+ * FieldDefinition deleteMany
+ */
+export type FieldDefinitionDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which FieldDefinitions to delete
+     */
+    where?: Prisma.FieldDefinitionWhereInput;
+    /**
+     * Limit how many FieldDefinitions to delete.
+     */
+    limit?: number;
+};
+/**
+ * FieldDefinition.fieldPermissions
+ */
+export type FieldDefinition$fieldPermissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldPermission
+     */
+    select?: Prisma.FieldPermissionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FieldPermission
+     */
+    omit?: Prisma.FieldPermissionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FieldPermissionInclude<ExtArgs> | null;
+    where?: Prisma.FieldPermissionWhereInput;
+    orderBy?: Prisma.FieldPermissionOrderByWithRelationInput | Prisma.FieldPermissionOrderByWithRelationInput[];
+    cursor?: Prisma.FieldPermissionWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.FieldPermissionScalarFieldEnum | Prisma.FieldPermissionScalarFieldEnum[];
+};
+/**
+ * FieldDefinition.fieldValidationRules
+ */
+export type FieldDefinition$fieldValidationRulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldValidationRule
+     */
+    select?: Prisma.FieldValidationRuleSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FieldValidationRule
+     */
+    omit?: Prisma.FieldValidationRuleOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FieldValidationRuleInclude<ExtArgs> | null;
+    where?: Prisma.FieldValidationRuleWhereInput;
+    orderBy?: Prisma.FieldValidationRuleOrderByWithRelationInput | Prisma.FieldValidationRuleOrderByWithRelationInput[];
+    cursor?: Prisma.FieldValidationRuleWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.FieldValidationRuleScalarFieldEnum | Prisma.FieldValidationRuleScalarFieldEnum[];
+};
+/**
+ * FieldDefinition.fieldFormula
+ */
+export type FieldDefinition$fieldFormulaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldFormula
+     */
+    select?: Prisma.FieldFormulaSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FieldFormula
+     */
+    omit?: Prisma.FieldFormulaOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FieldFormulaInclude<ExtArgs> | null;
+    where?: Prisma.FieldFormulaWhereInput;
+};
+/**
+ * FieldDefinition.fieldReference
+ */
+export type FieldDefinition$fieldReferenceArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldReference
+     */
+    select?: Prisma.FieldReferenceSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FieldReference
+     */
+    omit?: Prisma.FieldReferenceOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FieldReferenceInclude<ExtArgs> | null;
+    where?: Prisma.FieldReferenceWhereInput;
+};
+/**
+ * FieldDefinition.fieldConditionBindings
+ */
+export type FieldDefinition$fieldConditionBindingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldConditionBinding
+     */
+    select?: Prisma.FieldConditionBindingSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FieldConditionBinding
+     */
+    omit?: Prisma.FieldConditionBindingOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FieldConditionBindingInclude<ExtArgs> | null;
+    where?: Prisma.FieldConditionBindingWhereInput;
+    orderBy?: Prisma.FieldConditionBindingOrderByWithRelationInput | Prisma.FieldConditionBindingOrderByWithRelationInput[];
+    cursor?: Prisma.FieldConditionBindingWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.FieldConditionBindingScalarFieldEnum | Prisma.FieldConditionBindingScalarFieldEnum[];
+};
+/**
+ * FieldDefinition without action
+ */
+export type FieldDefinitionDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FieldDefinition
+     */
+    select?: Prisma.FieldDefinitionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FieldDefinition
+     */
+    omit?: Prisma.FieldDefinitionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.FieldDefinitionInclude<ExtArgs> | null;
+};
+export {};
+//# sourceMappingURL=FieldDefinition.d.ts.map

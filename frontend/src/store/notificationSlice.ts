@@ -1,8 +1,9 @@
+// src/store/notificationSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type NotificationType = "INFO" | "SUCCESS" | "WARNING" | "ERROR";
 
-interface NotificationPayload {
+export interface NotificationPayload {
   deliveryId: string;
   userId: string;
   title: string;
@@ -15,45 +16,42 @@ interface NotificationPayload {
 
 interface NotificationState {
   unread: number;
-  items: NotificationPayload[];
+  latest: NotificationPayload[]; // last 10 only
 }
 
 const initialState: NotificationState = {
   unread: 0,
-  items: [],
+  latest: [],
 };
 
 const notificationSlice = createSlice({
   name: "notifications",
   initialState,
   reducers: {
-    pushNotification: (state, action: PayloadAction<NotificationPayload>) => {
-      const notif = {
+    pushNotification(state, action: PayloadAction<NotificationPayload>) {
+      console.log("🧠 [redux] pushNotification", action.payload);
+      state.latest.unshift({
         ...action.payload,
         read: false,
         createdAt: action.payload.createdAt ?? new Date().toISOString(),
-      };
+      });
 
-      state.items.unshift(notif);
+      state.latest = state.latest.slice(0, 10);
       state.unread += 1;
     },
 
-    markRead: (state, action: PayloadAction<string>) => {
-      const index = state.items.findIndex(
-        (n) => n.deliveryId === action.payload
-      );
-      if (index !== -1 && !state.items[index].read) {
-        state.items[index].read = true;
-        state.unread = Math.max(state.unread - 1, 0);
-      }
+    syncUnread(state, action: PayloadAction<number>) {
+      state.unread = action.payload;
     },
 
-    markAllRead: (state) => {
-      state.items = state.items.map((n) => ({ ...n, read: true }));
+    markAllRead(state) {
       state.unread = 0;
+      state.latest = state.latest.map((n) => ({ ...n, read: true }));
     },
   },
 });
 
-export const { pushNotification, markAllRead, markRead } = notificationSlice.actions;
+export const { pushNotification, syncUnread, markAllRead } =
+  notificationSlice.actions;
+
 export default notificationSlice.reducer;

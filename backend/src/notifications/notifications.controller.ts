@@ -31,19 +31,23 @@ const notificationsController = {
     const take = Number(req.query.take ?? 20);
     const skip = Number(req.query.skip ?? 0);
 
-    const notifications = await DeliveryService.listForUser(userId, take, skip);
+    const data = await DeliveryService.listForUser(userId, take, skip);
 
+    console.log("DATA:", data);
+    
     return sendResponse({
       res,
       statusCode: HTTPSTATUS.OK,
       success: true,
       message: "Notifications fetched successfully",
-      data: { notifications },
+      data: {
+        data,
+      },
     });
   },
 
   markRead: async (req: Request, res: Response) => {
-     const id = req.params.id as string;  
+    const id = req.params.id as string;
 
     await DeliveryService.markRead(id);
 

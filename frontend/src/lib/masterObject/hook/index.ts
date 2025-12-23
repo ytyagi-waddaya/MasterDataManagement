@@ -1,4 +1,5 @@
-export {useMasterObject } from "./useMasterObject"
+export {useMasterObjectForEditor } from "./useMasterObject"
+export {useMasterObjectForRuntime } from "./useMasterObject"
 export {useUpdateMasterObject} from "./useMasterObject"
 export { useDeleteMasterObject} from "./useMasterObject"
 export { useMasterObjects} from "./useMasterObject"

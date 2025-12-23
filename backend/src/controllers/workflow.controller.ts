@@ -5,31 +5,11 @@ import { sendResponse } from "../utils/response.js";
 import { HTTPSTATUS } from "../config/http.config.js";
 import { BadRequestException } from "../utils/appError.js";
 import { addToStream } from "../redis/streams.js";
+import workflowRuntimeService from "../services/workflowRuntime.service.js";
+import { workflowVisualizerService } from "../dto/workflowVisualizer.service.js";
 
 const workflowController = {
-  createFullWorkflow: async (req: Request, res: Response) => {
-    const data = req.body;
-
-    const workflow = await workflowService.createFullWorkflow(data, {
-      actorId: req.user?.id ?? null,
-      ipAddress: req.ip,
-      userAgent: req.get("user-agent") ?? null,
-      performedBy: PerformedByType.USER,
-    });
-
-    sendResponse({
-      res,
-      statusCode: HTTPSTATUS.CREATED,
-      success: true,
-      message: "Workflow created successfully",
-      data: { workflow },
-    });
-  },
-  /* -------------------------------------------------------------------------- */
-  /*                               WORKFLOW DEFINITION                          */
-  /* -------------------------------------------------------------------------- */
-
-  createWorkflow: async (req: Request, res: Response) => {
+    createWorkflow: async (req: Request, res: Response) => {
     const data = req.body;
 
     const workflow = await workflowService.createWorkflow(data, {
@@ -44,6 +24,46 @@ const workflowController = {
       statusCode: HTTPSTATUS.CREATED,
       success: true,
       message: "Workflow created successfully",
+      data: { workflow },
+    });
+  },
+
+  saveWorkflowGraph: async (req: Request, res: Response) => {
+    const workflowId = req.params?.workflowId;
+    const data = req.body;
+    if (!workflowId) throw new BadRequestException("Workflow Id is required");
+
+    const workflow = await workflowService.saveWorkflowGraph(workflowId, data, {
+      actorId: req.user?.id ?? null,
+      ipAddress: req.ip,
+      userAgent: req.get("user-agent") ?? null,
+      performedBy: PerformedByType.USER,
+    });
+
+    sendResponse({
+      res,
+      statusCode: HTTPSTATUS.OK,
+      success: true,
+      message: "Workflow graph saved successfully",
+      data: { workflow },
+    });
+  },
+
+  publishWorkflow: async (req: Request, res: Response) => {
+    const workflowId = req.params?.workflowId;
+    if (!workflowId) throw new BadRequestException("Workflow Id is required");
+    const workflow = await workflowService.publishWorkflow(workflowId, {
+      actorId: req.user?.id ?? null,
+      ipAddress: req.ip,
+      userAgent: req.get("user-agent") ?? null,
+      performedBy: PerformedByType.USER,
+    });
+
+    sendResponse({
+      res,
+      statusCode: HTTPSTATUS.OK,
+      success: true,
+      message: "Workflow published successfully",
       data: { workflow },
     });
   },
@@ -461,7 +481,7 @@ const workflowController = {
     const data = req.body;
 
     console.log("INSTANCE:", data);
-    
+
     // 1️⃣ ENQUEUE JOB FOR WORKER
     await addToStream({
       type: "workflow.start",
@@ -481,7 +501,7 @@ const workflowController = {
       data: {}, // Do NOT return instance here
     });
   },
-  
+
   getInstance: async (req: Request, res: Response) => {
     const workflowId = req.params?.workflowId;
 
@@ -498,27 +518,27 @@ const workflowController = {
     });
   },
 
-  moveInstance: async (req: Request, res: Response) => {
-    const workflowId = req.params?.workflowId;
+  // moveInstance: async (req: Request, res: Response) => {
+  //   const workflowId = req.params?.workflowId;
 
-    if (!workflowId) throw new BadRequestException("Workflow Id is required");
-    const body = req.body;
+  //   if (!workflowId) throw new BadRequestException("Workflow Id is required");
+  //   const body = req.body;
 
-    const updated = await workflowService.moveInstance(workflowId, body, {
-      actorId: req.user?.id ?? null,
-      ipAddress: req.ip,
-      userAgent: req.get("user-agent") ?? null,
-      performedBy: PerformedByType.USER,
-    });
+  //   const updated = await workflowService.moveInstance(workflowId, body, {
+  //     actorId: req.user?.id ?? null,
+  //     ipAddress: req.ip,
+  //     userAgent: req.get("user-agent") ?? null,
+  //     performedBy: PerformedByType.USER,
+  //   });
 
-    return sendResponse({
-      res,
-      statusCode: HTTPSTATUS.OK,
-      success: true,
-      message: "Instance moved",
-      data: { updated },
-    });
-  },
+  //   return sendResponse({
+  //     res,
+  //     statusCode: HTTPSTATUS.OK,
+  //     success: true,
+  //     message: "Instance moved",
+  //     data: { updated },
+  //   });
+  // },
 
   closeInstance: async (req: Request, res: Response) => {
     const workflowId = req.params?.workflowId;
@@ -563,101 +583,218 @@ const workflowController = {
     });
   },
 
-  approveInstance: async (req: Request, res: Response) => {
-    const { workflowId, instanceId } = req.params;
-    const { toStageId, notes, metadata } = req.body;
-    if (!workflowId) throw new BadRequestException("Workflow ID is required");
-    if (!instanceId) throw new BadRequestException("Instance ID is required");
+  // approveInstance: async (req: Request, res: Response) => {
+  //   const { workflowId, instanceId } = req.params;
+  //   const { toStageId, notes, metadata } = req.body;
+  //   if (!workflowId) throw new BadRequestException("Workflow ID is required");
+  //   if (!instanceId) throw new BadRequestException("Instance ID is required");
 
-    const updated = await workflowService.approveInstance(
+  //   const updated = await workflowService.approveInstance(
+  //     workflowId,
+  //     {
+  //       instanceId,
+  //       toStageId,
+  //       notes,
+  //       metadata,
+  //       approve: true,
+  //     },
+  //     {
+  //       actorId: req.user?.id,
+  //       ipAddress: req.ip,
+  //       userAgent: req.get("user-agent"),
+  //       performedBy: PerformedByType.USER,
+  //     }
+  //   );
+
+  //   return sendResponse({
+  //     res,
+  //     statusCode: 200,
+  //     success: true,
+  //     message: "Instance approved",
+  //     data: { updated },
+  //   });
+  // },
+
+  // rejectInstance: async (req: Request, res: Response) => {
+  //   const { workflowId, instanceId } = req.params;
+  //   const { toStageId, notes, metadata } = req.body;
+  //   if (!workflowId) throw new BadRequestException("Workflow ID is required");
+  //   if (!instanceId) throw new BadRequestException("Instance ID is required");
+
+  //   const updated = await workflowService.rejectInstance(
+  //     workflowId,
+  //     {
+  //       instanceId,
+  //       toStageId,
+  //       notes,
+  //       metadata,
+  //       approve: false,
+  //     },
+  //     {
+  //       actorId: req.user?.id,
+  //       ipAddress: req.ip,
+  //       userAgent: req.get("user-agent"),
+  //       performedBy: PerformedByType.USER,
+  //     }
+  //   );
+
+  //   return sendResponse({
+  //     res,
+  //     statusCode: 200,
+  //     success: true,
+  //     message: "Instance rejected",
+  //     data: { updated },
+  //   });
+  // },
+
+  /* -------------------------------------------------------------------------- */
+  /*                                   ExecuteTransition                              */
+  /* -------------------------------------------------------------------------- */
+  // transition: async (req: Request, res: Response) => {
+  //   const { instanceId } = req.params;
+
+  //   if (!instanceId) {
+  //     throw new BadRequestException("Instance Id is required");
+  //   }
+  //   const { transitionId, action, comment } = req.body;
+
+  //   const result = await workflowRuntimeService.executeTransition(
+  //     instanceId,
+  //     { transitionId, action, comment },
+  //     {
+  //       actorId: req.user?.id ?? null,
+  //       ipAddress: req.ip,
+  //       userAgent: req.get("user-agent") ?? null,
+  //       performedBy: PerformedByType.USER,
+  //     }
+  //   );
+
+  //   sendResponse({
+  //     res,
+  //     statusCode: HTTPSTATUS.OK,
+  //     success: true,
+  //     message: "Workflow transitioned successfully",
+  //     data: result,
+  //   });
+  // },
+
+  // getAvailableActions: async (req: Request, res: Response) => {
+  //   const { instanceId } = req.params;
+  //   if (!instanceId) {
+  //     throw new BadRequestException("Instance Id is required");
+  //   }
+  //   const actions = await workflowRuntimeService.getAvailableActions(
+  //     instanceId,
+  //     req.user!.id
+  //   );
+
+  //   sendResponse({
+  //     res,
+  //     statusCode: HTTPSTATUS.OK,
+  //     success: true,
+  //     message: "Available actions fetched",
+  //     data: actions,
+  //   });
+  // },
+
+  /* -------------------------------------------------------------------------- */
+  /*                              WORKFLOW RUNTIME                              */
+  /* -------------------------------------------------------------------------- */
+
+  start: async (req: Request, res: Response) => {
+    const { workflowId } = req.params;
+    const { resourceId, resourceType } = req.body;
+
+    if (!workflowId) throw new BadRequestException("workflowId is required");
+
+    if (!resourceId || !resourceType)
+      throw new BadRequestException("resourceId and resourceType are required");
+
+    const instance = await workflowRuntimeService.startInstance(
       workflowId,
+      { resourceId, resourceType },
       {
-        instanceId,
-        toStageId,
-        notes,
-        metadata,
-        approve: true,
-      },
-      {
-        actorId: req.user?.id,
-        ipAddress: req.ip,
-        userAgent: req.get("user-agent"),
-        performedBy: PerformedByType.USER,
+        actorId: req.user!.id,
+        ipAddress: req.ip ?? null,
+        userAgent: req.get("user-agent") ?? null,
+        performedBy: "USER",
       }
     );
 
     return sendResponse({
       res,
-      statusCode: 200,
+      statusCode: HTTPSTATUS.CREATED,
       success: true,
-      message: "Instance approved",
-      data: { updated },
+      message: "Workflow started",
+      data: instance,
     });
   },
 
-  rejectInstance: async (req: Request, res: Response) => {
-    const { workflowId, instanceId } = req.params;
-    const { toStageId, notes, metadata } = req.body;
-    if (!workflowId) throw new BadRequestException("Workflow ID is required");
-    if (!instanceId) throw new BadRequestException("Instance ID is required");
+  transition: async (req: Request, res: Response) => {
+    const { instanceId } = req.params;
+    const { transitionId, action, comment } = req.body;
 
-    const updated = await workflowService.rejectInstance(
-      workflowId,
+    if (!instanceId || !transitionId)
+      throw new BadRequestException("instanceId and transitionId are required");
+
+    const result = await workflowRuntimeService.executeTransition(
+      instanceId,
+      { transitionId, action, comment },
       {
-        instanceId,
-        toStageId,
-        notes,
-        metadata,
-        approve: false,
-      },
-      {
-        actorId: req.user?.id,
-        ipAddress: req.ip,
-        userAgent: req.get("user-agent"),
-        performedBy: PerformedByType.USER,
+        actorId: req.user!.id,
+        ipAddress: req.ip ?? null,
+        userAgent: req.get("user-agent") ?? null,
+        performedBy: "USER",
       }
     );
 
     return sendResponse({
       res,
-      statusCode: 200,
+      statusCode: HTTPSTATUS.OK,
       success: true,
-      message: "Instance rejected",
-      data: { updated },
+      message: "Transition executed",
+      data: result,
     });
   },
+
+  getAvailableActions: async (req: Request, res: Response) => {
+    const { instanceId } = req.params;
+
+    if (!instanceId) throw new BadRequestException("instanceId is required");
+
+    const actions = await workflowRuntimeService.getAvailableActions(
+      instanceId,
+      req.user!.id
+    );
+
+    return sendResponse({
+      res,
+      statusCode: HTTPSTATUS.OK,
+      success: true,
+      message: "Available actions fetched",
+      data: actions,
+    });
+  },
+
+    getVisualizer: async (req: Request, res: Response) => {
+    const { workflowId } = req.params;
+
+    if (!workflowId) {
+      throw new BadRequestException("workflowId is required");
+    }
+
+    const visualizer =
+      await workflowVisualizerService.getWorkflowVisualizer(workflowId);
+
+    return sendResponse({
+      res,
+      statusCode: HTTPSTATUS.OK,
+      success: true,
+      message: "Workflow visualizer data fetched",
+      data: visualizer,
+    });
+  },
+
 };
 
 export default workflowController;
-
-//                 GET FULL TREE (STAGES + TRANSITIONS)
-
-// getWorkflowFullTree: async (req: Request, res: Response) => {
-//   const { id } = req.params;
-
-//   const workflow = await workflowService.getWorkflowFullTree(id);
-
-//   sendResponse({
-//     res,
-//     statusCode: HTTPSTATUS.OK,
-//     success: true,
-//     message: "Workflow tree with stages and transitions fetched successfully",
-//     data: { workflow },
-//   });
-// },
-
-//               GET FULL WORKFLOW GRAPH (DEFINITION + STAGES + TRANSITIONS)
-
-// getFullWorkflowDefinition: async (req: Request, res: Response) => {
-//   const { id } = req.params;
-
-//   const workflow = await workflowService.getWorkflowFullTree(id);
-
-//   sendResponse({
-//     res,
-//     statusCode: HTTPSTATUS.OK,
-//     success: true,
-//     message: "Full workflow graph fetched successfully",
-//     data: { workflow },
-//   });
-// },

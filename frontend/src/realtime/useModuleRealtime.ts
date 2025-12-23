@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { socket } from "@/socket/socket";
+import { socket, joinResource, leaveResource } from "@/socket/socket";
 import { useQueryClient } from "@tanstack/react-query";
 import { moduleQueryKeys } from "@/lib/queryKeys/modules";
 
@@ -9,51 +9,28 @@ export function useModuleRealtime() {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    const join = () => {
-      console.log("[RT][module] joining resource room: MODULE");
-      socket.emit("join:resource", "MODULE");
-    };
+    joinResource("MODULE");
 
-    // 🔁 Join immediately if already connected
-    if (socket.connected) {
-      join();
-    }
-
-    // 🔁 Join on future connects (initial connect / reconnect)
-    socket.on("connect", join);
-
-    const onModuleEvent = (evt: any) => {
-      console.log("📡 [RT][module] realtime event received", evt);
-
+    const onEvent = (evt: any) => {
+      console.log("📡 [module]", evt.event);
       queryClient.invalidateQueries({
         queryKey: moduleQueryKeys.all,
       });
     };
 
-    // ✅ Listen to exact backend events
-    socket.on("module.updated", onModuleEvent);
-    socket.on("module.created", onModuleEvent);
-    socket.on("module.deleted", onModuleEvent);
-    socket.on("module.archived", onModuleEvent);
-    socket.on("module.restored", onModuleEvent);
-
-    // 🔍 TEMP DEBUG (safe)
-    socket.onAny((event, payload) => {
-      console.log("📡 socket event:", event, payload);
-    });
+    socket.on("module.created", onEvent);
+    socket.on("module.updated", onEvent);
+    socket.on("module.deleted", onEvent);
+    socket.on("module.archived", onEvent);
+    socket.on("module.restored", onEvent);
 
     return () => {
-      console.log("[RT][module] leaving resource room: MODULE");
-
-      socket.emit("leave:resource", "MODULE");
-
-      socket.off("connect", join);
-      socket.off("module.updated", onModuleEvent);
-      socket.off("module.created", onModuleEvent);
-      socket.off("module.deleted", onModuleEvent);
-      socket.off("module.archived", onModuleEvent);
-      socket.off("module.restored", onModuleEvent);
-      socket.offAny();
+      leaveResource("MODULE");
+      socket.off("module.created", onEvent);
+      socket.off("module.updated", onEvent);
+      socket.off("module.deleted", onEvent);
+      socket.off("module.archived", onEvent);
+      socket.off("module.restored", onEvent);
     };
   }, [queryClient]);
 }

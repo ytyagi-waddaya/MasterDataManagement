@@ -204,32 +204,43 @@
 //     };
 //   }, [dispatch]);
 // }
+"use client";
 
 import { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "sonner";
+import { useSelector, useDispatch } from "react-redux";
 import { socket } from "@/socket/socket";
-import { queryClient } from "@/lib/api/queryClient";
-import { moduleQueryKeys } from "@/lib/queryKeys/modules";
-import { resetPresence, userOffline, userOnline } from "@/store/presenceSlice";
-import { AppDispatch, RootState } from "@/store";
+import { initNotificationSocket } from "@/socket/notificationSocket";
+import { joinResource } from "@/socket/socket";
+import { RootState, AppDispatch } from "@/store";
 
 export function useRealtimeEvents() {
   const dispatch = useDispatch<AppDispatch>();
-  const { me, loaded } = useSelector((state: RootState) => state.auth);
+  const userId = useSelector((s: RootState) => s.auth.me?.user.id);
 
-  const seen = useRef<Set<string>>(new Set());
-
-  const once = (evt: any, fn: () => void) => {
-    if (evt?.outboxId && seen.current.has(evt.outboxId)) return;
-    if (evt?.outboxId) seen.current.add(evt.outboxId);
-    fn();
-  };
+  const initialized = useRef(false);
 
   useEffect(() => {
-    if (!me?.user?.id) return;
+    if (!userId) return;
+    if (initialized.current) return;
 
-    const myUserId = me.user.id;
-    console.log("USER ID FROM REAL:", myUserId);
-  }, [loaded, me?.user?.id, dispatch]);
+    initialized.current = true;
+
+    console.log("[RT] realtime initialized for user:", userId);
+
+    /* -------------------------
+       🔔 Notifications
+    -------------------------- */
+    initNotificationSocket(userId);
+
+    /* -------------------------
+       📦 Resource rooms
+    -------------------------- */
+    joinResource("MODULE");
+
+    return () => {
+      console.log("[RT] realtime cleanup");
+      socket.off("notification"); // ✅ correct event
+      initialized.current = false;
+    };
+  }, [userId, dispatch]);
 }

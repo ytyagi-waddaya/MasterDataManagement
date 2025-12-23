@@ -1,8 +1,13 @@
 import {
+  ApprovalStrategy,
   AuditAction,
   AuditEntity,
+  Category,
+  HistoryAction,
   PerformedByType,
   Prisma,
+  TransitionType,
+  TriggerStrategy,
   WorkflowInstanceStatus,
   WorkflowStage,
 } from "../../prisma/generated/client.js";
@@ -20,8 +25,8 @@ import {
   CreateInstanceInput,
   createInstanceSchema,
   CreateStagesInput,
-  CreateWorkflowInput,
-  createWorkflowSchema,
+  CreateWorkflowDefinitionInput,
+  createWorkflowDefinitionSchema,
   MoveInstanceInput,
   moveInstanceSchema,
   stageId,
@@ -63,36 +68,35 @@ const WorkflowService = {
   //     resourceId: data.resourceId,
   //   });
 
-  //   // Ensure resource exists
+  //   // Validate resource
   //   const resource = await prisma.resource.findUnique({
   //     where: { id: validated.resourceId },
   //   });
-  //   if (!resource) {
-  //     throw new BadRequestException(
-  //       "Invalid resourceId — resource does not exist."
-  //     );
-  //   }
+  //   if (!resource) throw new BadRequestException("Invalid resourceId.");
 
-  //   // Workflow Code + Version
+  //   // Prevent missing initial stage
+  //   const hasInitial = data.stages.some((s) => s.isInitial);
+  //   if (!hasInitial)
+  //     throw new BadRequestException("At least one stage must be initial.");
+
+  //   // Generate workflow code + version
   //   const { code, version } = await generateWorkflowCodeAndVersion(
   //     validated.name
   //   );
 
-  //   // Prevent duplicate workflow version
+  //   // Prevent duplicate workflow
   //   const duplicate = await workflowRepository.findByCodeAndVersion(
   //     code,
   //     version
   //   );
-  //   if (duplicate) {
+  //   if (duplicate)
   //     throw new BadRequestException(
-  //       "Workflow with this name and version already exists."
+  //       "Workflow with this name/version already exists."
   //     );
-  //   }
 
-  //   // All steps performed inside 1 transaction
   //   return prisma.$transaction(async (tx: any) => {
   //     /*
-  //      * STEP 1: Create Workflow
+  //      * STEP 1 — Create Workflow
   //      */
   //     const workflow = await workflowRepository.createWorkflow(
   //       {
@@ -117,43 +121,34 @@ const WorkflowService = {
   //     });
 
   //     /*
-  //      * STEP 2: Create Stages
+  //      * STEP 2 — Create Stages
   //      */
-  //     const createdStages: Record<string, string> = {}; // Map local names to actual DB IDs
+  //     const createdStages: Record<string, string> = {};
 
   //     for (const stageInput of data.stages) {
   //       const { name } = stageInput;
 
   //       if (!name) throw new BadRequestException("Stage name is required");
 
-  //       // Unique Stage Name
+  //       // Ensure stage name unique
   //       const dupName = await tx.workflowStage.findFirst({
   //         where: { workflowId: workflow.id, name },
   //       });
   //       if (dupName)
   //         throw new BadRequestException(`Stage "${name}" already exists`);
 
-  //       // One Initial Stage
+  //       // Ensure only one initial stage
   //       if (stageInput.isInitial) {
-  //         const hasInitial = await tx.workflowStage.findFirst({
+  //         const existingInitial = await tx.workflowStage.findFirst({
   //           where: { workflowId: workflow.id, isInitial: true },
   //         });
-  //         if (hasInitial)
-  //           throw new BadRequestException("Only one initial stage is allowed.");
+  //         if (existingInitial)
+  //           throw new BadRequestException("Only one initial stage allowed.");
   //       }
 
-  //       // One Final Stage
-  //       // if (stageInput.isFinal) {
-  //       //   const hasFinal = await tx.workflowStage.findFirst({
-  //       //     where: { workflowId: workflow.id, isFinal: true },
-  //       //   });
-  //       //   if (hasFinal) throw new BadRequestException("Only one final stage is allowed.");
-  //       // }
-
-  //       // Auto-generate stage code
+  //       // Generate unique stage code
   //       const stageCode = await generateStageCode(workflow.id, name, tx);
 
-  //       // Ensure code uniqueness
   //       const dupCode = await workflowRepository.findByCode(
   //         workflow.id,
   //         stageCode,
@@ -164,13 +159,16 @@ const WorkflowService = {
   //           `Stage with code "${stageCode}" already exists`
   //         );
 
-  //       // Create stage
   //       const created = await workflowRepository.createStage(
-  //         { ...stageInput, code: stageCode, workflowId: workflow.id },
+  //         {
+  //           ...stageInput,
+  //           code: stageCode,
+  //           workflowId: workflow.id,
+  //         },
   //         tx
   //       );
 
-  //       createdStages[name] = created.id; // map for transitions
+  //       createdStages[name] = created.id;
 
   //       await createAuditLog({
   //         userId: actorId,
@@ -184,52 +182,46 @@ const WorkflowService = {
   //     }
 
   //     /*
-  //      * STEP 3: Create Transitions
+  //      * STEP 3 — Create Transitions
   //      */
   //     const createdTransitions = [];
 
   //     for (const t of data.transitions) {
-  //       let fromStageId = t.fromStageId;
-  //       let toStageId = t.toStageId;
+  //       let fromStageId = createdStages[t.fromStageId] ?? t.fromStageId;
+  //       let toStageId = createdStages[t.toStageId] ?? t.toStageId;
 
-  //       // If using stage names, map them to actual IDs
-  //       if (createdStages[fromStageId])
-  //         fromStageId = createdStages[fromStageId];
-  //       if (createdStages[toStageId]) toStageId = createdStages[toStageId];
-
+  //       // Validate source/target stages
   //       const fromStage = await workflowRepository.findByStageId(
   //         fromStageId,
   //         tx
   //       );
   //       if (!fromStage)
-  //         throw new BadRequestException(
-  //           `fromStageId "${fromStageId}" does not exist`
-  //         );
+  //         throw new BadRequestException(`Invalid fromStageId: ${fromStageId}`);
 
   //       const toStage = await workflowRepository.findByStageId(toStageId, tx);
   //       if (!toStage)
-  //         throw new BadRequestException(
-  //           `toStageId "${toStageId}" does not exist`
-  //         );
+  //         throw new BadRequestException(`Invalid toStageId: ${toStageId}`);
 
+  //       // Prevent same-stage transition
   //       if (fromStageId === toStageId)
   //         throw new BadRequestException(
   //           "Transition cannot point to the same stage"
   //         );
 
+  //       // Prevent outgoing transitions from final stage
+  //       if (fromStage.isFinal)
+  //         throw new BadRequestException(
+  //           `Final stage "${fromStage.name}" cannot have outgoing transitions`
+  //         );
+
   //       // Prevent duplicate transitions
   //       const duplicate = await tx.workflowTransition.findFirst({
-  //         where: {
-  //           workflowId: workflow.id,
-  //           fromStageId,
-  //           toStageId,
-  //         },
+  //         where: { workflowId: workflow.id, fromStageId, toStageId },
   //       });
-  //       if (duplicate) {
+  //       if (duplicate)
   //         throw new BadRequestException(
-  //           `Transition from "${fromStage.name}" to "${toStage.name}" already exists`
+  //           `Transition from "${fromStage.name}" → "${toStage.name}" already exists`
   //         );
-  //       }
 
   //       const createdTransition = await workflowRepository.createTransition(
   //         {
@@ -255,7 +247,7 @@ const WorkflowService = {
   //     }
 
   //     /*
-  //      * STEP 4: Graph Validation
+  //      * STEP 4 — Validate Graph Structure
   //      */
   //     await validateWorkflowGraph(workflow.id, tx);
 
@@ -267,231 +259,264 @@ const WorkflowService = {
   //   });
   // },
 
-  createFullWorkflow: async (
-    data: {
+saveWorkflowGraph: async (
+  workflowId: string,
+  data: {
+    stages: Array<{
+      tempId?: string;
       name: string;
-      description?: string;
-      resourceId: string;
-      stages: CreateStagesInput;
-      transitions: any[];
-    },
-    meta?: ActorMeta
-  ) => {
-    const actorId = meta?.actorId;
-    if (!actorId) throw new BadRequestException("Actor ID is required.");
+      order: number;
+      isInitial: boolean;
+      isFinal: boolean;
+      category: Category;
+      color?: string;
+      metadata?: any;
+      allowedNextCategories?: Category[];
+      position?: { x: number; y: number };
+    }>;
+    transitions: Array<{
+      fromStageId: string;
+      toStageId: string;
+      label?: string;
+      transitionType?: TransitionType;
+      triggerStrategy?: TriggerStrategy;
+      approvalStrategy?: ApprovalStrategy;
+      autoTrigger?: boolean;
+      condition?: any;
+      metadata?: any;
+      approvalConfig?: any;
+      allowedRoleIds?: string[];
+      allowedUserIds?: string[];
+    }>;
+  },
+  meta?: ActorMeta
+) => {
+  const actorId = meta?.actorId;
+  if (!actorId) throw new BadRequestException("Actor ID is required");
 
-    const validated = createWorkflowSchema.parse({
-      name: data.name,
-      description: data.description,
-      resourceId: data.resourceId,
-    });
+  const workflow = await prisma.workflowDefinition.findUnique({
+    where: { id: workflowId },
+  });
 
-    // Validate resource
-    const resource = await prisma.resource.findUnique({
-      where: { id: validated.resourceId },
-    });
-    if (!resource) throw new BadRequestException("Invalid resourceId.");
+  if (!workflow) throw new BadRequestException("Workflow not found");
+  if (workflow.status !== "DRAFT") {
+    throw new BadRequestException("Only DRAFT workflows can be edited");
+  }
 
-    // Prevent missing initial stage
-    const hasInitial = data.stages.some((s) => s.isInitial);
-    if (!hasInitial)
-      throw new BadRequestException("At least one stage must be initial.");
+  /* ---------- BASIC STAGE VALIDATION ---------- */
+  const initialStages = data.stages.filter((s) => s.isInitial);
+  if (initialStages.length !== 1) {
+    throw new BadRequestException("Exactly one initial stage is required");
+  }
 
-    // Generate workflow code + version
-    const { code, version } = await generateWorkflowCodeAndVersion(
-      validated.name
-    );
+  const finalStages = data.stages.filter((s) => s.isFinal);
+  if (!finalStages.length) {
+    throw new BadRequestException("At least one final stage is required");
+  }
 
-    // Prevent duplicate workflow
-    const duplicate = await workflowRepository.findByCodeAndVersion(
-      code,
-      version
-    );
-    if (duplicate)
-      throw new BadRequestException(
-        "Workflow with this name/version already exists."
-      );
+  /* ---------- UNIQUE STAGE NAMES ---------- */
+  const stageNames = data.stages.map((s) => s.name.trim().toLowerCase());
+  if (stageNames.length !== new Set(stageNames).size) {
+    throw new BadRequestException("Stage names must be unique");
+  }
 
-    return prisma.$transaction(async (tx: any) => {
-      /*
-       * STEP 1 — Create Workflow
-       */
-      const workflow = await workflowRepository.createWorkflow(
-        {
-          name: validated.name,
-          description: validated.description ?? null,
-          resource: { connect: { id: validated.resourceId } },
-          code,
-          version,
-          createdBy: { connect: { id: actorId } },
+  return prisma.$transaction(async (tx) => {
+    /* ---------- DELETE OLD GRAPH ---------- */
+    await tx.workflowTransition.deleteMany({ where: { workflowId } });
+    await tx.workflowStage.deleteMany({ where: { workflowId } });
+
+    /* ---------- CREATE STAGES ---------- */
+    const stageMap: Record<string, string> = {};
+
+    for (const s of data.stages) {
+      const stageCode = await generateStageCode(workflow.id, s.name, tx);
+
+      const stage = await tx.workflowStage.create({
+        data: {
+          workflowId,
+          name: s.name,
+          code: stageCode,
+          order: s.order,
+          isInitial: s.isInitial,
+          isFinal: s.isFinal,
+          category: s.category,
+          color: s.color ?? null,
+          metadata: s.metadata ?? Prisma.JsonNull,
+          position: s.position
+            ? (s.position as Prisma.InputJsonValue)
+            : Prisma.JsonNull,
+          allowedNextCategories: s.allowedNextCategories ?? [],
         },
-        tx
-      );
-
-      await createAuditLog({
-        userId: actorId,
-        entity: AuditEntity.WORKFLOW,
-        action: AuditAction.CREATE,
-        comment: "Workflow created",
-        after: workflow,
-        ipAddress: meta?.ipAddress ?? null,
-        userAgent: meta?.userAgent ?? null,
       });
 
-      /*
-       * STEP 2 — Create Stages
-       */
-      const createdStages: Record<string, string> = {};
+      stageMap[s.tempId ?? s.name] = stage.id;
+    }
 
-      for (const stageInput of data.stages) {
-        const { name } = stageInput;
+    /* ---------- CREATE TRANSITIONS ---------- */
+    for (const t of data.transitions) {
+      const fromStageId = stageMap[t.fromStageId] ?? t.fromStageId;
+      const toStageId = stageMap[t.toStageId] ?? t.toStageId;
 
-        if (!name) throw new BadRequestException("Stage name is required");
+      const transitionType = t.transitionType ?? "NORMAL";
+      const triggerStrategy = t.triggerStrategy ?? "ANY_ALLOWED";
 
-        // Ensure stage name unique
-        const dupName = await tx.workflowStage.findFirst({
-          where: { workflowId: workflow.id, name },
-        });
-        if (dupName)
-          throw new BadRequestException(`Stage "${name}" already exists`);
+      /* ---------- TRIGGER STRATEGY RULES ---------- */
+      if (transitionType === "AUTO" && triggerStrategy !== "SYSTEM_ONLY") {
+        throw new BadRequestException(
+          "AUTO transitions must use SYSTEM_ONLY trigger strategy"
+        );
+      }
 
-        // Ensure only one initial stage
-        if (stageInput.isInitial) {
-          const existingInitial = await tx.workflowStage.findFirst({
-            where: { workflowId: workflow.id, isInitial: true },
-          });
-          if (existingInitial)
-            throw new BadRequestException("Only one initial stage allowed.");
+      if (
+        triggerStrategy === "SYSTEM_ONLY" &&
+        transitionType !== "AUTO"
+      ) {
+        throw new BadRequestException(
+          "SYSTEM_ONLY trigger strategy is only valid for AUTO transitions"
+        );
+      }
+
+      if (
+        triggerStrategy === "APPROVER_ONLY" &&
+        transitionType !== "APPROVAL"
+      ) {
+        throw new BadRequestException(
+          "APPROVER_ONLY trigger strategy is only valid for APPROVAL transitions"
+        );
+      }
+
+      /* ---------- REVIEW ---------- */
+      if (transitionType === "REVIEW" && fromStageId !== toStageId) {
+        throw new BadRequestException(
+          "REVIEW transition must be a self-loop"
+        );
+      }
+
+      /* ---------- AUTO ---------- */
+      if (
+        transitionType === "AUTO" &&
+        (t.allowedRoleIds?.length || t.allowedUserIds?.length)
+      ) {
+        throw new BadRequestException(
+          "AUTO transitions cannot have users or roles"
+        );
+      }
+
+      /* ---------- APPROVAL ---------- */
+      if (transitionType === "APPROVAL") {
+        if (!t.approvalStrategy) {
+          throw new BadRequestException(
+            "approvalStrategy is required for APPROVAL transitions"
+          );
         }
 
-        // Generate unique stage code
-        const stageCode = await generateStageCode(workflow.id, name, tx);
-
-        const dupCode = await workflowRepository.findByCode(
-          workflow.id,
-          stageCode,
-          tx
-        );
-        if (dupCode)
+        if (!t.approvalConfig) {
           throw new BadRequestException(
-            `Stage with code "${stageCode}" already exists`
+            "approvalConfig is required for APPROVAL transitions"
           );
+        }
 
-        const created = await workflowRepository.createStage(
-          {
-            ...stageInput,
-            code: stageCode,
-            workflowId: workflow.id,
-          },
-          tx
-        );
+        const config = t.approvalConfig;
 
-        createdStages[name] = created.id;
+        if (config.mode === "SEQUENTIAL") {
+          if (!Array.isArray(config.levels) || !config.levels.length) {
+            throw new BadRequestException(
+              "Sequential approval requires approval levels"
+            );
+          }
 
-        await createAuditLog({
-          userId: actorId,
-          entity: AuditEntity.WORKFLOW,
-          action: AuditAction.CREATE,
-          comment: `Stage created: ${created.name}`,
-          after: created,
-          ipAddress: meta?.ipAddress ?? null,
-          userAgent: meta?.userAgent ?? null,
-        });
+          const orders = config.levels.map((l: any) => l.order);
+          if (orders.length !== new Set(orders).size) {
+            throw new BadRequestException(
+              "Approval levels must have unique order"
+            );
+          }
+        }
+
+        if (config.mode === "PARALLEL") {
+          const level = config.levels?.[0];
+          const count =
+            (level?.userIds?.length ?? 0) +
+            (level?.roleIds?.length ?? 0);
+
+          if (!count) {
+            throw new BadRequestException(
+              "Parallel approval requires users or roles"
+            );
+          }
+        }
       }
 
-      /*
-       * STEP 3 — Create Transitions
-       */
-      const createdTransitions = [];
-
-      for (const t of data.transitions) {
-        let fromStageId = createdStages[t.fromStageId] ?? t.fromStageId;
-        let toStageId = createdStages[t.toStageId] ?? t.toStageId;
-
-        // Validate source/target stages
-        const fromStage = await workflowRepository.findByStageId(
-          fromStageId,
-          tx
+      if (transitionType !== "APPROVAL" && t.approvalConfig) {
+        throw new BadRequestException(
+          "approvalConfig is only allowed for APPROVAL transitions"
         );
-        if (!fromStage)
-          throw new BadRequestException(`Invalid fromStageId: ${fromStageId}`);
-
-        const toStage = await workflowRepository.findByStageId(toStageId, tx);
-        if (!toStage)
-          throw new BadRequestException(`Invalid toStageId: ${toStageId}`);
-
-        // Prevent same-stage transition
-        if (fromStageId === toStageId)
-          throw new BadRequestException(
-            "Transition cannot point to the same stage"
-          );
-
-        // Prevent outgoing transitions from final stage
-        if (fromStage.isFinal)
-          throw new BadRequestException(
-            `Final stage "${fromStage.name}" cannot have outgoing transitions`
-          );
-
-        // Prevent duplicate transitions
-        const duplicate = await tx.workflowTransition.findFirst({
-          where: { workflowId: workflow.id, fromStageId, toStageId },
-        });
-        if (duplicate)
-          throw new BadRequestException(
-            `Transition from "${fromStage.name}" → "${toStage.name}" already exists`
-          );
-
-        const createdTransition = await workflowRepository.createTransition(
-          {
-            ...t,
-            fromStageId,
-            toStageId,
-            workflowId: workflow.id,
-          },
-          tx
-        );
-
-        createdTransitions.push(createdTransition);
-
-        await createAuditLog({
-          userId: actorId,
-          entity: AuditEntity.WORKFLOW,
-          action: AuditAction.CREATE,
-          comment: `Transition created: ${t.label ?? ""}`,
-          after: createdTransition,
-          ipAddress: meta?.ipAddress ?? null,
-          userAgent: meta?.userAgent ?? null,
-        });
       }
 
-      /*
-       * STEP 4 — Validate Graph Structure
-       */
-      await validateWorkflowGraph(workflow.id, tx);
+      /* ---------- CREATE TRANSITION ---------- */
+      const transitionData: Prisma.WorkflowTransitionCreateInput = {
+        workflow: { connect: { id: workflow.id } },
+        fromStage: { connect: { id: fromStageId } },
+        toStage: { connect: { id: toStageId } },
 
-      return {
-        workflow,
-        stages: createdStages,
-        transitions: createdTransitions,
+        label: t.label ?? null,
+        transitionType,
+        triggerStrategy,
+
+        approvalStrategy:
+          transitionType === "APPROVAL"
+            ? t.approvalStrategy ?? "ALL"
+            : "ALL",
+
+        autoTrigger: Boolean(t.autoTrigger),
+
+        condition: t.condition ?? Prisma.JsonNull,
+        metadata: t.metadata ?? Prisma.JsonNull,
+
+        approvalConfig:
+          transitionType === "APPROVAL"
+            ? t.approvalConfig ?? Prisma.JsonNull
+            : Prisma.JsonNull,
       };
-    });
-  },
 
-  /* -------------------------------------------------------------------------- */
-  /*                               WORKFLOW DEFINITION                          */
-  /* -------------------------------------------------------------------------- */
+      if (t.allowedRoleIds?.length) {
+        transitionData.allowedRoles = {
+          create: t.allowedRoleIds.map((roleId) => ({ roleId })),
+        };
+      }
 
-  createWorkflow: async (data: CreateWorkflowInput, meta?: ActorMeta) => {
-    const validatedData = createWorkflowSchema.parse(data);
+      if (t.allowedUserIds?.length) {
+        transitionData.allowedUsers = {
+          create: t.allowedUserIds.map((userId) => ({ userId })),
+        };
+      }
 
-    const createdById = meta?.actorId || "ab99aa3c-b8d3-40e5-8730-6b623dfd29f9";
+      await tx.workflowTransition.create({ data: transitionData });
+    }
+
+    /* ---------- FINAL GRAPH VALIDATION ---------- */
+    await validateWorkflowGraph(workflow.id, tx);
+
+    return workflow;
+  });
+},
+
+
+  createWorkflow: async (
+    data: CreateWorkflowDefinitionInput,
+    meta?: ActorMeta
+  ) => {
+    const validatedData = createWorkflowDefinitionSchema.parse(data);
+
+    const createdById = meta?.actorId;
     if (!createdById) {
-      throw new BadRequestException("createdById is required.");
+      throw new BadRequestException("Actor ID is required");
     }
 
     const resourceExists = await prisma.resource.findUnique({
       where: { id: validatedData.resourceId },
     });
+
     if (!resourceExists) {
       throw new BadRequestException(
         "Invalid resourceId — resource does not exist."
@@ -506,6 +531,7 @@ const WorkflowService = {
       code,
       version
     );
+
     if (duplicate) {
       throw new BadRequestException(
         "Workflow with the same version already exists. Try again."
@@ -515,10 +541,20 @@ const WorkflowService = {
     const workflow = await workflowRepository.createWorkflow({
       name: validatedData.name,
       description: validatedData.description ?? null,
-      resource: { connect: { id: validatedData.resourceId } },
+
+      resource: {
+        connect: { id: validatedData.resourceId },
+      },
+
       code,
       version,
-      createdBy: { connect: { id: createdById } },
+
+      status: "DRAFT", // ✅ EXPLICIT
+      isActive: false, // ✅ DRAFT should never be active
+
+      createdBy: {
+        connect: { id: createdById },
+      },
     });
 
     await createAuditLog({
@@ -533,6 +569,37 @@ const WorkflowService = {
     });
 
     return workflow;
+  },
+
+  publishWorkflow: async (workflowId: string, meta?: ActorMeta) => {
+    const actorId = meta?.actorId;
+    if (!actorId) throw new BadRequestException("Actor ID is required");
+
+    const workflow = await prisma.workflowDefinition.findUnique({
+      where: { id: workflowId },
+    });
+
+    if (!workflow) {
+      throw new BadRequestException("Workflow not found");
+    }
+
+    if (workflow.status !== "DRAFT") {
+      throw new BadRequestException("Only DRAFT workflows can be published");
+    }
+
+    await prisma.$transaction(async (tx) => {
+      await validateWorkflowGraph(workflowId, tx);
+
+      await tx.workflowDefinition.update({
+        where: { id: workflowId },
+        data: {
+          status: "PUBLISHED",
+          isActive: true,
+        },
+      });
+    });
+
+    return { workflowId, status: "PUBLISHED" };
   },
 
   getWorkflows: async (options?: Partial<WorkflowFilterInput>) => {
@@ -1303,7 +1370,7 @@ const WorkflowService = {
       }
 
       // Graph consistency
-      await validateWorkflowGraph(workflowId);
+      // await validateWorkflowGraph(workflowId);
 
       return createdTransitions;
     });
@@ -1694,7 +1761,7 @@ const WorkflowService = {
         });
       }
 
-      await validateWorkflowGraph(workflowId);
+      // await validateWorkflowGraph(workflowId);
 
       return deleted;
     });
@@ -1703,220 +1770,6 @@ const WorkflowService = {
   /* -------------------------------------------------------------------------- */
   /*                                   INSTANCE                                 */
   /* -------------------------------------------------------------------------- */
-
-  // startInstance: async (
-  //   workflowId: string,
-  //   data: CreateInstanceInput,
-  //   meta?: ActorMeta
-  // ) => {
-  //   const payload = createInstanceSchema.parse(data);
-
-  //   const workflow = await workflowRepository.getWorkflowWithStages(workflowId);
-  //   if (!workflow) {
-  //     throw new NotFoundException("Workflow not found");
-  //   }
-
-  //   // choose initial stage: provided initialStageId OR stage with isInitial=true OR first ordered stage
-  //   const initialStage =
-  //     workflow.stages.find((s) => s.isInitial) || workflow.stages[0];
-
-  //   if (!initialStage) {
-  //     throw new BadRequestException(
-  //       "No initial stage defined for the workflow"
-  //     );
-  //   }
-
-  //   // Prevent duplicate active instance for same resource+workflow (optional, depends on requirement)
-  //   const existingActive =
-  //     await workflowRepository.findActiveInstanceForResource(
-  //       workflowId,
-  //       payload.resourceType,
-  //       payload.resourceId
-  //     );
-  //   if (existingActive) {
-  //     throw new BadRequestException(
-  //       "An active workflow instance already exists for this resource"
-  //     );
-  //   }
-
-  //   // Transactionally create instance and initial history
-  //   return prisma.$transaction(async (tx) => {
-  //     const now = new Date();
-
-  //     const instance = await workflowRepository.createInstance(
-  //       {
-  //         resourceType: payload.resourceType,
-  //         resourceId: payload.resourceId,
-  //         status: "RUNNING",
-  //         workflow: { connect: { id: workflowId } },
-  //         currentStage: { connect: { id: initialStage.id } },
-  //         createdById: meta?.actorId ?? null,
-  //       },
-  //       tx
-  //     );
-
-  //     await workflowRepository.createHistory(
-  //       {
-  //         workflowInstance: { connect: { id: instance.id } },
-  //         toStage: { connect: { id: initialStage.id } },
-  //         // performedById: meta?.actorId ?? null,
-  //         actionLabel: "start",
-  //         notes: "Instance started",
-  //         createdAt: now,
-  //       },
-  //       tx
-  //     );
-
-  //     // audit
-  //     await createAuditLog({
-  //       userId: meta?.actorId ?? null,
-  //       entity: AuditEntity.WORKFLOW,
-  //       action: AuditAction.CREATE,
-  //       comment: "Started workflow instance",
-  //       after: instance,
-  //       ipAddress: meta?.ipAddress ?? null,
-  //       userAgent: meta?.userAgent ?? null,
-  //     });
-
-  //     return instance;
-  //   });
-  // },
-
-    // moveInstance: async (
-  //   workflowId: string,
-  //   input: MoveInstanceInput,
-  //   meta?: ActorMeta
-  // ) => {
-  //   const workflow = await workflowRepository.getWorkflowWithStages(workflowId);
-  //   if (!workflow) {
-  //     throw new NotFoundException("Workflow not found");
-  //   }
-  //   const payload = moveInstanceSchema.parse(input);
-
-  //   // load instance & validate
-  //   const instance = await workflowRepository.getInstanceById(
-  //     payload.instanceId
-  //   );
-  //   if (!instance) throw new NotFoundException("Workflow instance not found");
-  //   if (instance.endedAt)
-  //     throw new BadRequestException("Instance already closed");
-
-  //   // verify target stage exists in workflow
-  //   const toStage = workflow.stages.find((s) => s.id === payload.toStageId);
-  //   if (!toStage)
-  //     throw new BadRequestException("Target stage not part of workflow");
-
-  //   // validate transition: there must be a transition from currentStage to toStage
-  //   const transitions = await workflowRepository.getTransitionsForStage(
-  //     instance.workflowId,
-  //     instance.currentStageId
-  //   );
-  //   const allowedTransition = transitions.find(
-  //     (t) => t.toStageId === toStage.id
-  //   );
-
-  //   if (!allowedTransition) {
-  //     throw new BadRequestException(
-  //       "No valid transition from current stage to target stage"
-  //     );
-  //   }
-
-  //   // permission checks: allowedUserIds OR allowedRoleIds
-  //   // If transition has allowedRoleIds/allowedUserIds restrictions, enforce them
-  //   if (
-  //     allowedTransition.allowedUserIds?.length ||
-  //     allowedTransition.allowedRoleIds?.length
-  //   ) {
-  //     const performerId = meta?.actorId ?? payload.performedById;
-  //     if (!performerId)
-  //       throw new ForbiddenException(
-  //         "Performer info required for permission check"
-  //       );
-
-  //     // check allowed user
-  //     if (
-  //       allowedTransition.allowedUserIds?.length &&
-  //       allowedTransition.allowedUserIds.includes(performerId)
-  //     ) {
-  //       // allowed
-  //     } else if (allowedTransition.allowedRoleIds?.length) {
-  //       // fetch roles for performer -> YOU MUST implement this helper or adapt to your membership system
-  //       const performerRoles: string[] =
-  //         await workflowRepository.getUserRoleIds(performerId);
-
-  //       const intersects = performerRoles.some((r) =>
-  //         allowedTransition.allowedRoleIds.includes(r)
-  //       );
-  //       if (!intersects)
-  //         throw new ForbiddenException(
-  //           "Performer does not have required role to perform this transition"
-  //         );
-  //     } else {
-  //       throw new ForbiddenException(
-  //         "Performer not allowed to perform this transition"
-  //       );
-  //     }
-  //   }
-
-  //   // if requiresApproval true, you might set status to pending/approval flow - for now we treat transition immediate
-  //   return prisma.$transaction(async (tx) => {
-  //     const before = instance;
-  //     const now = new Date();
-
-  //     const updated = await workflowRepository.updateCurrentStage(
-  //       instance.id,
-  //       {
-  //         currentStageId: toStage.id,
-  //         updatedAt: now as any,
-  //       } as any,
-  //       tx
-  //     );
-
-  //     // create history entry
-  //     await workflowRepository.createHistory(
-  //       {
-  //         workflowInstanceId: instance.id,
-  //         fromStageId: instance.currentStageId,
-  //         toStageId: toStage.id,
-  //         workflowTransitionId: allowedTransition.id,
-  //         performedById: meta?.actorId ?? payload.performedById ?? null,
-  //         actionLabel: allowedTransition.label ?? "transition",
-  //         notes: payload.notes ?? null,
-  //         metadata: payload.metadata ?? null,
-  //         createdAt: now,
-  //       } as any,
-  //       tx
-  //     );
-
-  //     await OutboxService.createOutboxEvent(tx, {
-  //       entity: "workflow",
-  //       action: "instance.moved",
-  //       payload: {
-  //         instanceId: instance.id,
-  //         fromStageId: instance.currentStageId,
-  //         toStageId: toStage.id,
-  //         transitionId: allowedTransition.id,
-  //         actorId: meta?.actorId ?? null,
-  //         workflowId,
-  //       },
-  //       targetUsers: [], // watchers / approvers later
-  //     });
-
-  //     // audit
-  //     await createAuditLog({
-  //       userId: meta?.actorId ?? null,
-  //       entity: AuditEntity.WORKFLOW,
-  //       action: AuditAction.UPDATE,
-  //       comment: `Moved instance ${instance.id} from ${instance.currentStageId} to ${toStage.id}`,
-  //       before,
-  //       after: updated,
-  //       ipAddress: meta?.ipAddress ?? null,
-  //       userAgent: meta?.userAgent ?? null,
-  //     });
-
-  //     return updated;
-  //   });
-  // },
 
   // moveInstance: async (
   //   workflowId: string,
@@ -1942,12 +1795,13 @@ const WorkflowService = {
   //   );
   //   if (!toStage)
   //     throw new BadRequestException("Target stage not part of workflow");
-  //   // OPTIONAL: Prevent moving back to initial stage unless explicitly allowed
+
+  //   // Prevent moving back to initial stage
   //   if (toStage.isInitial) {
   //     throw new BadRequestException("Cannot move back to initial stage");
   //   }
 
-  //   // Validate transition
+  //   // Validate transition from current → target
   //   const transitions = await workflowRepository.getTransitionsForStage(
   //     instance.workflowId,
   //     instance.currentStageId
@@ -1960,44 +1814,60 @@ const WorkflowService = {
   //   if (!allowedTransition)
   //     throw new BadRequestException("No valid transition for this stage move");
 
-  //   // Permission checks
-  //   if (
-  //     allowedTransition.allowedUserIds?.length ||
-  //     allowedTransition.allowedRoleIds?.length
-  //   ) {
+  //   // -------------------------------
+  //   // Permission Checks
+  //   // -------------------------------
+  //   const allowedUserIds =
+  //     allowedTransition.allowedUsers?.map((u: any) => u.userId) ?? [];
+
+  //   const allowedRoleIds =
+  //     allowedTransition.allowedRoles?.map((r: any) => r.roleId) ?? [];
+
+  //   if (allowedUserIds.length || allowedRoleIds.length) {
   //     const performerId = meta?.actorId ?? payload.performedById;
   //     if (!performerId) throw new ForbiddenException("Performer info required");
 
-  //     if (allowedTransition.allowedUserIds?.includes(performerId)) {
-  //       // allowed by user match
-  //     } else if (allowedTransition.allowedRoleIds?.length) {
+  //     // 1. Direct user permission
+  //     if (allowedUserIds.includes(performerId)) {
+  //       // approved
+  //     }
+  //     // 2. Role-based permission
+  //     else if (allowedRoleIds.length) {
   //       const performerRoles = await workflowRepository.getUserRoleIds(
   //         performerId
   //       );
-  //       const intersects = performerRoles.some((r) =>
-  //         allowedTransition.allowedRoleIds.includes(r)
+  //       const hasAccess = performerRoles.some((r) =>
+  //         allowedRoleIds.includes(r)
   //       );
-  //       if (!intersects)
+
+  //       if (!hasAccess)
   //         throw new ForbiddenException(
   //           "Performer does not have required role for this transition"
   //         );
-  //     } else {
-  //       throw new ForbiddenException("Performer not allowed");
+  //     }
+  //     // 3. No match
+  //     else {
+  //       throw new ForbiddenException(
+  //         "Performer not allowed for this transition"
+  //       );
   //     }
   //   }
 
+  //   // -------------------------------
   //   // Transaction
+  //   // -------------------------------
   //   return prisma.$transaction(async (tx: any) => {
   //     const before = instance;
   //     const now = new Date();
   //     const previousStageId = instance.currentStageId;
-  //     // Update stage
+
+  //     // Update instance stage
   //     const updated = toStage.isFinal
   //       ? await workflowRepository.updateCurrentStage(
   //           instance.id,
   //           {
   //             currentStage: { connect: { id: toStage.id } },
-  //             status: "COMPLETED", //Todo
+  //             status: WorkflowInstanceStatus.COMPLETED,
   //             endedAt: now,
   //           },
   //           tx
@@ -2011,9 +1881,9 @@ const WorkflowService = {
   //           tx
   //         );
 
-  //     // ---------------------------
-  //     // Build Prisma-safe history object
-  //     // ---------------------------
+  //     // -------------------------------
+  //     // Create History Entry
+  //     // -------------------------------
   //     const historyData: Prisma.WorkflowHistoryCreateInput = {
   //       workflowInstance: { connect: { id: instance.id } },
   //       fromStage: { connect: { id: previousStageId } },
@@ -2022,48 +1892,50 @@ const WorkflowService = {
   //       notes: payload.notes ?? null,
   //       metadata: payload.metadata ?? null,
   //       createdAt: now,
+  //       actionType: HistoryAction.AUTO_TRANSITION,
   //     };
 
-  //     // Add fromStage ONLY if exists
-  //     if (instance.currentStageId) {
-  //       historyData.fromStage = { connect: { id: instance.currentStageId } };
-  //     }
-
-  //     // Add workflowTransition ONLY if exists
   //     if (allowedTransition.id) {
   //       historyData.workflowTransition = {
   //         connect: { id: allowedTransition.id },
   //       };
   //     }
 
-  //     // Add performedBy ONLY if actor exists
   //     if (meta?.actorId) {
   //       historyData.performedBy = { connect: { id: meta.actorId } };
   //     }
 
   //     await workflowRepository.createHistory(historyData, tx);
 
-  //     // Outbox event
+  //     const notifyUsers = await getNotificationTargetsForStage(
+  //       workflowId,
+  //       toStage.id
+  //     );
+  //     // -------------------------------
+  //     // Outbox Event
+  //     // -------------------------------
   //     await OutboxService.createOutboxEvent(tx, {
   //       entity: "workflow",
   //       action: toStage.isFinal ? "instance.completed" : "instance.moved",
   //       payload: {
   //         instanceId: instance.id,
-  //         fromStageId: instance.currentStageId,
+  //         fromStageId: previousStageId,
   //         toStageId: toStage.id,
   //         transitionId: allowedTransition.id,
   //         workflowId,
   //         actorId: meta?.actorId ?? null,
   //       },
-  //       targetUsers: [],
+  //       targetUsers: notifyUsers,
   //     });
 
-  //     // Audit log
+  //     // -------------------------------
+  //     // Audit Log
+  //     // -------------------------------
   //     await createAuditLog({
   //       userId: meta?.actorId ?? null,
   //       entity: AuditEntity.WORKFLOW,
   //       action: AuditAction.UPDATE,
-  //       comment: `Moved instance ${instance.id} from ${instance.currentStageId} to ${toStage.id}`,
+  //       comment: `Moved instance ${instance.id} from ${previousStageId} to ${toStage.id}`,
   //       before,
   //       after: updated,
   //       ipAddress: meta?.ipAddress ?? null,
@@ -2073,265 +1945,6 @@ const WorkflowService = {
   //     return updated;
   //   });
   // },
-
-  startInstance: async (
-    workflowId: string,
-    data: CreateInstanceInput,
-    meta?: ActorMeta
-  ) => {
-    const payload = createInstanceSchema.parse(data);
-
-    const workflow = await workflowRepository.getWorkflowWithStages(workflowId);
-    if (!workflow) throw new NotFoundException("Workflow not found");
-
-    const initialStage =
-      workflow.stages.find((s: any) => s.isInitial) || workflow.stages[0];
-    if (!initialStage)
-      throw new BadRequestException(
-        "No initial stage defined for this workflow"
-      );
-
-    // ❗ Prevent duplicate active instances (optional but recommended)
-    const existingActive =
-      await workflowRepository.findActiveInstanceForResource(
-        workflowId,
-        payload.resourceType,
-        payload.resourceId
-      );
-
-    if (existingActive) {
-      // Return the already-running instance instead of throwing
-      return existingActive;
-    }
-
-    return prisma.$transaction(async (tx: any) => {
-      const now = new Date();
-
-      // ⭐ Create instance
-      const instance = await workflowRepository.createInstance(
-        {
-          resourceType: payload.resourceType,
-          resourceId: payload.resourceId,
-          status: WorkflowInstanceStatus.RUNNING, 
-          workflow: { connect: { id: workflowId } },
-          currentStage: { connect: { id: initialStage.id } },
-          createdById: meta?.actorId ?? null,
-        },
-        tx
-      );
-
-      // ⭐ Create initial history entry
-      await workflowRepository.createHistory(
-        {
-          workflowInstance: { connect: { id: instance.id } },
-          toStage: { connect: { id: initialStage.id } },
-          actionLabel: "start",
-          notes: "Instance started",
-          createdAt: now,
-        },
-        tx
-      );
-const notifyUsers = await getNotificationTargetsForStage(workflowId, initialStage.id);
-      // ⭐ Outbox event (worker will broadcast realtime update)
-      await OutboxService.createOutboxEvent(tx, {
-        entity: "workflow",
-        action: "instance.started",
-        payload: {
-          instanceId: instance.id,
-          stageId: initialStage.id,
-          resourceId: payload.resourceId,
-          workflowId,
-          actorId: meta?.actorId ?? null,
-        },
-        targetUsers: notifyUsers,
-      });
-
-      // ⭐ Audit log
-      await createAuditLog({
-        userId: meta?.actorId ?? null,
-        entity: AuditEntity.WORKFLOW,
-        action: AuditAction.CREATE,
-        comment: "Started workflow instance",
-        after: instance,
-        ipAddress: meta?.ipAddress ?? null,
-        userAgent: meta?.userAgent ?? null,
-      });
-
-      return instance;
-    });
-  },
-
-
-  moveInstance: async (
-    workflowId: string,
-    input: MoveInstanceInput,
-    meta?: ActorMeta
-  ) => {
-    const workflow = await workflowRepository.getWorkflowWithStages(workflowId);
-    if (!workflow) throw new NotFoundException("Workflow not found");
-
-    const payload = moveInstanceSchema.parse(input);
-
-    // Load instance
-    const instance = await workflowRepository.getInstanceById(
-      payload.instanceId
-    );
-    if (!instance) throw new NotFoundException("Workflow instance not found");
-    if (instance.endedAt)
-      throw new BadRequestException("Instance already closed");
-
-    // Validate target stage
-    const toStage = workflow.stages.find(
-      (s: any) => s.id === payload.toStageId
-    );
-    if (!toStage)
-      throw new BadRequestException("Target stage not part of workflow");
-
-    // Prevent moving back to initial stage
-    if (toStage.isInitial) {
-      throw new BadRequestException("Cannot move back to initial stage");
-    }
-
-    // Validate transition from current → target
-    const transitions = await workflowRepository.getTransitionsForStage(
-      instance.workflowId,
-      instance.currentStageId
-    );
-
-    const allowedTransition = transitions.find(
-      (t: any) => t.toStageId === toStage.id
-    );
-
-    if (!allowedTransition)
-      throw new BadRequestException("No valid transition for this stage move");
-
-    // -------------------------------
-    // Permission Checks
-    // -------------------------------
-    const allowedUserIds =
-      allowedTransition.allowedUsers?.map((u: any) => u.userId) ?? [];
-
-    const allowedRoleIds =
-      allowedTransition.allowedRoles?.map((r: any) => r.roleId) ?? [];
-
-    if (allowedUserIds.length || allowedRoleIds.length) {
-      const performerId = meta?.actorId ?? payload.performedById;
-      if (!performerId) throw new ForbiddenException("Performer info required");
-
-      // 1. Direct user permission
-      if (allowedUserIds.includes(performerId)) {
-        // approved
-      }
-      // 2. Role-based permission
-      else if (allowedRoleIds.length) {
-        const performerRoles = await workflowRepository.getUserRoleIds(
-          performerId
-        );
-        const hasAccess = performerRoles.some((r) =>
-          allowedRoleIds.includes(r)
-        );
-
-        if (!hasAccess)
-          throw new ForbiddenException(
-            "Performer does not have required role for this transition"
-          );
-      }
-      // 3. No match
-      else {
-        throw new ForbiddenException(
-          "Performer not allowed for this transition"
-        );
-      }
-    }
-
-    // -------------------------------
-    // Transaction
-    // -------------------------------
-    return prisma.$transaction(async (tx: any) => {
-      const before = instance;
-      const now = new Date();
-      const previousStageId = instance.currentStageId;
-
-      // Update instance stage
-      const updated = toStage.isFinal
-        ? await workflowRepository.updateCurrentStage(
-            instance.id,
-            {
-              currentStage: { connect: { id: toStage.id } },
-              status: WorkflowInstanceStatus.COMPLETED,
-              endedAt: now,
-            },
-            tx
-          )
-        : await workflowRepository.updateCurrentStage(
-            instance.id,
-            {
-              currentStage: { connect: { id: toStage.id } },
-              updatedAt: now,
-            },
-            tx
-          );
-
-      // -------------------------------
-      // Create History Entry
-      // -------------------------------
-      const historyData: Prisma.WorkflowHistoryCreateInput = {
-        workflowInstance: { connect: { id: instance.id } },
-        fromStage: { connect: { id: previousStageId } },
-        toStage: { connect: { id: toStage.id } },
-        actionLabel: allowedTransition.label ?? "transition",
-        notes: payload.notes ?? null,
-        metadata: payload.metadata ?? null,
-        createdAt: now,
-      };
-
-      if (allowedTransition.id) {
-        historyData.workflowTransition = {
-          connect: { id: allowedTransition.id },
-        };
-      }
-
-      if (meta?.actorId) {
-        historyData.performedBy = { connect: { id: meta.actorId } };
-      }
-
-      await workflowRepository.createHistory(historyData, tx);
-
-      const notifyUsers = await getNotificationTargetsForStage(workflowId, toStage.id);
-      // -------------------------------
-      // Outbox Event
-      // -------------------------------
-      await OutboxService.createOutboxEvent(tx, {
-        entity: "workflow",
-        action: toStage.isFinal ? "instance.completed" : "instance.moved",
-        payload: {
-          instanceId: instance.id,
-          fromStageId: previousStageId,
-          toStageId: toStage.id,
-          transitionId: allowedTransition.id,
-          workflowId,
-          actorId: meta?.actorId ?? null,
-        },
-        targetUsers: notifyUsers,
-      });
-
-      // -------------------------------
-      // Audit Log
-      // -------------------------------
-      await createAuditLog({
-        userId: meta?.actorId ?? null,
-        entity: AuditEntity.WORKFLOW,
-        action: AuditAction.UPDATE,
-        comment: `Moved instance ${instance.id} from ${previousStageId} to ${toStage.id}`,
-        before,
-        after: updated,
-        ipAddress: meta?.ipAddress ?? null,
-        userAgent: meta?.userAgent ?? null,
-      });
-
-      return updated;
-    });
-  },
 
   closeInstance: async (
     workflowId: string,
@@ -2425,33 +2038,20 @@ const notifyUsers = await getNotificationTargetsForStage(workflowId, initialStag
     return { data, total, page: Math.floor(skip / take) + 1, pageSize: take };
   },
 
-  approveInstance: async (
-    workflowId: string,
-    payload: any,
-    meta: ActorMeta
-  ) => {
-    return WorkflowService.moveInstance(workflowId, payload, meta);
-  },
+  // approveInstance: async (
+  //   workflowId: string,
+  //   payload: any,
+  //   meta: ActorMeta
+  // ) => {
+  //   return WorkflowService.moveInstance(workflowId, payload, meta);
+  // },
 
-  rejectInstance: async (workflowId: string, payload: any, meta: ActorMeta) => {
-    return WorkflowService.moveInstance(workflowId, payload, meta);
-  },
+  // rejectInstance: async (workflowId: string, payload: any, meta: ActorMeta) => {
+  //   return WorkflowService.moveInstance(workflowId, payload, meta);
+  // },
 };
 
 export default WorkflowService;
-
-// /* -------------------------------------------------------------------------- */
-// /*                          GRAPH VALIDATION (CYCLE, FLOW)                     */
-// /* -------------------------------------------------------------------------- */
-// async validateGraph(workflowId: string) {
-//   return workflowRepository.validateGraph(workflowId);
-// }
-
-// async getWorkflowFullTree(id: string) {
-//   const workflow = await workflowRepository.getFullWorkflowTree(id);
-//   if (!workflow) throw new NotFoundException("Workflow not found");
-//   return workflow;
-// }
 
 async function resolveUsersFromRoles(roleIds: string[]) {
   if (!roleIds.length) return [];
@@ -2464,7 +2064,10 @@ async function resolveUsersFromRoles(roleIds: string[]) {
   return roleMembers.map((m) => m.userId);
 }
 
-async function getNotificationTargetsForStage(workflowId: string, stageId: string) {
+async function getNotificationTargetsForStage(
+  workflowId: string,
+  stageId: string
+) {
   // Fetch transitions FROM the new stage
   const nextTransitions = await prisma.workflowTransition.findMany({
     where: { workflowId, fromStageId: stageId },
@@ -2476,11 +2079,11 @@ async function getNotificationTargetsForStage(workflowId: string, stageId: strin
 
   if (!nextTransitions.length) return [];
 
-  const directUsers = nextTransitions.flatMap(t =>
+  const directUsers = nextTransitions.flatMap((t) =>
     t.allowedUsers.map((u) => u.userId)
   );
 
-  const roleIds = nextTransitions.flatMap(t =>
+  const roleIds = nextTransitions.flatMap((t) =>
     t.allowedRoles.map((r) => r.roleId)
   );
 

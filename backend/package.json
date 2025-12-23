@@ -11,7 +11,9 @@
     "start:prod": "cross-env NODE_ENV=production node dist/server.js",
     "test": "jest --runInBand",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "worker:notifications": "node --loader ts-node/esm src/notifications/notification.worker.js",
+    "worker:outbox": "node --loader ts-node/esm src/worker/outbox.worker.js"
   },
   "keywords": [],
   "author": "",
@@ -20,11 +22,9 @@
   "engines": {
     "node": ">=18 <23"
   },
-
   "prisma": {
     "seed": "node --loader ts-node/esm --no-warnings ./prisma/seed.ts"
   },
-  
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
     "@types/compression": "^1.7.5",
@@ -62,6 +62,7 @@
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
+    "expr-eval": "^2.0.2",
     "express": "^5.1.0",
     "express-rate-limit": "^7.4.0",
     "helmet": "^8.1.0",

@@ -1,0 +1,1 @@
+{"version":3,"file":"rolePermission.controller.d.ts","sourceRoot":"","sources":["../../../../src/modules/rolePermission/rolePermission.controller.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,OAAO,EAAE,QAAQ,EAAE,MAAM,SAAS,CAAC;AAQ5C,eAAO,MAAM,wBAAwB;6BACJ,OAAO,OAAO,QAAQ;qCAuBd,OAAO,OAAO,QAAQ;sCAqBrB,OAAO,OAAO,QAAQ;8BAqB9B,OAAO,OAAO,QAAQ;CAyDvD,CAAC;AAEF,eAAe,wBAAwB,CAAC"}

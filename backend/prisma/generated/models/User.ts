@@ -243,9 +243,19 @@ export type UserWhereInput = {
   auditLogs?: Prisma.AuditLogListRelationFilter
   linkedRecords?: Prisma.MasterRecordListRelationFilter
   RefreshToken?: Prisma.RefreshTokenListRelationFilter
-  workflowDefinitions?: Prisma.WorkflowDefinitionListRelationFilter
   workflowHistories?: Prisma.WorkflowHistoryListRelationFilter
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserListRelationFilter
+  masterObjectSchemas?: Prisma.MasterObjectSchemaListRelationFilter
+  recordPermissions?: Prisma.RecordPermissionListRelationFilter
+  fieldPermissions?: Prisma.FieldPermissionListRelationFilter
+  recordFieldHistories?: Prisma.RecordFieldHistoryListRelationFilter
+  workflowApprovals?: Prisma.WorkflowApprovalListRelationFilter
+  createdWorkflows?: Prisma.WorkflowDefinitionListRelationFilter
+  publishedWorkflows?: Prisma.WorkflowDefinitionListRelationFilter
+  assignedTasks?: Prisma.TaskListRelationFilter
+  startedWorkflows?: Prisma.WorkflowInstanceListRelationFilter
+  createdWorkflowInstances?: Prisma.WorkflowInstanceListRelationFilter
+  primaryTasks?: Prisma.TaskListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -270,9 +280,19 @@ export type UserOrderByWithRelationInput = {
   auditLogs?: Prisma.AuditLogOrderByRelationAggregateInput
   linkedRecords?: Prisma.MasterRecordOrderByRelationAggregateInput
   RefreshToken?: Prisma.RefreshTokenOrderByRelationAggregateInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionOrderByRelationAggregateInput
   workflowHistories?: Prisma.WorkflowHistoryOrderByRelationAggregateInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserOrderByRelationAggregateInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaOrderByRelationAggregateInput
+  recordPermissions?: Prisma.RecordPermissionOrderByRelationAggregateInput
+  fieldPermissions?: Prisma.FieldPermissionOrderByRelationAggregateInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryOrderByRelationAggregateInput
+  workflowApprovals?: Prisma.WorkflowApprovalOrderByRelationAggregateInput
+  createdWorkflows?: Prisma.WorkflowDefinitionOrderByRelationAggregateInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionOrderByRelationAggregateInput
+  assignedTasks?: Prisma.TaskOrderByRelationAggregateInput
+  startedWorkflows?: Prisma.WorkflowInstanceOrderByRelationAggregateInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceOrderByRelationAggregateInput
+  primaryTasks?: Prisma.TaskOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -300,9 +320,19 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   auditLogs?: Prisma.AuditLogListRelationFilter
   linkedRecords?: Prisma.MasterRecordListRelationFilter
   RefreshToken?: Prisma.RefreshTokenListRelationFilter
-  workflowDefinitions?: Prisma.WorkflowDefinitionListRelationFilter
   workflowHistories?: Prisma.WorkflowHistoryListRelationFilter
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserListRelationFilter
+  masterObjectSchemas?: Prisma.MasterObjectSchemaListRelationFilter
+  recordPermissions?: Prisma.RecordPermissionListRelationFilter
+  fieldPermissions?: Prisma.FieldPermissionListRelationFilter
+  recordFieldHistories?: Prisma.RecordFieldHistoryListRelationFilter
+  workflowApprovals?: Prisma.WorkflowApprovalListRelationFilter
+  createdWorkflows?: Prisma.WorkflowDefinitionListRelationFilter
+  publishedWorkflows?: Prisma.WorkflowDefinitionListRelationFilter
+  assignedTasks?: Prisma.TaskListRelationFilter
+  startedWorkflows?: Prisma.WorkflowInstanceListRelationFilter
+  createdWorkflowInstances?: Prisma.WorkflowInstanceListRelationFilter
+  primaryTasks?: Prisma.TaskListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -363,9 +393,19 @@ export type UserCreateInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   linkedRecords?: Prisma.MasterRecordCreateNestedManyWithoutLinkedUserInput
   RefreshToken?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
   workflowHistories?: Prisma.WorkflowHistoryCreateNestedManyWithoutPerformedByInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskCreateNestedManyWithoutAssignedToInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -390,9 +430,19 @@ export type UserUncheckedCreateInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   linkedRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutLinkedUserInput
   RefreshToken?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
   workflowHistories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutPerformedByInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedToInput
 }
 
 export type UserUpdateInput = {
@@ -417,9 +467,19 @@ export type UserUpdateInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   linkedRecords?: Prisma.MasterRecordUpdateManyWithoutLinkedUserNestedInput
   RefreshToken?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
   workflowHistories?: Prisma.WorkflowHistoryUpdateManyWithoutPerformedByNestedInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUpdateManyWithoutAssignedToNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -444,9 +504,19 @@ export type UserUncheckedUpdateInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   linkedRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutLinkedUserNestedInput
   RefreshToken?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
   workflowHistories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedToNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -585,6 +655,38 @@ export type UserUpdateOneRequiredWithoutRolesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRolesInput, Prisma.UserUpdateWithoutRolesInput>, Prisma.UserUncheckedUpdateWithoutRolesInput>
 }
 
+export type UserCreateNestedOneWithoutMasterObjectSchemasInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMasterObjectSchemasInput, Prisma.UserUncheckedCreateWithoutMasterObjectSchemasInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMasterObjectSchemasInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutMasterObjectSchemasNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMasterObjectSchemasInput, Prisma.UserUncheckedCreateWithoutMasterObjectSchemasInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMasterObjectSchemasInput
+  upsert?: Prisma.UserUpsertWithoutMasterObjectSchemasInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMasterObjectSchemasInput, Prisma.UserUpdateWithoutMasterObjectSchemasInput>, Prisma.UserUncheckedUpdateWithoutMasterObjectSchemasInput>
+}
+
+export type UserCreateNestedOneWithoutFieldPermissionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFieldPermissionsInput, Prisma.UserUncheckedCreateWithoutFieldPermissionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFieldPermissionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutFieldPermissionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFieldPermissionsInput, Prisma.UserUncheckedCreateWithoutFieldPermissionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFieldPermissionsInput
+  upsert?: Prisma.UserUpsertWithoutFieldPermissionsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutFieldPermissionsInput, Prisma.UserUpdateWithoutFieldPermissionsInput>, Prisma.UserUncheckedUpdateWithoutFieldPermissionsInput>
+}
+
 export type UserCreateNestedOneWithoutCreatedRecordsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedRecordsInput, Prisma.UserUncheckedCreateWithoutCreatedRecordsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedRecordsInput
@@ -617,20 +719,100 @@ export type UserUpdateOneWithoutLinkedRecordsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutLinkedRecordsInput, Prisma.UserUpdateWithoutLinkedRecordsInput>, Prisma.UserUncheckedUpdateWithoutLinkedRecordsInput>
 }
 
-export type UserCreateNestedOneWithoutWorkflowDefinitionsInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutWorkflowDefinitionsInput, Prisma.UserUncheckedCreateWithoutWorkflowDefinitionsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWorkflowDefinitionsInput
+export type UserCreateNestedOneWithoutRecordFieldHistoriesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRecordFieldHistoriesInput, Prisma.UserUncheckedCreateWithoutRecordFieldHistoriesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRecordFieldHistoriesInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneWithoutWorkflowDefinitionsNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutWorkflowDefinitionsInput, Prisma.UserUncheckedCreateWithoutWorkflowDefinitionsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWorkflowDefinitionsInput
-  upsert?: Prisma.UserUpsertWithoutWorkflowDefinitionsInput
+export type UserUpdateOneWithoutRecordFieldHistoriesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRecordFieldHistoriesInput, Prisma.UserUncheckedCreateWithoutRecordFieldHistoriesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRecordFieldHistoriesInput
+  upsert?: Prisma.UserUpsertWithoutRecordFieldHistoriesInput
   disconnect?: Prisma.UserWhereInput | boolean
   delete?: Prisma.UserWhereInput | boolean
   connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutWorkflowDefinitionsInput, Prisma.UserUpdateWithoutWorkflowDefinitionsInput>, Prisma.UserUncheckedUpdateWithoutWorkflowDefinitionsInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRecordFieldHistoriesInput, Prisma.UserUpdateWithoutRecordFieldHistoriesInput>, Prisma.UserUncheckedUpdateWithoutRecordFieldHistoriesInput>
+}
+
+export type UserCreateNestedOneWithoutRecordPermissionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRecordPermissionsInput, Prisma.UserUncheckedCreateWithoutRecordPermissionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRecordPermissionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutRecordPermissionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRecordPermissionsInput, Prisma.UserUncheckedCreateWithoutRecordPermissionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRecordPermissionsInput
+  upsert?: Prisma.UserUpsertWithoutRecordPermissionsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRecordPermissionsInput, Prisma.UserUpdateWithoutRecordPermissionsInput>, Prisma.UserUncheckedUpdateWithoutRecordPermissionsInput>
+}
+
+export type UserCreateNestedOneWithoutCreatedWorkflowsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedWorkflowsInput, Prisma.UserUncheckedCreateWithoutCreatedWorkflowsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedWorkflowsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutPublishedWorkflowsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPublishedWorkflowsInput, Prisma.UserUncheckedCreateWithoutPublishedWorkflowsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPublishedWorkflowsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutCreatedWorkflowsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedWorkflowsInput, Prisma.UserUncheckedCreateWithoutCreatedWorkflowsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedWorkflowsInput
+  upsert?: Prisma.UserUpsertWithoutCreatedWorkflowsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedWorkflowsInput, Prisma.UserUpdateWithoutCreatedWorkflowsInput>, Prisma.UserUncheckedUpdateWithoutCreatedWorkflowsInput>
+}
+
+export type UserUpdateOneWithoutPublishedWorkflowsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPublishedWorkflowsInput, Prisma.UserUncheckedCreateWithoutPublishedWorkflowsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPublishedWorkflowsInput
+  upsert?: Prisma.UserUpsertWithoutPublishedWorkflowsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPublishedWorkflowsInput, Prisma.UserUpdateWithoutPublishedWorkflowsInput>, Prisma.UserUncheckedUpdateWithoutPublishedWorkflowsInput>
+}
+
+export type UserCreateNestedOneWithoutCreatedWorkflowInstancesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedWorkflowInstancesInput, Prisma.UserUncheckedCreateWithoutCreatedWorkflowInstancesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedWorkflowInstancesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutStartedWorkflowsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutStartedWorkflowsInput, Prisma.UserUncheckedCreateWithoutStartedWorkflowsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStartedWorkflowsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutCreatedWorkflowInstancesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedWorkflowInstancesInput, Prisma.UserUncheckedCreateWithoutCreatedWorkflowInstancesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedWorkflowInstancesInput
+  upsert?: Prisma.UserUpsertWithoutCreatedWorkflowInstancesInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedWorkflowInstancesInput, Prisma.UserUpdateWithoutCreatedWorkflowInstancesInput>, Prisma.UserUncheckedUpdateWithoutCreatedWorkflowInstancesInput>
+}
+
+export type UserUpdateOneWithoutStartedWorkflowsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutStartedWorkflowsInput, Prisma.UserUncheckedCreateWithoutStartedWorkflowsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStartedWorkflowsInput
+  upsert?: Prisma.UserUpsertWithoutStartedWorkflowsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutStartedWorkflowsInput, Prisma.UserUpdateWithoutStartedWorkflowsInput>, Prisma.UserUncheckedUpdateWithoutStartedWorkflowsInput>
 }
 
 export type UserCreateNestedOneWithoutWorkflowHistoriesInput = {
@@ -661,6 +843,52 @@ export type UserUpdateOneRequiredWithoutAllowedTransitionsNestedInput = {
   upsert?: Prisma.UserUpsertWithoutAllowedTransitionsInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAllowedTransitionsInput, Prisma.UserUpdateWithoutAllowedTransitionsInput>, Prisma.UserUncheckedUpdateWithoutAllowedTransitionsInput>
+}
+
+export type UserCreateNestedOneWithoutWorkflowApprovalsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWorkflowApprovalsInput, Prisma.UserUncheckedCreateWithoutWorkflowApprovalsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWorkflowApprovalsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutWorkflowApprovalsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWorkflowApprovalsInput, Prisma.UserUncheckedCreateWithoutWorkflowApprovalsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWorkflowApprovalsInput
+  upsert?: Prisma.UserUpsertWithoutWorkflowApprovalsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutWorkflowApprovalsInput, Prisma.UserUpdateWithoutWorkflowApprovalsInput>, Prisma.UserUncheckedUpdateWithoutWorkflowApprovalsInput>
+}
+
+export type UserCreateNestedOneWithoutPrimaryTasksInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPrimaryTasksInput, Prisma.UserUncheckedCreateWithoutPrimaryTasksInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPrimaryTasksInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutAssignedTasksInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAssignedTasksInput, Prisma.UserUncheckedCreateWithoutAssignedTasksInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAssignedTasksInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutPrimaryTasksNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPrimaryTasksInput, Prisma.UserUncheckedCreateWithoutPrimaryTasksInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPrimaryTasksInput
+  upsert?: Prisma.UserUpsertWithoutPrimaryTasksInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPrimaryTasksInput, Prisma.UserUpdateWithoutPrimaryTasksInput>, Prisma.UserUncheckedUpdateWithoutPrimaryTasksInput>
+}
+
+export type UserUpdateOneWithoutAssignedTasksNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAssignedTasksInput, Prisma.UserUncheckedCreateWithoutAssignedTasksInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAssignedTasksInput
+  upsert?: Prisma.UserUpsertWithoutAssignedTasksInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAssignedTasksInput, Prisma.UserUpdateWithoutAssignedTasksInput>, Prisma.UserUncheckedUpdateWithoutAssignedTasksInput>
 }
 
 export type UserCreateNestedOneWithoutTaskAssignmentsInput = {
@@ -776,9 +1004,19 @@ export type UserCreateWithoutRolesInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   linkedRecords?: Prisma.MasterRecordCreateNestedManyWithoutLinkedUserInput
   RefreshToken?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
   workflowHistories?: Prisma.WorkflowHistoryCreateNestedManyWithoutPerformedByInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskCreateNestedManyWithoutAssignedToInput
 }
 
 export type UserUncheckedCreateWithoutRolesInput = {
@@ -802,9 +1040,19 @@ export type UserUncheckedCreateWithoutRolesInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   linkedRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutLinkedUserInput
   RefreshToken?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
   workflowHistories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutPerformedByInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedToInput
 }
 
 export type UserCreateOrConnectWithoutRolesInput = {
@@ -844,9 +1092,19 @@ export type UserUpdateWithoutRolesInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   linkedRecords?: Prisma.MasterRecordUpdateManyWithoutLinkedUserNestedInput
   RefreshToken?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
   workflowHistories?: Prisma.WorkflowHistoryUpdateManyWithoutPerformedByNestedInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUpdateManyWithoutAssignedToNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRolesInput = {
@@ -870,9 +1128,339 @@ export type UserUncheckedUpdateWithoutRolesInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   linkedRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutLinkedUserNestedInput
   RefreshToken?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
   workflowHistories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+}
+
+export type UserCreateWithoutMasterObjectSchemasInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  type?: $Enums.UserType
+  status?: $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: string | null
+  location?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  createdRecords?: Prisma.MasterRecordCreateNestedManyWithoutCreatedByInput
+  createdBatches?: Prisma.NotificationBatchCreateNestedManyWithoutCreatedByInput
+  deliveries?: Prisma.NotificationDeliveryCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  linkedRecords?: Prisma.MasterRecordCreateNestedManyWithoutLinkedUserInput
+  RefreshToken?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  workflowHistories?: Prisma.WorkflowHistoryCreateNestedManyWithoutPerformedByInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutUserInput
+  recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskCreateNestedManyWithoutAssignedToInput
+}
+
+export type UserUncheckedCreateWithoutMasterObjectSchemasInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  type?: $Enums.UserType
+  status?: $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: string | null
+  location?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  createdRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutCreatedByInput
+  createdBatches?: Prisma.NotificationBatchUncheckedCreateNestedManyWithoutCreatedByInput
+  deliveries?: Prisma.NotificationDeliveryUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  linkedRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutLinkedUserInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  workflowHistories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutPerformedByInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutUserInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedToInput
+}
+
+export type UserCreateOrConnectWithoutMasterObjectSchemasInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutMasterObjectSchemasInput, Prisma.UserUncheckedCreateWithoutMasterObjectSchemasInput>
+}
+
+export type UserUpsertWithoutMasterObjectSchemasInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutMasterObjectSchemasInput, Prisma.UserUncheckedUpdateWithoutMasterObjectSchemasInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutMasterObjectSchemasInput, Prisma.UserUncheckedCreateWithoutMasterObjectSchemasInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutMasterObjectSchemasInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutMasterObjectSchemasInput, Prisma.UserUncheckedUpdateWithoutMasterObjectSchemasInput>
+}
+
+export type UserUpdateWithoutMasterObjectSchemasInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  createdRecords?: Prisma.MasterRecordUpdateManyWithoutCreatedByNestedInput
+  createdBatches?: Prisma.NotificationBatchUpdateManyWithoutCreatedByNestedInput
+  deliveries?: Prisma.NotificationDeliveryUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  linkedRecords?: Prisma.MasterRecordUpdateManyWithoutLinkedUserNestedInput
+  RefreshToken?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  workflowHistories?: Prisma.WorkflowHistoryUpdateManyWithoutPerformedByNestedInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutUserNestedInput
+  recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUpdateManyWithoutAssignedToNestedInput
+}
+
+export type UserUncheckedUpdateWithoutMasterObjectSchemasInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  createdRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdBatches?: Prisma.NotificationBatchUncheckedUpdateManyWithoutCreatedByNestedInput
+  deliveries?: Prisma.NotificationDeliveryUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  linkedRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutLinkedUserNestedInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  workflowHistories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutUserNestedInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+}
+
+export type UserCreateWithoutFieldPermissionsInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  type?: $Enums.UserType
+  status?: $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: string | null
+  location?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  createdRecords?: Prisma.MasterRecordCreateNestedManyWithoutCreatedByInput
+  createdBatches?: Prisma.NotificationBatchCreateNestedManyWithoutCreatedByInput
+  deliveries?: Prisma.NotificationDeliveryCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  linkedRecords?: Prisma.MasterRecordCreateNestedManyWithoutLinkedUserInput
+  RefreshToken?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  workflowHistories?: Prisma.WorkflowHistoryCreateNestedManyWithoutPerformedByInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskCreateNestedManyWithoutAssignedToInput
+}
+
+export type UserUncheckedCreateWithoutFieldPermissionsInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  type?: $Enums.UserType
+  status?: $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: string | null
+  location?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  createdRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutCreatedByInput
+  createdBatches?: Prisma.NotificationBatchUncheckedCreateNestedManyWithoutCreatedByInput
+  deliveries?: Prisma.NotificationDeliveryUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  linkedRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutLinkedUserInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  workflowHistories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutPerformedByInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedToInput
+}
+
+export type UserCreateOrConnectWithoutFieldPermissionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutFieldPermissionsInput, Prisma.UserUncheckedCreateWithoutFieldPermissionsInput>
+}
+
+export type UserUpsertWithoutFieldPermissionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutFieldPermissionsInput, Prisma.UserUncheckedUpdateWithoutFieldPermissionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutFieldPermissionsInput, Prisma.UserUncheckedCreateWithoutFieldPermissionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutFieldPermissionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutFieldPermissionsInput, Prisma.UserUncheckedUpdateWithoutFieldPermissionsInput>
+}
+
+export type UserUpdateWithoutFieldPermissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  createdRecords?: Prisma.MasterRecordUpdateManyWithoutCreatedByNestedInput
+  createdBatches?: Prisma.NotificationBatchUpdateManyWithoutCreatedByNestedInput
+  deliveries?: Prisma.NotificationDeliveryUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  linkedRecords?: Prisma.MasterRecordUpdateManyWithoutLinkedUserNestedInput
+  RefreshToken?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  workflowHistories?: Prisma.WorkflowHistoryUpdateManyWithoutPerformedByNestedInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUpdateManyWithoutAssignedToNestedInput
+}
+
+export type UserUncheckedUpdateWithoutFieldPermissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  createdRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdBatches?: Prisma.NotificationBatchUncheckedUpdateManyWithoutCreatedByNestedInput
+  deliveries?: Prisma.NotificationDeliveryUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  linkedRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutLinkedUserNestedInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  workflowHistories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedToNestedInput
 }
 
 export type UserCreateWithoutCreatedRecordsInput = {
@@ -896,9 +1484,19 @@ export type UserCreateWithoutCreatedRecordsInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   linkedRecords?: Prisma.MasterRecordCreateNestedManyWithoutLinkedUserInput
   RefreshToken?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
   workflowHistories?: Prisma.WorkflowHistoryCreateNestedManyWithoutPerformedByInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskCreateNestedManyWithoutAssignedToInput
 }
 
 export type UserUncheckedCreateWithoutCreatedRecordsInput = {
@@ -922,9 +1520,19 @@ export type UserUncheckedCreateWithoutCreatedRecordsInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   linkedRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutLinkedUserInput
   RefreshToken?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
   workflowHistories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutPerformedByInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedToInput
 }
 
 export type UserCreateOrConnectWithoutCreatedRecordsInput = {
@@ -953,9 +1561,19 @@ export type UserCreateWithoutLinkedRecordsInput = {
   deliveries?: Prisma.NotificationDeliveryCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   RefreshToken?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
   workflowHistories?: Prisma.WorkflowHistoryCreateNestedManyWithoutPerformedByInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskCreateNestedManyWithoutAssignedToInput
 }
 
 export type UserUncheckedCreateWithoutLinkedRecordsInput = {
@@ -979,9 +1597,19 @@ export type UserUncheckedCreateWithoutLinkedRecordsInput = {
   deliveries?: Prisma.NotificationDeliveryUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   RefreshToken?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
   workflowHistories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutPerformedByInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedToInput
 }
 
 export type UserCreateOrConnectWithoutLinkedRecordsInput = {
@@ -1021,9 +1649,19 @@ export type UserUpdateWithoutCreatedRecordsInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   linkedRecords?: Prisma.MasterRecordUpdateManyWithoutLinkedUserNestedInput
   RefreshToken?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
   workflowHistories?: Prisma.WorkflowHistoryUpdateManyWithoutPerformedByNestedInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUpdateManyWithoutAssignedToNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedRecordsInput = {
@@ -1047,9 +1685,19 @@ export type UserUncheckedUpdateWithoutCreatedRecordsInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   linkedRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutLinkedUserNestedInput
   RefreshToken?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
   workflowHistories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedToNestedInput
 }
 
 export type UserUpsertWithoutLinkedRecordsInput = {
@@ -1084,9 +1732,19 @@ export type UserUpdateWithoutLinkedRecordsInput = {
   deliveries?: Prisma.NotificationDeliveryUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   RefreshToken?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
   workflowHistories?: Prisma.WorkflowHistoryUpdateManyWithoutPerformedByNestedInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUpdateManyWithoutAssignedToNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLinkedRecordsInput = {
@@ -1110,12 +1768,22 @@ export type UserUncheckedUpdateWithoutLinkedRecordsInput = {
   deliveries?: Prisma.NotificationDeliveryUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   RefreshToken?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
   workflowHistories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedToNestedInput
 }
 
-export type UserCreateWithoutWorkflowDefinitionsInput = {
+export type UserCreateWithoutRecordFieldHistoriesInput = {
   id?: string
   name: string
   email: string
@@ -1139,9 +1807,19 @@ export type UserCreateWithoutWorkflowDefinitionsInput = {
   RefreshToken?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   workflowHistories?: Prisma.WorkflowHistoryCreateNestedManyWithoutPerformedByInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutUserInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskCreateNestedManyWithoutAssignedToInput
 }
 
-export type UserUncheckedCreateWithoutWorkflowDefinitionsInput = {
+export type UserUncheckedCreateWithoutRecordFieldHistoriesInput = {
   id?: string
   name: string
   email: string
@@ -1165,25 +1843,35 @@ export type UserUncheckedCreateWithoutWorkflowDefinitionsInput = {
   RefreshToken?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   workflowHistories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutPerformedByInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutUserInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedToInput
 }
 
-export type UserCreateOrConnectWithoutWorkflowDefinitionsInput = {
+export type UserCreateOrConnectWithoutRecordFieldHistoriesInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutWorkflowDefinitionsInput, Prisma.UserUncheckedCreateWithoutWorkflowDefinitionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutRecordFieldHistoriesInput, Prisma.UserUncheckedCreateWithoutRecordFieldHistoriesInput>
 }
 
-export type UserUpsertWithoutWorkflowDefinitionsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutWorkflowDefinitionsInput, Prisma.UserUncheckedUpdateWithoutWorkflowDefinitionsInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutWorkflowDefinitionsInput, Prisma.UserUncheckedCreateWithoutWorkflowDefinitionsInput>
+export type UserUpsertWithoutRecordFieldHistoriesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutRecordFieldHistoriesInput, Prisma.UserUncheckedUpdateWithoutRecordFieldHistoriesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutRecordFieldHistoriesInput, Prisma.UserUncheckedCreateWithoutRecordFieldHistoriesInput>
   where?: Prisma.UserWhereInput
 }
 
-export type UserUpdateToOneWithWhereWithoutWorkflowDefinitionsInput = {
+export type UserUpdateToOneWithWhereWithoutRecordFieldHistoriesInput = {
   where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutWorkflowDefinitionsInput, Prisma.UserUncheckedUpdateWithoutWorkflowDefinitionsInput>
+  data: Prisma.XOR<Prisma.UserUpdateWithoutRecordFieldHistoriesInput, Prisma.UserUncheckedUpdateWithoutRecordFieldHistoriesInput>
 }
 
-export type UserUpdateWithoutWorkflowDefinitionsInput = {
+export type UserUpdateWithoutRecordFieldHistoriesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1207,9 +1895,19 @@ export type UserUpdateWithoutWorkflowDefinitionsInput = {
   RefreshToken?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   workflowHistories?: Prisma.WorkflowHistoryUpdateManyWithoutPerformedByNestedInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutUserNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUpdateManyWithoutAssignedToNestedInput
 }
 
-export type UserUncheckedUpdateWithoutWorkflowDefinitionsInput = {
+export type UserUncheckedUpdateWithoutRecordFieldHistoriesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1233,6 +1931,816 @@ export type UserUncheckedUpdateWithoutWorkflowDefinitionsInput = {
   RefreshToken?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   workflowHistories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutUserNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+}
+
+export type UserCreateWithoutRecordPermissionsInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  type?: $Enums.UserType
+  status?: $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: string | null
+  location?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  createdRecords?: Prisma.MasterRecordCreateNestedManyWithoutCreatedByInput
+  createdBatches?: Prisma.NotificationBatchCreateNestedManyWithoutCreatedByInput
+  deliveries?: Prisma.NotificationDeliveryCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  linkedRecords?: Prisma.MasterRecordCreateNestedManyWithoutLinkedUserInput
+  RefreshToken?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  workflowHistories?: Prisma.WorkflowHistoryCreateNestedManyWithoutPerformedByInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutCreatedByInput
+  fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskCreateNestedManyWithoutAssignedToInput
+}
+
+export type UserUncheckedCreateWithoutRecordPermissionsInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  type?: $Enums.UserType
+  status?: $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: string | null
+  location?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  createdRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutCreatedByInput
+  createdBatches?: Prisma.NotificationBatchUncheckedCreateNestedManyWithoutCreatedByInput
+  deliveries?: Prisma.NotificationDeliveryUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  linkedRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutLinkedUserInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  workflowHistories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutPerformedByInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutCreatedByInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedToInput
+}
+
+export type UserCreateOrConnectWithoutRecordPermissionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutRecordPermissionsInput, Prisma.UserUncheckedCreateWithoutRecordPermissionsInput>
+}
+
+export type UserUpsertWithoutRecordPermissionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutRecordPermissionsInput, Prisma.UserUncheckedUpdateWithoutRecordPermissionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutRecordPermissionsInput, Prisma.UserUncheckedCreateWithoutRecordPermissionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutRecordPermissionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutRecordPermissionsInput, Prisma.UserUncheckedUpdateWithoutRecordPermissionsInput>
+}
+
+export type UserUpdateWithoutRecordPermissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  createdRecords?: Prisma.MasterRecordUpdateManyWithoutCreatedByNestedInput
+  createdBatches?: Prisma.NotificationBatchUpdateManyWithoutCreatedByNestedInput
+  deliveries?: Prisma.NotificationDeliveryUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  linkedRecords?: Prisma.MasterRecordUpdateManyWithoutLinkedUserNestedInput
+  RefreshToken?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  workflowHistories?: Prisma.WorkflowHistoryUpdateManyWithoutPerformedByNestedInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUpdateManyWithoutCreatedByNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUpdateManyWithoutAssignedToNestedInput
+}
+
+export type UserUncheckedUpdateWithoutRecordPermissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  createdRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdBatches?: Prisma.NotificationBatchUncheckedUpdateManyWithoutCreatedByNestedInput
+  deliveries?: Prisma.NotificationDeliveryUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  linkedRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutLinkedUserNestedInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  workflowHistories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutCreatedByNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+}
+
+export type UserCreateWithoutCreatedWorkflowsInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  type?: $Enums.UserType
+  status?: $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: string | null
+  location?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  createdRecords?: Prisma.MasterRecordCreateNestedManyWithoutCreatedByInput
+  createdBatches?: Prisma.NotificationBatchCreateNestedManyWithoutCreatedByInput
+  deliveries?: Prisma.NotificationDeliveryCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  linkedRecords?: Prisma.MasterRecordCreateNestedManyWithoutLinkedUserInput
+  RefreshToken?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  workflowHistories?: Prisma.WorkflowHistoryCreateNestedManyWithoutPerformedByInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutApproverInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskCreateNestedManyWithoutAssignedToInput
+}
+
+export type UserUncheckedCreateWithoutCreatedWorkflowsInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  type?: $Enums.UserType
+  status?: $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: string | null
+  location?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  createdRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutCreatedByInput
+  createdBatches?: Prisma.NotificationBatchUncheckedCreateNestedManyWithoutCreatedByInput
+  deliveries?: Prisma.NotificationDeliveryUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  linkedRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutLinkedUserInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  workflowHistories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutPerformedByInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutApproverInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedToInput
+}
+
+export type UserCreateOrConnectWithoutCreatedWorkflowsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedWorkflowsInput, Prisma.UserUncheckedCreateWithoutCreatedWorkflowsInput>
+}
+
+export type UserCreateWithoutPublishedWorkflowsInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  type?: $Enums.UserType
+  status?: $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: string | null
+  location?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  createdRecords?: Prisma.MasterRecordCreateNestedManyWithoutCreatedByInput
+  createdBatches?: Prisma.NotificationBatchCreateNestedManyWithoutCreatedByInput
+  deliveries?: Prisma.NotificationDeliveryCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  linkedRecords?: Prisma.MasterRecordCreateNestedManyWithoutLinkedUserInput
+  RefreshToken?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  workflowHistories?: Prisma.WorkflowHistoryCreateNestedManyWithoutPerformedByInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskCreateNestedManyWithoutAssignedToInput
+}
+
+export type UserUncheckedCreateWithoutPublishedWorkflowsInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  type?: $Enums.UserType
+  status?: $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: string | null
+  location?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  createdRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutCreatedByInput
+  createdBatches?: Prisma.NotificationBatchUncheckedCreateNestedManyWithoutCreatedByInput
+  deliveries?: Prisma.NotificationDeliveryUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  linkedRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutLinkedUserInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  workflowHistories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutPerformedByInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedToInput
+}
+
+export type UserCreateOrConnectWithoutPublishedWorkflowsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPublishedWorkflowsInput, Prisma.UserUncheckedCreateWithoutPublishedWorkflowsInput>
+}
+
+export type UserUpsertWithoutCreatedWorkflowsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCreatedWorkflowsInput, Prisma.UserUncheckedUpdateWithoutCreatedWorkflowsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedWorkflowsInput, Prisma.UserUncheckedCreateWithoutCreatedWorkflowsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCreatedWorkflowsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCreatedWorkflowsInput, Prisma.UserUncheckedUpdateWithoutCreatedWorkflowsInput>
+}
+
+export type UserUpdateWithoutCreatedWorkflowsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  createdRecords?: Prisma.MasterRecordUpdateManyWithoutCreatedByNestedInput
+  createdBatches?: Prisma.NotificationBatchUpdateManyWithoutCreatedByNestedInput
+  deliveries?: Prisma.NotificationDeliveryUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  linkedRecords?: Prisma.MasterRecordUpdateManyWithoutLinkedUserNestedInput
+  RefreshToken?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  workflowHistories?: Prisma.WorkflowHistoryUpdateManyWithoutPerformedByNestedInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutApproverNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUpdateManyWithoutAssignedToNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCreatedWorkflowsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  createdRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdBatches?: Prisma.NotificationBatchUncheckedUpdateManyWithoutCreatedByNestedInput
+  deliveries?: Prisma.NotificationDeliveryUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  linkedRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutLinkedUserNestedInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  workflowHistories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+}
+
+export type UserUpsertWithoutPublishedWorkflowsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPublishedWorkflowsInput, Prisma.UserUncheckedUpdateWithoutPublishedWorkflowsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPublishedWorkflowsInput, Prisma.UserUncheckedCreateWithoutPublishedWorkflowsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPublishedWorkflowsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPublishedWorkflowsInput, Prisma.UserUncheckedUpdateWithoutPublishedWorkflowsInput>
+}
+
+export type UserUpdateWithoutPublishedWorkflowsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  createdRecords?: Prisma.MasterRecordUpdateManyWithoutCreatedByNestedInput
+  createdBatches?: Prisma.NotificationBatchUpdateManyWithoutCreatedByNestedInput
+  deliveries?: Prisma.NotificationDeliveryUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  linkedRecords?: Prisma.MasterRecordUpdateManyWithoutLinkedUserNestedInput
+  RefreshToken?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  workflowHistories?: Prisma.WorkflowHistoryUpdateManyWithoutPerformedByNestedInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUpdateManyWithoutAssignedToNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPublishedWorkflowsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  createdRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdBatches?: Prisma.NotificationBatchUncheckedUpdateManyWithoutCreatedByNestedInput
+  deliveries?: Prisma.NotificationDeliveryUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  linkedRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutLinkedUserNestedInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  workflowHistories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+}
+
+export type UserCreateWithoutCreatedWorkflowInstancesInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  type?: $Enums.UserType
+  status?: $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: string | null
+  location?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  createdRecords?: Prisma.MasterRecordCreateNestedManyWithoutCreatedByInput
+  createdBatches?: Prisma.NotificationBatchCreateNestedManyWithoutCreatedByInput
+  deliveries?: Prisma.NotificationDeliveryCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  linkedRecords?: Prisma.MasterRecordCreateNestedManyWithoutLinkedUserInput
+  RefreshToken?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  workflowHistories?: Prisma.WorkflowHistoryCreateNestedManyWithoutPerformedByInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceCreateNestedManyWithoutStartedByInput
+  primaryTasks?: Prisma.TaskCreateNestedManyWithoutAssignedToInput
+}
+
+export type UserUncheckedCreateWithoutCreatedWorkflowInstancesInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  type?: $Enums.UserType
+  status?: $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: string | null
+  location?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  createdRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutCreatedByInput
+  createdBatches?: Prisma.NotificationBatchUncheckedCreateNestedManyWithoutCreatedByInput
+  deliveries?: Prisma.NotificationDeliveryUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  linkedRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutLinkedUserInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  workflowHistories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutPerformedByInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStartedByInput
+  primaryTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedToInput
+}
+
+export type UserCreateOrConnectWithoutCreatedWorkflowInstancesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedWorkflowInstancesInput, Prisma.UserUncheckedCreateWithoutCreatedWorkflowInstancesInput>
+}
+
+export type UserCreateWithoutStartedWorkflowsInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  type?: $Enums.UserType
+  status?: $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: string | null
+  location?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  createdRecords?: Prisma.MasterRecordCreateNestedManyWithoutCreatedByInput
+  createdBatches?: Prisma.NotificationBatchCreateNestedManyWithoutCreatedByInput
+  deliveries?: Prisma.NotificationDeliveryCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  linkedRecords?: Prisma.MasterRecordCreateNestedManyWithoutLinkedUserInput
+  RefreshToken?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  workflowHistories?: Prisma.WorkflowHistoryCreateNestedManyWithoutPerformedByInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskCreateNestedManyWithoutAssignedToInput
+}
+
+export type UserUncheckedCreateWithoutStartedWorkflowsInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  type?: $Enums.UserType
+  status?: $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: string | null
+  location?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  createdRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutCreatedByInput
+  createdBatches?: Prisma.NotificationBatchUncheckedCreateNestedManyWithoutCreatedByInput
+  deliveries?: Prisma.NotificationDeliveryUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  linkedRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutLinkedUserInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  workflowHistories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutPerformedByInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedToInput
+}
+
+export type UserCreateOrConnectWithoutStartedWorkflowsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutStartedWorkflowsInput, Prisma.UserUncheckedCreateWithoutStartedWorkflowsInput>
+}
+
+export type UserUpsertWithoutCreatedWorkflowInstancesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCreatedWorkflowInstancesInput, Prisma.UserUncheckedUpdateWithoutCreatedWorkflowInstancesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedWorkflowInstancesInput, Prisma.UserUncheckedCreateWithoutCreatedWorkflowInstancesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCreatedWorkflowInstancesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCreatedWorkflowInstancesInput, Prisma.UserUncheckedUpdateWithoutCreatedWorkflowInstancesInput>
+}
+
+export type UserUpdateWithoutCreatedWorkflowInstancesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  createdRecords?: Prisma.MasterRecordUpdateManyWithoutCreatedByNestedInput
+  createdBatches?: Prisma.NotificationBatchUpdateManyWithoutCreatedByNestedInput
+  deliveries?: Prisma.NotificationDeliveryUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  linkedRecords?: Prisma.MasterRecordUpdateManyWithoutLinkedUserNestedInput
+  RefreshToken?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  workflowHistories?: Prisma.WorkflowHistoryUpdateManyWithoutPerformedByNestedInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUpdateManyWithoutStartedByNestedInput
+  primaryTasks?: Prisma.TaskUpdateManyWithoutAssignedToNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCreatedWorkflowInstancesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  createdRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdBatches?: Prisma.NotificationBatchUncheckedUpdateManyWithoutCreatedByNestedInput
+  deliveries?: Prisma.NotificationDeliveryUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  linkedRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutLinkedUserNestedInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  workflowHistories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStartedByNestedInput
+  primaryTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+}
+
+export type UserUpsertWithoutStartedWorkflowsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutStartedWorkflowsInput, Prisma.UserUncheckedUpdateWithoutStartedWorkflowsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutStartedWorkflowsInput, Prisma.UserUncheckedCreateWithoutStartedWorkflowsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutStartedWorkflowsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutStartedWorkflowsInput, Prisma.UserUncheckedUpdateWithoutStartedWorkflowsInput>
+}
+
+export type UserUpdateWithoutStartedWorkflowsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  createdRecords?: Prisma.MasterRecordUpdateManyWithoutCreatedByNestedInput
+  createdBatches?: Prisma.NotificationBatchUpdateManyWithoutCreatedByNestedInput
+  deliveries?: Prisma.NotificationDeliveryUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  linkedRecords?: Prisma.MasterRecordUpdateManyWithoutLinkedUserNestedInput
+  RefreshToken?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  workflowHistories?: Prisma.WorkflowHistoryUpdateManyWithoutPerformedByNestedInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUpdateManyWithoutAssignedToNestedInput
+}
+
+export type UserUncheckedUpdateWithoutStartedWorkflowsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  createdRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdBatches?: Prisma.NotificationBatchUncheckedUpdateManyWithoutCreatedByNestedInput
+  deliveries?: Prisma.NotificationDeliveryUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  linkedRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutLinkedUserNestedInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  workflowHistories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedToNestedInput
 }
 
 export type UserCreateWithoutWorkflowHistoriesInput = {
@@ -1257,8 +2765,18 @@ export type UserCreateWithoutWorkflowHistoriesInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   linkedRecords?: Prisma.MasterRecordCreateNestedManyWithoutLinkedUserInput
   RefreshToken?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskCreateNestedManyWithoutAssignedToInput
 }
 
 export type UserUncheckedCreateWithoutWorkflowHistoriesInput = {
@@ -1283,8 +2801,18 @@ export type UserUncheckedCreateWithoutWorkflowHistoriesInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   linkedRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutLinkedUserInput
   RefreshToken?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedToInput
 }
 
 export type UserCreateOrConnectWithoutWorkflowHistoriesInput = {
@@ -1325,8 +2853,18 @@ export type UserUpdateWithoutWorkflowHistoriesInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   linkedRecords?: Prisma.MasterRecordUpdateManyWithoutLinkedUserNestedInput
   RefreshToken?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUpdateManyWithoutAssignedToNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWorkflowHistoriesInput = {
@@ -1351,8 +2889,18 @@ export type UserUncheckedUpdateWithoutWorkflowHistoriesInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   linkedRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutLinkedUserNestedInput
   RefreshToken?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedToNestedInput
 }
 
 export type UserCreateWithoutAllowedTransitionsInput = {
@@ -1377,8 +2925,18 @@ export type UserCreateWithoutAllowedTransitionsInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   linkedRecords?: Prisma.MasterRecordCreateNestedManyWithoutLinkedUserInput
   RefreshToken?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
   workflowHistories?: Prisma.WorkflowHistoryCreateNestedManyWithoutPerformedByInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskCreateNestedManyWithoutAssignedToInput
 }
 
 export type UserUncheckedCreateWithoutAllowedTransitionsInput = {
@@ -1403,8 +2961,18 @@ export type UserUncheckedCreateWithoutAllowedTransitionsInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   linkedRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutLinkedUserInput
   RefreshToken?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
   workflowHistories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutPerformedByInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedToInput
 }
 
 export type UserCreateOrConnectWithoutAllowedTransitionsInput = {
@@ -1445,8 +3013,18 @@ export type UserUpdateWithoutAllowedTransitionsInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   linkedRecords?: Prisma.MasterRecordUpdateManyWithoutLinkedUserNestedInput
   RefreshToken?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
   workflowHistories?: Prisma.WorkflowHistoryUpdateManyWithoutPerformedByNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUpdateManyWithoutAssignedToNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAllowedTransitionsInput = {
@@ -1471,8 +3049,498 @@ export type UserUncheckedUpdateWithoutAllowedTransitionsInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   linkedRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutLinkedUserNestedInput
   RefreshToken?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
   workflowHistories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+}
+
+export type UserCreateWithoutWorkflowApprovalsInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  type?: $Enums.UserType
+  status?: $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: string | null
+  location?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  createdRecords?: Prisma.MasterRecordCreateNestedManyWithoutCreatedByInput
+  createdBatches?: Prisma.NotificationBatchCreateNestedManyWithoutCreatedByInput
+  deliveries?: Prisma.NotificationDeliveryCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  linkedRecords?: Prisma.MasterRecordCreateNestedManyWithoutLinkedUserInput
+  RefreshToken?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  workflowHistories?: Prisma.WorkflowHistoryCreateNestedManyWithoutPerformedByInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutChangedByInput
+  createdWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskCreateNestedManyWithoutAssignedToInput
+}
+
+export type UserUncheckedCreateWithoutWorkflowApprovalsInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  type?: $Enums.UserType
+  status?: $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: string | null
+  location?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  createdRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutCreatedByInput
+  createdBatches?: Prisma.NotificationBatchUncheckedCreateNestedManyWithoutCreatedByInput
+  deliveries?: Prisma.NotificationDeliveryUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  linkedRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutLinkedUserInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  workflowHistories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutPerformedByInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedToInput
+}
+
+export type UserCreateOrConnectWithoutWorkflowApprovalsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutWorkflowApprovalsInput, Prisma.UserUncheckedCreateWithoutWorkflowApprovalsInput>
+}
+
+export type UserUpsertWithoutWorkflowApprovalsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutWorkflowApprovalsInput, Prisma.UserUncheckedUpdateWithoutWorkflowApprovalsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutWorkflowApprovalsInput, Prisma.UserUncheckedCreateWithoutWorkflowApprovalsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutWorkflowApprovalsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutWorkflowApprovalsInput, Prisma.UserUncheckedUpdateWithoutWorkflowApprovalsInput>
+}
+
+export type UserUpdateWithoutWorkflowApprovalsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  createdRecords?: Prisma.MasterRecordUpdateManyWithoutCreatedByNestedInput
+  createdBatches?: Prisma.NotificationBatchUpdateManyWithoutCreatedByNestedInput
+  deliveries?: Prisma.NotificationDeliveryUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  linkedRecords?: Prisma.MasterRecordUpdateManyWithoutLinkedUserNestedInput
+  RefreshToken?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  workflowHistories?: Prisma.WorkflowHistoryUpdateManyWithoutPerformedByNestedInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutChangedByNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUpdateManyWithoutAssignedToNestedInput
+}
+
+export type UserUncheckedUpdateWithoutWorkflowApprovalsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  createdRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdBatches?: Prisma.NotificationBatchUncheckedUpdateManyWithoutCreatedByNestedInput
+  deliveries?: Prisma.NotificationDeliveryUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  linkedRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutLinkedUserNestedInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  workflowHistories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+}
+
+export type UserCreateWithoutPrimaryTasksInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  type?: $Enums.UserType
+  status?: $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: string | null
+  location?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  createdRecords?: Prisma.MasterRecordCreateNestedManyWithoutCreatedByInput
+  createdBatches?: Prisma.NotificationBatchCreateNestedManyWithoutCreatedByInput
+  deliveries?: Prisma.NotificationDeliveryCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  linkedRecords?: Prisma.MasterRecordCreateNestedManyWithoutLinkedUserInput
+  RefreshToken?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  workflowHistories?: Prisma.WorkflowHistoryCreateNestedManyWithoutPerformedByInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutPrimaryTasksInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  type?: $Enums.UserType
+  status?: $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: string | null
+  location?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  createdRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutCreatedByInput
+  createdBatches?: Prisma.NotificationBatchUncheckedCreateNestedManyWithoutCreatedByInput
+  deliveries?: Prisma.NotificationDeliveryUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  linkedRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutLinkedUserInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  workflowHistories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutPerformedByInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutPrimaryTasksInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPrimaryTasksInput, Prisma.UserUncheckedCreateWithoutPrimaryTasksInput>
+}
+
+export type UserCreateWithoutAssignedTasksInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  type?: $Enums.UserType
+  status?: $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: string | null
+  location?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  createdRecords?: Prisma.MasterRecordCreateNestedManyWithoutCreatedByInput
+  createdBatches?: Prisma.NotificationBatchCreateNestedManyWithoutCreatedByInput
+  deliveries?: Prisma.NotificationDeliveryCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  linkedRecords?: Prisma.MasterRecordCreateNestedManyWithoutLinkedUserInput
+  RefreshToken?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  workflowHistories?: Prisma.WorkflowHistoryCreateNestedManyWithoutPerformedByInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutPublishedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskCreateNestedManyWithoutAssignedToInput
+}
+
+export type UserUncheckedCreateWithoutAssignedTasksInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  type?: $Enums.UserType
+  status?: $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: string | null
+  location?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  createdRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutCreatedByInput
+  createdBatches?: Prisma.NotificationBatchUncheckedCreateNestedManyWithoutCreatedByInput
+  deliveries?: Prisma.NotificationDeliveryUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  linkedRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutLinkedUserInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  workflowHistories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutPerformedByInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutPublishedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedToInput
+}
+
+export type UserCreateOrConnectWithoutAssignedTasksInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAssignedTasksInput, Prisma.UserUncheckedCreateWithoutAssignedTasksInput>
+}
+
+export type UserUpsertWithoutPrimaryTasksInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPrimaryTasksInput, Prisma.UserUncheckedUpdateWithoutPrimaryTasksInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPrimaryTasksInput, Prisma.UserUncheckedCreateWithoutPrimaryTasksInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPrimaryTasksInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPrimaryTasksInput, Prisma.UserUncheckedUpdateWithoutPrimaryTasksInput>
+}
+
+export type UserUpdateWithoutPrimaryTasksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  createdRecords?: Prisma.MasterRecordUpdateManyWithoutCreatedByNestedInput
+  createdBatches?: Prisma.NotificationBatchUpdateManyWithoutCreatedByNestedInput
+  deliveries?: Prisma.NotificationDeliveryUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  linkedRecords?: Prisma.MasterRecordUpdateManyWithoutLinkedUserNestedInput
+  RefreshToken?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  workflowHistories?: Prisma.WorkflowHistoryUpdateManyWithoutPerformedByNestedInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPrimaryTasksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  createdRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdBatches?: Prisma.NotificationBatchUncheckedUpdateManyWithoutCreatedByNestedInput
+  deliveries?: Prisma.NotificationDeliveryUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  linkedRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutLinkedUserNestedInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  workflowHistories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUpsertWithoutAssignedTasksInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAssignedTasksInput, Prisma.UserUncheckedUpdateWithoutAssignedTasksInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAssignedTasksInput, Prisma.UserUncheckedCreateWithoutAssignedTasksInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAssignedTasksInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAssignedTasksInput, Prisma.UserUncheckedUpdateWithoutAssignedTasksInput>
+}
+
+export type UserUpdateWithoutAssignedTasksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  createdRecords?: Prisma.MasterRecordUpdateManyWithoutCreatedByNestedInput
+  createdBatches?: Prisma.NotificationBatchUpdateManyWithoutCreatedByNestedInput
+  deliveries?: Prisma.NotificationDeliveryUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  linkedRecords?: Prisma.MasterRecordUpdateManyWithoutLinkedUserNestedInput
+  RefreshToken?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  workflowHistories?: Prisma.WorkflowHistoryUpdateManyWithoutPerformedByNestedInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutPublishedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUpdateManyWithoutAssignedToNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAssignedTasksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  createdRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdBatches?: Prisma.NotificationBatchUncheckedUpdateManyWithoutCreatedByNestedInput
+  deliveries?: Prisma.NotificationDeliveryUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  linkedRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutLinkedUserNestedInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  workflowHistories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutPublishedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedToNestedInput
 }
 
 export type UserCreateWithoutTaskAssignmentsInput = {
@@ -1496,9 +3564,19 @@ export type UserCreateWithoutTaskAssignmentsInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   linkedRecords?: Prisma.MasterRecordCreateNestedManyWithoutLinkedUserInput
   RefreshToken?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
   workflowHistories?: Prisma.WorkflowHistoryCreateNestedManyWithoutPerformedByInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskCreateNestedManyWithoutAssignedToInput
 }
 
 export type UserUncheckedCreateWithoutTaskAssignmentsInput = {
@@ -1522,9 +3600,19 @@ export type UserUncheckedCreateWithoutTaskAssignmentsInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   linkedRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutLinkedUserInput
   RefreshToken?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
   workflowHistories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutPerformedByInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedToInput
 }
 
 export type UserCreateOrConnectWithoutTaskAssignmentsInput = {
@@ -1564,9 +3652,19 @@ export type UserUpdateWithoutTaskAssignmentsInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   linkedRecords?: Prisma.MasterRecordUpdateManyWithoutLinkedUserNestedInput
   RefreshToken?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
   workflowHistories?: Prisma.WorkflowHistoryUpdateManyWithoutPerformedByNestedInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUpdateManyWithoutAssignedToNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTaskAssignmentsInput = {
@@ -1590,9 +3688,19 @@ export type UserUncheckedUpdateWithoutTaskAssignmentsInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   linkedRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutLinkedUserNestedInput
   RefreshToken?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
   workflowHistories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedToNestedInput
 }
 
 export type UserCreateWithoutAuditLogsInput = {
@@ -1616,9 +3724,19 @@ export type UserCreateWithoutAuditLogsInput = {
   deliveries?: Prisma.NotificationDeliveryCreateNestedManyWithoutUserInput
   linkedRecords?: Prisma.MasterRecordCreateNestedManyWithoutLinkedUserInput
   RefreshToken?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
   workflowHistories?: Prisma.WorkflowHistoryCreateNestedManyWithoutPerformedByInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskCreateNestedManyWithoutAssignedToInput
 }
 
 export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -1642,9 +3760,19 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   deliveries?: Prisma.NotificationDeliveryUncheckedCreateNestedManyWithoutUserInput
   linkedRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutLinkedUserInput
   RefreshToken?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
   workflowHistories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutPerformedByInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedToInput
 }
 
 export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -1684,9 +3812,19 @@ export type UserUpdateWithoutAuditLogsInput = {
   deliveries?: Prisma.NotificationDeliveryUpdateManyWithoutUserNestedInput
   linkedRecords?: Prisma.MasterRecordUpdateManyWithoutLinkedUserNestedInput
   RefreshToken?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
   workflowHistories?: Prisma.WorkflowHistoryUpdateManyWithoutPerformedByNestedInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUpdateManyWithoutAssignedToNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -1710,9 +3848,19 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   deliveries?: Prisma.NotificationDeliveryUncheckedUpdateManyWithoutUserNestedInput
   linkedRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutLinkedUserNestedInput
   RefreshToken?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
   workflowHistories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedToNestedInput
 }
 
 export type UserCreateWithoutCreatedBatchesInput = {
@@ -1736,9 +3884,19 @@ export type UserCreateWithoutCreatedBatchesInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   linkedRecords?: Prisma.MasterRecordCreateNestedManyWithoutLinkedUserInput
   RefreshToken?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
   workflowHistories?: Prisma.WorkflowHistoryCreateNestedManyWithoutPerformedByInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskCreateNestedManyWithoutAssignedToInput
 }
 
 export type UserUncheckedCreateWithoutCreatedBatchesInput = {
@@ -1762,9 +3920,19 @@ export type UserUncheckedCreateWithoutCreatedBatchesInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   linkedRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutLinkedUserInput
   RefreshToken?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
   workflowHistories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutPerformedByInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedToInput
 }
 
 export type UserCreateOrConnectWithoutCreatedBatchesInput = {
@@ -1804,9 +3972,19 @@ export type UserUpdateWithoutCreatedBatchesInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   linkedRecords?: Prisma.MasterRecordUpdateManyWithoutLinkedUserNestedInput
   RefreshToken?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
   workflowHistories?: Prisma.WorkflowHistoryUpdateManyWithoutPerformedByNestedInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUpdateManyWithoutAssignedToNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedBatchesInput = {
@@ -1830,9 +4008,19 @@ export type UserUncheckedUpdateWithoutCreatedBatchesInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   linkedRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutLinkedUserNestedInput
   RefreshToken?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
   workflowHistories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedToNestedInput
 }
 
 export type UserCreateWithoutDeliveriesInput = {
@@ -1856,9 +4044,19 @@ export type UserCreateWithoutDeliveriesInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   linkedRecords?: Prisma.MasterRecordCreateNestedManyWithoutLinkedUserInput
   RefreshToken?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
   workflowHistories?: Prisma.WorkflowHistoryCreateNestedManyWithoutPerformedByInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskCreateNestedManyWithoutAssignedToInput
 }
 
 export type UserUncheckedCreateWithoutDeliveriesInput = {
@@ -1882,9 +4080,19 @@ export type UserUncheckedCreateWithoutDeliveriesInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   linkedRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutLinkedUserInput
   RefreshToken?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
   workflowHistories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutPerformedByInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedToInput
 }
 
 export type UserCreateOrConnectWithoutDeliveriesInput = {
@@ -1924,9 +4132,19 @@ export type UserUpdateWithoutDeliveriesInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   linkedRecords?: Prisma.MasterRecordUpdateManyWithoutLinkedUserNestedInput
   RefreshToken?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
   workflowHistories?: Prisma.WorkflowHistoryUpdateManyWithoutPerformedByNestedInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUpdateManyWithoutAssignedToNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDeliveriesInput = {
@@ -1950,9 +4168,19 @@ export type UserUncheckedUpdateWithoutDeliveriesInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   linkedRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutLinkedUserNestedInput
   RefreshToken?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
   workflowHistories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedToNestedInput
 }
 
 export type UserCreateWithoutNotificationsInput = {
@@ -1976,9 +4204,19 @@ export type UserCreateWithoutNotificationsInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   linkedRecords?: Prisma.MasterRecordCreateNestedManyWithoutLinkedUserInput
   RefreshToken?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
   workflowHistories?: Prisma.WorkflowHistoryCreateNestedManyWithoutPerformedByInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskCreateNestedManyWithoutAssignedToInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -2002,9 +4240,19 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   linkedRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutLinkedUserInput
   RefreshToken?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
   workflowHistories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutPerformedByInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedToInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -2044,9 +4292,19 @@ export type UserUpdateWithoutNotificationsInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   linkedRecords?: Prisma.MasterRecordUpdateManyWithoutLinkedUserNestedInput
   RefreshToken?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
   workflowHistories?: Prisma.WorkflowHistoryUpdateManyWithoutPerformedByNestedInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUpdateManyWithoutAssignedToNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -2070,9 +4328,19 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   linkedRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutLinkedUserNestedInput
   RefreshToken?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
   workflowHistories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedToNestedInput
 }
 
 export type UserCreateWithoutRefreshTokenInput = {
@@ -2096,9 +4364,19 @@ export type UserCreateWithoutRefreshTokenInput = {
   deliveries?: Prisma.NotificationDeliveryCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   linkedRecords?: Prisma.MasterRecordCreateNestedManyWithoutLinkedUserInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
   workflowHistories?: Prisma.WorkflowHistoryCreateNestedManyWithoutPerformedByInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskCreateNestedManyWithoutAssignedToInput
 }
 
 export type UserUncheckedCreateWithoutRefreshTokenInput = {
@@ -2122,9 +4400,19 @@ export type UserUncheckedCreateWithoutRefreshTokenInput = {
   deliveries?: Prisma.NotificationDeliveryUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   linkedRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutLinkedUserInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
   workflowHistories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutPerformedByInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedToInput
 }
 
 export type UserCreateOrConnectWithoutRefreshTokenInput = {
@@ -2164,9 +4452,19 @@ export type UserUpdateWithoutRefreshTokenInput = {
   deliveries?: Prisma.NotificationDeliveryUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   linkedRecords?: Prisma.MasterRecordUpdateManyWithoutLinkedUserNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
   workflowHistories?: Prisma.WorkflowHistoryUpdateManyWithoutPerformedByNestedInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUpdateManyWithoutAssignedToNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRefreshTokenInput = {
@@ -2190,9 +4488,19 @@ export type UserUncheckedUpdateWithoutRefreshTokenInput = {
   deliveries?: Prisma.NotificationDeliveryUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   linkedRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutLinkedUserNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
   workflowHistories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
   allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedToNestedInput
 }
 
 
@@ -2210,9 +4518,19 @@ export type UserCountOutputType = {
   auditLogs: number
   linkedRecords: number
   RefreshToken: number
-  workflowDefinitions: number
   workflowHistories: number
   allowedTransitions: number
+  masterObjectSchemas: number
+  recordPermissions: number
+  fieldPermissions: number
+  recordFieldHistories: number
+  workflowApprovals: number
+  createdWorkflows: number
+  publishedWorkflows: number
+  assignedTasks: number
+  startedWorkflows: number
+  createdWorkflowInstances: number
+  primaryTasks: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2225,9 +4543,19 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
   linkedRecords?: boolean | UserCountOutputTypeCountLinkedRecordsArgs
   RefreshToken?: boolean | UserCountOutputTypeCountRefreshTokenArgs
-  workflowDefinitions?: boolean | UserCountOutputTypeCountWorkflowDefinitionsArgs
   workflowHistories?: boolean | UserCountOutputTypeCountWorkflowHistoriesArgs
   allowedTransitions?: boolean | UserCountOutputTypeCountAllowedTransitionsArgs
+  masterObjectSchemas?: boolean | UserCountOutputTypeCountMasterObjectSchemasArgs
+  recordPermissions?: boolean | UserCountOutputTypeCountRecordPermissionsArgs
+  fieldPermissions?: boolean | UserCountOutputTypeCountFieldPermissionsArgs
+  recordFieldHistories?: boolean | UserCountOutputTypeCountRecordFieldHistoriesArgs
+  workflowApprovals?: boolean | UserCountOutputTypeCountWorkflowApprovalsArgs
+  createdWorkflows?: boolean | UserCountOutputTypeCountCreatedWorkflowsArgs
+  publishedWorkflows?: boolean | UserCountOutputTypeCountPublishedWorkflowsArgs
+  assignedTasks?: boolean | UserCountOutputTypeCountAssignedTasksArgs
+  startedWorkflows?: boolean | UserCountOutputTypeCountStartedWorkflowsArgs
+  createdWorkflowInstances?: boolean | UserCountOutputTypeCountCreatedWorkflowInstancesArgs
+  primaryTasks?: boolean | UserCountOutputTypeCountPrimaryTasksArgs
 }
 
 /**
@@ -2306,13 +4634,6 @@ export type UserCountOutputTypeCountRefreshTokenArgs<ExtArgs extends runtime.Typ
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountWorkflowDefinitionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.WorkflowDefinitionWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
 export type UserCountOutputTypeCountWorkflowHistoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.WorkflowHistoryWhereInput
 }
@@ -2322,6 +4643,83 @@ export type UserCountOutputTypeCountWorkflowHistoriesArgs<ExtArgs extends runtim
  */
 export type UserCountOutputTypeCountAllowedTransitionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.WorkflowTransitionAllowedUserWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountMasterObjectSchemasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MasterObjectSchemaWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountRecordPermissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RecordPermissionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountFieldPermissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FieldPermissionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountRecordFieldHistoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RecordFieldHistoryWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountWorkflowApprovalsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WorkflowApprovalWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCreatedWorkflowsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WorkflowDefinitionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPublishedWorkflowsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WorkflowDefinitionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAssignedTasksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TaskWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountStartedWorkflowsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WorkflowInstanceWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCreatedWorkflowInstancesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WorkflowInstanceWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPrimaryTasksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TaskWhereInput
 }
 
 
@@ -2347,9 +4745,19 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
   linkedRecords?: boolean | Prisma.User$linkedRecordsArgs<ExtArgs>
   RefreshToken?: boolean | Prisma.User$RefreshTokenArgs<ExtArgs>
-  workflowDefinitions?: boolean | Prisma.User$workflowDefinitionsArgs<ExtArgs>
   workflowHistories?: boolean | Prisma.User$workflowHistoriesArgs<ExtArgs>
   allowedTransitions?: boolean | Prisma.User$allowedTransitionsArgs<ExtArgs>
+  masterObjectSchemas?: boolean | Prisma.User$masterObjectSchemasArgs<ExtArgs>
+  recordPermissions?: boolean | Prisma.User$recordPermissionsArgs<ExtArgs>
+  fieldPermissions?: boolean | Prisma.User$fieldPermissionsArgs<ExtArgs>
+  recordFieldHistories?: boolean | Prisma.User$recordFieldHistoriesArgs<ExtArgs>
+  workflowApprovals?: boolean | Prisma.User$workflowApprovalsArgs<ExtArgs>
+  createdWorkflows?: boolean | Prisma.User$createdWorkflowsArgs<ExtArgs>
+  publishedWorkflows?: boolean | Prisma.User$publishedWorkflowsArgs<ExtArgs>
+  assignedTasks?: boolean | Prisma.User$assignedTasksArgs<ExtArgs>
+  startedWorkflows?: boolean | Prisma.User$startedWorkflowsArgs<ExtArgs>
+  createdWorkflowInstances?: boolean | Prisma.User$createdWorkflowInstancesArgs<ExtArgs>
+  primaryTasks?: boolean | Prisma.User$primaryTasksArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -2409,9 +4817,19 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
   linkedRecords?: boolean | Prisma.User$linkedRecordsArgs<ExtArgs>
   RefreshToken?: boolean | Prisma.User$RefreshTokenArgs<ExtArgs>
-  workflowDefinitions?: boolean | Prisma.User$workflowDefinitionsArgs<ExtArgs>
   workflowHistories?: boolean | Prisma.User$workflowHistoriesArgs<ExtArgs>
   allowedTransitions?: boolean | Prisma.User$allowedTransitionsArgs<ExtArgs>
+  masterObjectSchemas?: boolean | Prisma.User$masterObjectSchemasArgs<ExtArgs>
+  recordPermissions?: boolean | Prisma.User$recordPermissionsArgs<ExtArgs>
+  fieldPermissions?: boolean | Prisma.User$fieldPermissionsArgs<ExtArgs>
+  recordFieldHistories?: boolean | Prisma.User$recordFieldHistoriesArgs<ExtArgs>
+  workflowApprovals?: boolean | Prisma.User$workflowApprovalsArgs<ExtArgs>
+  createdWorkflows?: boolean | Prisma.User$createdWorkflowsArgs<ExtArgs>
+  publishedWorkflows?: boolean | Prisma.User$publishedWorkflowsArgs<ExtArgs>
+  assignedTasks?: boolean | Prisma.User$assignedTasksArgs<ExtArgs>
+  startedWorkflows?: boolean | Prisma.User$startedWorkflowsArgs<ExtArgs>
+  createdWorkflowInstances?: boolean | Prisma.User$createdWorkflowInstancesArgs<ExtArgs>
+  primaryTasks?: boolean | Prisma.User$primaryTasksArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -2429,9 +4847,19 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
     linkedRecords: Prisma.$MasterRecordPayload<ExtArgs>[]
     RefreshToken: Prisma.$RefreshTokenPayload<ExtArgs>[]
-    workflowDefinitions: Prisma.$WorkflowDefinitionPayload<ExtArgs>[]
     workflowHistories: Prisma.$WorkflowHistoryPayload<ExtArgs>[]
     allowedTransitions: Prisma.$WorkflowTransitionAllowedUserPayload<ExtArgs>[]
+    masterObjectSchemas: Prisma.$MasterObjectSchemaPayload<ExtArgs>[]
+    recordPermissions: Prisma.$RecordPermissionPayload<ExtArgs>[]
+    fieldPermissions: Prisma.$FieldPermissionPayload<ExtArgs>[]
+    recordFieldHistories: Prisma.$RecordFieldHistoryPayload<ExtArgs>[]
+    workflowApprovals: Prisma.$WorkflowApprovalPayload<ExtArgs>[]
+    createdWorkflows: Prisma.$WorkflowDefinitionPayload<ExtArgs>[]
+    publishedWorkflows: Prisma.$WorkflowDefinitionPayload<ExtArgs>[]
+    assignedTasks: Prisma.$TaskPayload<ExtArgs>[]
+    startedWorkflows: Prisma.$WorkflowInstancePayload<ExtArgs>[]
+    createdWorkflowInstances: Prisma.$WorkflowInstancePayload<ExtArgs>[]
+    primaryTasks: Prisma.$TaskPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2849,9 +5277,19 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   auditLogs<T extends Prisma.User$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   linkedRecords<T extends Prisma.User$linkedRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$linkedRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MasterRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   RefreshToken<T extends Prisma.User$RefreshTokenArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$RefreshTokenArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  workflowDefinitions<T extends Prisma.User$workflowDefinitionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$workflowDefinitionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkflowDefinitionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   workflowHistories<T extends Prisma.User$workflowHistoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$workflowHistoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkflowHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   allowedTransitions<T extends Prisma.User$allowedTransitionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$allowedTransitionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkflowTransitionAllowedUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  masterObjectSchemas<T extends Prisma.User$masterObjectSchemasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$masterObjectSchemasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MasterObjectSchemaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  recordPermissions<T extends Prisma.User$recordPermissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$recordPermissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordPermissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  fieldPermissions<T extends Prisma.User$fieldPermissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$fieldPermissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FieldPermissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  recordFieldHistories<T extends Prisma.User$recordFieldHistoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$recordFieldHistoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordFieldHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  workflowApprovals<T extends Prisma.User$workflowApprovalsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$workflowApprovalsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkflowApprovalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  createdWorkflows<T extends Prisma.User$createdWorkflowsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdWorkflowsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkflowDefinitionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  publishedWorkflows<T extends Prisma.User$publishedWorkflowsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$publishedWorkflowsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkflowDefinitionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  assignedTasks<T extends Prisma.User$assignedTasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignedTasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  startedWorkflows<T extends Prisma.User$startedWorkflowsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$startedWorkflowsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkflowInstancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  createdWorkflowInstances<T extends Prisma.User$createdWorkflowInstancesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdWorkflowInstancesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkflowInstancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  primaryTasks<T extends Prisma.User$primaryTasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$primaryTasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3497,30 +5935,6 @@ export type User$RefreshTokenArgs<ExtArgs extends runtime.Types.Extensions.Inter
 }
 
 /**
- * User.workflowDefinitions
- */
-export type User$workflowDefinitionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the WorkflowDefinition
-   */
-  select?: Prisma.WorkflowDefinitionSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the WorkflowDefinition
-   */
-  omit?: Prisma.WorkflowDefinitionOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.WorkflowDefinitionInclude<ExtArgs> | null
-  where?: Prisma.WorkflowDefinitionWhereInput
-  orderBy?: Prisma.WorkflowDefinitionOrderByWithRelationInput | Prisma.WorkflowDefinitionOrderByWithRelationInput[]
-  cursor?: Prisma.WorkflowDefinitionWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.WorkflowDefinitionScalarFieldEnum | Prisma.WorkflowDefinitionScalarFieldEnum[]
-}
-
-/**
  * User.workflowHistories
  */
 export type User$workflowHistoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3566,6 +5980,270 @@ export type User$allowedTransitionsArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.WorkflowTransitionAllowedUserScalarFieldEnum | Prisma.WorkflowTransitionAllowedUserScalarFieldEnum[]
+}
+
+/**
+ * User.masterObjectSchemas
+ */
+export type User$masterObjectSchemasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MasterObjectSchema
+   */
+  select?: Prisma.MasterObjectSchemaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MasterObjectSchema
+   */
+  omit?: Prisma.MasterObjectSchemaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MasterObjectSchemaInclude<ExtArgs> | null
+  where?: Prisma.MasterObjectSchemaWhereInput
+  orderBy?: Prisma.MasterObjectSchemaOrderByWithRelationInput | Prisma.MasterObjectSchemaOrderByWithRelationInput[]
+  cursor?: Prisma.MasterObjectSchemaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MasterObjectSchemaScalarFieldEnum | Prisma.MasterObjectSchemaScalarFieldEnum[]
+}
+
+/**
+ * User.recordPermissions
+ */
+export type User$recordPermissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RecordPermission
+   */
+  select?: Prisma.RecordPermissionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RecordPermission
+   */
+  omit?: Prisma.RecordPermissionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RecordPermissionInclude<ExtArgs> | null
+  where?: Prisma.RecordPermissionWhereInput
+  orderBy?: Prisma.RecordPermissionOrderByWithRelationInput | Prisma.RecordPermissionOrderByWithRelationInput[]
+  cursor?: Prisma.RecordPermissionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RecordPermissionScalarFieldEnum | Prisma.RecordPermissionScalarFieldEnum[]
+}
+
+/**
+ * User.fieldPermissions
+ */
+export type User$fieldPermissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FieldPermission
+   */
+  select?: Prisma.FieldPermissionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FieldPermission
+   */
+  omit?: Prisma.FieldPermissionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FieldPermissionInclude<ExtArgs> | null
+  where?: Prisma.FieldPermissionWhereInput
+  orderBy?: Prisma.FieldPermissionOrderByWithRelationInput | Prisma.FieldPermissionOrderByWithRelationInput[]
+  cursor?: Prisma.FieldPermissionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FieldPermissionScalarFieldEnum | Prisma.FieldPermissionScalarFieldEnum[]
+}
+
+/**
+ * User.recordFieldHistories
+ */
+export type User$recordFieldHistoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RecordFieldHistory
+   */
+  select?: Prisma.RecordFieldHistorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RecordFieldHistory
+   */
+  omit?: Prisma.RecordFieldHistoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RecordFieldHistoryInclude<ExtArgs> | null
+  where?: Prisma.RecordFieldHistoryWhereInput
+  orderBy?: Prisma.RecordFieldHistoryOrderByWithRelationInput | Prisma.RecordFieldHistoryOrderByWithRelationInput[]
+  cursor?: Prisma.RecordFieldHistoryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RecordFieldHistoryScalarFieldEnum | Prisma.RecordFieldHistoryScalarFieldEnum[]
+}
+
+/**
+ * User.workflowApprovals
+ */
+export type User$workflowApprovalsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WorkflowApproval
+   */
+  select?: Prisma.WorkflowApprovalSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WorkflowApproval
+   */
+  omit?: Prisma.WorkflowApprovalOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkflowApprovalInclude<ExtArgs> | null
+  where?: Prisma.WorkflowApprovalWhereInput
+  orderBy?: Prisma.WorkflowApprovalOrderByWithRelationInput | Prisma.WorkflowApprovalOrderByWithRelationInput[]
+  cursor?: Prisma.WorkflowApprovalWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WorkflowApprovalScalarFieldEnum | Prisma.WorkflowApprovalScalarFieldEnum[]
+}
+
+/**
+ * User.createdWorkflows
+ */
+export type User$createdWorkflowsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WorkflowDefinition
+   */
+  select?: Prisma.WorkflowDefinitionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WorkflowDefinition
+   */
+  omit?: Prisma.WorkflowDefinitionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkflowDefinitionInclude<ExtArgs> | null
+  where?: Prisma.WorkflowDefinitionWhereInput
+  orderBy?: Prisma.WorkflowDefinitionOrderByWithRelationInput | Prisma.WorkflowDefinitionOrderByWithRelationInput[]
+  cursor?: Prisma.WorkflowDefinitionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WorkflowDefinitionScalarFieldEnum | Prisma.WorkflowDefinitionScalarFieldEnum[]
+}
+
+/**
+ * User.publishedWorkflows
+ */
+export type User$publishedWorkflowsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WorkflowDefinition
+   */
+  select?: Prisma.WorkflowDefinitionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WorkflowDefinition
+   */
+  omit?: Prisma.WorkflowDefinitionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkflowDefinitionInclude<ExtArgs> | null
+  where?: Prisma.WorkflowDefinitionWhereInput
+  orderBy?: Prisma.WorkflowDefinitionOrderByWithRelationInput | Prisma.WorkflowDefinitionOrderByWithRelationInput[]
+  cursor?: Prisma.WorkflowDefinitionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WorkflowDefinitionScalarFieldEnum | Prisma.WorkflowDefinitionScalarFieldEnum[]
+}
+
+/**
+ * User.assignedTasks
+ */
+export type User$assignedTasksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Task
+   */
+  select?: Prisma.TaskSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Task
+   */
+  omit?: Prisma.TaskOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TaskInclude<ExtArgs> | null
+  where?: Prisma.TaskWhereInput
+  orderBy?: Prisma.TaskOrderByWithRelationInput | Prisma.TaskOrderByWithRelationInput[]
+  cursor?: Prisma.TaskWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TaskScalarFieldEnum | Prisma.TaskScalarFieldEnum[]
+}
+
+/**
+ * User.startedWorkflows
+ */
+export type User$startedWorkflowsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WorkflowInstance
+   */
+  select?: Prisma.WorkflowInstanceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WorkflowInstance
+   */
+  omit?: Prisma.WorkflowInstanceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkflowInstanceInclude<ExtArgs> | null
+  where?: Prisma.WorkflowInstanceWhereInput
+  orderBy?: Prisma.WorkflowInstanceOrderByWithRelationInput | Prisma.WorkflowInstanceOrderByWithRelationInput[]
+  cursor?: Prisma.WorkflowInstanceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WorkflowInstanceScalarFieldEnum | Prisma.WorkflowInstanceScalarFieldEnum[]
+}
+
+/**
+ * User.createdWorkflowInstances
+ */
+export type User$createdWorkflowInstancesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WorkflowInstance
+   */
+  select?: Prisma.WorkflowInstanceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WorkflowInstance
+   */
+  omit?: Prisma.WorkflowInstanceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkflowInstanceInclude<ExtArgs> | null
+  where?: Prisma.WorkflowInstanceWhereInput
+  orderBy?: Prisma.WorkflowInstanceOrderByWithRelationInput | Prisma.WorkflowInstanceOrderByWithRelationInput[]
+  cursor?: Prisma.WorkflowInstanceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WorkflowInstanceScalarFieldEnum | Prisma.WorkflowInstanceScalarFieldEnum[]
+}
+
+/**
+ * User.primaryTasks
+ */
+export type User$primaryTasksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Task
+   */
+  select?: Prisma.TaskSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Task
+   */
+  omit?: Prisma.TaskOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TaskInclude<ExtArgs> | null
+  where?: Prisma.TaskWhereInput
+  orderBy?: Prisma.TaskOrderByWithRelationInput | Prisma.TaskOrderByWithRelationInput[]
+  cursor?: Prisma.TaskWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TaskScalarFieldEnum | Prisma.TaskScalarFieldEnum[]
 }
 
 /**

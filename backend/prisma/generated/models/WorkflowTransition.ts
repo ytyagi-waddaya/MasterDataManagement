@@ -20,15 +20,28 @@ export type WorkflowTransitionModel = runtime.Types.Result.DefaultSelection<Pris
 
 export type AggregateWorkflowTransition = {
   _count: WorkflowTransitionCountAggregateOutputType | null
+  _avg: WorkflowTransitionAvgAggregateOutputType | null
+  _sum: WorkflowTransitionSumAggregateOutputType | null
   _min: WorkflowTransitionMinAggregateOutputType | null
   _max: WorkflowTransitionMaxAggregateOutputType | null
+}
+
+export type WorkflowTransitionAvgAggregateOutputType = {
+  priority: number | null
+}
+
+export type WorkflowTransitionSumAggregateOutputType = {
+  priority: number | null
 }
 
 export type WorkflowTransitionMinAggregateOutputType = {
   id: string | null
   label: string | null
-  requiresApproval: boolean | null
   autoTrigger: boolean | null
+  transitionType: $Enums.TransitionType | null
+  triggerStrategy: $Enums.TriggerStrategy | null
+  approvalStrategy: $Enums.ApprovalStrategy | null
+  priority: number | null
   workflowId: string | null
   fromStageId: string | null
   toStageId: string | null
@@ -37,8 +50,11 @@ export type WorkflowTransitionMinAggregateOutputType = {
 export type WorkflowTransitionMaxAggregateOutputType = {
   id: string | null
   label: string | null
-  requiresApproval: boolean | null
   autoTrigger: boolean | null
+  transitionType: $Enums.TransitionType | null
+  triggerStrategy: $Enums.TriggerStrategy | null
+  approvalStrategy: $Enums.ApprovalStrategy | null
+  priority: number | null
   workflowId: string | null
   fromStageId: string | null
   toStageId: string | null
@@ -48,9 +64,13 @@ export type WorkflowTransitionCountAggregateOutputType = {
   id: number
   label: number
   condition: number
-  requiresApproval: number
   metadata: number
   autoTrigger: number
+  transitionType: number
+  triggerStrategy: number
+  approvalConfig: number
+  approvalStrategy: number
+  priority: number
   workflowId: number
   fromStageId: number
   toStageId: number
@@ -58,11 +78,22 @@ export type WorkflowTransitionCountAggregateOutputType = {
 }
 
 
+export type WorkflowTransitionAvgAggregateInputType = {
+  priority?: true
+}
+
+export type WorkflowTransitionSumAggregateInputType = {
+  priority?: true
+}
+
 export type WorkflowTransitionMinAggregateInputType = {
   id?: true
   label?: true
-  requiresApproval?: true
   autoTrigger?: true
+  transitionType?: true
+  triggerStrategy?: true
+  approvalStrategy?: true
+  priority?: true
   workflowId?: true
   fromStageId?: true
   toStageId?: true
@@ -71,8 +102,11 @@ export type WorkflowTransitionMinAggregateInputType = {
 export type WorkflowTransitionMaxAggregateInputType = {
   id?: true
   label?: true
-  requiresApproval?: true
   autoTrigger?: true
+  transitionType?: true
+  triggerStrategy?: true
+  approvalStrategy?: true
+  priority?: true
   workflowId?: true
   fromStageId?: true
   toStageId?: true
@@ -82,9 +116,13 @@ export type WorkflowTransitionCountAggregateInputType = {
   id?: true
   label?: true
   condition?: true
-  requiresApproval?: true
   metadata?: true
   autoTrigger?: true
+  transitionType?: true
+  triggerStrategy?: true
+  approvalConfig?: true
+  approvalStrategy?: true
+  priority?: true
   workflowId?: true
   fromStageId?: true
   toStageId?: true
@@ -129,6 +167,18 @@ export type WorkflowTransitionAggregateArgs<ExtArgs extends runtime.Types.Extens
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: WorkflowTransitionAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: WorkflowTransitionSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: WorkflowTransitionMinAggregateInputType
@@ -159,6 +209,8 @@ export type WorkflowTransitionGroupByArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   _count?: WorkflowTransitionCountAggregateInputType | true
+  _avg?: WorkflowTransitionAvgAggregateInputType
+  _sum?: WorkflowTransitionSumAggregateInputType
   _min?: WorkflowTransitionMinAggregateInputType
   _max?: WorkflowTransitionMaxAggregateInputType
 }
@@ -167,13 +219,19 @@ export type WorkflowTransitionGroupByOutputType = {
   id: string
   label: string | null
   condition: runtime.JsonValue | null
-  requiresApproval: boolean
   metadata: runtime.JsonValue | null
   autoTrigger: boolean
+  transitionType: $Enums.TransitionType
+  triggerStrategy: $Enums.TriggerStrategy
+  approvalConfig: runtime.JsonValue | null
+  approvalStrategy: $Enums.ApprovalStrategy
+  priority: number
   workflowId: string
   fromStageId: string
   toStageId: string
   _count: WorkflowTransitionCountAggregateOutputType | null
+  _avg: WorkflowTransitionAvgAggregateOutputType | null
+  _sum: WorkflowTransitionSumAggregateOutputType | null
   _min: WorkflowTransitionMinAggregateOutputType | null
   _max: WorkflowTransitionMaxAggregateOutputType | null
 }
@@ -200,9 +258,13 @@ export type WorkflowTransitionWhereInput = {
   id?: Prisma.StringFilter<"WorkflowTransition"> | string
   label?: Prisma.StringNullableFilter<"WorkflowTransition"> | string | null
   condition?: Prisma.JsonNullableFilter<"WorkflowTransition">
-  requiresApproval?: Prisma.BoolFilter<"WorkflowTransition"> | boolean
   metadata?: Prisma.JsonNullableFilter<"WorkflowTransition">
   autoTrigger?: Prisma.BoolFilter<"WorkflowTransition"> | boolean
+  transitionType?: Prisma.EnumTransitionTypeFilter<"WorkflowTransition"> | $Enums.TransitionType
+  triggerStrategy?: Prisma.EnumTriggerStrategyFilter<"WorkflowTransition"> | $Enums.TriggerStrategy
+  approvalConfig?: Prisma.JsonNullableFilter<"WorkflowTransition">
+  approvalStrategy?: Prisma.EnumApprovalStrategyFilter<"WorkflowTransition"> | $Enums.ApprovalStrategy
+  priority?: Prisma.IntFilter<"WorkflowTransition"> | number
   workflowId?: Prisma.StringFilter<"WorkflowTransition"> | string
   fromStageId?: Prisma.StringFilter<"WorkflowTransition"> | string
   toStageId?: Prisma.StringFilter<"WorkflowTransition"> | string
@@ -212,15 +274,20 @@ export type WorkflowTransitionWhereInput = {
   histories?: Prisma.WorkflowHistoryListRelationFilter
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleListRelationFilter
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserListRelationFilter
+  workflowApprovals?: Prisma.WorkflowApprovalListRelationFilter
 }
 
 export type WorkflowTransitionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   label?: Prisma.SortOrderInput | Prisma.SortOrder
   condition?: Prisma.SortOrderInput | Prisma.SortOrder
-  requiresApproval?: Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   autoTrigger?: Prisma.SortOrder
+  transitionType?: Prisma.SortOrder
+  triggerStrategy?: Prisma.SortOrder
+  approvalConfig?: Prisma.SortOrderInput | Prisma.SortOrder
+  approvalStrategy?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
   workflowId?: Prisma.SortOrder
   fromStageId?: Prisma.SortOrder
   toStageId?: Prisma.SortOrder
@@ -230,19 +297,23 @@ export type WorkflowTransitionOrderByWithRelationInput = {
   histories?: Prisma.WorkflowHistoryOrderByRelationAggregateInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleOrderByRelationAggregateInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserOrderByRelationAggregateInput
+  workflowApprovals?: Prisma.WorkflowApprovalOrderByRelationAggregateInput
 }
 
 export type WorkflowTransitionWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  workflowId_fromStageId_toStageId?: Prisma.WorkflowTransitionWorkflowIdFromStageIdToStageIdCompoundUniqueInput
   AND?: Prisma.WorkflowTransitionWhereInput | Prisma.WorkflowTransitionWhereInput[]
   OR?: Prisma.WorkflowTransitionWhereInput[]
   NOT?: Prisma.WorkflowTransitionWhereInput | Prisma.WorkflowTransitionWhereInput[]
   label?: Prisma.StringNullableFilter<"WorkflowTransition"> | string | null
   condition?: Prisma.JsonNullableFilter<"WorkflowTransition">
-  requiresApproval?: Prisma.BoolFilter<"WorkflowTransition"> | boolean
   metadata?: Prisma.JsonNullableFilter<"WorkflowTransition">
   autoTrigger?: Prisma.BoolFilter<"WorkflowTransition"> | boolean
+  transitionType?: Prisma.EnumTransitionTypeFilter<"WorkflowTransition"> | $Enums.TransitionType
+  triggerStrategy?: Prisma.EnumTriggerStrategyFilter<"WorkflowTransition"> | $Enums.TriggerStrategy
+  approvalConfig?: Prisma.JsonNullableFilter<"WorkflowTransition">
+  approvalStrategy?: Prisma.EnumApprovalStrategyFilter<"WorkflowTransition"> | $Enums.ApprovalStrategy
+  priority?: Prisma.IntFilter<"WorkflowTransition"> | number
   workflowId?: Prisma.StringFilter<"WorkflowTransition"> | string
   fromStageId?: Prisma.StringFilter<"WorkflowTransition"> | string
   toStageId?: Prisma.StringFilter<"WorkflowTransition"> | string
@@ -252,21 +323,28 @@ export type WorkflowTransitionWhereUniqueInput = Prisma.AtLeast<{
   histories?: Prisma.WorkflowHistoryListRelationFilter
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleListRelationFilter
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserListRelationFilter
-}, "id" | "workflowId_fromStageId_toStageId">
+  workflowApprovals?: Prisma.WorkflowApprovalListRelationFilter
+}, "id">
 
 export type WorkflowTransitionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   label?: Prisma.SortOrderInput | Prisma.SortOrder
   condition?: Prisma.SortOrderInput | Prisma.SortOrder
-  requiresApproval?: Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   autoTrigger?: Prisma.SortOrder
+  transitionType?: Prisma.SortOrder
+  triggerStrategy?: Prisma.SortOrder
+  approvalConfig?: Prisma.SortOrderInput | Prisma.SortOrder
+  approvalStrategy?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
   workflowId?: Prisma.SortOrder
   fromStageId?: Prisma.SortOrder
   toStageId?: Prisma.SortOrder
   _count?: Prisma.WorkflowTransitionCountOrderByAggregateInput
+  _avg?: Prisma.WorkflowTransitionAvgOrderByAggregateInput
   _max?: Prisma.WorkflowTransitionMaxOrderByAggregateInput
   _min?: Prisma.WorkflowTransitionMinOrderByAggregateInput
+  _sum?: Prisma.WorkflowTransitionSumOrderByAggregateInput
 }
 
 export type WorkflowTransitionScalarWhereWithAggregatesInput = {
@@ -276,9 +354,13 @@ export type WorkflowTransitionScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"WorkflowTransition"> | string
   label?: Prisma.StringNullableWithAggregatesFilter<"WorkflowTransition"> | string | null
   condition?: Prisma.JsonNullableWithAggregatesFilter<"WorkflowTransition">
-  requiresApproval?: Prisma.BoolWithAggregatesFilter<"WorkflowTransition"> | boolean
   metadata?: Prisma.JsonNullableWithAggregatesFilter<"WorkflowTransition">
   autoTrigger?: Prisma.BoolWithAggregatesFilter<"WorkflowTransition"> | boolean
+  transitionType?: Prisma.EnumTransitionTypeWithAggregatesFilter<"WorkflowTransition"> | $Enums.TransitionType
+  triggerStrategy?: Prisma.EnumTriggerStrategyWithAggregatesFilter<"WorkflowTransition"> | $Enums.TriggerStrategy
+  approvalConfig?: Prisma.JsonNullableWithAggregatesFilter<"WorkflowTransition">
+  approvalStrategy?: Prisma.EnumApprovalStrategyWithAggregatesFilter<"WorkflowTransition"> | $Enums.ApprovalStrategy
+  priority?: Prisma.IntWithAggregatesFilter<"WorkflowTransition"> | number
   workflowId?: Prisma.StringWithAggregatesFilter<"WorkflowTransition"> | string
   fromStageId?: Prisma.StringWithAggregatesFilter<"WorkflowTransition"> | string
   toStageId?: Prisma.StringWithAggregatesFilter<"WorkflowTransition"> | string
@@ -288,69 +370,93 @@ export type WorkflowTransitionCreateInput = {
   id?: string
   label?: string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: boolean
+  transitionType?: $Enums.TransitionType
+  triggerStrategy?: $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: $Enums.ApprovalStrategy
+  priority?: number
   workflow: Prisma.WorkflowDefinitionCreateNestedOneWithoutTransitionsInput
   fromStage: Prisma.WorkflowStageCreateNestedOneWithoutOutgoingTransitionsInput
   toStage: Prisma.WorkflowStageCreateNestedOneWithoutIncomingTransitionsInput
   histories?: Prisma.WorkflowHistoryCreateNestedManyWithoutWorkflowTransitionInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleCreateNestedManyWithoutTransitionInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutTransitionInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutTransitionInput
 }
 
 export type WorkflowTransitionUncheckedCreateInput = {
   id?: string
   label?: string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: boolean
+  transitionType?: $Enums.TransitionType
+  triggerStrategy?: $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: $Enums.ApprovalStrategy
+  priority?: number
   workflowId: string
   fromStageId: string
   toStageId: string
   histories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutWorkflowTransitionInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedCreateNestedManyWithoutTransitionInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutTransitionInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutTransitionInput
 }
 
 export type WorkflowTransitionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transitionType?: Prisma.EnumTransitionTypeFieldUpdateOperationsInput | $Enums.TransitionType
+  triggerStrategy?: Prisma.EnumTriggerStrategyFieldUpdateOperationsInput | $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: Prisma.EnumApprovalStrategyFieldUpdateOperationsInput | $Enums.ApprovalStrategy
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
   workflow?: Prisma.WorkflowDefinitionUpdateOneRequiredWithoutTransitionsNestedInput
   fromStage?: Prisma.WorkflowStageUpdateOneRequiredWithoutOutgoingTransitionsNestedInput
   toStage?: Prisma.WorkflowStageUpdateOneRequiredWithoutIncomingTransitionsNestedInput
   histories?: Prisma.WorkflowHistoryUpdateManyWithoutWorkflowTransitionNestedInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUpdateManyWithoutTransitionNestedInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutTransitionNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutTransitionNestedInput
 }
 
 export type WorkflowTransitionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transitionType?: Prisma.EnumTransitionTypeFieldUpdateOperationsInput | $Enums.TransitionType
+  triggerStrategy?: Prisma.EnumTriggerStrategyFieldUpdateOperationsInput | $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: Prisma.EnumApprovalStrategyFieldUpdateOperationsInput | $Enums.ApprovalStrategy
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
   workflowId?: Prisma.StringFieldUpdateOperationsInput | string
   fromStageId?: Prisma.StringFieldUpdateOperationsInput | string
   toStageId?: Prisma.StringFieldUpdateOperationsInput | string
   histories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutWorkflowTransitionNestedInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedUpdateManyWithoutTransitionNestedInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutTransitionNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutTransitionNestedInput
 }
 
 export type WorkflowTransitionCreateManyInput = {
   id?: string
   label?: string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: boolean
+  transitionType?: $Enums.TransitionType
+  triggerStrategy?: $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: $Enums.ApprovalStrategy
+  priority?: number
   workflowId: string
   fromStageId: string
   toStageId: string
@@ -360,18 +466,26 @@ export type WorkflowTransitionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transitionType?: Prisma.EnumTransitionTypeFieldUpdateOperationsInput | $Enums.TransitionType
+  triggerStrategy?: Prisma.EnumTriggerStrategyFieldUpdateOperationsInput | $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: Prisma.EnumApprovalStrategyFieldUpdateOperationsInput | $Enums.ApprovalStrategy
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type WorkflowTransitionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transitionType?: Prisma.EnumTransitionTypeFieldUpdateOperationsInput | $Enums.TransitionType
+  triggerStrategy?: Prisma.EnumTriggerStrategyFieldUpdateOperationsInput | $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: Prisma.EnumApprovalStrategyFieldUpdateOperationsInput | $Enums.ApprovalStrategy
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
   workflowId?: Prisma.StringFieldUpdateOperationsInput | string
   fromStageId?: Prisma.StringFieldUpdateOperationsInput | string
   toStageId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -387,29 +501,34 @@ export type WorkflowTransitionOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type WorkflowTransitionWorkflowIdFromStageIdToStageIdCompoundUniqueInput = {
-  workflowId: string
-  fromStageId: string
-  toStageId: string
-}
-
 export type WorkflowTransitionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   label?: Prisma.SortOrder
   condition?: Prisma.SortOrder
-  requiresApproval?: Prisma.SortOrder
   metadata?: Prisma.SortOrder
   autoTrigger?: Prisma.SortOrder
+  transitionType?: Prisma.SortOrder
+  triggerStrategy?: Prisma.SortOrder
+  approvalConfig?: Prisma.SortOrder
+  approvalStrategy?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
   workflowId?: Prisma.SortOrder
   fromStageId?: Prisma.SortOrder
   toStageId?: Prisma.SortOrder
 }
 
+export type WorkflowTransitionAvgOrderByAggregateInput = {
+  priority?: Prisma.SortOrder
+}
+
 export type WorkflowTransitionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   label?: Prisma.SortOrder
-  requiresApproval?: Prisma.SortOrder
   autoTrigger?: Prisma.SortOrder
+  transitionType?: Prisma.SortOrder
+  triggerStrategy?: Prisma.SortOrder
+  approvalStrategy?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
   workflowId?: Prisma.SortOrder
   fromStageId?: Prisma.SortOrder
   toStageId?: Prisma.SortOrder
@@ -418,11 +537,18 @@ export type WorkflowTransitionMaxOrderByAggregateInput = {
 export type WorkflowTransitionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   label?: Prisma.SortOrder
-  requiresApproval?: Prisma.SortOrder
   autoTrigger?: Prisma.SortOrder
+  transitionType?: Prisma.SortOrder
+  triggerStrategy?: Prisma.SortOrder
+  approvalStrategy?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
   workflowId?: Prisma.SortOrder
   fromStageId?: Prisma.SortOrder
   toStageId?: Prisma.SortOrder
+}
+
+export type WorkflowTransitionSumOrderByAggregateInput = {
+  priority?: Prisma.SortOrder
 }
 
 export type WorkflowTransitionNullableScalarRelationFilter = {
@@ -561,6 +687,18 @@ export type WorkflowTransitionUncheckedUpdateManyWithoutToStageNestedInput = {
   deleteMany?: Prisma.WorkflowTransitionScalarWhereInput | Prisma.WorkflowTransitionScalarWhereInput[]
 }
 
+export type EnumTransitionTypeFieldUpdateOperationsInput = {
+  set?: $Enums.TransitionType
+}
+
+export type EnumTriggerStrategyFieldUpdateOperationsInput = {
+  set?: $Enums.TriggerStrategy
+}
+
+export type EnumApprovalStrategyFieldUpdateOperationsInput = {
+  set?: $Enums.ApprovalStrategy
+}
+
 export type WorkflowTransitionCreateNestedOneWithoutHistoriesInput = {
   create?: Prisma.XOR<Prisma.WorkflowTransitionCreateWithoutHistoriesInput, Prisma.WorkflowTransitionUncheckedCreateWithoutHistoriesInput>
   connectOrCreate?: Prisma.WorkflowTransitionCreateOrConnectWithoutHistoriesInput
@@ -605,32 +743,56 @@ export type WorkflowTransitionUpdateOneRequiredWithoutAllowedUsersNestedInput = 
   update?: Prisma.XOR<Prisma.XOR<Prisma.WorkflowTransitionUpdateToOneWithWhereWithoutAllowedUsersInput, Prisma.WorkflowTransitionUpdateWithoutAllowedUsersInput>, Prisma.WorkflowTransitionUncheckedUpdateWithoutAllowedUsersInput>
 }
 
+export type WorkflowTransitionCreateNestedOneWithoutWorkflowApprovalsInput = {
+  create?: Prisma.XOR<Prisma.WorkflowTransitionCreateWithoutWorkflowApprovalsInput, Prisma.WorkflowTransitionUncheckedCreateWithoutWorkflowApprovalsInput>
+  connectOrCreate?: Prisma.WorkflowTransitionCreateOrConnectWithoutWorkflowApprovalsInput
+  connect?: Prisma.WorkflowTransitionWhereUniqueInput
+}
+
+export type WorkflowTransitionUpdateOneRequiredWithoutWorkflowApprovalsNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkflowTransitionCreateWithoutWorkflowApprovalsInput, Prisma.WorkflowTransitionUncheckedCreateWithoutWorkflowApprovalsInput>
+  connectOrCreate?: Prisma.WorkflowTransitionCreateOrConnectWithoutWorkflowApprovalsInput
+  upsert?: Prisma.WorkflowTransitionUpsertWithoutWorkflowApprovalsInput
+  connect?: Prisma.WorkflowTransitionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WorkflowTransitionUpdateToOneWithWhereWithoutWorkflowApprovalsInput, Prisma.WorkflowTransitionUpdateWithoutWorkflowApprovalsInput>, Prisma.WorkflowTransitionUncheckedUpdateWithoutWorkflowApprovalsInput>
+}
+
 export type WorkflowTransitionCreateWithoutWorkflowInput = {
   id?: string
   label?: string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: boolean
+  transitionType?: $Enums.TransitionType
+  triggerStrategy?: $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: $Enums.ApprovalStrategy
+  priority?: number
   fromStage: Prisma.WorkflowStageCreateNestedOneWithoutOutgoingTransitionsInput
   toStage: Prisma.WorkflowStageCreateNestedOneWithoutIncomingTransitionsInput
   histories?: Prisma.WorkflowHistoryCreateNestedManyWithoutWorkflowTransitionInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleCreateNestedManyWithoutTransitionInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutTransitionInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutTransitionInput
 }
 
 export type WorkflowTransitionUncheckedCreateWithoutWorkflowInput = {
   id?: string
   label?: string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: boolean
+  transitionType?: $Enums.TransitionType
+  triggerStrategy?: $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: $Enums.ApprovalStrategy
+  priority?: number
   fromStageId: string
   toStageId: string
   histories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutWorkflowTransitionInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedCreateNestedManyWithoutTransitionInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutTransitionInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutTransitionInput
 }
 
 export type WorkflowTransitionCreateOrConnectWithoutWorkflowInput = {
@@ -666,9 +828,13 @@ export type WorkflowTransitionScalarWhereInput = {
   id?: Prisma.StringFilter<"WorkflowTransition"> | string
   label?: Prisma.StringNullableFilter<"WorkflowTransition"> | string | null
   condition?: Prisma.JsonNullableFilter<"WorkflowTransition">
-  requiresApproval?: Prisma.BoolFilter<"WorkflowTransition"> | boolean
   metadata?: Prisma.JsonNullableFilter<"WorkflowTransition">
   autoTrigger?: Prisma.BoolFilter<"WorkflowTransition"> | boolean
+  transitionType?: Prisma.EnumTransitionTypeFilter<"WorkflowTransition"> | $Enums.TransitionType
+  triggerStrategy?: Prisma.EnumTriggerStrategyFilter<"WorkflowTransition"> | $Enums.TriggerStrategy
+  approvalConfig?: Prisma.JsonNullableFilter<"WorkflowTransition">
+  approvalStrategy?: Prisma.EnumApprovalStrategyFilter<"WorkflowTransition"> | $Enums.ApprovalStrategy
+  priority?: Prisma.IntFilter<"WorkflowTransition"> | number
   workflowId?: Prisma.StringFilter<"WorkflowTransition"> | string
   fromStageId?: Prisma.StringFilter<"WorkflowTransition"> | string
   toStageId?: Prisma.StringFilter<"WorkflowTransition"> | string
@@ -678,28 +844,38 @@ export type WorkflowTransitionCreateWithoutFromStageInput = {
   id?: string
   label?: string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: boolean
+  transitionType?: $Enums.TransitionType
+  triggerStrategy?: $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: $Enums.ApprovalStrategy
+  priority?: number
   workflow: Prisma.WorkflowDefinitionCreateNestedOneWithoutTransitionsInput
   toStage: Prisma.WorkflowStageCreateNestedOneWithoutIncomingTransitionsInput
   histories?: Prisma.WorkflowHistoryCreateNestedManyWithoutWorkflowTransitionInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleCreateNestedManyWithoutTransitionInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutTransitionInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutTransitionInput
 }
 
 export type WorkflowTransitionUncheckedCreateWithoutFromStageInput = {
   id?: string
   label?: string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: boolean
+  transitionType?: $Enums.TransitionType
+  triggerStrategy?: $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: $Enums.ApprovalStrategy
+  priority?: number
   workflowId: string
   toStageId: string
   histories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutWorkflowTransitionInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedCreateNestedManyWithoutTransitionInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutTransitionInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutTransitionInput
 }
 
 export type WorkflowTransitionCreateOrConnectWithoutFromStageInput = {
@@ -716,28 +892,38 @@ export type WorkflowTransitionCreateWithoutToStageInput = {
   id?: string
   label?: string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: boolean
+  transitionType?: $Enums.TransitionType
+  triggerStrategy?: $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: $Enums.ApprovalStrategy
+  priority?: number
   workflow: Prisma.WorkflowDefinitionCreateNestedOneWithoutTransitionsInput
   fromStage: Prisma.WorkflowStageCreateNestedOneWithoutOutgoingTransitionsInput
   histories?: Prisma.WorkflowHistoryCreateNestedManyWithoutWorkflowTransitionInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleCreateNestedManyWithoutTransitionInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutTransitionInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutTransitionInput
 }
 
 export type WorkflowTransitionUncheckedCreateWithoutToStageInput = {
   id?: string
   label?: string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: boolean
+  transitionType?: $Enums.TransitionType
+  triggerStrategy?: $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: $Enums.ApprovalStrategy
+  priority?: number
   workflowId: string
   fromStageId: string
   histories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutWorkflowTransitionInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedCreateNestedManyWithoutTransitionInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutTransitionInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutTransitionInput
 }
 
 export type WorkflowTransitionCreateOrConnectWithoutToStageInput = {
@@ -786,28 +972,38 @@ export type WorkflowTransitionCreateWithoutHistoriesInput = {
   id?: string
   label?: string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: boolean
+  transitionType?: $Enums.TransitionType
+  triggerStrategy?: $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: $Enums.ApprovalStrategy
+  priority?: number
   workflow: Prisma.WorkflowDefinitionCreateNestedOneWithoutTransitionsInput
   fromStage: Prisma.WorkflowStageCreateNestedOneWithoutOutgoingTransitionsInput
   toStage: Prisma.WorkflowStageCreateNestedOneWithoutIncomingTransitionsInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleCreateNestedManyWithoutTransitionInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutTransitionInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutTransitionInput
 }
 
 export type WorkflowTransitionUncheckedCreateWithoutHistoriesInput = {
   id?: string
   label?: string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: boolean
+  transitionType?: $Enums.TransitionType
+  triggerStrategy?: $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: $Enums.ApprovalStrategy
+  priority?: number
   workflowId: string
   fromStageId: string
   toStageId: string
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedCreateNestedManyWithoutTransitionInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutTransitionInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutTransitionInput
 }
 
 export type WorkflowTransitionCreateOrConnectWithoutHistoriesInput = {
@@ -830,56 +1026,76 @@ export type WorkflowTransitionUpdateWithoutHistoriesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transitionType?: Prisma.EnumTransitionTypeFieldUpdateOperationsInput | $Enums.TransitionType
+  triggerStrategy?: Prisma.EnumTriggerStrategyFieldUpdateOperationsInput | $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: Prisma.EnumApprovalStrategyFieldUpdateOperationsInput | $Enums.ApprovalStrategy
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
   workflow?: Prisma.WorkflowDefinitionUpdateOneRequiredWithoutTransitionsNestedInput
   fromStage?: Prisma.WorkflowStageUpdateOneRequiredWithoutOutgoingTransitionsNestedInput
   toStage?: Prisma.WorkflowStageUpdateOneRequiredWithoutIncomingTransitionsNestedInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUpdateManyWithoutTransitionNestedInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutTransitionNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutTransitionNestedInput
 }
 
 export type WorkflowTransitionUncheckedUpdateWithoutHistoriesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transitionType?: Prisma.EnumTransitionTypeFieldUpdateOperationsInput | $Enums.TransitionType
+  triggerStrategy?: Prisma.EnumTriggerStrategyFieldUpdateOperationsInput | $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: Prisma.EnumApprovalStrategyFieldUpdateOperationsInput | $Enums.ApprovalStrategy
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
   workflowId?: Prisma.StringFieldUpdateOperationsInput | string
   fromStageId?: Prisma.StringFieldUpdateOperationsInput | string
   toStageId?: Prisma.StringFieldUpdateOperationsInput | string
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedUpdateManyWithoutTransitionNestedInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutTransitionNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutTransitionNestedInput
 }
 
 export type WorkflowTransitionCreateWithoutAllowedRolesInput = {
   id?: string
   label?: string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: boolean
+  transitionType?: $Enums.TransitionType
+  triggerStrategy?: $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: $Enums.ApprovalStrategy
+  priority?: number
   workflow: Prisma.WorkflowDefinitionCreateNestedOneWithoutTransitionsInput
   fromStage: Prisma.WorkflowStageCreateNestedOneWithoutOutgoingTransitionsInput
   toStage: Prisma.WorkflowStageCreateNestedOneWithoutIncomingTransitionsInput
   histories?: Prisma.WorkflowHistoryCreateNestedManyWithoutWorkflowTransitionInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutTransitionInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutTransitionInput
 }
 
 export type WorkflowTransitionUncheckedCreateWithoutAllowedRolesInput = {
   id?: string
   label?: string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: boolean
+  transitionType?: $Enums.TransitionType
+  triggerStrategy?: $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: $Enums.ApprovalStrategy
+  priority?: number
   workflowId: string
   fromStageId: string
   toStageId: string
   histories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutWorkflowTransitionInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutTransitionInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutTransitionInput
 }
 
 export type WorkflowTransitionCreateOrConnectWithoutAllowedRolesInput = {
@@ -902,56 +1118,76 @@ export type WorkflowTransitionUpdateWithoutAllowedRolesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transitionType?: Prisma.EnumTransitionTypeFieldUpdateOperationsInput | $Enums.TransitionType
+  triggerStrategy?: Prisma.EnumTriggerStrategyFieldUpdateOperationsInput | $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: Prisma.EnumApprovalStrategyFieldUpdateOperationsInput | $Enums.ApprovalStrategy
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
   workflow?: Prisma.WorkflowDefinitionUpdateOneRequiredWithoutTransitionsNestedInput
   fromStage?: Prisma.WorkflowStageUpdateOneRequiredWithoutOutgoingTransitionsNestedInput
   toStage?: Prisma.WorkflowStageUpdateOneRequiredWithoutIncomingTransitionsNestedInput
   histories?: Prisma.WorkflowHistoryUpdateManyWithoutWorkflowTransitionNestedInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutTransitionNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutTransitionNestedInput
 }
 
 export type WorkflowTransitionUncheckedUpdateWithoutAllowedRolesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transitionType?: Prisma.EnumTransitionTypeFieldUpdateOperationsInput | $Enums.TransitionType
+  triggerStrategy?: Prisma.EnumTriggerStrategyFieldUpdateOperationsInput | $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: Prisma.EnumApprovalStrategyFieldUpdateOperationsInput | $Enums.ApprovalStrategy
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
   workflowId?: Prisma.StringFieldUpdateOperationsInput | string
   fromStageId?: Prisma.StringFieldUpdateOperationsInput | string
   toStageId?: Prisma.StringFieldUpdateOperationsInput | string
   histories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutWorkflowTransitionNestedInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutTransitionNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutTransitionNestedInput
 }
 
 export type WorkflowTransitionCreateWithoutAllowedUsersInput = {
   id?: string
   label?: string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: boolean
+  transitionType?: $Enums.TransitionType
+  triggerStrategy?: $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: $Enums.ApprovalStrategy
+  priority?: number
   workflow: Prisma.WorkflowDefinitionCreateNestedOneWithoutTransitionsInput
   fromStage: Prisma.WorkflowStageCreateNestedOneWithoutOutgoingTransitionsInput
   toStage: Prisma.WorkflowStageCreateNestedOneWithoutIncomingTransitionsInput
   histories?: Prisma.WorkflowHistoryCreateNestedManyWithoutWorkflowTransitionInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleCreateNestedManyWithoutTransitionInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutTransitionInput
 }
 
 export type WorkflowTransitionUncheckedCreateWithoutAllowedUsersInput = {
   id?: string
   label?: string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: boolean
+  transitionType?: $Enums.TransitionType
+  triggerStrategy?: $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: $Enums.ApprovalStrategy
+  priority?: number
   workflowId: string
   fromStageId: string
   toStageId: string
   histories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutWorkflowTransitionInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedCreateNestedManyWithoutTransitionInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutTransitionInput
 }
 
 export type WorkflowTransitionCreateOrConnectWithoutAllowedUsersInput = {
@@ -974,37 +1210,143 @@ export type WorkflowTransitionUpdateWithoutAllowedUsersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transitionType?: Prisma.EnumTransitionTypeFieldUpdateOperationsInput | $Enums.TransitionType
+  triggerStrategy?: Prisma.EnumTriggerStrategyFieldUpdateOperationsInput | $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: Prisma.EnumApprovalStrategyFieldUpdateOperationsInput | $Enums.ApprovalStrategy
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
   workflow?: Prisma.WorkflowDefinitionUpdateOneRequiredWithoutTransitionsNestedInput
   fromStage?: Prisma.WorkflowStageUpdateOneRequiredWithoutOutgoingTransitionsNestedInput
   toStage?: Prisma.WorkflowStageUpdateOneRequiredWithoutIncomingTransitionsNestedInput
   histories?: Prisma.WorkflowHistoryUpdateManyWithoutWorkflowTransitionNestedInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUpdateManyWithoutTransitionNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutTransitionNestedInput
 }
 
 export type WorkflowTransitionUncheckedUpdateWithoutAllowedUsersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transitionType?: Prisma.EnumTransitionTypeFieldUpdateOperationsInput | $Enums.TransitionType
+  triggerStrategy?: Prisma.EnumTriggerStrategyFieldUpdateOperationsInput | $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: Prisma.EnumApprovalStrategyFieldUpdateOperationsInput | $Enums.ApprovalStrategy
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
   workflowId?: Prisma.StringFieldUpdateOperationsInput | string
   fromStageId?: Prisma.StringFieldUpdateOperationsInput | string
   toStageId?: Prisma.StringFieldUpdateOperationsInput | string
   histories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutWorkflowTransitionNestedInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedUpdateManyWithoutTransitionNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutTransitionNestedInput
+}
+
+export type WorkflowTransitionCreateWithoutWorkflowApprovalsInput = {
+  id?: string
+  label?: string | null
+  condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  autoTrigger?: boolean
+  transitionType?: $Enums.TransitionType
+  triggerStrategy?: $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: $Enums.ApprovalStrategy
+  priority?: number
+  workflow: Prisma.WorkflowDefinitionCreateNestedOneWithoutTransitionsInput
+  fromStage: Prisma.WorkflowStageCreateNestedOneWithoutOutgoingTransitionsInput
+  toStage: Prisma.WorkflowStageCreateNestedOneWithoutIncomingTransitionsInput
+  histories?: Prisma.WorkflowHistoryCreateNestedManyWithoutWorkflowTransitionInput
+  allowedRoles?: Prisma.WorkflowTransitionAllowedRoleCreateNestedManyWithoutTransitionInput
+  allowedUsers?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutTransitionInput
+}
+
+export type WorkflowTransitionUncheckedCreateWithoutWorkflowApprovalsInput = {
+  id?: string
+  label?: string | null
+  condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  autoTrigger?: boolean
+  transitionType?: $Enums.TransitionType
+  triggerStrategy?: $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: $Enums.ApprovalStrategy
+  priority?: number
+  workflowId: string
+  fromStageId: string
+  toStageId: string
+  histories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutWorkflowTransitionInput
+  allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedCreateNestedManyWithoutTransitionInput
+  allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutTransitionInput
+}
+
+export type WorkflowTransitionCreateOrConnectWithoutWorkflowApprovalsInput = {
+  where: Prisma.WorkflowTransitionWhereUniqueInput
+  create: Prisma.XOR<Prisma.WorkflowTransitionCreateWithoutWorkflowApprovalsInput, Prisma.WorkflowTransitionUncheckedCreateWithoutWorkflowApprovalsInput>
+}
+
+export type WorkflowTransitionUpsertWithoutWorkflowApprovalsInput = {
+  update: Prisma.XOR<Prisma.WorkflowTransitionUpdateWithoutWorkflowApprovalsInput, Prisma.WorkflowTransitionUncheckedUpdateWithoutWorkflowApprovalsInput>
+  create: Prisma.XOR<Prisma.WorkflowTransitionCreateWithoutWorkflowApprovalsInput, Prisma.WorkflowTransitionUncheckedCreateWithoutWorkflowApprovalsInput>
+  where?: Prisma.WorkflowTransitionWhereInput
+}
+
+export type WorkflowTransitionUpdateToOneWithWhereWithoutWorkflowApprovalsInput = {
+  where?: Prisma.WorkflowTransitionWhereInput
+  data: Prisma.XOR<Prisma.WorkflowTransitionUpdateWithoutWorkflowApprovalsInput, Prisma.WorkflowTransitionUncheckedUpdateWithoutWorkflowApprovalsInput>
+}
+
+export type WorkflowTransitionUpdateWithoutWorkflowApprovalsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  autoTrigger?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transitionType?: Prisma.EnumTransitionTypeFieldUpdateOperationsInput | $Enums.TransitionType
+  triggerStrategy?: Prisma.EnumTriggerStrategyFieldUpdateOperationsInput | $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: Prisma.EnumApprovalStrategyFieldUpdateOperationsInput | $Enums.ApprovalStrategy
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  workflow?: Prisma.WorkflowDefinitionUpdateOneRequiredWithoutTransitionsNestedInput
+  fromStage?: Prisma.WorkflowStageUpdateOneRequiredWithoutOutgoingTransitionsNestedInput
+  toStage?: Prisma.WorkflowStageUpdateOneRequiredWithoutIncomingTransitionsNestedInput
+  histories?: Prisma.WorkflowHistoryUpdateManyWithoutWorkflowTransitionNestedInput
+  allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUpdateManyWithoutTransitionNestedInput
+  allowedUsers?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutTransitionNestedInput
+}
+
+export type WorkflowTransitionUncheckedUpdateWithoutWorkflowApprovalsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  autoTrigger?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transitionType?: Prisma.EnumTransitionTypeFieldUpdateOperationsInput | $Enums.TransitionType
+  triggerStrategy?: Prisma.EnumTriggerStrategyFieldUpdateOperationsInput | $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: Prisma.EnumApprovalStrategyFieldUpdateOperationsInput | $Enums.ApprovalStrategy
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  workflowId?: Prisma.StringFieldUpdateOperationsInput | string
+  fromStageId?: Prisma.StringFieldUpdateOperationsInput | string
+  toStageId?: Prisma.StringFieldUpdateOperationsInput | string
+  histories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutWorkflowTransitionNestedInput
+  allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedUpdateManyWithoutTransitionNestedInput
+  allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutTransitionNestedInput
 }
 
 export type WorkflowTransitionCreateManyWorkflowInput = {
   id?: string
   label?: string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: boolean
+  transitionType?: $Enums.TransitionType
+  triggerStrategy?: $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: $Enums.ApprovalStrategy
+  priority?: number
   fromStageId: string
   toStageId: string
 }
@@ -1013,37 +1355,51 @@ export type WorkflowTransitionUpdateWithoutWorkflowInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transitionType?: Prisma.EnumTransitionTypeFieldUpdateOperationsInput | $Enums.TransitionType
+  triggerStrategy?: Prisma.EnumTriggerStrategyFieldUpdateOperationsInput | $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: Prisma.EnumApprovalStrategyFieldUpdateOperationsInput | $Enums.ApprovalStrategy
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
   fromStage?: Prisma.WorkflowStageUpdateOneRequiredWithoutOutgoingTransitionsNestedInput
   toStage?: Prisma.WorkflowStageUpdateOneRequiredWithoutIncomingTransitionsNestedInput
   histories?: Prisma.WorkflowHistoryUpdateManyWithoutWorkflowTransitionNestedInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUpdateManyWithoutTransitionNestedInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutTransitionNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutTransitionNestedInput
 }
 
 export type WorkflowTransitionUncheckedUpdateWithoutWorkflowInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transitionType?: Prisma.EnumTransitionTypeFieldUpdateOperationsInput | $Enums.TransitionType
+  triggerStrategy?: Prisma.EnumTriggerStrategyFieldUpdateOperationsInput | $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: Prisma.EnumApprovalStrategyFieldUpdateOperationsInput | $Enums.ApprovalStrategy
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
   fromStageId?: Prisma.StringFieldUpdateOperationsInput | string
   toStageId?: Prisma.StringFieldUpdateOperationsInput | string
   histories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutWorkflowTransitionNestedInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedUpdateManyWithoutTransitionNestedInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutTransitionNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutTransitionNestedInput
 }
 
 export type WorkflowTransitionUncheckedUpdateManyWithoutWorkflowInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transitionType?: Prisma.EnumTransitionTypeFieldUpdateOperationsInput | $Enums.TransitionType
+  triggerStrategy?: Prisma.EnumTriggerStrategyFieldUpdateOperationsInput | $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: Prisma.EnumApprovalStrategyFieldUpdateOperationsInput | $Enums.ApprovalStrategy
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
   fromStageId?: Prisma.StringFieldUpdateOperationsInput | string
   toStageId?: Prisma.StringFieldUpdateOperationsInput | string
 }
@@ -1052,9 +1408,13 @@ export type WorkflowTransitionCreateManyFromStageInput = {
   id?: string
   label?: string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: boolean
+  transitionType?: $Enums.TransitionType
+  triggerStrategy?: $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: $Enums.ApprovalStrategy
+  priority?: number
   workflowId: string
   toStageId: string
 }
@@ -1063,9 +1423,13 @@ export type WorkflowTransitionCreateManyToStageInput = {
   id?: string
   label?: string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: boolean
+  transitionType?: $Enums.TransitionType
+  triggerStrategy?: $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: $Enums.ApprovalStrategy
+  priority?: number
   workflowId: string
   fromStageId: string
 }
@@ -1074,37 +1438,51 @@ export type WorkflowTransitionUpdateWithoutFromStageInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transitionType?: Prisma.EnumTransitionTypeFieldUpdateOperationsInput | $Enums.TransitionType
+  triggerStrategy?: Prisma.EnumTriggerStrategyFieldUpdateOperationsInput | $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: Prisma.EnumApprovalStrategyFieldUpdateOperationsInput | $Enums.ApprovalStrategy
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
   workflow?: Prisma.WorkflowDefinitionUpdateOneRequiredWithoutTransitionsNestedInput
   toStage?: Prisma.WorkflowStageUpdateOneRequiredWithoutIncomingTransitionsNestedInput
   histories?: Prisma.WorkflowHistoryUpdateManyWithoutWorkflowTransitionNestedInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUpdateManyWithoutTransitionNestedInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutTransitionNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutTransitionNestedInput
 }
 
 export type WorkflowTransitionUncheckedUpdateWithoutFromStageInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transitionType?: Prisma.EnumTransitionTypeFieldUpdateOperationsInput | $Enums.TransitionType
+  triggerStrategy?: Prisma.EnumTriggerStrategyFieldUpdateOperationsInput | $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: Prisma.EnumApprovalStrategyFieldUpdateOperationsInput | $Enums.ApprovalStrategy
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
   workflowId?: Prisma.StringFieldUpdateOperationsInput | string
   toStageId?: Prisma.StringFieldUpdateOperationsInput | string
   histories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutWorkflowTransitionNestedInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedUpdateManyWithoutTransitionNestedInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutTransitionNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutTransitionNestedInput
 }
 
 export type WorkflowTransitionUncheckedUpdateManyWithoutFromStageInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transitionType?: Prisma.EnumTransitionTypeFieldUpdateOperationsInput | $Enums.TransitionType
+  triggerStrategy?: Prisma.EnumTriggerStrategyFieldUpdateOperationsInput | $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: Prisma.EnumApprovalStrategyFieldUpdateOperationsInput | $Enums.ApprovalStrategy
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
   workflowId?: Prisma.StringFieldUpdateOperationsInput | string
   toStageId?: Prisma.StringFieldUpdateOperationsInput | string
 }
@@ -1113,37 +1491,51 @@ export type WorkflowTransitionUpdateWithoutToStageInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transitionType?: Prisma.EnumTransitionTypeFieldUpdateOperationsInput | $Enums.TransitionType
+  triggerStrategy?: Prisma.EnumTriggerStrategyFieldUpdateOperationsInput | $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: Prisma.EnumApprovalStrategyFieldUpdateOperationsInput | $Enums.ApprovalStrategy
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
   workflow?: Prisma.WorkflowDefinitionUpdateOneRequiredWithoutTransitionsNestedInput
   fromStage?: Prisma.WorkflowStageUpdateOneRequiredWithoutOutgoingTransitionsNestedInput
   histories?: Prisma.WorkflowHistoryUpdateManyWithoutWorkflowTransitionNestedInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUpdateManyWithoutTransitionNestedInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutTransitionNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutTransitionNestedInput
 }
 
 export type WorkflowTransitionUncheckedUpdateWithoutToStageInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transitionType?: Prisma.EnumTransitionTypeFieldUpdateOperationsInput | $Enums.TransitionType
+  triggerStrategy?: Prisma.EnumTriggerStrategyFieldUpdateOperationsInput | $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: Prisma.EnumApprovalStrategyFieldUpdateOperationsInput | $Enums.ApprovalStrategy
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
   workflowId?: Prisma.StringFieldUpdateOperationsInput | string
   fromStageId?: Prisma.StringFieldUpdateOperationsInput | string
   histories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutWorkflowTransitionNestedInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedUpdateManyWithoutTransitionNestedInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutTransitionNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutTransitionNestedInput
 }
 
 export type WorkflowTransitionUncheckedUpdateManyWithoutToStageInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiresApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   autoTrigger?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transitionType?: Prisma.EnumTransitionTypeFieldUpdateOperationsInput | $Enums.TransitionType
+  triggerStrategy?: Prisma.EnumTriggerStrategyFieldUpdateOperationsInput | $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: Prisma.EnumApprovalStrategyFieldUpdateOperationsInput | $Enums.ApprovalStrategy
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
   workflowId?: Prisma.StringFieldUpdateOperationsInput | string
   fromStageId?: Prisma.StringFieldUpdateOperationsInput | string
 }
@@ -1157,12 +1549,14 @@ export type WorkflowTransitionCountOutputType = {
   histories: number
   allowedRoles: number
   allowedUsers: number
+  workflowApprovals: number
 }
 
 export type WorkflowTransitionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   histories?: boolean | WorkflowTransitionCountOutputTypeCountHistoriesArgs
   allowedRoles?: boolean | WorkflowTransitionCountOutputTypeCountAllowedRolesArgs
   allowedUsers?: boolean | WorkflowTransitionCountOutputTypeCountAllowedUsersArgs
+  workflowApprovals?: boolean | WorkflowTransitionCountOutputTypeCountWorkflowApprovalsArgs
 }
 
 /**
@@ -1196,14 +1590,25 @@ export type WorkflowTransitionCountOutputTypeCountAllowedUsersArgs<ExtArgs exten
   where?: Prisma.WorkflowTransitionAllowedUserWhereInput
 }
 
+/**
+ * WorkflowTransitionCountOutputType without action
+ */
+export type WorkflowTransitionCountOutputTypeCountWorkflowApprovalsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WorkflowApprovalWhereInput
+}
+
 
 export type WorkflowTransitionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   label?: boolean
   condition?: boolean
-  requiresApproval?: boolean
   metadata?: boolean
   autoTrigger?: boolean
+  transitionType?: boolean
+  triggerStrategy?: boolean
+  approvalConfig?: boolean
+  approvalStrategy?: boolean
+  priority?: boolean
   workflowId?: boolean
   fromStageId?: boolean
   toStageId?: boolean
@@ -1213,6 +1618,7 @@ export type WorkflowTransitionSelect<ExtArgs extends runtime.Types.Extensions.In
   histories?: boolean | Prisma.WorkflowTransition$historiesArgs<ExtArgs>
   allowedRoles?: boolean | Prisma.WorkflowTransition$allowedRolesArgs<ExtArgs>
   allowedUsers?: boolean | Prisma.WorkflowTransition$allowedUsersArgs<ExtArgs>
+  workflowApprovals?: boolean | Prisma.WorkflowTransition$workflowApprovalsArgs<ExtArgs>
   _count?: boolean | Prisma.WorkflowTransitionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["workflowTransition"]>
 
@@ -1220,9 +1626,13 @@ export type WorkflowTransitionSelectCreateManyAndReturn<ExtArgs extends runtime.
   id?: boolean
   label?: boolean
   condition?: boolean
-  requiresApproval?: boolean
   metadata?: boolean
   autoTrigger?: boolean
+  transitionType?: boolean
+  triggerStrategy?: boolean
+  approvalConfig?: boolean
+  approvalStrategy?: boolean
+  priority?: boolean
   workflowId?: boolean
   fromStageId?: boolean
   toStageId?: boolean
@@ -1235,9 +1645,13 @@ export type WorkflowTransitionSelectUpdateManyAndReturn<ExtArgs extends runtime.
   id?: boolean
   label?: boolean
   condition?: boolean
-  requiresApproval?: boolean
   metadata?: boolean
   autoTrigger?: boolean
+  transitionType?: boolean
+  triggerStrategy?: boolean
+  approvalConfig?: boolean
+  approvalStrategy?: boolean
+  priority?: boolean
   workflowId?: boolean
   fromStageId?: boolean
   toStageId?: boolean
@@ -1250,15 +1664,19 @@ export type WorkflowTransitionSelectScalar = {
   id?: boolean
   label?: boolean
   condition?: boolean
-  requiresApproval?: boolean
   metadata?: boolean
   autoTrigger?: boolean
+  transitionType?: boolean
+  triggerStrategy?: boolean
+  approvalConfig?: boolean
+  approvalStrategy?: boolean
+  priority?: boolean
   workflowId?: boolean
   fromStageId?: boolean
   toStageId?: boolean
 }
 
-export type WorkflowTransitionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "label" | "condition" | "requiresApproval" | "metadata" | "autoTrigger" | "workflowId" | "fromStageId" | "toStageId", ExtArgs["result"]["workflowTransition"]>
+export type WorkflowTransitionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "label" | "condition" | "metadata" | "autoTrigger" | "transitionType" | "triggerStrategy" | "approvalConfig" | "approvalStrategy" | "priority" | "workflowId" | "fromStageId" | "toStageId", ExtArgs["result"]["workflowTransition"]>
 export type WorkflowTransitionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   workflow?: boolean | Prisma.WorkflowDefinitionDefaultArgs<ExtArgs>
   fromStage?: boolean | Prisma.WorkflowStageDefaultArgs<ExtArgs>
@@ -1266,6 +1684,7 @@ export type WorkflowTransitionInclude<ExtArgs extends runtime.Types.Extensions.I
   histories?: boolean | Prisma.WorkflowTransition$historiesArgs<ExtArgs>
   allowedRoles?: boolean | Prisma.WorkflowTransition$allowedRolesArgs<ExtArgs>
   allowedUsers?: boolean | Prisma.WorkflowTransition$allowedUsersArgs<ExtArgs>
+  workflowApprovals?: boolean | Prisma.WorkflowTransition$workflowApprovalsArgs<ExtArgs>
   _count?: boolean | Prisma.WorkflowTransitionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type WorkflowTransitionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1288,14 +1707,19 @@ export type $WorkflowTransitionPayload<ExtArgs extends runtime.Types.Extensions.
     histories: Prisma.$WorkflowHistoryPayload<ExtArgs>[]
     allowedRoles: Prisma.$WorkflowTransitionAllowedRolePayload<ExtArgs>[]
     allowedUsers: Prisma.$WorkflowTransitionAllowedUserPayload<ExtArgs>[]
+    workflowApprovals: Prisma.$WorkflowApprovalPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     label: string | null
     condition: runtime.JsonValue | null
-    requiresApproval: boolean
     metadata: runtime.JsonValue | null
     autoTrigger: boolean
+    transitionType: $Enums.TransitionType
+    triggerStrategy: $Enums.TriggerStrategy
+    approvalConfig: runtime.JsonValue | null
+    approvalStrategy: $Enums.ApprovalStrategy
+    priority: number
     workflowId: string
     fromStageId: string
     toStageId: string
@@ -1699,6 +2123,7 @@ export interface Prisma__WorkflowTransitionClient<T, Null = never, ExtArgs exten
   histories<T extends Prisma.WorkflowTransition$historiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkflowTransition$historiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkflowHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   allowedRoles<T extends Prisma.WorkflowTransition$allowedRolesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkflowTransition$allowedRolesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkflowTransitionAllowedRolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   allowedUsers<T extends Prisma.WorkflowTransition$allowedUsersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkflowTransition$allowedUsersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkflowTransitionAllowedUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  workflowApprovals<T extends Prisma.WorkflowTransition$workflowApprovalsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkflowTransition$workflowApprovalsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkflowApprovalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1731,9 +2156,13 @@ export interface WorkflowTransitionFieldRefs {
   readonly id: Prisma.FieldRef<"WorkflowTransition", 'String'>
   readonly label: Prisma.FieldRef<"WorkflowTransition", 'String'>
   readonly condition: Prisma.FieldRef<"WorkflowTransition", 'Json'>
-  readonly requiresApproval: Prisma.FieldRef<"WorkflowTransition", 'Boolean'>
   readonly metadata: Prisma.FieldRef<"WorkflowTransition", 'Json'>
   readonly autoTrigger: Prisma.FieldRef<"WorkflowTransition", 'Boolean'>
+  readonly transitionType: Prisma.FieldRef<"WorkflowTransition", 'TransitionType'>
+  readonly triggerStrategy: Prisma.FieldRef<"WorkflowTransition", 'TriggerStrategy'>
+  readonly approvalConfig: Prisma.FieldRef<"WorkflowTransition", 'Json'>
+  readonly approvalStrategy: Prisma.FieldRef<"WorkflowTransition", 'ApprovalStrategy'>
+  readonly priority: Prisma.FieldRef<"WorkflowTransition", 'Int'>
   readonly workflowId: Prisma.FieldRef<"WorkflowTransition", 'String'>
   readonly fromStageId: Prisma.FieldRef<"WorkflowTransition", 'String'>
   readonly toStageId: Prisma.FieldRef<"WorkflowTransition", 'String'>
@@ -2202,6 +2631,30 @@ export type WorkflowTransition$allowedUsersArgs<ExtArgs extends runtime.Types.Ex
   take?: number
   skip?: number
   distinct?: Prisma.WorkflowTransitionAllowedUserScalarFieldEnum | Prisma.WorkflowTransitionAllowedUserScalarFieldEnum[]
+}
+
+/**
+ * WorkflowTransition.workflowApprovals
+ */
+export type WorkflowTransition$workflowApprovalsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WorkflowApproval
+   */
+  select?: Prisma.WorkflowApprovalSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WorkflowApproval
+   */
+  omit?: Prisma.WorkflowApprovalOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkflowApprovalInclude<ExtArgs> | null
+  where?: Prisma.WorkflowApprovalWhereInput
+  orderBy?: Prisma.WorkflowApprovalOrderByWithRelationInput | Prisma.WorkflowApprovalOrderByWithRelationInput[]
+  cursor?: Prisma.WorkflowApprovalWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WorkflowApprovalScalarFieldEnum | Prisma.WorkflowApprovalScalarFieldEnum[]
 }
 
 /**

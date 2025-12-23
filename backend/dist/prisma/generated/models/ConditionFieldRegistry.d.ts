@@ -1,0 +1,1553 @@
+import type * as runtime from "@prisma/client/runtime/client";
+import type * as Prisma from "../internal/prismaNamespace.js";
+/**
+ * Model ConditionFieldRegistry
+ *
+ */
+export type ConditionFieldRegistryModel = runtime.Types.Result.DefaultSelection<Prisma.$ConditionFieldRegistryPayload>;
+export type AggregateConditionFieldRegistry = {
+    _count: ConditionFieldRegistryCountAggregateOutputType | null;
+    _min: ConditionFieldRegistryMinAggregateOutputType | null;
+    _max: ConditionFieldRegistryMaxAggregateOutputType | null;
+};
+export type ConditionFieldRegistryMinAggregateOutputType = {
+    id: string | null;
+    field: string | null;
+    fieldType: string | null;
+    moduleId: string | null;
+    resourceId: string | null;
+    scope: string | null;
+    createdById: string | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+    deletedAt: Date | null;
+};
+export type ConditionFieldRegistryMaxAggregateOutputType = {
+    id: string | null;
+    field: string | null;
+    fieldType: string | null;
+    moduleId: string | null;
+    resourceId: string | null;
+    scope: string | null;
+    createdById: string | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+    deletedAt: Date | null;
+};
+export type ConditionFieldRegistryCountAggregateOutputType = {
+    id: number;
+    field: number;
+    fieldType: number;
+    meta: number;
+    moduleId: number;
+    resourceId: number;
+    scope: number;
+    createdById: number;
+    createdAt: number;
+    updatedAt: number;
+    deletedAt: number;
+    _all: number;
+};
+export type ConditionFieldRegistryMinAggregateInputType = {
+    id?: true;
+    field?: true;
+    fieldType?: true;
+    moduleId?: true;
+    resourceId?: true;
+    scope?: true;
+    createdById?: true;
+    createdAt?: true;
+    updatedAt?: true;
+    deletedAt?: true;
+};
+export type ConditionFieldRegistryMaxAggregateInputType = {
+    id?: true;
+    field?: true;
+    fieldType?: true;
+    moduleId?: true;
+    resourceId?: true;
+    scope?: true;
+    createdById?: true;
+    createdAt?: true;
+    updatedAt?: true;
+    deletedAt?: true;
+};
+export type ConditionFieldRegistryCountAggregateInputType = {
+    id?: true;
+    field?: true;
+    fieldType?: true;
+    meta?: true;
+    moduleId?: true;
+    resourceId?: true;
+    scope?: true;
+    createdById?: true;
+    createdAt?: true;
+    updatedAt?: true;
+    deletedAt?: true;
+    _all?: true;
+};
+export type ConditionFieldRegistryAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which ConditionFieldRegistry to aggregate.
+     */
+    where?: Prisma.ConditionFieldRegistryWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of ConditionFieldRegistries to fetch.
+     */
+    orderBy?: Prisma.ConditionFieldRegistryOrderByWithRelationInput | Prisma.ConditionFieldRegistryOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: Prisma.ConditionFieldRegistryWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` ConditionFieldRegistries from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` ConditionFieldRegistries.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned ConditionFieldRegistries
+    **/
+    _count?: true | ConditionFieldRegistryCountAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: ConditionFieldRegistryMinAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: ConditionFieldRegistryMaxAggregateInputType;
+};
+export type GetConditionFieldRegistryAggregateType<T extends ConditionFieldRegistryAggregateArgs> = {
+    [P in keyof T & keyof AggregateConditionFieldRegistry]: P extends '_count' | 'count' ? T[P] extends true ? number : Prisma.GetScalarType<T[P], AggregateConditionFieldRegistry[P]> : Prisma.GetScalarType<T[P], AggregateConditionFieldRegistry[P]>;
+};
+export type ConditionFieldRegistryGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.ConditionFieldRegistryWhereInput;
+    orderBy?: Prisma.ConditionFieldRegistryOrderByWithAggregationInput | Prisma.ConditionFieldRegistryOrderByWithAggregationInput[];
+    by: Prisma.ConditionFieldRegistryScalarFieldEnum[] | Prisma.ConditionFieldRegistryScalarFieldEnum;
+    having?: Prisma.ConditionFieldRegistryScalarWhereWithAggregatesInput;
+    take?: number;
+    skip?: number;
+    _count?: ConditionFieldRegistryCountAggregateInputType | true;
+    _min?: ConditionFieldRegistryMinAggregateInputType;
+    _max?: ConditionFieldRegistryMaxAggregateInputType;
+};
+export type ConditionFieldRegistryGroupByOutputType = {
+    id: string;
+    field: string;
+    fieldType: string;
+    meta: runtime.JsonValue | null;
+    moduleId: string | null;
+    resourceId: string | null;
+    scope: string | null;
+    createdById: string | null;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt: Date | null;
+    _count: ConditionFieldRegistryCountAggregateOutputType | null;
+    _min: ConditionFieldRegistryMinAggregateOutputType | null;
+    _max: ConditionFieldRegistryMaxAggregateOutputType | null;
+};
+type GetConditionFieldRegistryGroupByPayload<T extends ConditionFieldRegistryGroupByArgs> = Prisma.PrismaPromise<Array<Prisma.PickEnumerable<ConditionFieldRegistryGroupByOutputType, T['by']> & {
+    [P in ((keyof T) & (keyof ConditionFieldRegistryGroupByOutputType))]: P extends '_count' ? T[P] extends boolean ? number : Prisma.GetScalarType<T[P], ConditionFieldRegistryGroupByOutputType[P]> : Prisma.GetScalarType<T[P], ConditionFieldRegistryGroupByOutputType[P]>;
+}>>;
+export type ConditionFieldRegistryWhereInput = {
+    AND?: Prisma.ConditionFieldRegistryWhereInput | Prisma.ConditionFieldRegistryWhereInput[];
+    OR?: Prisma.ConditionFieldRegistryWhereInput[];
+    NOT?: Prisma.ConditionFieldRegistryWhereInput | Prisma.ConditionFieldRegistryWhereInput[];
+    id?: Prisma.StringFilter<"ConditionFieldRegistry"> | string;
+    field?: Prisma.StringFilter<"ConditionFieldRegistry"> | string;
+    fieldType?: Prisma.StringFilter<"ConditionFieldRegistry"> | string;
+    meta?: Prisma.JsonNullableFilter<"ConditionFieldRegistry">;
+    moduleId?: Prisma.StringNullableFilter<"ConditionFieldRegistry"> | string | null;
+    resourceId?: Prisma.StringNullableFilter<"ConditionFieldRegistry"> | string | null;
+    scope?: Prisma.StringNullableFilter<"ConditionFieldRegistry"> | string | null;
+    createdById?: Prisma.StringNullableFilter<"ConditionFieldRegistry"> | string | null;
+    createdAt?: Prisma.DateTimeFilter<"ConditionFieldRegistry"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"ConditionFieldRegistry"> | Date | string;
+    deletedAt?: Prisma.DateTimeNullableFilter<"ConditionFieldRegistry"> | Date | string | null;
+    module?: Prisma.XOR<Prisma.ModuleNullableScalarRelationFilter, Prisma.ModuleWhereInput> | null;
+    resource?: Prisma.XOR<Prisma.ResourceNullableScalarRelationFilter, Prisma.ResourceWhereInput> | null;
+};
+export type ConditionFieldRegistryOrderByWithRelationInput = {
+    id?: Prisma.SortOrder;
+    field?: Prisma.SortOrder;
+    fieldType?: Prisma.SortOrder;
+    meta?: Prisma.SortOrderInput | Prisma.SortOrder;
+    moduleId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    resourceId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    scope?: Prisma.SortOrderInput | Prisma.SortOrder;
+    createdById?: Prisma.SortOrderInput | Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    module?: Prisma.ModuleOrderByWithRelationInput;
+    resource?: Prisma.ResourceOrderByWithRelationInput;
+};
+export type ConditionFieldRegistryWhereUniqueInput = Prisma.AtLeast<{
+    id?: string;
+    field?: string;
+    AND?: Prisma.ConditionFieldRegistryWhereInput | Prisma.ConditionFieldRegistryWhereInput[];
+    OR?: Prisma.ConditionFieldRegistryWhereInput[];
+    NOT?: Prisma.ConditionFieldRegistryWhereInput | Prisma.ConditionFieldRegistryWhereInput[];
+    fieldType?: Prisma.StringFilter<"ConditionFieldRegistry"> | string;
+    meta?: Prisma.JsonNullableFilter<"ConditionFieldRegistry">;
+    moduleId?: Prisma.StringNullableFilter<"ConditionFieldRegistry"> | string | null;
+    resourceId?: Prisma.StringNullableFilter<"ConditionFieldRegistry"> | string | null;
+    scope?: Prisma.StringNullableFilter<"ConditionFieldRegistry"> | string | null;
+    createdById?: Prisma.StringNullableFilter<"ConditionFieldRegistry"> | string | null;
+    createdAt?: Prisma.DateTimeFilter<"ConditionFieldRegistry"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"ConditionFieldRegistry"> | Date | string;
+    deletedAt?: Prisma.DateTimeNullableFilter<"ConditionFieldRegistry"> | Date | string | null;
+    module?: Prisma.XOR<Prisma.ModuleNullableScalarRelationFilter, Prisma.ModuleWhereInput> | null;
+    resource?: Prisma.XOR<Prisma.ResourceNullableScalarRelationFilter, Prisma.ResourceWhereInput> | null;
+}, "id" | "field">;
+export type ConditionFieldRegistryOrderByWithAggregationInput = {
+    id?: Prisma.SortOrder;
+    field?: Prisma.SortOrder;
+    fieldType?: Prisma.SortOrder;
+    meta?: Prisma.SortOrderInput | Prisma.SortOrder;
+    moduleId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    resourceId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    scope?: Prisma.SortOrderInput | Prisma.SortOrder;
+    createdById?: Prisma.SortOrderInput | Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    _count?: Prisma.ConditionFieldRegistryCountOrderByAggregateInput;
+    _max?: Prisma.ConditionFieldRegistryMaxOrderByAggregateInput;
+    _min?: Prisma.ConditionFieldRegistryMinOrderByAggregateInput;
+};
+export type ConditionFieldRegistryScalarWhereWithAggregatesInput = {
+    AND?: Prisma.ConditionFieldRegistryScalarWhereWithAggregatesInput | Prisma.ConditionFieldRegistryScalarWhereWithAggregatesInput[];
+    OR?: Prisma.ConditionFieldRegistryScalarWhereWithAggregatesInput[];
+    NOT?: Prisma.ConditionFieldRegistryScalarWhereWithAggregatesInput | Prisma.ConditionFieldRegistryScalarWhereWithAggregatesInput[];
+    id?: Prisma.StringWithAggregatesFilter<"ConditionFieldRegistry"> | string;
+    field?: Prisma.StringWithAggregatesFilter<"ConditionFieldRegistry"> | string;
+    fieldType?: Prisma.StringWithAggregatesFilter<"ConditionFieldRegistry"> | string;
+    meta?: Prisma.JsonNullableWithAggregatesFilter<"ConditionFieldRegistry">;
+    moduleId?: Prisma.StringNullableWithAggregatesFilter<"ConditionFieldRegistry"> | string | null;
+    resourceId?: Prisma.StringNullableWithAggregatesFilter<"ConditionFieldRegistry"> | string | null;
+    scope?: Prisma.StringNullableWithAggregatesFilter<"ConditionFieldRegistry"> | string | null;
+    createdById?: Prisma.StringNullableWithAggregatesFilter<"ConditionFieldRegistry"> | string | null;
+    createdAt?: Prisma.DateTimeWithAggregatesFilter<"ConditionFieldRegistry"> | Date | string;
+    updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ConditionFieldRegistry"> | Date | string;
+    deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ConditionFieldRegistry"> | Date | string | null;
+};
+export type ConditionFieldRegistryCreateInput = {
+    id?: string;
+    field: string;
+    fieldType: string;
+    meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    scope?: string | null;
+    createdById?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    module?: Prisma.ModuleCreateNestedOneWithoutConditionFieldRegistryInput;
+    resource?: Prisma.ResourceCreateNestedOneWithoutConditionFieldRegistryInput;
+};
+export type ConditionFieldRegistryUncheckedCreateInput = {
+    id?: string;
+    field: string;
+    fieldType: string;
+    meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    moduleId?: string | null;
+    resourceId?: string | null;
+    scope?: string | null;
+    createdById?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+};
+export type ConditionFieldRegistryUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    field?: Prisma.StringFieldUpdateOperationsInput | string;
+    fieldType?: Prisma.StringFieldUpdateOperationsInput | string;
+    meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    module?: Prisma.ModuleUpdateOneWithoutConditionFieldRegistryNestedInput;
+    resource?: Prisma.ResourceUpdateOneWithoutConditionFieldRegistryNestedInput;
+};
+export type ConditionFieldRegistryUncheckedUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    field?: Prisma.StringFieldUpdateOperationsInput | string;
+    fieldType?: Prisma.StringFieldUpdateOperationsInput | string;
+    meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    moduleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    resourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type ConditionFieldRegistryCreateManyInput = {
+    id?: string;
+    field: string;
+    fieldType: string;
+    meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    moduleId?: string | null;
+    resourceId?: string | null;
+    scope?: string | null;
+    createdById?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+};
+export type ConditionFieldRegistryUpdateManyMutationInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    field?: Prisma.StringFieldUpdateOperationsInput | string;
+    fieldType?: Prisma.StringFieldUpdateOperationsInput | string;
+    meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type ConditionFieldRegistryUncheckedUpdateManyInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    field?: Prisma.StringFieldUpdateOperationsInput | string;
+    fieldType?: Prisma.StringFieldUpdateOperationsInput | string;
+    meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    moduleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    resourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type ConditionFieldRegistryListRelationFilter = {
+    every?: Prisma.ConditionFieldRegistryWhereInput;
+    some?: Prisma.ConditionFieldRegistryWhereInput;
+    none?: Prisma.ConditionFieldRegistryWhereInput;
+};
+export type ConditionFieldRegistryOrderByRelationAggregateInput = {
+    _count?: Prisma.SortOrder;
+};
+export type ConditionFieldRegistryCountOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    field?: Prisma.SortOrder;
+    fieldType?: Prisma.SortOrder;
+    meta?: Prisma.SortOrder;
+    moduleId?: Prisma.SortOrder;
+    resourceId?: Prisma.SortOrder;
+    scope?: Prisma.SortOrder;
+    createdById?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrder;
+};
+export type ConditionFieldRegistryMaxOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    field?: Prisma.SortOrder;
+    fieldType?: Prisma.SortOrder;
+    moduleId?: Prisma.SortOrder;
+    resourceId?: Prisma.SortOrder;
+    scope?: Prisma.SortOrder;
+    createdById?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrder;
+};
+export type ConditionFieldRegistryMinOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    field?: Prisma.SortOrder;
+    fieldType?: Prisma.SortOrder;
+    moduleId?: Prisma.SortOrder;
+    resourceId?: Prisma.SortOrder;
+    scope?: Prisma.SortOrder;
+    createdById?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    updatedAt?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrder;
+};
+export type ConditionFieldRegistryCreateNestedManyWithoutModuleInput = {
+    create?: Prisma.XOR<Prisma.ConditionFieldRegistryCreateWithoutModuleInput, Prisma.ConditionFieldRegistryUncheckedCreateWithoutModuleInput> | Prisma.ConditionFieldRegistryCreateWithoutModuleInput[] | Prisma.ConditionFieldRegistryUncheckedCreateWithoutModuleInput[];
+    connectOrCreate?: Prisma.ConditionFieldRegistryCreateOrConnectWithoutModuleInput | Prisma.ConditionFieldRegistryCreateOrConnectWithoutModuleInput[];
+    createMany?: Prisma.ConditionFieldRegistryCreateManyModuleInputEnvelope;
+    connect?: Prisma.ConditionFieldRegistryWhereUniqueInput | Prisma.ConditionFieldRegistryWhereUniqueInput[];
+};
+export type ConditionFieldRegistryUncheckedCreateNestedManyWithoutModuleInput = {
+    create?: Prisma.XOR<Prisma.ConditionFieldRegistryCreateWithoutModuleInput, Prisma.ConditionFieldRegistryUncheckedCreateWithoutModuleInput> | Prisma.ConditionFieldRegistryCreateWithoutModuleInput[] | Prisma.ConditionFieldRegistryUncheckedCreateWithoutModuleInput[];
+    connectOrCreate?: Prisma.ConditionFieldRegistryCreateOrConnectWithoutModuleInput | Prisma.ConditionFieldRegistryCreateOrConnectWithoutModuleInput[];
+    createMany?: Prisma.ConditionFieldRegistryCreateManyModuleInputEnvelope;
+    connect?: Prisma.ConditionFieldRegistryWhereUniqueInput | Prisma.ConditionFieldRegistryWhereUniqueInput[];
+};
+export type ConditionFieldRegistryUpdateManyWithoutModuleNestedInput = {
+    create?: Prisma.XOR<Prisma.ConditionFieldRegistryCreateWithoutModuleInput, Prisma.ConditionFieldRegistryUncheckedCreateWithoutModuleInput> | Prisma.ConditionFieldRegistryCreateWithoutModuleInput[] | Prisma.ConditionFieldRegistryUncheckedCreateWithoutModuleInput[];
+    connectOrCreate?: Prisma.ConditionFieldRegistryCreateOrConnectWithoutModuleInput | Prisma.ConditionFieldRegistryCreateOrConnectWithoutModuleInput[];
+    upsert?: Prisma.ConditionFieldRegistryUpsertWithWhereUniqueWithoutModuleInput | Prisma.ConditionFieldRegistryUpsertWithWhereUniqueWithoutModuleInput[];
+    createMany?: Prisma.ConditionFieldRegistryCreateManyModuleInputEnvelope;
+    set?: Prisma.ConditionFieldRegistryWhereUniqueInput | Prisma.ConditionFieldRegistryWhereUniqueInput[];
+    disconnect?: Prisma.ConditionFieldRegistryWhereUniqueInput | Prisma.ConditionFieldRegistryWhereUniqueInput[];
+    delete?: Prisma.ConditionFieldRegistryWhereUniqueInput | Prisma.ConditionFieldRegistryWhereUniqueInput[];
+    connect?: Prisma.ConditionFieldRegistryWhereUniqueInput | Prisma.ConditionFieldRegistryWhereUniqueInput[];
+    update?: Prisma.ConditionFieldRegistryUpdateWithWhereUniqueWithoutModuleInput | Prisma.ConditionFieldRegistryUpdateWithWhereUniqueWithoutModuleInput[];
+    updateMany?: Prisma.ConditionFieldRegistryUpdateManyWithWhereWithoutModuleInput | Prisma.ConditionFieldRegistryUpdateManyWithWhereWithoutModuleInput[];
+    deleteMany?: Prisma.ConditionFieldRegistryScalarWhereInput | Prisma.ConditionFieldRegistryScalarWhereInput[];
+};
+export type ConditionFieldRegistryUncheckedUpdateManyWithoutModuleNestedInput = {
+    create?: Prisma.XOR<Prisma.ConditionFieldRegistryCreateWithoutModuleInput, Prisma.ConditionFieldRegistryUncheckedCreateWithoutModuleInput> | Prisma.ConditionFieldRegistryCreateWithoutModuleInput[] | Prisma.ConditionFieldRegistryUncheckedCreateWithoutModuleInput[];
+    connectOrCreate?: Prisma.ConditionFieldRegistryCreateOrConnectWithoutModuleInput | Prisma.ConditionFieldRegistryCreateOrConnectWithoutModuleInput[];
+    upsert?: Prisma.ConditionFieldRegistryUpsertWithWhereUniqueWithoutModuleInput | Prisma.ConditionFieldRegistryUpsertWithWhereUniqueWithoutModuleInput[];
+    createMany?: Prisma.ConditionFieldRegistryCreateManyModuleInputEnvelope;
+    set?: Prisma.ConditionFieldRegistryWhereUniqueInput | Prisma.ConditionFieldRegistryWhereUniqueInput[];
+    disconnect?: Prisma.ConditionFieldRegistryWhereUniqueInput | Prisma.ConditionFieldRegistryWhereUniqueInput[];
+    delete?: Prisma.ConditionFieldRegistryWhereUniqueInput | Prisma.ConditionFieldRegistryWhereUniqueInput[];
+    connect?: Prisma.ConditionFieldRegistryWhereUniqueInput | Prisma.ConditionFieldRegistryWhereUniqueInput[];
+    update?: Prisma.ConditionFieldRegistryUpdateWithWhereUniqueWithoutModuleInput | Prisma.ConditionFieldRegistryUpdateWithWhereUniqueWithoutModuleInput[];
+    updateMany?: Prisma.ConditionFieldRegistryUpdateManyWithWhereWithoutModuleInput | Prisma.ConditionFieldRegistryUpdateManyWithWhereWithoutModuleInput[];
+    deleteMany?: Prisma.ConditionFieldRegistryScalarWhereInput | Prisma.ConditionFieldRegistryScalarWhereInput[];
+};
+export type ConditionFieldRegistryCreateNestedManyWithoutResourceInput = {
+    create?: Prisma.XOR<Prisma.ConditionFieldRegistryCreateWithoutResourceInput, Prisma.ConditionFieldRegistryUncheckedCreateWithoutResourceInput> | Prisma.ConditionFieldRegistryCreateWithoutResourceInput[] | Prisma.ConditionFieldRegistryUncheckedCreateWithoutResourceInput[];
+    connectOrCreate?: Prisma.ConditionFieldRegistryCreateOrConnectWithoutResourceInput | Prisma.ConditionFieldRegistryCreateOrConnectWithoutResourceInput[];
+    createMany?: Prisma.ConditionFieldRegistryCreateManyResourceInputEnvelope;
+    connect?: Prisma.ConditionFieldRegistryWhereUniqueInput | Prisma.ConditionFieldRegistryWhereUniqueInput[];
+};
+export type ConditionFieldRegistryUncheckedCreateNestedManyWithoutResourceInput = {
+    create?: Prisma.XOR<Prisma.ConditionFieldRegistryCreateWithoutResourceInput, Prisma.ConditionFieldRegistryUncheckedCreateWithoutResourceInput> | Prisma.ConditionFieldRegistryCreateWithoutResourceInput[] | Prisma.ConditionFieldRegistryUncheckedCreateWithoutResourceInput[];
+    connectOrCreate?: Prisma.ConditionFieldRegistryCreateOrConnectWithoutResourceInput | Prisma.ConditionFieldRegistryCreateOrConnectWithoutResourceInput[];
+    createMany?: Prisma.ConditionFieldRegistryCreateManyResourceInputEnvelope;
+    connect?: Prisma.ConditionFieldRegistryWhereUniqueInput | Prisma.ConditionFieldRegistryWhereUniqueInput[];
+};
+export type ConditionFieldRegistryUpdateManyWithoutResourceNestedInput = {
+    create?: Prisma.XOR<Prisma.ConditionFieldRegistryCreateWithoutResourceInput, Prisma.ConditionFieldRegistryUncheckedCreateWithoutResourceInput> | Prisma.ConditionFieldRegistryCreateWithoutResourceInput[] | Prisma.ConditionFieldRegistryUncheckedCreateWithoutResourceInput[];
+    connectOrCreate?: Prisma.ConditionFieldRegistryCreateOrConnectWithoutResourceInput | Prisma.ConditionFieldRegistryCreateOrConnectWithoutResourceInput[];
+    upsert?: Prisma.ConditionFieldRegistryUpsertWithWhereUniqueWithoutResourceInput | Prisma.ConditionFieldRegistryUpsertWithWhereUniqueWithoutResourceInput[];
+    createMany?: Prisma.ConditionFieldRegistryCreateManyResourceInputEnvelope;
+    set?: Prisma.ConditionFieldRegistryWhereUniqueInput | Prisma.ConditionFieldRegistryWhereUniqueInput[];
+    disconnect?: Prisma.ConditionFieldRegistryWhereUniqueInput | Prisma.ConditionFieldRegistryWhereUniqueInput[];
+    delete?: Prisma.ConditionFieldRegistryWhereUniqueInput | Prisma.ConditionFieldRegistryWhereUniqueInput[];
+    connect?: Prisma.ConditionFieldRegistryWhereUniqueInput | Prisma.ConditionFieldRegistryWhereUniqueInput[];
+    update?: Prisma.ConditionFieldRegistryUpdateWithWhereUniqueWithoutResourceInput | Prisma.ConditionFieldRegistryUpdateWithWhereUniqueWithoutResourceInput[];
+    updateMany?: Prisma.ConditionFieldRegistryUpdateManyWithWhereWithoutResourceInput | Prisma.ConditionFieldRegistryUpdateManyWithWhereWithoutResourceInput[];
+    deleteMany?: Prisma.ConditionFieldRegistryScalarWhereInput | Prisma.ConditionFieldRegistryScalarWhereInput[];
+};
+export type ConditionFieldRegistryUncheckedUpdateManyWithoutResourceNestedInput = {
+    create?: Prisma.XOR<Prisma.ConditionFieldRegistryCreateWithoutResourceInput, Prisma.ConditionFieldRegistryUncheckedCreateWithoutResourceInput> | Prisma.ConditionFieldRegistryCreateWithoutResourceInput[] | Prisma.ConditionFieldRegistryUncheckedCreateWithoutResourceInput[];
+    connectOrCreate?: Prisma.ConditionFieldRegistryCreateOrConnectWithoutResourceInput | Prisma.ConditionFieldRegistryCreateOrConnectWithoutResourceInput[];
+    upsert?: Prisma.ConditionFieldRegistryUpsertWithWhereUniqueWithoutResourceInput | Prisma.ConditionFieldRegistryUpsertWithWhereUniqueWithoutResourceInput[];
+    createMany?: Prisma.ConditionFieldRegistryCreateManyResourceInputEnvelope;
+    set?: Prisma.ConditionFieldRegistryWhereUniqueInput | Prisma.ConditionFieldRegistryWhereUniqueInput[];
+    disconnect?: Prisma.ConditionFieldRegistryWhereUniqueInput | Prisma.ConditionFieldRegistryWhereUniqueInput[];
+    delete?: Prisma.ConditionFieldRegistryWhereUniqueInput | Prisma.ConditionFieldRegistryWhereUniqueInput[];
+    connect?: Prisma.ConditionFieldRegistryWhereUniqueInput | Prisma.ConditionFieldRegistryWhereUniqueInput[];
+    update?: Prisma.ConditionFieldRegistryUpdateWithWhereUniqueWithoutResourceInput | Prisma.ConditionFieldRegistryUpdateWithWhereUniqueWithoutResourceInput[];
+    updateMany?: Prisma.ConditionFieldRegistryUpdateManyWithWhereWithoutResourceInput | Prisma.ConditionFieldRegistryUpdateManyWithWhereWithoutResourceInput[];
+    deleteMany?: Prisma.ConditionFieldRegistryScalarWhereInput | Prisma.ConditionFieldRegistryScalarWhereInput[];
+};
+export type ConditionFieldRegistryCreateWithoutModuleInput = {
+    id?: string;
+    field: string;
+    fieldType: string;
+    meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    scope?: string | null;
+    createdById?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    resource?: Prisma.ResourceCreateNestedOneWithoutConditionFieldRegistryInput;
+};
+export type ConditionFieldRegistryUncheckedCreateWithoutModuleInput = {
+    id?: string;
+    field: string;
+    fieldType: string;
+    meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    resourceId?: string | null;
+    scope?: string | null;
+    createdById?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+};
+export type ConditionFieldRegistryCreateOrConnectWithoutModuleInput = {
+    where: Prisma.ConditionFieldRegistryWhereUniqueInput;
+    create: Prisma.XOR<Prisma.ConditionFieldRegistryCreateWithoutModuleInput, Prisma.ConditionFieldRegistryUncheckedCreateWithoutModuleInput>;
+};
+export type ConditionFieldRegistryCreateManyModuleInputEnvelope = {
+    data: Prisma.ConditionFieldRegistryCreateManyModuleInput | Prisma.ConditionFieldRegistryCreateManyModuleInput[];
+    skipDuplicates?: boolean;
+};
+export type ConditionFieldRegistryUpsertWithWhereUniqueWithoutModuleInput = {
+    where: Prisma.ConditionFieldRegistryWhereUniqueInput;
+    update: Prisma.XOR<Prisma.ConditionFieldRegistryUpdateWithoutModuleInput, Prisma.ConditionFieldRegistryUncheckedUpdateWithoutModuleInput>;
+    create: Prisma.XOR<Prisma.ConditionFieldRegistryCreateWithoutModuleInput, Prisma.ConditionFieldRegistryUncheckedCreateWithoutModuleInput>;
+};
+export type ConditionFieldRegistryUpdateWithWhereUniqueWithoutModuleInput = {
+    where: Prisma.ConditionFieldRegistryWhereUniqueInput;
+    data: Prisma.XOR<Prisma.ConditionFieldRegistryUpdateWithoutModuleInput, Prisma.ConditionFieldRegistryUncheckedUpdateWithoutModuleInput>;
+};
+export type ConditionFieldRegistryUpdateManyWithWhereWithoutModuleInput = {
+    where: Prisma.ConditionFieldRegistryScalarWhereInput;
+    data: Prisma.XOR<Prisma.ConditionFieldRegistryUpdateManyMutationInput, Prisma.ConditionFieldRegistryUncheckedUpdateManyWithoutModuleInput>;
+};
+export type ConditionFieldRegistryScalarWhereInput = {
+    AND?: Prisma.ConditionFieldRegistryScalarWhereInput | Prisma.ConditionFieldRegistryScalarWhereInput[];
+    OR?: Prisma.ConditionFieldRegistryScalarWhereInput[];
+    NOT?: Prisma.ConditionFieldRegistryScalarWhereInput | Prisma.ConditionFieldRegistryScalarWhereInput[];
+    id?: Prisma.StringFilter<"ConditionFieldRegistry"> | string;
+    field?: Prisma.StringFilter<"ConditionFieldRegistry"> | string;
+    fieldType?: Prisma.StringFilter<"ConditionFieldRegistry"> | string;
+    meta?: Prisma.JsonNullableFilter<"ConditionFieldRegistry">;
+    moduleId?: Prisma.StringNullableFilter<"ConditionFieldRegistry"> | string | null;
+    resourceId?: Prisma.StringNullableFilter<"ConditionFieldRegistry"> | string | null;
+    scope?: Prisma.StringNullableFilter<"ConditionFieldRegistry"> | string | null;
+    createdById?: Prisma.StringNullableFilter<"ConditionFieldRegistry"> | string | null;
+    createdAt?: Prisma.DateTimeFilter<"ConditionFieldRegistry"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"ConditionFieldRegistry"> | Date | string;
+    deletedAt?: Prisma.DateTimeNullableFilter<"ConditionFieldRegistry"> | Date | string | null;
+};
+export type ConditionFieldRegistryCreateWithoutResourceInput = {
+    id?: string;
+    field: string;
+    fieldType: string;
+    meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    scope?: string | null;
+    createdById?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    module?: Prisma.ModuleCreateNestedOneWithoutConditionFieldRegistryInput;
+};
+export type ConditionFieldRegistryUncheckedCreateWithoutResourceInput = {
+    id?: string;
+    field: string;
+    fieldType: string;
+    meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    moduleId?: string | null;
+    scope?: string | null;
+    createdById?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+};
+export type ConditionFieldRegistryCreateOrConnectWithoutResourceInput = {
+    where: Prisma.ConditionFieldRegistryWhereUniqueInput;
+    create: Prisma.XOR<Prisma.ConditionFieldRegistryCreateWithoutResourceInput, Prisma.ConditionFieldRegistryUncheckedCreateWithoutResourceInput>;
+};
+export type ConditionFieldRegistryCreateManyResourceInputEnvelope = {
+    data: Prisma.ConditionFieldRegistryCreateManyResourceInput | Prisma.ConditionFieldRegistryCreateManyResourceInput[];
+    skipDuplicates?: boolean;
+};
+export type ConditionFieldRegistryUpsertWithWhereUniqueWithoutResourceInput = {
+    where: Prisma.ConditionFieldRegistryWhereUniqueInput;
+    update: Prisma.XOR<Prisma.ConditionFieldRegistryUpdateWithoutResourceInput, Prisma.ConditionFieldRegistryUncheckedUpdateWithoutResourceInput>;
+    create: Prisma.XOR<Prisma.ConditionFieldRegistryCreateWithoutResourceInput, Prisma.ConditionFieldRegistryUncheckedCreateWithoutResourceInput>;
+};
+export type ConditionFieldRegistryUpdateWithWhereUniqueWithoutResourceInput = {
+    where: Prisma.ConditionFieldRegistryWhereUniqueInput;
+    data: Prisma.XOR<Prisma.ConditionFieldRegistryUpdateWithoutResourceInput, Prisma.ConditionFieldRegistryUncheckedUpdateWithoutResourceInput>;
+};
+export type ConditionFieldRegistryUpdateManyWithWhereWithoutResourceInput = {
+    where: Prisma.ConditionFieldRegistryScalarWhereInput;
+    data: Prisma.XOR<Prisma.ConditionFieldRegistryUpdateManyMutationInput, Prisma.ConditionFieldRegistryUncheckedUpdateManyWithoutResourceInput>;
+};
+export type ConditionFieldRegistryCreateManyModuleInput = {
+    id?: string;
+    field: string;
+    fieldType: string;
+    meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    resourceId?: string | null;
+    scope?: string | null;
+    createdById?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+};
+export type ConditionFieldRegistryUpdateWithoutModuleInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    field?: Prisma.StringFieldUpdateOperationsInput | string;
+    fieldType?: Prisma.StringFieldUpdateOperationsInput | string;
+    meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    resource?: Prisma.ResourceUpdateOneWithoutConditionFieldRegistryNestedInput;
+};
+export type ConditionFieldRegistryUncheckedUpdateWithoutModuleInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    field?: Prisma.StringFieldUpdateOperationsInput | string;
+    fieldType?: Prisma.StringFieldUpdateOperationsInput | string;
+    meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    resourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type ConditionFieldRegistryUncheckedUpdateManyWithoutModuleInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    field?: Prisma.StringFieldUpdateOperationsInput | string;
+    fieldType?: Prisma.StringFieldUpdateOperationsInput | string;
+    meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    resourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type ConditionFieldRegistryCreateManyResourceInput = {
+    id?: string;
+    field: string;
+    fieldType: string;
+    meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    moduleId?: string | null;
+    scope?: string | null;
+    createdById?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+};
+export type ConditionFieldRegistryUpdateWithoutResourceInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    field?: Prisma.StringFieldUpdateOperationsInput | string;
+    fieldType?: Prisma.StringFieldUpdateOperationsInput | string;
+    meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    module?: Prisma.ModuleUpdateOneWithoutConditionFieldRegistryNestedInput;
+};
+export type ConditionFieldRegistryUncheckedUpdateWithoutResourceInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    field?: Prisma.StringFieldUpdateOperationsInput | string;
+    fieldType?: Prisma.StringFieldUpdateOperationsInput | string;
+    meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    moduleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type ConditionFieldRegistryUncheckedUpdateManyWithoutResourceInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    field?: Prisma.StringFieldUpdateOperationsInput | string;
+    fieldType?: Prisma.StringFieldUpdateOperationsInput | string;
+    meta?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    moduleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    scope?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type ConditionFieldRegistrySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    field?: boolean;
+    fieldType?: boolean;
+    meta?: boolean;
+    moduleId?: boolean;
+    resourceId?: boolean;
+    scope?: boolean;
+    createdById?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    deletedAt?: boolean;
+    module?: boolean | Prisma.ConditionFieldRegistry$moduleArgs<ExtArgs>;
+    resource?: boolean | Prisma.ConditionFieldRegistry$resourceArgs<ExtArgs>;
+}, ExtArgs["result"]["conditionFieldRegistry"]>;
+export type ConditionFieldRegistrySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    field?: boolean;
+    fieldType?: boolean;
+    meta?: boolean;
+    moduleId?: boolean;
+    resourceId?: boolean;
+    scope?: boolean;
+    createdById?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    deletedAt?: boolean;
+    module?: boolean | Prisma.ConditionFieldRegistry$moduleArgs<ExtArgs>;
+    resource?: boolean | Prisma.ConditionFieldRegistry$resourceArgs<ExtArgs>;
+}, ExtArgs["result"]["conditionFieldRegistry"]>;
+export type ConditionFieldRegistrySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    field?: boolean;
+    fieldType?: boolean;
+    meta?: boolean;
+    moduleId?: boolean;
+    resourceId?: boolean;
+    scope?: boolean;
+    createdById?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    deletedAt?: boolean;
+    module?: boolean | Prisma.ConditionFieldRegistry$moduleArgs<ExtArgs>;
+    resource?: boolean | Prisma.ConditionFieldRegistry$resourceArgs<ExtArgs>;
+}, ExtArgs["result"]["conditionFieldRegistry"]>;
+export type ConditionFieldRegistrySelectScalar = {
+    id?: boolean;
+    field?: boolean;
+    fieldType?: boolean;
+    meta?: boolean;
+    moduleId?: boolean;
+    resourceId?: boolean;
+    scope?: boolean;
+    createdById?: boolean;
+    createdAt?: boolean;
+    updatedAt?: boolean;
+    deletedAt?: boolean;
+};
+export type ConditionFieldRegistryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "field" | "fieldType" | "meta" | "moduleId" | "resourceId" | "scope" | "createdById" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["conditionFieldRegistry"]>;
+export type ConditionFieldRegistryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    module?: boolean | Prisma.ConditionFieldRegistry$moduleArgs<ExtArgs>;
+    resource?: boolean | Prisma.ConditionFieldRegistry$resourceArgs<ExtArgs>;
+};
+export type ConditionFieldRegistryIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    module?: boolean | Prisma.ConditionFieldRegistry$moduleArgs<ExtArgs>;
+    resource?: boolean | Prisma.ConditionFieldRegistry$resourceArgs<ExtArgs>;
+};
+export type ConditionFieldRegistryIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    module?: boolean | Prisma.ConditionFieldRegistry$moduleArgs<ExtArgs>;
+    resource?: boolean | Prisma.ConditionFieldRegistry$resourceArgs<ExtArgs>;
+};
+export type $ConditionFieldRegistryPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    name: "ConditionFieldRegistry";
+    objects: {
+        module: Prisma.$ModulePayload<ExtArgs> | null;
+        resource: Prisma.$ResourcePayload<ExtArgs> | null;
+    };
+    scalars: runtime.Types.Extensions.GetPayloadResult<{
+        id: string;
+        field: string;
+        fieldType: string;
+        meta: runtime.JsonValue | null;
+        moduleId: string | null;
+        resourceId: string | null;
+        scope: string | null;
+        createdById: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt: Date | null;
+    }, ExtArgs["result"]["conditionFieldRegistry"]>;
+    composites: {};
+};
+export type ConditionFieldRegistryGetPayload<S extends boolean | null | undefined | ConditionFieldRegistryDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$ConditionFieldRegistryPayload, S>;
+export type ConditionFieldRegistryCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = Omit<ConditionFieldRegistryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    select?: ConditionFieldRegistryCountAggregateInputType | true;
+};
+export interface ConditionFieldRegistryDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: {
+        types: Prisma.TypeMap<ExtArgs>['model']['ConditionFieldRegistry'];
+        meta: {
+            name: 'ConditionFieldRegistry';
+        };
+    };
+    /**
+     * Find zero or one ConditionFieldRegistry that matches the filter.
+     * @param {ConditionFieldRegistryFindUniqueArgs} args - Arguments to find a ConditionFieldRegistry
+     * @example
+     * // Get one ConditionFieldRegistry
+     * const conditionFieldRegistry = await prisma.conditionFieldRegistry.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ConditionFieldRegistryFindUniqueArgs>(args: Prisma.SelectSubset<T, ConditionFieldRegistryFindUniqueArgs<ExtArgs>>): Prisma.Prisma__ConditionFieldRegistryClient<runtime.Types.Result.GetResult<Prisma.$ConditionFieldRegistryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find one ConditionFieldRegistry that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ConditionFieldRegistryFindUniqueOrThrowArgs} args - Arguments to find a ConditionFieldRegistry
+     * @example
+     * // Get one ConditionFieldRegistry
+     * const conditionFieldRegistry = await prisma.conditionFieldRegistry.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ConditionFieldRegistryFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, ConditionFieldRegistryFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__ConditionFieldRegistryClient<runtime.Types.Result.GetResult<Prisma.$ConditionFieldRegistryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first ConditionFieldRegistry that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConditionFieldRegistryFindFirstArgs} args - Arguments to find a ConditionFieldRegistry
+     * @example
+     * // Get one ConditionFieldRegistry
+     * const conditionFieldRegistry = await prisma.conditionFieldRegistry.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ConditionFieldRegistryFindFirstArgs>(args?: Prisma.SelectSubset<T, ConditionFieldRegistryFindFirstArgs<ExtArgs>>): Prisma.Prisma__ConditionFieldRegistryClient<runtime.Types.Result.GetResult<Prisma.$ConditionFieldRegistryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first ConditionFieldRegistry that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConditionFieldRegistryFindFirstOrThrowArgs} args - Arguments to find a ConditionFieldRegistry
+     * @example
+     * // Get one ConditionFieldRegistry
+     * const conditionFieldRegistry = await prisma.conditionFieldRegistry.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ConditionFieldRegistryFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, ConditionFieldRegistryFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__ConditionFieldRegistryClient<runtime.Types.Result.GetResult<Prisma.$ConditionFieldRegistryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find zero or more ConditionFieldRegistries that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConditionFieldRegistryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ConditionFieldRegistries
+     * const conditionFieldRegistries = await prisma.conditionFieldRegistry.findMany()
+     *
+     * // Get first 10 ConditionFieldRegistries
+     * const conditionFieldRegistries = await prisma.conditionFieldRegistry.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const conditionFieldRegistryWithIdOnly = await prisma.conditionFieldRegistry.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends ConditionFieldRegistryFindManyArgs>(args?: Prisma.SelectSubset<T, ConditionFieldRegistryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConditionFieldRegistryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>;
+    /**
+     * Create a ConditionFieldRegistry.
+     * @param {ConditionFieldRegistryCreateArgs} args - Arguments to create a ConditionFieldRegistry.
+     * @example
+     * // Create one ConditionFieldRegistry
+     * const ConditionFieldRegistry = await prisma.conditionFieldRegistry.create({
+     *   data: {
+     *     // ... data to create a ConditionFieldRegistry
+     *   }
+     * })
+     *
+     */
+    create<T extends ConditionFieldRegistryCreateArgs>(args: Prisma.SelectSubset<T, ConditionFieldRegistryCreateArgs<ExtArgs>>): Prisma.Prisma__ConditionFieldRegistryClient<runtime.Types.Result.GetResult<Prisma.$ConditionFieldRegistryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Create many ConditionFieldRegistries.
+     * @param {ConditionFieldRegistryCreateManyArgs} args - Arguments to create many ConditionFieldRegistries.
+     * @example
+     * // Create many ConditionFieldRegistries
+     * const conditionFieldRegistry = await prisma.conditionFieldRegistry.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends ConditionFieldRegistryCreateManyArgs>(args?: Prisma.SelectSubset<T, ConditionFieldRegistryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Create many ConditionFieldRegistries and returns the data saved in the database.
+     * @param {ConditionFieldRegistryCreateManyAndReturnArgs} args - Arguments to create many ConditionFieldRegistries.
+     * @example
+     * // Create many ConditionFieldRegistries
+     * const conditionFieldRegistry = await prisma.conditionFieldRegistry.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Create many ConditionFieldRegistries and only return the `id`
+     * const conditionFieldRegistryWithIdOnly = await prisma.conditionFieldRegistry.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    createManyAndReturn<T extends ConditionFieldRegistryCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, ConditionFieldRegistryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConditionFieldRegistryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Delete a ConditionFieldRegistry.
+     * @param {ConditionFieldRegistryDeleteArgs} args - Arguments to delete one ConditionFieldRegistry.
+     * @example
+     * // Delete one ConditionFieldRegistry
+     * const ConditionFieldRegistry = await prisma.conditionFieldRegistry.delete({
+     *   where: {
+     *     // ... filter to delete one ConditionFieldRegistry
+     *   }
+     * })
+     *
+     */
+    delete<T extends ConditionFieldRegistryDeleteArgs>(args: Prisma.SelectSubset<T, ConditionFieldRegistryDeleteArgs<ExtArgs>>): Prisma.Prisma__ConditionFieldRegistryClient<runtime.Types.Result.GetResult<Prisma.$ConditionFieldRegistryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Update one ConditionFieldRegistry.
+     * @param {ConditionFieldRegistryUpdateArgs} args - Arguments to update one ConditionFieldRegistry.
+     * @example
+     * // Update one ConditionFieldRegistry
+     * const conditionFieldRegistry = await prisma.conditionFieldRegistry.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends ConditionFieldRegistryUpdateArgs>(args: Prisma.SelectSubset<T, ConditionFieldRegistryUpdateArgs<ExtArgs>>): Prisma.Prisma__ConditionFieldRegistryClient<runtime.Types.Result.GetResult<Prisma.$ConditionFieldRegistryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Delete zero or more ConditionFieldRegistries.
+     * @param {ConditionFieldRegistryDeleteManyArgs} args - Arguments to filter ConditionFieldRegistries to delete.
+     * @example
+     * // Delete a few ConditionFieldRegistries
+     * const { count } = await prisma.conditionFieldRegistry.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends ConditionFieldRegistryDeleteManyArgs>(args?: Prisma.SelectSubset<T, ConditionFieldRegistryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more ConditionFieldRegistries.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConditionFieldRegistryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ConditionFieldRegistries
+     * const conditionFieldRegistry = await prisma.conditionFieldRegistry.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends ConditionFieldRegistryUpdateManyArgs>(args: Prisma.SelectSubset<T, ConditionFieldRegistryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more ConditionFieldRegistries and returns the data updated in the database.
+     * @param {ConditionFieldRegistryUpdateManyAndReturnArgs} args - Arguments to update many ConditionFieldRegistries.
+     * @example
+     * // Update many ConditionFieldRegistries
+     * const conditionFieldRegistry = await prisma.conditionFieldRegistry.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Update zero or more ConditionFieldRegistries and only return the `id`
+     * const conditionFieldRegistryWithIdOnly = await prisma.conditionFieldRegistry.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    updateManyAndReturn<T extends ConditionFieldRegistryUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, ConditionFieldRegistryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConditionFieldRegistryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Create or update one ConditionFieldRegistry.
+     * @param {ConditionFieldRegistryUpsertArgs} args - Arguments to update or create a ConditionFieldRegistry.
+     * @example
+     * // Update or create a ConditionFieldRegistry
+     * const conditionFieldRegistry = await prisma.conditionFieldRegistry.upsert({
+     *   create: {
+     *     // ... data to create a ConditionFieldRegistry
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ConditionFieldRegistry we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ConditionFieldRegistryUpsertArgs>(args: Prisma.SelectSubset<T, ConditionFieldRegistryUpsertArgs<ExtArgs>>): Prisma.Prisma__ConditionFieldRegistryClient<runtime.Types.Result.GetResult<Prisma.$ConditionFieldRegistryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Count the number of ConditionFieldRegistries.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConditionFieldRegistryCountArgs} args - Arguments to filter ConditionFieldRegistries to count.
+     * @example
+     * // Count the number of ConditionFieldRegistries
+     * const count = await prisma.conditionFieldRegistry.count({
+     *   where: {
+     *     // ... the filter for the ConditionFieldRegistries we want to count
+     *   }
+     * })
+    **/
+    count<T extends ConditionFieldRegistryCountArgs>(args?: Prisma.Subset<T, ConditionFieldRegistryCountArgs>): Prisma.PrismaPromise<T extends runtime.Types.Utils.Record<'select', any> ? T['select'] extends true ? number : Prisma.GetScalarType<T['select'], ConditionFieldRegistryCountAggregateOutputType> : number>;
+    /**
+     * Allows you to perform aggregations operations on a ConditionFieldRegistry.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConditionFieldRegistryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ConditionFieldRegistryAggregateArgs>(args: Prisma.Subset<T, ConditionFieldRegistryAggregateArgs>): Prisma.PrismaPromise<GetConditionFieldRegistryAggregateType<T>>;
+    /**
+     * Group by ConditionFieldRegistry.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConditionFieldRegistryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<T extends ConditionFieldRegistryGroupByArgs, HasSelectOrTake extends Prisma.Or<Prisma.Extends<'skip', Prisma.Keys<T>>, Prisma.Extends<'take', Prisma.Keys<T>>>, OrderByArg extends Prisma.True extends HasSelectOrTake ? {
+        orderBy: ConditionFieldRegistryGroupByArgs['orderBy'];
+    } : {
+        orderBy?: ConditionFieldRegistryGroupByArgs['orderBy'];
+    }, OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>, ByFields extends Prisma.MaybeTupleToUnion<T['by']>, ByValid extends Prisma.Has<ByFields, OrderFields>, HavingFields extends Prisma.GetHavingFields<T['having']>, HavingValid extends Prisma.Has<ByFields, HavingFields>, ByEmpty extends T['by'] extends never[] ? Prisma.True : Prisma.False, InputErrors extends ByEmpty extends Prisma.True ? `Error: "by" must not be empty.` : HavingValid extends Prisma.False ? {
+        [P in HavingFields]: P extends ByFields ? never : P extends string ? `Error: Field "${P}" used in "having" needs to be provided in "by".` : [
+            Error,
+            'Field ',
+            P,
+            ` in "having" needs to be provided in "by"`
+        ];
+    }[HavingFields] : 'take' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "take", you also need to provide "orderBy"' : 'skip' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "skip", you also need to provide "orderBy"' : ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields]>(args: Prisma.SubsetIntersection<T, ConditionFieldRegistryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetConditionFieldRegistryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>;
+    /**
+     * Fields of the ConditionFieldRegistry model
+     */
+    readonly fields: ConditionFieldRegistryFieldRefs;
+}
+/**
+ * The delegate class that acts as a "Promise-like" for ConditionFieldRegistry.
+ * Why is this prefixed with `Prisma__`?
+ * Because we want to prevent naming conflicts as mentioned in
+ * https://github.com/prisma/prisma-client-js/issues/707
+ */
+export interface Prisma__ConditionFieldRegistryClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise";
+    module<T extends Prisma.ConditionFieldRegistry$moduleArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ConditionFieldRegistry$moduleArgs<ExtArgs>>): Prisma.Prisma__ModuleClient<runtime.Types.Result.GetResult<Prisma.$ModulePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    resource<T extends Prisma.ConditionFieldRegistry$resourceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ConditionFieldRegistry$resourceArgs<ExtArgs>>): Prisma.Prisma__ResourceClient<runtime.Types.Result.GetResult<Prisma.$ResourcePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
+}
+/**
+ * Fields of the ConditionFieldRegistry model
+ */
+export interface ConditionFieldRegistryFieldRefs {
+    readonly id: Prisma.FieldRef<"ConditionFieldRegistry", 'String'>;
+    readonly field: Prisma.FieldRef<"ConditionFieldRegistry", 'String'>;
+    readonly fieldType: Prisma.FieldRef<"ConditionFieldRegistry", 'String'>;
+    readonly meta: Prisma.FieldRef<"ConditionFieldRegistry", 'Json'>;
+    readonly moduleId: Prisma.FieldRef<"ConditionFieldRegistry", 'String'>;
+    readonly resourceId: Prisma.FieldRef<"ConditionFieldRegistry", 'String'>;
+    readonly scope: Prisma.FieldRef<"ConditionFieldRegistry", 'String'>;
+    readonly createdById: Prisma.FieldRef<"ConditionFieldRegistry", 'String'>;
+    readonly createdAt: Prisma.FieldRef<"ConditionFieldRegistry", 'DateTime'>;
+    readonly updatedAt: Prisma.FieldRef<"ConditionFieldRegistry", 'DateTime'>;
+    readonly deletedAt: Prisma.FieldRef<"ConditionFieldRegistry", 'DateTime'>;
+}
+/**
+ * ConditionFieldRegistry findUnique
+ */
+export type ConditionFieldRegistryFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConditionFieldRegistry
+     */
+    select?: Prisma.ConditionFieldRegistrySelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ConditionFieldRegistry
+     */
+    omit?: Prisma.ConditionFieldRegistryOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ConditionFieldRegistryInclude<ExtArgs> | null;
+    /**
+     * Filter, which ConditionFieldRegistry to fetch.
+     */
+    where: Prisma.ConditionFieldRegistryWhereUniqueInput;
+};
+/**
+ * ConditionFieldRegistry findUniqueOrThrow
+ */
+export type ConditionFieldRegistryFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConditionFieldRegistry
+     */
+    select?: Prisma.ConditionFieldRegistrySelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ConditionFieldRegistry
+     */
+    omit?: Prisma.ConditionFieldRegistryOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ConditionFieldRegistryInclude<ExtArgs> | null;
+    /**
+     * Filter, which ConditionFieldRegistry to fetch.
+     */
+    where: Prisma.ConditionFieldRegistryWhereUniqueInput;
+};
+/**
+ * ConditionFieldRegistry findFirst
+ */
+export type ConditionFieldRegistryFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConditionFieldRegistry
+     */
+    select?: Prisma.ConditionFieldRegistrySelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ConditionFieldRegistry
+     */
+    omit?: Prisma.ConditionFieldRegistryOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ConditionFieldRegistryInclude<ExtArgs> | null;
+    /**
+     * Filter, which ConditionFieldRegistry to fetch.
+     */
+    where?: Prisma.ConditionFieldRegistryWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of ConditionFieldRegistries to fetch.
+     */
+    orderBy?: Prisma.ConditionFieldRegistryOrderByWithRelationInput | Prisma.ConditionFieldRegistryOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for ConditionFieldRegistries.
+     */
+    cursor?: Prisma.ConditionFieldRegistryWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` ConditionFieldRegistries from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` ConditionFieldRegistries.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of ConditionFieldRegistries.
+     */
+    distinct?: Prisma.ConditionFieldRegistryScalarFieldEnum | Prisma.ConditionFieldRegistryScalarFieldEnum[];
+};
+/**
+ * ConditionFieldRegistry findFirstOrThrow
+ */
+export type ConditionFieldRegistryFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConditionFieldRegistry
+     */
+    select?: Prisma.ConditionFieldRegistrySelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ConditionFieldRegistry
+     */
+    omit?: Prisma.ConditionFieldRegistryOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ConditionFieldRegistryInclude<ExtArgs> | null;
+    /**
+     * Filter, which ConditionFieldRegistry to fetch.
+     */
+    where?: Prisma.ConditionFieldRegistryWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of ConditionFieldRegistries to fetch.
+     */
+    orderBy?: Prisma.ConditionFieldRegistryOrderByWithRelationInput | Prisma.ConditionFieldRegistryOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for ConditionFieldRegistries.
+     */
+    cursor?: Prisma.ConditionFieldRegistryWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` ConditionFieldRegistries from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` ConditionFieldRegistries.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of ConditionFieldRegistries.
+     */
+    distinct?: Prisma.ConditionFieldRegistryScalarFieldEnum | Prisma.ConditionFieldRegistryScalarFieldEnum[];
+};
+/**
+ * ConditionFieldRegistry findMany
+ */
+export type ConditionFieldRegistryFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConditionFieldRegistry
+     */
+    select?: Prisma.ConditionFieldRegistrySelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ConditionFieldRegistry
+     */
+    omit?: Prisma.ConditionFieldRegistryOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ConditionFieldRegistryInclude<ExtArgs> | null;
+    /**
+     * Filter, which ConditionFieldRegistries to fetch.
+     */
+    where?: Prisma.ConditionFieldRegistryWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of ConditionFieldRegistries to fetch.
+     */
+    orderBy?: Prisma.ConditionFieldRegistryOrderByWithRelationInput | Prisma.ConditionFieldRegistryOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing ConditionFieldRegistries.
+     */
+    cursor?: Prisma.ConditionFieldRegistryWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` ConditionFieldRegistries from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` ConditionFieldRegistries.
+     */
+    skip?: number;
+    distinct?: Prisma.ConditionFieldRegistryScalarFieldEnum | Prisma.ConditionFieldRegistryScalarFieldEnum[];
+};
+/**
+ * ConditionFieldRegistry create
+ */
+export type ConditionFieldRegistryCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConditionFieldRegistry
+     */
+    select?: Prisma.ConditionFieldRegistrySelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ConditionFieldRegistry
+     */
+    omit?: Prisma.ConditionFieldRegistryOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ConditionFieldRegistryInclude<ExtArgs> | null;
+    /**
+     * The data needed to create a ConditionFieldRegistry.
+     */
+    data: Prisma.XOR<Prisma.ConditionFieldRegistryCreateInput, Prisma.ConditionFieldRegistryUncheckedCreateInput>;
+};
+/**
+ * ConditionFieldRegistry createMany
+ */
+export type ConditionFieldRegistryCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ConditionFieldRegistries.
+     */
+    data: Prisma.ConditionFieldRegistryCreateManyInput | Prisma.ConditionFieldRegistryCreateManyInput[];
+    skipDuplicates?: boolean;
+};
+/**
+ * ConditionFieldRegistry createManyAndReturn
+ */
+export type ConditionFieldRegistryCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConditionFieldRegistry
+     */
+    select?: Prisma.ConditionFieldRegistrySelectCreateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ConditionFieldRegistry
+     */
+    omit?: Prisma.ConditionFieldRegistryOmit<ExtArgs> | null;
+    /**
+     * The data used to create many ConditionFieldRegistries.
+     */
+    data: Prisma.ConditionFieldRegistryCreateManyInput | Prisma.ConditionFieldRegistryCreateManyInput[];
+    skipDuplicates?: boolean;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ConditionFieldRegistryIncludeCreateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * ConditionFieldRegistry update
+ */
+export type ConditionFieldRegistryUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConditionFieldRegistry
+     */
+    select?: Prisma.ConditionFieldRegistrySelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ConditionFieldRegistry
+     */
+    omit?: Prisma.ConditionFieldRegistryOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ConditionFieldRegistryInclude<ExtArgs> | null;
+    /**
+     * The data needed to update a ConditionFieldRegistry.
+     */
+    data: Prisma.XOR<Prisma.ConditionFieldRegistryUpdateInput, Prisma.ConditionFieldRegistryUncheckedUpdateInput>;
+    /**
+     * Choose, which ConditionFieldRegistry to update.
+     */
+    where: Prisma.ConditionFieldRegistryWhereUniqueInput;
+};
+/**
+ * ConditionFieldRegistry updateMany
+ */
+export type ConditionFieldRegistryUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ConditionFieldRegistries.
+     */
+    data: Prisma.XOR<Prisma.ConditionFieldRegistryUpdateManyMutationInput, Prisma.ConditionFieldRegistryUncheckedUpdateManyInput>;
+    /**
+     * Filter which ConditionFieldRegistries to update
+     */
+    where?: Prisma.ConditionFieldRegistryWhereInput;
+    /**
+     * Limit how many ConditionFieldRegistries to update.
+     */
+    limit?: number;
+};
+/**
+ * ConditionFieldRegistry updateManyAndReturn
+ */
+export type ConditionFieldRegistryUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConditionFieldRegistry
+     */
+    select?: Prisma.ConditionFieldRegistrySelectUpdateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ConditionFieldRegistry
+     */
+    omit?: Prisma.ConditionFieldRegistryOmit<ExtArgs> | null;
+    /**
+     * The data used to update ConditionFieldRegistries.
+     */
+    data: Prisma.XOR<Prisma.ConditionFieldRegistryUpdateManyMutationInput, Prisma.ConditionFieldRegistryUncheckedUpdateManyInput>;
+    /**
+     * Filter which ConditionFieldRegistries to update
+     */
+    where?: Prisma.ConditionFieldRegistryWhereInput;
+    /**
+     * Limit how many ConditionFieldRegistries to update.
+     */
+    limit?: number;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ConditionFieldRegistryIncludeUpdateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * ConditionFieldRegistry upsert
+ */
+export type ConditionFieldRegistryUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConditionFieldRegistry
+     */
+    select?: Prisma.ConditionFieldRegistrySelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ConditionFieldRegistry
+     */
+    omit?: Prisma.ConditionFieldRegistryOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ConditionFieldRegistryInclude<ExtArgs> | null;
+    /**
+     * The filter to search for the ConditionFieldRegistry to update in case it exists.
+     */
+    where: Prisma.ConditionFieldRegistryWhereUniqueInput;
+    /**
+     * In case the ConditionFieldRegistry found by the `where` argument doesn't exist, create a new ConditionFieldRegistry with this data.
+     */
+    create: Prisma.XOR<Prisma.ConditionFieldRegistryCreateInput, Prisma.ConditionFieldRegistryUncheckedCreateInput>;
+    /**
+     * In case the ConditionFieldRegistry was found with the provided `where` argument, update it with this data.
+     */
+    update: Prisma.XOR<Prisma.ConditionFieldRegistryUpdateInput, Prisma.ConditionFieldRegistryUncheckedUpdateInput>;
+};
+/**
+ * ConditionFieldRegistry delete
+ */
+export type ConditionFieldRegistryDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConditionFieldRegistry
+     */
+    select?: Prisma.ConditionFieldRegistrySelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ConditionFieldRegistry
+     */
+    omit?: Prisma.ConditionFieldRegistryOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ConditionFieldRegistryInclude<ExtArgs> | null;
+    /**
+     * Filter which ConditionFieldRegistry to delete.
+     */
+    where: Prisma.ConditionFieldRegistryWhereUniqueInput;
+};
+/**
+ * ConditionFieldRegistry deleteMany
+ */
+export type ConditionFieldRegistryDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which ConditionFieldRegistries to delete
+     */
+    where?: Prisma.ConditionFieldRegistryWhereInput;
+    /**
+     * Limit how many ConditionFieldRegistries to delete.
+     */
+    limit?: number;
+};
+/**
+ * ConditionFieldRegistry.module
+ */
+export type ConditionFieldRegistry$moduleArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Module
+     */
+    select?: Prisma.ModuleSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Module
+     */
+    omit?: Prisma.ModuleOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ModuleInclude<ExtArgs> | null;
+    where?: Prisma.ModuleWhereInput;
+};
+/**
+ * ConditionFieldRegistry.resource
+ */
+export type ConditionFieldRegistry$resourceArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resource
+     */
+    select?: Prisma.ResourceSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Resource
+     */
+    omit?: Prisma.ResourceOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ResourceInclude<ExtArgs> | null;
+    where?: Prisma.ResourceWhereInput;
+};
+/**
+ * ConditionFieldRegistry without action
+ */
+export type ConditionFieldRegistryDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConditionFieldRegistry
+     */
+    select?: Prisma.ConditionFieldRegistrySelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ConditionFieldRegistry
+     */
+    omit?: Prisma.ConditionFieldRegistryOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ConditionFieldRegistryInclude<ExtArgs> | null;
+};
+export {};
+//# sourceMappingURL=ConditionFieldRegistry.d.ts.map

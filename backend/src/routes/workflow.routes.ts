@@ -5,14 +5,16 @@ import { requireAuth } from "../middlewares/authMiddleware.js";
 
 const router = Router();
 
-router.post("/full", requireAuth, asyncHandler(workflowController.createFullWorkflow));
-/* -------------------------------------------------------------------------- */
-/*                               WORKFLOW DEFINITION                          */
-/* -------------------------------------------------------------------------- */
-
-router.post("/", asyncHandler(workflowController.createWorkflow));
-
 router.get("/", asyncHandler(workflowController.getWorkflows));
+router.post("/",requireAuth, asyncHandler(workflowController.createWorkflow));
+
+router.post(
+  "/:workflowId/publish",
+  requireAuth,
+  asyncHandler(workflowController.publishWorkflow)
+);
+
+router.put("/:workflowId/graph", requireAuth, asyncHandler(workflowController.saveWorkflowGraph));
 
 router.get("/:workflowId", asyncHandler(workflowController.getWorkflow));
 
@@ -103,38 +105,61 @@ router.get(
   asyncHandler(workflowController.getInstance)
 );
 
-router.patch(
-  "/:workflowId/instance/:instanceId/move",
-  asyncHandler(workflowController.moveInstance)
-);
+// router.patch(
+//   "/:workflowId/instance/:instanceId/move",
+//   asyncHandler(workflowController.moveInstance)
+// );
 
 router.delete(
   "/:workflowId/instance/:instanceId",
   asyncHandler(workflowController.closeInstance)
 );
 
-router.post(
-  "/:workflowId/instance/:instanceId/approve",
-  requireAuth,
-  asyncHandler(workflowController.approveInstance)
-);
-
-router.post(
-  "/:workflowId/instance/:instanceId/reject",
-  requireAuth,
-  asyncHandler(workflowController.rejectInstance)
-);
-
-/* -------------------------------------------------------------------------- */
-/*                                   VALIDATE                                 */
-/* -------------------------------------------------------------------------- */
-
-// // Validate graph structure
 // router.post(
-//   "/:workflowId/transitions/validate",
-//   asyncHandler(workflowController.validateGraph)
+//   "/:workflowId/instance/:instanceId/approve",
+//   requireAuth,
+//   asyncHandler(workflowController.approveInstance)
 // );
+
+// router.post(
+//   "/:workflowId/instance/:instanceId/reject",
+//   requireAuth,
+//   asyncHandler(workflowController.rejectInstance)
+// );
+
+/* -------------------------------------------------------------------------- */
+/*                                   ExecuteTransition                              */
+/* -------------------------------------------------------------------------- */
+
+router.post(
+  "/:workflowId/instance",
+  requireAuth,
+  asyncHandler(workflowController.start)
+);
+
+router.post(
+  "/instance/:instanceId/transition",
+  requireAuth,
+  asyncHandler(workflowController.transition)
+);
+
+router.get(
+  "/instance/:instanceId/actions",
+  requireAuth,
+  asyncHandler(workflowController.getAvailableActions)
+);
+
+router.get(
+  "/:workflowId/visualizer",
+  requireAuth,
+  asyncHandler(workflowController.getVisualizer)
+);
+
 
 
 
 export default router;
+
+// POST /:workflowId/instance           → startInstance
+// POST /instance/:instanceId/transition → executeTransition
+// GET  /instance/:instanceId/actions   → getAvailableActions

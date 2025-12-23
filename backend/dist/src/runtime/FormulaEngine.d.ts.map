@@ -1,0 +1,1 @@
+{"version":3,"file":"FormulaEngine.d.ts","sourceRoot":"","sources":["../../../src/runtime/FormulaEngine.ts"],"names":[],"mappings":"AAGA,OAAO,EAAE,cAAc,EAAE,MAAM,aAAa,CAAC;AAmB7C,qBAAa,aAAa;IACxB;;OAEG;IACH,MAAM,CAAC,OAAO,CACZ,QAAQ,EAAE,cAAc,EAAE,EAC1B,MAAM,EAAE,MAAM,CAAC,MAAM,EAAE,GAAG,CAAC;IAgB7B;;;OAGG;IACH,OAAO,CAAC,MAAM,CAAC,eAAe;CA2C/B"}

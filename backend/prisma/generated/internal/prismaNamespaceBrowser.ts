@@ -63,7 +63,19 @@ export const ModelName = {
   ConditionFieldRegistry: 'ConditionFieldRegistry',
   Policy: 'Policy',
   MasterObject: 'MasterObject',
+  MasterObjectSchema: 'MasterObjectSchema',
+  FieldDefinition: 'FieldDefinition',
+  FieldPermission: 'FieldPermission',
+  FieldValidationRule: 'FieldValidationRule',
+  FieldFormula: 'FieldFormula',
+  FieldReference: 'FieldReference',
+  FieldConditionBinding: 'FieldConditionBinding',
   MasterRecord: 'MasterRecord',
+  RecordFieldHistory: 'RecordFieldHistory',
+  RecordFieldIndex: 'RecordFieldIndex',
+  SchemaChange: 'SchemaChange',
+  FormEventHook: 'FormEventHook',
+  RecordPermission: 'RecordPermission',
   WorkflowDefinition: 'WorkflowDefinition',
   WorkflowStage: 'WorkflowStage',
   WorkflowTransition: 'WorkflowTransition',
@@ -71,6 +83,7 @@ export const ModelName = {
   WorkflowHistory: 'WorkflowHistory',
   WorkflowTransitionAllowedRole: 'WorkflowTransitionAllowedRole',
   WorkflowTransitionAllowedUser: 'WorkflowTransitionAllowedUser',
+  WorkflowApproval: 'WorkflowApproval',
   Task: 'Task',
   TaskAssignment: 'TaskAssignment',
   AuditLog: 'AuditLog',
@@ -271,7 +284,6 @@ export const MasterObjectScalarFieldEnum = {
   id: 'id',
   name: 'name',
   key: 'key',
-  fields: 'fields',
   isActive: 'isActive',
   isSystem: 'isSystem',
   createdAt: 'createdAt',
@@ -282,6 +294,114 @@ export const MasterObjectScalarFieldEnum = {
 export type MasterObjectScalarFieldEnum = (typeof MasterObjectScalarFieldEnum)[keyof typeof MasterObjectScalarFieldEnum]
 
 
+export const MasterObjectSchemaScalarFieldEnum = {
+  id: 'id',
+  masterObjectId: 'masterObjectId',
+  version: 'version',
+  status: 'status',
+  layout: 'layout',
+  checksum: 'checksum',
+  createdById: 'createdById',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type MasterObjectSchemaScalarFieldEnum = (typeof MasterObjectSchemaScalarFieldEnum)[keyof typeof MasterObjectSchemaScalarFieldEnum]
+
+
+export const FieldDefinitionScalarFieldEnum = {
+  id: 'id',
+  masterObjectId: 'masterObjectId',
+  schemaId: 'schemaId',
+  key: 'key',
+  label: 'label',
+  category: 'category',
+  dataType: 'dataType',
+  fieldType: 'fieldType',
+  config: 'config',
+  order: 'order',
+  isRequired: 'isRequired',
+  isSystem: 'isSystem',
+  isActive: 'isActive',
+  isLocked: 'isLocked',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type FieldDefinitionScalarFieldEnum = (typeof FieldDefinitionScalarFieldEnum)[keyof typeof FieldDefinitionScalarFieldEnum]
+
+
+export const FieldPermissionScalarFieldEnum = {
+  id: 'id',
+  fieldId: 'fieldId',
+  roleId: 'roleId',
+  userId: 'userId',
+  canRead: 'canRead',
+  canWrite: 'canWrite',
+  condition: 'condition',
+  createdAt: 'createdAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type FieldPermissionScalarFieldEnum = (typeof FieldPermissionScalarFieldEnum)[keyof typeof FieldPermissionScalarFieldEnum]
+
+
+export const FieldValidationRuleScalarFieldEnum = {
+  id: 'id',
+  fieldId: 'fieldId',
+  type: 'type',
+  rule: 'rule',
+  errorMessage: 'errorMessage',
+  order: 'order',
+  severity: 'severity',
+  createdAt: 'createdAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type FieldValidationRuleScalarFieldEnum = (typeof FieldValidationRuleScalarFieldEnum)[keyof typeof FieldValidationRuleScalarFieldEnum]
+
+
+export const FieldFormulaScalarFieldEnum = {
+  id: 'id',
+  fieldId: 'fieldId',
+  expression: 'expression',
+  dependencies: 'dependencies',
+  createdAt: 'createdAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type FieldFormulaScalarFieldEnum = (typeof FieldFormulaScalarFieldEnum)[keyof typeof FieldFormulaScalarFieldEnum]
+
+
+export const FieldReferenceScalarFieldEnum = {
+  id: 'id',
+  fieldId: 'fieldId',
+  targetObjectId: 'targetObjectId',
+  displayFieldKey: 'displayFieldKey',
+  relationType: 'relationType',
+  allowMultiple: 'allowMultiple',
+  onDeleteBehavior: 'onDeleteBehavior',
+  createdAt: 'createdAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type FieldReferenceScalarFieldEnum = (typeof FieldReferenceScalarFieldEnum)[keyof typeof FieldReferenceScalarFieldEnum]
+
+
+export const FieldConditionBindingScalarFieldEnum = {
+  id: 'id',
+  fieldId: 'fieldId',
+  conditionKey: 'conditionKey',
+  createdAt: 'createdAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type FieldConditionBindingScalarFieldEnum = (typeof FieldConditionBindingScalarFieldEnum)[keyof typeof FieldConditionBindingScalarFieldEnum]
+
+
 export const MasterRecordScalarFieldEnum = {
   id: 'id',
   masterObjectId: 'masterObjectId',
@@ -289,6 +409,7 @@ export const MasterRecordScalarFieldEnum = {
   currentStageId: 'currentStageId',
   createdById: 'createdById',
   linkedUserId: 'linkedUserId',
+  schemaId: 'schemaId',
   isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -298,17 +419,90 @@ export const MasterRecordScalarFieldEnum = {
 export type MasterRecordScalarFieldEnum = (typeof MasterRecordScalarFieldEnum)[keyof typeof MasterRecordScalarFieldEnum]
 
 
+export const RecordFieldHistoryScalarFieldEnum = {
+  id: 'id',
+  recordId: 'recordId',
+  fieldKey: 'fieldKey',
+  oldValue: 'oldValue',
+  newValue: 'newValue',
+  changedById: 'changedById',
+  changedAt: 'changedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type RecordFieldHistoryScalarFieldEnum = (typeof RecordFieldHistoryScalarFieldEnum)[keyof typeof RecordFieldHistoryScalarFieldEnum]
+
+
+export const RecordFieldIndexScalarFieldEnum = {
+  id: 'id',
+  recordId: 'recordId',
+  fieldKey: 'fieldKey',
+  stringValue: 'stringValue',
+  numberValue: 'numberValue',
+  dateValue: 'dateValue',
+  createdAt: 'createdAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type RecordFieldIndexScalarFieldEnum = (typeof RecordFieldIndexScalarFieldEnum)[keyof typeof RecordFieldIndexScalarFieldEnum]
+
+
+export const SchemaChangeScalarFieldEnum = {
+  id: 'id',
+  schemaId: 'schemaId',
+  type: 'type',
+  payload: 'payload',
+  createdAt: 'createdAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type SchemaChangeScalarFieldEnum = (typeof SchemaChangeScalarFieldEnum)[keyof typeof SchemaChangeScalarFieldEnum]
+
+
+export const FormEventHookScalarFieldEnum = {
+  id: 'id',
+  masterObjectId: 'masterObjectId',
+  event: 'event',
+  handlerType: 'handlerType',
+  config: 'config',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type FormEventHookScalarFieldEnum = (typeof FormEventHookScalarFieldEnum)[keyof typeof FormEventHookScalarFieldEnum]
+
+
+export const RecordPermissionScalarFieldEnum = {
+  id: 'id',
+  masterObjectId: 'masterObjectId',
+  roleId: 'roleId',
+  userId: 'userId',
+  canRead: 'canRead',
+  canWrite: 'canWrite',
+  canDelete: 'canDelete',
+  condition: 'condition',
+  createdAt: 'createdAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type RecordPermissionScalarFieldEnum = (typeof RecordPermissionScalarFieldEnum)[keyof typeof RecordPermissionScalarFieldEnum]
+
+
 export const WorkflowDefinitionScalarFieldEnum = {
   id: 'id',
   name: 'name',
   code: 'code',
   resourceId: 'resourceId',
+  status: 'status',
   version: 'version',
   description: 'description',
   isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   createdById: 'createdById',
+  publishedAt: 'publishedAt',
+  publishedById: 'publishedById',
   deletedAt: 'deletedAt'
 } as const
 
@@ -321,10 +515,12 @@ export const WorkflowStageScalarFieldEnum = {
   code: 'code',
   order: 'order',
   color: 'color',
+  position: 'position',
   isInitial: 'isInitial',
   isFinal: 'isFinal',
   metadata: 'metadata',
   category: 'category',
+  allowedNextCategories: 'allowedNextCategories',
   workflowId: 'workflowId'
 } as const
 
@@ -335,9 +531,13 @@ export const WorkflowTransitionScalarFieldEnum = {
   id: 'id',
   label: 'label',
   condition: 'condition',
-  requiresApproval: 'requiresApproval',
   metadata: 'metadata',
   autoTrigger: 'autoTrigger',
+  transitionType: 'transitionType',
+  triggerStrategy: 'triggerStrategy',
+  approvalConfig: 'approvalConfig',
+  approvalStrategy: 'approvalStrategy',
+  priority: 'priority',
   workflowId: 'workflowId',
   fromStageId: 'fromStageId',
   toStageId: 'toStageId'
@@ -355,9 +555,14 @@ export const WorkflowInstanceScalarFieldEnum = {
   status: 'status',
   startedAt: 'startedAt',
   endedAt: 'endedAt',
+  endedReason: 'endedReason',
+  errorDetails: 'errorDetails',
   createdById: 'createdById',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  startedById: 'startedById',
+  lockedAt: 'lockedAt',
+  lockedBy: 'lockedBy'
 } as const
 
 export type WorkflowInstanceScalarFieldEnum = (typeof WorkflowInstanceScalarFieldEnum)[keyof typeof WorkflowInstanceScalarFieldEnum]
@@ -373,7 +578,9 @@ export const WorkflowHistoryScalarFieldEnum = {
   workflowTransitionId: 'workflowTransitionId',
   actionLabel: 'actionLabel',
   metadata: 'metadata',
-  createdAt: 'createdAt'
+  actionType: 'actionType',
+  createdAt: 'createdAt',
+  performedByType: 'performedByType'
 } as const
 
 export type WorkflowHistoryScalarFieldEnum = (typeof WorkflowHistoryScalarFieldEnum)[keyof typeof WorkflowHistoryScalarFieldEnum]
@@ -399,6 +606,21 @@ export const WorkflowTransitionAllowedUserScalarFieldEnum = {
 export type WorkflowTransitionAllowedUserScalarFieldEnum = (typeof WorkflowTransitionAllowedUserScalarFieldEnum)[keyof typeof WorkflowTransitionAllowedUserScalarFieldEnum]
 
 
+export const WorkflowApprovalScalarFieldEnum = {
+  id: 'id',
+  workflowInstanceId: 'workflowInstanceId',
+  transitionId: 'transitionId',
+  approverId: 'approverId',
+  levelOrder: 'levelOrder',
+  status: 'status',
+  requestedAt: 'requestedAt',
+  decidedAt: 'decidedAt',
+  comment: 'comment'
+} as const
+
+export type WorkflowApprovalScalarFieldEnum = (typeof WorkflowApprovalScalarFieldEnum)[keyof typeof WorkflowApprovalScalarFieldEnum]
+
+
 export const TaskScalarFieldEnum = {
   id: 'id',
   masterRecordId: 'masterRecordId',
@@ -407,6 +629,9 @@ export const TaskScalarFieldEnum = {
   currentStep: 'currentStep',
   status: 'status',
   assignedToId: 'assignedToId',
+  assignedById: 'assignedById',
+  completedAt: 'completedAt',
+  dueAt: 'dueAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'

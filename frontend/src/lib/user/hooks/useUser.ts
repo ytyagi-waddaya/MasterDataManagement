@@ -74,6 +74,23 @@ export function useUsers<T = any>({
   });
 }
 
+// export function useUserList() {
+//   return useQuery({
+//     queryKey: ["users", "list"],
+//     queryFn: async () => {
+//       const res = await apiClient.get("/user", {
+//         params: { skip: 0, take: 100 },
+//       });
+//   console.log("USERS:", res);
+//       return (
+//         res.data.data?.users?.data?.map((u: any) => ({
+//           label: u.name,
+//           value: u.id,
+//         })) ?? []
+//       );
+//     },
+//   });
+// }
 export function useUserList() {
   return useQuery({
     queryKey: ["users", "list"],
@@ -84,13 +101,25 @@ export function useUserList() {
 
       return (
         res.data.data?.users?.data?.map((u: any) => ({
-          label: u.name,
           value: u.id,
+          label: u.name,
+          email: u.email,
+
+          // ✅ ADD THIS
+          roleIds:
+            u.roles?.map((r: any) => r.role?.id).filter(Boolean) ?? [],
+
+          roleKeys:
+            u.roles?.map((r: any) => r.role?.key).filter(Boolean) ?? [],
+
+          roleNames:
+            u.roles?.map((r: any) => r.role?.name).filter(Boolean) ?? [],
         })) ?? []
       );
     },
   });
 }
+
 
 export function useUser(userId: string) {
   return useQuery({

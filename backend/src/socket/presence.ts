@@ -8,7 +8,7 @@ const COUNT_KEY = "presence:count:";
  */
 export async function markOnline(userId: string) {
   const count = await redis.incr(`${COUNT_KEY}${userId}`);
-  await redis.expire(`${COUNT_KEY}${userId}`, 30);
+  await redis.expire(`${COUNT_KEY}${userId}`, 90);
   if (count === 1) {
     await redis.sadd(ONLINE_SET, userId);
     return true;

@@ -1,257 +1,3 @@
-// "use client";
-
-// import * as React from "react";
-// import { X } from "lucide-react";
-// import { cn } from "@/lib/utils";
-// import {
-//   Popover,
-//   PopoverTrigger,
-//   PopoverContent,
-// } from "@/components/ui/popover";
-// import { Button } from "@/components/ui/button";
-// import { Badge } from "@/components/ui/badge";
-// import { Command, CommandItem, CommandList, CommandInput, CommandGroup } from "@/components/ui/command";
-
-// interface Option {
-//   label: string;
-//   value: string;
-// }
-
-// interface MultiSelectProps {
-//   options: Option[];
-//   selected: string[];
-//   onChange: (values: string[]) => void;
-//   placeholder?: string;
-//   className?: string;
-// }
-
-// export function MultiSelect({
-//   options,
-//   selected,
-//   onChange,
-//   placeholder = "Select...",
-//   className,
-// }: MultiSelectProps) {
-//   const [open, setOpen] = React.useState(false);
-
-//   const toggleValue = (value: string) => {
-//     if (selected.includes(value)) {
-//       onChange(selected.filter((v) => v !== value));
-//     } else {
-//       onChange([...selected, value]);
-//     }
-//   };
-
-//   return (
-//     <Popover open={open} onOpenChange={setOpen}>
-//       <PopoverTrigger asChild>
-//         <Button
-//           variant="outline"
-//           className={cn(
-//             "w-full justify-between flex flex-wrap gap-1 min-h-10",
-//             className
-//           )}
-//         >
-//           {selected.length === 0 && (
-//             <span className="text-muted-foreground">{placeholder}</span>
-//           )}
-
-//           {selected.length > 0 && (
-//             <div className="flex flex-wrap gap-1">
-//               {selected.map((v) => {
-//                 const option = options.find((o) => o.value === v);
-//                 return (
-//                   <Badge
-//                     key={v}
-//                     variant="secondary"
-//                     className="flex items-center gap-1"
-//                   >
-//                     {option?.label}
-//                     <X
-//                       className="h-3 w-3 cursor-pointer"
-//                       onClick={(e) => {
-//                         e.stopPropagation();
-//                         toggleValue(v);
-//                       }}
-//                     />
-//                   </Badge>
-//                 );
-//               })}
-//             </div>
-//           )}
-
-//           <span className="ml-auto opacity-50">▾</span>
-//         </Button>
-//       </PopoverTrigger>
-
-//       <PopoverContent className="p-0 w-full" align="start">
-//         <Command>
-//           <CommandInput placeholder="Search..." />
-
-//           <CommandList>
-//             <CommandGroup>
-//               {options.map((option) => {
-//                 const checked = selected.includes(option.value);
-//                 return (
-//                   <CommandItem
-//                     key={option.value}
-//                     onSelect={() => toggleValue(option.value)}
-//                     className="cursor-pointer"
-//                   >
-//                     <div
-//                       className={cn(
-//                         "mr-2 flex h-4 w-4 items-center justify-center rounded border border-primary",
-//                         checked ? "bg-primary text-white" : "opacity-30"
-//                       )}
-//                     >
-//                       {checked && "✓"}
-//                     </div>
-//                     {option.label}
-//                   </CommandItem>
-//                 );
-//               })}
-//             </CommandGroup>
-//           </CommandList>
-//         </Command>
-//       </PopoverContent>
-//     </Popover>
-//   );
-// }
-
-// "use client";
-
-// import * as React from "react";
-// import { X } from "lucide-react";
-// import { cn } from "@/lib/utils";
-
-// import {
-//   Popover,
-//   PopoverTrigger,
-//   PopoverContent,
-// } from "@/components/ui/popover";
-
-// import { Button } from "@/components/ui/button";
-// import { Badge } from "@/components/ui/badge";
-
-// import {
-//   Command,
-//   CommandItem,
-//   CommandList,
-//   CommandInput,
-//   CommandGroup,
-// } from "@/components/ui/command";
-
-// interface Option {
-//   id: string;      // updated to match backend objects
-//   name: string;    // label shown in UI
-// }
-
-// interface MultiSelectProps {
-//   options: Option[];
-//   value: string[];               // selected IDs
-//   onChange: (values: string[]) => void;
-//   placeholder?: string;
-//   className?: string;
-// }
-
-// export function MultiSelect({
-//   options,
-//   value,
-//   onChange,
-//   placeholder = "Select...",
-//   className,
-// }: MultiSelectProps) {
-//   const [open, setOpen] = React.useState(false);
-
-//   const toggleValue = (id: string) => {
-//     if (value.includes(id)) {
-//       onChange(value.filter((v) => v !== id));
-//     } else {
-//       onChange([...value, id]);
-//     }
-//   };
-
-//   const getLabel = (id: string) =>
-//     options.find((o) => o.id === id)?.name || id;
-
-//   return (
-//     <Popover open={open} onOpenChange={setOpen}>
-//       <PopoverTrigger asChild>
-//         <Button
-//           type="button"
-//           variant="outline"
-//           className={cn(
-//             "w-full justify-between flex flex-wrap gap-1 min-h-10",
-//             className
-//           )}
-//         >
-//           {/* Placeholder */}
-//           {value.length === 0 && (
-//             <span className="text-muted-foreground">{placeholder}</span>
-//           )}
-
-//           {/* Selected values */}
-//           {value.length > 0 && (
-//             <div className="flex flex-wrap gap-1">
-//               {value.map((id) => (
-//                 <Badge
-//                   key={id}
-//                   variant="secondary"
-//                   className="flex items-center gap-1"
-//                 >
-//                   {getLabel(id)}
-//                   <X
-//                     className="h-3 w-3 cursor-pointer"
-//                     onClick={(e) => {
-//                       e.stopPropagation();
-//                       toggleValue(id);
-//                     }}
-//                   />
-//                 </Badge>
-//               ))}
-//             </div>
-//           )}
-
-//           <span className="ml-auto opacity-50">▾</span>
-//         </Button>
-//       </PopoverTrigger>
-
-//       <PopoverContent className="p-0 w-full" align="start">
-//         <Command>
-//           <CommandInput placeholder="Search..." />
-
-//           <CommandList>
-//             <CommandGroup>
-//               {options.map((option) => {
-//                 const checked = value.includes(option.id);
-
-//                 return (
-//                   <CommandItem
-//                     key={option.id}
-//                     onSelect={() => toggleValue(option.id)}
-//                     className="cursor-pointer"
-//                   >
-//                     <div
-//                       className={cn(
-//                         "mr-2 flex h-4 w-4 items-center justify-center rounded border border-primary",
-//                         checked ? "bg-primary text-white" : "opacity-30"
-//                       )}
-//                     >
-//                       {checked && "✓"}
-//                     </div>
-
-//                     {option.name}
-//                   </CommandItem>
-//                 );
-//               })}
-//             </CommandGroup>
-//           </CommandList>
-//         </Command>
-//       </PopoverContent>
-//     </Popover>
-//   );
-// }
-
 "use client";
 
 import * as React from "react";
@@ -264,7 +10,6 @@ import {
   PopoverContent,
 } from "@/components/ui/popover";
 
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
 import {
@@ -275,11 +20,15 @@ import {
   CommandGroup,
 } from "@/components/ui/command";
 
+/* ======================================================
+   TYPES
+====================================================== */
+
 interface RawOption {
   id?: string;
   name?: string;
-  value?: string;     // backend alias
-  label?: string;     // backend alias
+  value?: string;
+  label?: string;
 }
 
 interface NormalizedOption {
@@ -295,6 +44,10 @@ interface MultiSelectProps {
   className?: string;
 }
 
+/* ======================================================
+   MULTI SELECT
+====================================================== */
+
 export function MultiSelect({
   options,
   value,
@@ -304,12 +57,17 @@ export function MultiSelect({
 }: MultiSelectProps) {
   const [open, setOpen] = React.useState(false);
 
-  // Normalize options: support both {id, name} and {value, label}
+  /* Normalize options safely */
   const normalized: NormalizedOption[] = React.useMemo(() => {
-    return options.map((o) => ({
-      id: o.id ?? o.value ?? "",
-      name: o.name ?? o.label ?? "",
-    }));
+    return options
+      .map((o) => ({
+        id: o.id ?? o.value,
+        name: o.name ?? o.label,
+      }))
+      .filter(
+        (o): o is NormalizedOption =>
+          Boolean(o.id && o.name)
+      );
   }, [options]);
 
   const toggleValue = (id: string) => {
@@ -320,24 +78,38 @@ export function MultiSelect({
     }
   };
 
+  const removeValue = (id: string) => {
+    onChange(value.filter((v) => v !== id));
+    setOpen(false);
+  };
+
   const getLabel = (id: string) =>
-    normalized.find((o) => o.id === id)?.name || id;
+    normalized.find((o) => o.id === id)?.name ?? id;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
+      {/* ✅ NOT a button anymore */}
       <PopoverTrigger asChild>
-        <Button
-          type="button"
-          variant="outline"
+        <div
+          role="button"
+          tabIndex={0}
+          aria-haspopup="listbox"
+          aria-expanded={open}
+          onClick={() => setOpen((o) => !o)}
           className={cn(
-            "w-full justify-between flex flex-wrap gap-1 min-h-10",
+            "flex min-h-10 w-full cursor-pointer flex-wrap items-center gap-1 rounded-md border border-input bg-background px-3 py-2 text-sm",
+            "focus:outline-none focus:ring-2 focus:ring-ring",
             className
           )}
         >
+          {/* Placeholder */}
           {value.length === 0 && (
-            <span className="text-muted-foreground">{placeholder}</span>
+            <span className="text-muted-foreground">
+              {placeholder}
+            </span>
           )}
 
+          {/* Selected values */}
           {value.length > 0 && (
             <div className="flex flex-wrap gap-1">
               {value.map((id) => (
@@ -347,22 +119,29 @@ export function MultiSelect({
                   className="flex items-center gap-1"
                 >
                   {getLabel(id)}
-                  <X
-                    className="h-3 w-3 cursor-pointer"
-                    onClick={(e) => {
+
+                  {/* ❌ Remove */}
+                  <button
+                    type="button"
+                    className="ml-1 rounded-sm p-0.5 hover:bg-muted"
+                    onMouseDown={(e) => {
+                      e.preventDefault();
                       e.stopPropagation();
-                      toggleValue(id);
+                      removeValue(id);
                     }}
-                  />
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
                 </Badge>
               ))}
             </div>
           )}
 
           <span className="ml-auto opacity-50">▾</span>
-        </Button>
+        </div>
       </PopoverTrigger>
 
+      {/* Dropdown */}
       <PopoverContent className="p-0 w-full" align="start">
         <Command>
           <CommandInput placeholder="Search..." />
@@ -381,7 +160,9 @@ export function MultiSelect({
                     <div
                       className={cn(
                         "mr-2 flex h-4 w-4 items-center justify-center rounded border border-primary",
-                        checked ? "bg-primary text-white" : "opacity-30"
+                        checked
+                          ? "bg-primary text-white"
+                          : "opacity-30"
                       )}
                     >
                       {checked && "✓"}

@@ -5,7 +5,10 @@ import {
   Prisma,
 } from "../../../prisma/generated/client.js";
 import { ActorMeta } from "../../types/action.types.js";
-import { BadRequestException, NotFoundException } from "../../utils/appError.js";
+import {
+  BadRequestException,
+  NotFoundException,
+} from "../../utils/appError.js";
 import { createAuditLog } from "../../utils/auditLog.js";
 import {
   masterObjectFilterInput,
@@ -17,6 +20,7 @@ import {
 import { prisma } from "../../lib/prisma.js";
 import masterObjectRepository from "./masterobject.repository.js";
 import { generateKey } from "../../common/utils/generate-key.js";
+import { publishSchemaWithDiff } from "../../runTimeEngine/fieldDiff.engine.js";
 
 const masterObjectService = {
   getMasterObjects: async (options?: Partial<masterObjectFilterInput>) => {
@@ -26,79 +30,173 @@ const masterObjectService = {
   },
 
   getMasterObject: async ({ masterObjectId }: masterObjectId) => {
-    const parsed = masterObjectIdSchema.parse({ masterObjectId });
-    const obj = await masterObjectRepository.findById(parsed.masterObjectId);
-    if (!obj) throw new NotFoundException("MasterObject not found");
+    const parsedId = masterObjectIdSchema.parse({ masterObjectId });
+
+    const obj = await masterObjectRepository.findByIdObj(
+      parsedId.masterObjectId
+    );
+
+    if (!obj) {
+      throw new NotFoundException("MasterObject not found");
+    }
+
     return obj;
   },
 
-  updateMasterObject: async (
-    { masterObjectId }: masterObjectId,
-    data: any,
-    meta?: ActorMeta
-  ) => {
-    const parsedId = masterObjectIdSchema.parse({ masterObjectId });
-    const validatedData = updateMasterObjectSchema.parse(data);
+ updateMasterObject: async (
+  { masterObjectId }: masterObjectId,
+  data: unknown,
+  meta?: ActorMeta
+) => {
+  const parsedId = masterObjectIdSchema.parse({ masterObjectId });
+  const validatedData = updateMasterObjectSchema.parse(data);
 
-    const existing = await masterObjectRepository.findById(
-      parsedId.masterObjectId
-    );
-    if (!existing) throw new NotFoundException("MasterObject not found");
+  const existing = await masterObjectRepository.findById(
+    parsedId.masterObjectId
+  );
 
-    if (existing.isSystem) {
-      throw new BadRequestException("System MasterObject cannot be modified.");
-    }
+  if (!existing) {
+    throw new NotFoundException("MasterObject not found");
+  }
 
-    if (validatedData.name && validatedData.name !== existing.name) {
-      const duplicate = await masterObjectRepository.isDuplicateName(
-        validatedData.name,
-        parsedId.masterObjectId
-      );
-      if (duplicate)
-        throw new BadRequestException("masterObject name already exists.");
-    }
+  if (existing.isSystem) {
+    throw new BadRequestException("System MasterObject cannot be modified.");
+  }
 
-    let dataToUpdate: Prisma.MasterObjectUpdateInput = {};
+  const hasAnyChange =
+    validatedData.name !== undefined ||
+    validatedData.isActive !== undefined ||
+    validatedData.schema !== undefined;
+
+  if (!hasAnyChange) {
+    throw new BadRequestException("No changes provided");
+  }
+
+  return prisma.$transaction(async (tx) => {
+    /* =====================================================
+       1️⃣ UPDATE MASTEROBJECT METADATA (SAFE)
+    ===================================================== */
+
+    const updateData: Prisma.MasterObjectUpdateInput = {};
+
     if (validatedData.name !== undefined) {
-      dataToUpdate.name = { set: validatedData.name };
+      updateData.name = validatedData.name;
     }
 
     if (validatedData.isActive !== undefined) {
-      dataToUpdate.isActive = { set: validatedData.isActive };
+      updateData.isActive = validatedData.isActive;
     }
 
-    if (validatedData.fields !== undefined) {
-      dataToUpdate.fields = { set: validatedData.fields }; 
-    }
-
-    if (validatedData.name && validatedData.name !== existing.name) {
-      const newKey = generateKey(validatedData.name);
-      dataToUpdate.key = { set: newKey };
-    }
-
-    const updated = await prisma.$transaction(async (tx) => {
-      const result = await tx.masterObject.update({
+    if (Object.keys(updateData).length > 0) {
+      await tx.masterObject.update({
         where: { id: parsedId.masterObjectId },
-        data: dataToUpdate,
+        data: updateData,
+      });
+    }
+
+    /* =====================================================
+       2️⃣ SCHEMA UPDATE (ONLY VIA DIFF ENGINE)
+    ===================================================== */
+
+    let newSchema: {
+      id: string;
+      version: number;
+      status: string;
+      publishedAt: Date | null;
+    } | null = null;
+
+    /* -------- PUBLISH GUARDS -------- */
+
+    if (validatedData.publish && !validatedData.schema) {
+      throw new BadRequestException(
+        "Schema payload is required when publishing"
+      );
+    }
+
+    if (validatedData.schema) {
+      if (validatedData.schema.length === 0) {
+        throw new BadRequestException(
+          "Schema must contain at least one field"
+        );
+      }
+
+      // Prevent unsafe draft edits when records exist
+      const recordCount = await tx.masterRecord.count({
+        where: {
+          masterObjectId: parsedId.masterObjectId,
+          deletedAt: null,
+        },
       });
 
-      await createAuditLog({
-        userId: meta?.actorId ?? null,
-        entity: AuditEntity.MASTER_RECORD,
-        action: AuditAction.UPDATE,
-        comment: "MasterObject updated",
-        before: existing,
-        after: result,
-        ipAddress: meta?.ipAddress ?? null,
-        userAgent: meta?.userAgent ?? null,
-        performedBy: meta?.performedBy ?? PerformedByType.USER,
+      if (recordCount > 0 && !validatedData.publish) {
+        throw new BadRequestException(
+          "Schema changes must be published when records already exist"
+        );
+      }
+
+      // Prevent editing published schema without version bump
+      const publishedSchema = await tx.masterObjectSchema.findFirst({
+        where: {
+          masterObjectId: parsedId.masterObjectId,
+          status: "PUBLISHED",
+        },
       });
 
-      return result;
+      if (publishedSchema && !validatedData.publish) {
+        throw new BadRequestException(
+          "Published schema cannot be modified without publishing a new version"
+        );
+      }
+
+      // Create new schema version + apply diff
+      const schema = await publishSchemaWithDiff({
+        tx,
+        masterObjectId: parsedId.masterObjectId,
+        schemaJson: validatedData.schema,
+        publish: Boolean(validatedData.publish),
+        createdById: meta?.actorId ?? null,
+      });
+
+      newSchema = {
+        id: schema.id,
+        version: schema.version,
+        status: schema.status,
+        publishedAt: schema.publishedAt,
+      };
+    }
+
+    /* =====================================================
+       3️⃣ AUDIT LOG (SINGLE SOURCE OF TRUTH)
+    ===================================================== */
+
+    await createAuditLog({
+      userId: meta?.actorId ?? null,
+      entity: AuditEntity.MASTER_OBJECT,
+      action: AuditAction.UPDATE,
+      comment: "MasterObject updated",
+      performedBy: meta?.performedBy ?? PerformedByType.USER,
+      ipAddress: meta?.ipAddress ?? null,
+      userAgent: meta?.userAgent ?? null,
+      before: existing,
+      after: {
+        name: validatedData.name ?? existing.name,
+        isActive: validatedData.isActive ?? existing.isActive,
+        schemaUpdated: Boolean(validatedData.schema),
+        schemaPublished: Boolean(validatedData.publish),
+      },
     });
 
-    return updated;
-  },
+    /* =====================================================
+       4️⃣ RETURN (FRONTEND FRIENDLY)
+    ===================================================== */
+
+    return {
+      success: true,
+      schema: newSchema,
+    };
+  });
+},
+
 
   archivemasterObject: async (
     { masterObjectId }: masterObjectId,
@@ -193,3 +291,14 @@ const masterObjectService = {
 };
 
 export default masterObjectService;
+
+// auth/capabilities.ts
+export function canViewDraftSchema(
+  user: {
+    roles?: string[];
+  } | null
+): boolean {
+  if (!user?.roles) return false;
+
+  return user.roles.includes("ADMIN") || user.roles.includes("SYSTEM_ADMIN");
+}

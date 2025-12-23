@@ -6,42 +6,26 @@ export const zUUIDOptional = z.uuid().optional();
 
 export const zJson = z.any();
 
-/* -------------------------------------------------------------------------- */
-/*                         WORKFLOW DEFINITION SCHEMAS                        */
-/* -------------------------------------------------------------------------- */
+const TriggerStrategyEnum = z.enum([
+  "ANY_ALLOWED",
+  "ALL_ALLOWED",
+  "CREATOR_ONLY",
+  "ASSIGNEE_ONLY",
+  "APPROVER_ONLY",
+  "SYSTEM_ONLY",
+]);
 
-export const createWorkflowSchema = z.object({
-  name: z.string().min(1),
-  resourceId: zUUID,
-  description: z.string().optional(),
-});
+const TransitionTypeEnum = z.enum([
+  "NORMAL",
+  "APPROVAL",
+  "SEND_BACK",
+  "REVIEW",
+  "AUTO",
+]);
 
-export const updateWorkflowSchema = createWorkflowSchema.partial().extend({
-isActive: z.boolean().optional(),
-code: z.string().optional(),
-version: z.number().int().positive().optional(),
-});
+const ApprovalStrategyEnum = z.enum(["ALL", "ANY", "MAJORITY"]);
 
-
-export const workflowIdSchema = z.object({
-  workflowId: zUUID,
-});
-
-
-
-/* -------------------------------------------------------------------------- */
-/*                                STAGE SCHEMAS                               */
-/* -------------------------------------------------------------------------- */
-
-export const createStageSchema = z.object({
-  workflowId: zUUID,
-  name: z.string().min(1),
-  order: z.number().int().nonnegative().default(0),
-  color: z.string().optional(),
-  isInitial: z.boolean().default(false),
-  isFinal: z.boolean().default(false),
-  metadata: zJson.optional(),
-  category: z.enum([
+const CategoryEnum = z.enum([
   "DRAFT",
   "SUBMITTED",
   "NORMAL",
@@ -50,13 +34,264 @@ export const createStageSchema = z.object({
   "CORRECTION",
   "ON_HOLD",
   "REJECTED",
-  "COMPLETED"
-]).default("NORMAL"),
+  "COMPLETED",
+]);
 
+
+/* =====================
+   APPROVAL
+===================== */
+
+const approvalLevelSchema = z
+  .object({
+    order: z.number().int().positive(),
+    roleIds: z.array(zUUID).default([]),
+    userIds: z.array(zUUID).default([]),
+  })
+  .refine(v => v.roleIds.length || v.userIds.length, {
+    message: "Each approval level must have at least one role or user",
+  });
+
+const approvalConfigSchema = z.object({
+  mode: z.enum(["PARALLEL", "SEQUENTIAL"]),
+  levels: z.array(approvalLevelSchema).optional(),
 });
 
+
+
+/* =====================
+   TRANSITION
+===================== */
+
+export const transitionSchema = z
+  .object({
+    label: z.string().optional(),
+
+    fromStageId: zUUID,
+    toStageId: zUUID,
+
+    transitionType: TransitionTypeEnum,
+
+    /** ✅ REQUIRED FOR BACKEND */
+    triggerStrategy: TriggerStrategyEnum.default("ANY_ALLOWED"),
+
+    approvalStrategy: ApprovalStrategyEnum.optional(),
+    approvalConfig: approvalConfigSchema.optional(),
+
+    autoTrigger: z.boolean().default(false),
+    condition: zJson.optional(),
+    metadata: zJson.optional(),
+
+    allowedRoleIds: z.array(zUUID).default([]),
+    allowedUserIds: z.array(zUUID).default([]),
+  })
+  .superRefine((t, ctx) => {
+    /* ---------------- REVIEW ---------------- */
+    if (t.transitionType === "REVIEW" && t.fromStageId !== t.toStageId) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "REVIEW transition must be a self-loop",
+      });
+    }
+
+    /* ---------------- AUTO SAFETY ---------------- */
+    if (t.transitionType === "AUTO") {
+      if (t.triggerStrategy !== "SYSTEM_ONLY") {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "AUTO transitions must use SYSTEM_ONLY trigger strategy",
+        });
+      }
+
+      if (t.allowedRoleIds.length || t.allowedUserIds.length) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "AUTO transitions cannot have users or roles",
+        });
+      }
+    }
+
+    if (
+      t.triggerStrategy === "SYSTEM_ONLY" &&
+      t.transitionType !== "AUTO"
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "SYSTEM_ONLY trigger strategy is only valid for AUTO transitions",
+      });
+    }
+
+    /* ---------------- APPROVER_ONLY ---------------- */
+    if (
+      t.triggerStrategy === "APPROVER_ONLY" &&
+      t.transitionType !== "APPROVAL"
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "APPROVER_ONLY trigger strategy is only valid for APPROVAL transitions",
+      });
+    }
+
+    /* ---------------- APPROVAL ---------------- */
+    if (t.transitionType === "APPROVAL") {
+      if (!t.approvalConfig || !t.approvalStrategy) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "APPROVAL transitions require approvalConfig and approvalStrategy",
+        });
+      }
+    }
+
+    /* ---------------- NON-APPROVAL ---------------- */
+    if (t.transitionType !== "APPROVAL") {
+      if (t.approvalConfig || t.approvalStrategy) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Approval fields are only allowed for APPROVAL transitions",
+        });
+      }
+    }
+  });
+
+
+/* =====================
+   WORKFLOW SCHEMA
+===================== */
+
+export const createFullWorkflowSchema = z
+  .object({
+    publish: z.boolean().optional(),
+
+    stages: z.array(
+      z.object({
+        tempId: z.string().optional(),
+        name: z.string().min(1),
+        isInitial: z.boolean(),
+        isFinal: z.boolean(),
+        order: z.number().int().nonnegative(),
+        category: CategoryEnum,
+        color: z.string().optional(),
+        metadata: zJson.optional(),
+        position: z
+          .object({
+            x: z.number(),
+            y: z.number(),
+          })
+          .optional(),
+      })
+    ),
+
+    transitions: z.array(transitionSchema).default([]),
+  })
+  .superRefine((data, ctx) => {
+    const initial = data.stages.filter(s => s.isInitial);
+    const finals = data.stages.filter(s => s.isFinal);
+
+    if (initial.length !== 1) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Exactly one initial stage is required",
+      });
+    }
+
+    if (!finals.length) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "At least one final stage is required",
+      });
+    }
+
+    for (const s of data.stages) {
+      if (s.isInitial && s.isFinal) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Stage cannot be both initial and final",
+        });
+      }
+    }
+  });
+
+
+/* -------------------------------------------------------------------------- */
+/*                         WORKFLOW DEFINITION SCHEMAS                        */
+/* -------------------------------------------------------------------------- */
+
+export const createWorkflowDefinitionSchema = z.object({
+  name: z.string().min(1, "Workflow name is required"),
+  resourceId: zUUID,
+  description: z.string().optional(),
+});
+
+export const updateWorkflowSchema = createWorkflowDefinitionSchema
+  .partial()
+  .extend({
+    isActive: z.boolean().optional(),
+    code: z.string().optional(),
+    version: z.number().int().positive().optional(),
+  });
+
+export const workflowIdSchema = z.object({
+  workflowId: zUUID,
+});
+
+/* -------------------------------------------------------------------------- */
+/*                                STAGE SCHEMAS                               */
+/* -------------------------------------------------------------------------- */
+
+export const categoryEnum = z.enum([
+  "DRAFT",
+  "SUBMITTED",
+  "NORMAL",
+  "UNDER_REVIEW",
+  "APPROVAL",
+  "CORRECTION",
+  "ON_HOLD",
+  "REJECTED",
+  "COMPLETED",
+]);
+
+export const createStageSchema = z.object({
+  workflowId: zUUID,
+
+  name: z.string().min(1, "Stage name is required"),
+
+  order: z.number().int().nonnegative().default(0),
+
+  color: z.string().nullable().optional(),
+
+  isInitial: z.boolean().default(false),
+  isFinal: z.boolean().default(false),
+
+  category: categoryEnum.default("NORMAL"),
+
+  /** ✅ NEW — category-based governance */
+  allowedNextCategories: z.array(categoryEnum).default([]),
+
+  metadata: zJson.nullable().optional(),
+});
+
+export type ApprovalConfig = {
+  mode: "SEQUENTIAL" | "PARALLEL";
+
+  // SEQUENTIAL
+  levels?: Array<{
+    roleId?: string;
+    userId?: string;
+    required?: boolean; // default true
+  }>;
+
+  // PARALLEL
+  approvers?: Array<{
+    roleId?: string;
+    userId?: string;
+  }>;
+  strategy?: "ALL" | "ANY"; // default ALL
+
+  onReject?: "STOP" | "SEND_BACK" | "PREVIOUS_STAGE";
+};
+
 export const stageIdSchema = z.object({
-  stageId: zUUID, 
+  stageId: zUUID,
 });
 
 export const createStagesSchema = z.array(createStageSchema);
@@ -69,18 +304,19 @@ export const updateStageSchema = z.object({
   isInitial: z.boolean().optional(),
   isFinal: z.boolean().optional(),
   metadata: zJson.optional(),
-  category: z.enum([
-  "DRAFT",
-  "SUBMITTED",
-  "NORMAL",
-  "UNDER_REVIEW",
-  "APPROVAL",
-  "CORRECTION",
-  "ON_HOLD",
-  "REJECTED",
-  "COMPLETED"
-]).default("NORMAL"),
-
+  category: z
+    .enum([
+      "DRAFT",
+      "SUBMITTED",
+      "NORMAL",
+      "UNDER_REVIEW",
+      "APPROVAL",
+      "CORRECTION",
+      "ON_HOLD",
+      "REJECTED",
+      "COMPLETED",
+    ])
+    .default("NORMAL"),
 });
 
 /** BULK REORDER STAGES */
@@ -91,7 +327,7 @@ export const reorderStagesSchema = z.object({
       order: z.number().int().nonnegative(),
     })
   ),
-}); 
+});
 
 /* -------------------------------------------------------------------------- */
 /*                             TRANSITION SCHEMAS                              */
@@ -120,11 +356,9 @@ export const updateTransitionSchema = z.object({
   metadata: zJson.optional(),
 });
 
-
 export const transitionIdSchema = z.object({
   transitionId: zUUID,
 });
-
 
 /* -------------------------------------------------------------------------- */
 /*                         WORKFLOW INSTANCE SCHEMAS                          */
@@ -168,10 +402,8 @@ export const moveInstanceSchema = z.object({
   toStageId: z.string(),
   notes: z.string().optional(),
   metadata: z.any().optional(),
-  performedById: z.string().optional(), 
+  performedById: z.string().optional(),
 });
-
-
 
 /* -------------------------------------------------------------------------- */
 /*                            WORKFLOW HISTORY SCHEMAS                        */
@@ -236,93 +468,13 @@ export const workflowFilterSchema = z
   })
   .strict();
 
-
-  ///////////////////////////////////////////////
-  export const createFullWorkflowSchema = z.object({
-  name: z.string().min(1, "Workflow name is required"),
-  resourceId: zUUID,
-  description: z.string().optional(),
-
-  stages: z.array(
-    z.object({
-      name: z.string().min(1, "Stage name required"),
-      isInitial: z.boolean().default(false),
-      isFinal: z.boolean().default(false),
-      order: z.number().int().nonnegative().default(0),
-      color: z.string().optional(),
-      metadata: zJson.optional(),
-      category: z.enum([
-      "DRAFT",
-      "SUBMITTED",
-      "NORMAL",
-      "UNDER_REVIEW",
-      "APPROVAL",
-      "CORRECTION",
-      "ON_HOLD",
-      "REJECTED",
-      "COMPLETED"
-    ]).default("NORMAL"),
-  })
-  ).min(1, "At least one stage is required"),
-
-  transitions: z.array(
-    z.object({
-      label: z.string().optional(),
-      fromStageIndex: z.number().int().nonnegative(),
-      toStageIndex: z.number().int().nonnegative(),
-
-      allowedRoleIds: z.array(z.string()).default([]),
-      allowedUserIds: z.array(z.string()).default([]),
-
-      condition: zJson.optional(),
-      requiresApproval: z.boolean().default(false),
-      autoTrigger: z.boolean().default(false),
-      metadata: zJson.optional(),
-    })
-  ).optional().default([]),
-});
-
-
-// export const createTaskSchema = z.object({
-//   workflowInstanceId: zUUID,
-//   stageId: zUUID,
-//   masterRecordId: zUUID,
-
-//   currentStep: zJson.default({}),
-//   status: z.enum(["Pending", "InProgress", "Completed"]).default("Pending"),
-
-//   assignedToId: zUUIDOptional,
-// });
-
-// export const updateTaskSchema = z.object({
-//   taskId: zUUID,
-//   currentStep: zJson.optional(),
-//   status: z.enum(["Pending", "InProgress", "Completed"]).optional(),
-
-//   assignedToId: zUUIDOptional,
-// });
-
-// export const createTaskAssignmentSchema = z.object({
-//   taskId: zUUID,
-//   userId: zUUID,
-// });
-
-
-// export const taskQuerySchema = z.object({
-//   workflowInstanceId: zUUID.optional(),
-//   stageId: zUUID.optional(),
-//   status: z.enum(["Pending", "InProgress", "Completed"]).optional(),
-//   page: z.number().int().positive().default(1),
-//   limit: z.number().int().positive().default(20),
-// });
-
-
 /* -------------------------------------------------------------------------- */
 /*                                TYPE EXPORTS                                */
 /* -------------------------------------------------------------------------- */
 
-
-export type CreateWorkflowInput = z.infer<typeof createWorkflowSchema>;
+export type CreateWorkflowDefinitionInput = z.infer<
+  typeof createWorkflowDefinitionSchema
+>;
 export type UpdateWorkflowInput = z.infer<typeof updateWorkflowSchema>;
 
 export type CreateStageInput = z.infer<typeof createStageSchema>;
@@ -346,7 +498,4 @@ export type WorkflowFilterInput = z.infer<typeof workflowFilterSchema>;
 export type MoveInstanceInput = z.infer<typeof moveInstanceSchema>;
 export type SortColumn = (typeof allowedSortColumns)[number];
 
-
 export type CreateFullWorkflowInput = z.infer<typeof createFullWorkflowSchema>;
-
-

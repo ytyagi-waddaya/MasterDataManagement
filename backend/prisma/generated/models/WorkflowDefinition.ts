@@ -39,12 +39,15 @@ export type WorkflowDefinitionMinAggregateOutputType = {
   name: string | null
   code: string | null
   resourceId: string | null
+  status: $Enums.WorkflowDefinitionStatus | null
   version: number | null
   description: string | null
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
   createdById: string | null
+  publishedAt: Date | null
+  publishedById: string | null
   deletedAt: Date | null
 }
 
@@ -53,12 +56,15 @@ export type WorkflowDefinitionMaxAggregateOutputType = {
   name: string | null
   code: string | null
   resourceId: string | null
+  status: $Enums.WorkflowDefinitionStatus | null
   version: number | null
   description: string | null
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
   createdById: string | null
+  publishedAt: Date | null
+  publishedById: string | null
   deletedAt: Date | null
 }
 
@@ -67,12 +73,15 @@ export type WorkflowDefinitionCountAggregateOutputType = {
   name: number
   code: number
   resourceId: number
+  status: number
   version: number
   description: number
   isActive: number
   createdAt: number
   updatedAt: number
   createdById: number
+  publishedAt: number
+  publishedById: number
   deletedAt: number
   _all: number
 }
@@ -91,12 +100,15 @@ export type WorkflowDefinitionMinAggregateInputType = {
   name?: true
   code?: true
   resourceId?: true
+  status?: true
   version?: true
   description?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
   createdById?: true
+  publishedAt?: true
+  publishedById?: true
   deletedAt?: true
 }
 
@@ -105,12 +117,15 @@ export type WorkflowDefinitionMaxAggregateInputType = {
   name?: true
   code?: true
   resourceId?: true
+  status?: true
   version?: true
   description?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
   createdById?: true
+  publishedAt?: true
+  publishedById?: true
   deletedAt?: true
 }
 
@@ -119,12 +134,15 @@ export type WorkflowDefinitionCountAggregateInputType = {
   name?: true
   code?: true
   resourceId?: true
+  status?: true
   version?: true
   description?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
   createdById?: true
+  publishedAt?: true
+  publishedById?: true
   deletedAt?: true
   _all?: true
 }
@@ -220,12 +238,15 @@ export type WorkflowDefinitionGroupByOutputType = {
   name: string
   code: string
   resourceId: string
+  status: $Enums.WorkflowDefinitionStatus
   version: number
   description: string | null
   isActive: boolean
   createdAt: Date
   updatedAt: Date
   createdById: string | null
+  publishedAt: Date | null
+  publishedById: string | null
   deletedAt: Date | null
   _count: WorkflowDefinitionCountAggregateOutputType | null
   _avg: WorkflowDefinitionAvgAggregateOutputType | null
@@ -257,18 +278,22 @@ export type WorkflowDefinitionWhereInput = {
   name?: Prisma.StringFilter<"WorkflowDefinition"> | string
   code?: Prisma.StringFilter<"WorkflowDefinition"> | string
   resourceId?: Prisma.StringFilter<"WorkflowDefinition"> | string
+  status?: Prisma.EnumWorkflowDefinitionStatusFilter<"WorkflowDefinition"> | $Enums.WorkflowDefinitionStatus
   version?: Prisma.IntFilter<"WorkflowDefinition"> | number
   description?: Prisma.StringNullableFilter<"WorkflowDefinition"> | string | null
   isActive?: Prisma.BoolFilter<"WorkflowDefinition"> | boolean
   createdAt?: Prisma.DateTimeFilter<"WorkflowDefinition"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WorkflowDefinition"> | Date | string
   createdById?: Prisma.StringNullableFilter<"WorkflowDefinition"> | string | null
+  publishedAt?: Prisma.DateTimeNullableFilter<"WorkflowDefinition"> | Date | string | null
+  publishedById?: Prisma.StringNullableFilter<"WorkflowDefinition"> | string | null
   deletedAt?: Prisma.DateTimeNullableFilter<"WorkflowDefinition"> | Date | string | null
   resource?: Prisma.XOR<Prisma.ResourceScalarRelationFilter, Prisma.ResourceWhereInput>
   createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   stages?: Prisma.WorkflowStageListRelationFilter
   transitions?: Prisma.WorkflowTransitionListRelationFilter
   instances?: Prisma.WorkflowInstanceListRelationFilter
+  publishedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
 
 export type WorkflowDefinitionOrderByWithRelationInput = {
@@ -276,18 +301,22 @@ export type WorkflowDefinitionOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   code?: Prisma.SortOrder
   resourceId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   version?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdById?: Prisma.SortOrderInput | Prisma.SortOrder
+  publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  publishedById?: Prisma.SortOrderInput | Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   resource?: Prisma.ResourceOrderByWithRelationInput
   createdBy?: Prisma.UserOrderByWithRelationInput
   stages?: Prisma.WorkflowStageOrderByRelationAggregateInput
   transitions?: Prisma.WorkflowTransitionOrderByRelationAggregateInput
   instances?: Prisma.WorkflowInstanceOrderByRelationAggregateInput
+  publishedBy?: Prisma.UserOrderByWithRelationInput
 }
 
 export type WorkflowDefinitionWhereUniqueInput = Prisma.AtLeast<{
@@ -299,18 +328,22 @@ export type WorkflowDefinitionWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"WorkflowDefinition"> | string
   code?: Prisma.StringFilter<"WorkflowDefinition"> | string
   resourceId?: Prisma.StringFilter<"WorkflowDefinition"> | string
+  status?: Prisma.EnumWorkflowDefinitionStatusFilter<"WorkflowDefinition"> | $Enums.WorkflowDefinitionStatus
   version?: Prisma.IntFilter<"WorkflowDefinition"> | number
   description?: Prisma.StringNullableFilter<"WorkflowDefinition"> | string | null
   isActive?: Prisma.BoolFilter<"WorkflowDefinition"> | boolean
   createdAt?: Prisma.DateTimeFilter<"WorkflowDefinition"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WorkflowDefinition"> | Date | string
   createdById?: Prisma.StringNullableFilter<"WorkflowDefinition"> | string | null
+  publishedAt?: Prisma.DateTimeNullableFilter<"WorkflowDefinition"> | Date | string | null
+  publishedById?: Prisma.StringNullableFilter<"WorkflowDefinition"> | string | null
   deletedAt?: Prisma.DateTimeNullableFilter<"WorkflowDefinition"> | Date | string | null
   resource?: Prisma.XOR<Prisma.ResourceScalarRelationFilter, Prisma.ResourceWhereInput>
   createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   stages?: Prisma.WorkflowStageListRelationFilter
   transitions?: Prisma.WorkflowTransitionListRelationFilter
   instances?: Prisma.WorkflowInstanceListRelationFilter
+  publishedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }, "id" | "code_version">
 
 export type WorkflowDefinitionOrderByWithAggregationInput = {
@@ -318,12 +351,15 @@ export type WorkflowDefinitionOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   code?: Prisma.SortOrder
   resourceId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   version?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdById?: Prisma.SortOrderInput | Prisma.SortOrder
+  publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  publishedById?: Prisma.SortOrderInput | Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.WorkflowDefinitionCountOrderByAggregateInput
   _avg?: Prisma.WorkflowDefinitionAvgOrderByAggregateInput
@@ -340,12 +376,15 @@ export type WorkflowDefinitionScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"WorkflowDefinition"> | string
   code?: Prisma.StringWithAggregatesFilter<"WorkflowDefinition"> | string
   resourceId?: Prisma.StringWithAggregatesFilter<"WorkflowDefinition"> | string
+  status?: Prisma.EnumWorkflowDefinitionStatusWithAggregatesFilter<"WorkflowDefinition"> | $Enums.WorkflowDefinitionStatus
   version?: Prisma.IntWithAggregatesFilter<"WorkflowDefinition"> | number
   description?: Prisma.StringNullableWithAggregatesFilter<"WorkflowDefinition"> | string | null
   isActive?: Prisma.BoolWithAggregatesFilter<"WorkflowDefinition"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"WorkflowDefinition"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"WorkflowDefinition"> | Date | string
   createdById?: Prisma.StringNullableWithAggregatesFilter<"WorkflowDefinition"> | string | null
+  publishedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"WorkflowDefinition"> | Date | string | null
+  publishedById?: Prisma.StringNullableWithAggregatesFilter<"WorkflowDefinition"> | string | null
   deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"WorkflowDefinition"> | Date | string | null
 }
 
@@ -353,17 +392,20 @@ export type WorkflowDefinitionCreateInput = {
   id?: string
   name: string
   code: string
+  status?: $Enums.WorkflowDefinitionStatus
   version?: number
   description?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  publishedAt?: Date | string | null
   deletedAt?: Date | string | null
   resource: Prisma.ResourceCreateNestedOneWithoutWorkflowsInput
-  createdBy?: Prisma.UserCreateNestedOneWithoutWorkflowDefinitionsInput
+  createdBy?: Prisma.UserCreateNestedOneWithoutCreatedWorkflowsInput
   stages?: Prisma.WorkflowStageCreateNestedManyWithoutWorkflowInput
   transitions?: Prisma.WorkflowTransitionCreateNestedManyWithoutWorkflowInput
   instances?: Prisma.WorkflowInstanceCreateNestedManyWithoutWorkflowInput
+  publishedBy?: Prisma.UserCreateNestedOneWithoutPublishedWorkflowsInput
 }
 
 export type WorkflowDefinitionUncheckedCreateInput = {
@@ -371,12 +413,15 @@ export type WorkflowDefinitionUncheckedCreateInput = {
   name: string
   code: string
   resourceId: string
+  status?: $Enums.WorkflowDefinitionStatus
   version?: number
   description?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   createdById?: string | null
+  publishedAt?: Date | string | null
+  publishedById?: string | null
   deletedAt?: Date | string | null
   stages?: Prisma.WorkflowStageUncheckedCreateNestedManyWithoutWorkflowInput
   transitions?: Prisma.WorkflowTransitionUncheckedCreateNestedManyWithoutWorkflowInput
@@ -387,17 +432,20 @@ export type WorkflowDefinitionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumWorkflowDefinitionStatusFieldUpdateOperationsInput | $Enums.WorkflowDefinitionStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   resource?: Prisma.ResourceUpdateOneRequiredWithoutWorkflowsNestedInput
-  createdBy?: Prisma.UserUpdateOneWithoutWorkflowDefinitionsNestedInput
+  createdBy?: Prisma.UserUpdateOneWithoutCreatedWorkflowsNestedInput
   stages?: Prisma.WorkflowStageUpdateManyWithoutWorkflowNestedInput
   transitions?: Prisma.WorkflowTransitionUpdateManyWithoutWorkflowNestedInput
   instances?: Prisma.WorkflowInstanceUpdateManyWithoutWorkflowNestedInput
+  publishedBy?: Prisma.UserUpdateOneWithoutPublishedWorkflowsNestedInput
 }
 
 export type WorkflowDefinitionUncheckedUpdateInput = {
@@ -405,12 +453,15 @@ export type WorkflowDefinitionUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   resourceId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumWorkflowDefinitionStatusFieldUpdateOperationsInput | $Enums.WorkflowDefinitionStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   stages?: Prisma.WorkflowStageUncheckedUpdateManyWithoutWorkflowNestedInput
   transitions?: Prisma.WorkflowTransitionUncheckedUpdateManyWithoutWorkflowNestedInput
@@ -422,12 +473,15 @@ export type WorkflowDefinitionCreateManyInput = {
   name: string
   code: string
   resourceId: string
+  status?: $Enums.WorkflowDefinitionStatus
   version?: number
   description?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   createdById?: string | null
+  publishedAt?: Date | string | null
+  publishedById?: string | null
   deletedAt?: Date | string | null
 }
 
@@ -435,11 +489,13 @@ export type WorkflowDefinitionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumWorkflowDefinitionStatusFieldUpdateOperationsInput | $Enums.WorkflowDefinitionStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -448,12 +504,15 @@ export type WorkflowDefinitionUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   resourceId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumWorkflowDefinitionStatusFieldUpdateOperationsInput | $Enums.WorkflowDefinitionStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -477,12 +536,15 @@ export type WorkflowDefinitionCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   code?: Prisma.SortOrder
   resourceId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   version?: Prisma.SortOrder
   description?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrder
+  publishedById?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
 }
 
@@ -495,12 +557,15 @@ export type WorkflowDefinitionMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   code?: Prisma.SortOrder
   resourceId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   version?: Prisma.SortOrder
   description?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrder
+  publishedById?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
 }
 
@@ -509,12 +574,15 @@ export type WorkflowDefinitionMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   code?: Prisma.SortOrder
   resourceId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   version?: Prisma.SortOrder
   description?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrder
+  publishedById?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
 }
 
@@ -534,10 +602,24 @@ export type WorkflowDefinitionCreateNestedManyWithoutCreatedByInput = {
   connect?: Prisma.WorkflowDefinitionWhereUniqueInput | Prisma.WorkflowDefinitionWhereUniqueInput[]
 }
 
+export type WorkflowDefinitionCreateNestedManyWithoutPublishedByInput = {
+  create?: Prisma.XOR<Prisma.WorkflowDefinitionCreateWithoutPublishedByInput, Prisma.WorkflowDefinitionUncheckedCreateWithoutPublishedByInput> | Prisma.WorkflowDefinitionCreateWithoutPublishedByInput[] | Prisma.WorkflowDefinitionUncheckedCreateWithoutPublishedByInput[]
+  connectOrCreate?: Prisma.WorkflowDefinitionCreateOrConnectWithoutPublishedByInput | Prisma.WorkflowDefinitionCreateOrConnectWithoutPublishedByInput[]
+  createMany?: Prisma.WorkflowDefinitionCreateManyPublishedByInputEnvelope
+  connect?: Prisma.WorkflowDefinitionWhereUniqueInput | Prisma.WorkflowDefinitionWhereUniqueInput[]
+}
+
 export type WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput = {
   create?: Prisma.XOR<Prisma.WorkflowDefinitionCreateWithoutCreatedByInput, Prisma.WorkflowDefinitionUncheckedCreateWithoutCreatedByInput> | Prisma.WorkflowDefinitionCreateWithoutCreatedByInput[] | Prisma.WorkflowDefinitionUncheckedCreateWithoutCreatedByInput[]
   connectOrCreate?: Prisma.WorkflowDefinitionCreateOrConnectWithoutCreatedByInput | Prisma.WorkflowDefinitionCreateOrConnectWithoutCreatedByInput[]
   createMany?: Prisma.WorkflowDefinitionCreateManyCreatedByInputEnvelope
+  connect?: Prisma.WorkflowDefinitionWhereUniqueInput | Prisma.WorkflowDefinitionWhereUniqueInput[]
+}
+
+export type WorkflowDefinitionUncheckedCreateNestedManyWithoutPublishedByInput = {
+  create?: Prisma.XOR<Prisma.WorkflowDefinitionCreateWithoutPublishedByInput, Prisma.WorkflowDefinitionUncheckedCreateWithoutPublishedByInput> | Prisma.WorkflowDefinitionCreateWithoutPublishedByInput[] | Prisma.WorkflowDefinitionUncheckedCreateWithoutPublishedByInput[]
+  connectOrCreate?: Prisma.WorkflowDefinitionCreateOrConnectWithoutPublishedByInput | Prisma.WorkflowDefinitionCreateOrConnectWithoutPublishedByInput[]
+  createMany?: Prisma.WorkflowDefinitionCreateManyPublishedByInputEnvelope
   connect?: Prisma.WorkflowDefinitionWhereUniqueInput | Prisma.WorkflowDefinitionWhereUniqueInput[]
 }
 
@@ -555,6 +637,20 @@ export type WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput = {
   deleteMany?: Prisma.WorkflowDefinitionScalarWhereInput | Prisma.WorkflowDefinitionScalarWhereInput[]
 }
 
+export type WorkflowDefinitionUpdateManyWithoutPublishedByNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkflowDefinitionCreateWithoutPublishedByInput, Prisma.WorkflowDefinitionUncheckedCreateWithoutPublishedByInput> | Prisma.WorkflowDefinitionCreateWithoutPublishedByInput[] | Prisma.WorkflowDefinitionUncheckedCreateWithoutPublishedByInput[]
+  connectOrCreate?: Prisma.WorkflowDefinitionCreateOrConnectWithoutPublishedByInput | Prisma.WorkflowDefinitionCreateOrConnectWithoutPublishedByInput[]
+  upsert?: Prisma.WorkflowDefinitionUpsertWithWhereUniqueWithoutPublishedByInput | Prisma.WorkflowDefinitionUpsertWithWhereUniqueWithoutPublishedByInput[]
+  createMany?: Prisma.WorkflowDefinitionCreateManyPublishedByInputEnvelope
+  set?: Prisma.WorkflowDefinitionWhereUniqueInput | Prisma.WorkflowDefinitionWhereUniqueInput[]
+  disconnect?: Prisma.WorkflowDefinitionWhereUniqueInput | Prisma.WorkflowDefinitionWhereUniqueInput[]
+  delete?: Prisma.WorkflowDefinitionWhereUniqueInput | Prisma.WorkflowDefinitionWhereUniqueInput[]
+  connect?: Prisma.WorkflowDefinitionWhereUniqueInput | Prisma.WorkflowDefinitionWhereUniqueInput[]
+  update?: Prisma.WorkflowDefinitionUpdateWithWhereUniqueWithoutPublishedByInput | Prisma.WorkflowDefinitionUpdateWithWhereUniqueWithoutPublishedByInput[]
+  updateMany?: Prisma.WorkflowDefinitionUpdateManyWithWhereWithoutPublishedByInput | Prisma.WorkflowDefinitionUpdateManyWithWhereWithoutPublishedByInput[]
+  deleteMany?: Prisma.WorkflowDefinitionScalarWhereInput | Prisma.WorkflowDefinitionScalarWhereInput[]
+}
+
 export type WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput = {
   create?: Prisma.XOR<Prisma.WorkflowDefinitionCreateWithoutCreatedByInput, Prisma.WorkflowDefinitionUncheckedCreateWithoutCreatedByInput> | Prisma.WorkflowDefinitionCreateWithoutCreatedByInput[] | Prisma.WorkflowDefinitionUncheckedCreateWithoutCreatedByInput[]
   connectOrCreate?: Prisma.WorkflowDefinitionCreateOrConnectWithoutCreatedByInput | Prisma.WorkflowDefinitionCreateOrConnectWithoutCreatedByInput[]
@@ -566,6 +662,20 @@ export type WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput = {
   connect?: Prisma.WorkflowDefinitionWhereUniqueInput | Prisma.WorkflowDefinitionWhereUniqueInput[]
   update?: Prisma.WorkflowDefinitionUpdateWithWhereUniqueWithoutCreatedByInput | Prisma.WorkflowDefinitionUpdateWithWhereUniqueWithoutCreatedByInput[]
   updateMany?: Prisma.WorkflowDefinitionUpdateManyWithWhereWithoutCreatedByInput | Prisma.WorkflowDefinitionUpdateManyWithWhereWithoutCreatedByInput[]
+  deleteMany?: Prisma.WorkflowDefinitionScalarWhereInput | Prisma.WorkflowDefinitionScalarWhereInput[]
+}
+
+export type WorkflowDefinitionUncheckedUpdateManyWithoutPublishedByNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkflowDefinitionCreateWithoutPublishedByInput, Prisma.WorkflowDefinitionUncheckedCreateWithoutPublishedByInput> | Prisma.WorkflowDefinitionCreateWithoutPublishedByInput[] | Prisma.WorkflowDefinitionUncheckedCreateWithoutPublishedByInput[]
+  connectOrCreate?: Prisma.WorkflowDefinitionCreateOrConnectWithoutPublishedByInput | Prisma.WorkflowDefinitionCreateOrConnectWithoutPublishedByInput[]
+  upsert?: Prisma.WorkflowDefinitionUpsertWithWhereUniqueWithoutPublishedByInput | Prisma.WorkflowDefinitionUpsertWithWhereUniqueWithoutPublishedByInput[]
+  createMany?: Prisma.WorkflowDefinitionCreateManyPublishedByInputEnvelope
+  set?: Prisma.WorkflowDefinitionWhereUniqueInput | Prisma.WorkflowDefinitionWhereUniqueInput[]
+  disconnect?: Prisma.WorkflowDefinitionWhereUniqueInput | Prisma.WorkflowDefinitionWhereUniqueInput[]
+  delete?: Prisma.WorkflowDefinitionWhereUniqueInput | Prisma.WorkflowDefinitionWhereUniqueInput[]
+  connect?: Prisma.WorkflowDefinitionWhereUniqueInput | Prisma.WorkflowDefinitionWhereUniqueInput[]
+  update?: Prisma.WorkflowDefinitionUpdateWithWhereUniqueWithoutPublishedByInput | Prisma.WorkflowDefinitionUpdateWithWhereUniqueWithoutPublishedByInput[]
+  updateMany?: Prisma.WorkflowDefinitionUpdateManyWithWhereWithoutPublishedByInput | Prisma.WorkflowDefinitionUpdateManyWithWhereWithoutPublishedByInput[]
   deleteMany?: Prisma.WorkflowDefinitionScalarWhereInput | Prisma.WorkflowDefinitionScalarWhereInput[]
 }
 
@@ -609,6 +719,10 @@ export type WorkflowDefinitionUncheckedUpdateManyWithoutResourceNestedInput = {
   update?: Prisma.WorkflowDefinitionUpdateWithWhereUniqueWithoutResourceInput | Prisma.WorkflowDefinitionUpdateWithWhereUniqueWithoutResourceInput[]
   updateMany?: Prisma.WorkflowDefinitionUpdateManyWithWhereWithoutResourceInput | Prisma.WorkflowDefinitionUpdateManyWithWhereWithoutResourceInput[]
   deleteMany?: Prisma.WorkflowDefinitionScalarWhereInput | Prisma.WorkflowDefinitionScalarWhereInput[]
+}
+
+export type EnumWorkflowDefinitionStatusFieldUpdateOperationsInput = {
+  set?: $Enums.WorkflowDefinitionStatus
 }
 
 export type WorkflowDefinitionCreateNestedOneWithoutStagesInput = {
@@ -657,16 +771,19 @@ export type WorkflowDefinitionCreateWithoutCreatedByInput = {
   id?: string
   name: string
   code: string
+  status?: $Enums.WorkflowDefinitionStatus
   version?: number
   description?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  publishedAt?: Date | string | null
   deletedAt?: Date | string | null
   resource: Prisma.ResourceCreateNestedOneWithoutWorkflowsInput
   stages?: Prisma.WorkflowStageCreateNestedManyWithoutWorkflowInput
   transitions?: Prisma.WorkflowTransitionCreateNestedManyWithoutWorkflowInput
   instances?: Prisma.WorkflowInstanceCreateNestedManyWithoutWorkflowInput
+  publishedBy?: Prisma.UserCreateNestedOneWithoutPublishedWorkflowsInput
 }
 
 export type WorkflowDefinitionUncheckedCreateWithoutCreatedByInput = {
@@ -674,11 +791,14 @@ export type WorkflowDefinitionUncheckedCreateWithoutCreatedByInput = {
   name: string
   code: string
   resourceId: string
+  status?: $Enums.WorkflowDefinitionStatus
   version?: number
   description?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  publishedAt?: Date | string | null
+  publishedById?: string | null
   deletedAt?: Date | string | null
   stages?: Prisma.WorkflowStageUncheckedCreateNestedManyWithoutWorkflowInput
   transitions?: Prisma.WorkflowTransitionUncheckedCreateNestedManyWithoutWorkflowInput
@@ -692,6 +812,54 @@ export type WorkflowDefinitionCreateOrConnectWithoutCreatedByInput = {
 
 export type WorkflowDefinitionCreateManyCreatedByInputEnvelope = {
   data: Prisma.WorkflowDefinitionCreateManyCreatedByInput | Prisma.WorkflowDefinitionCreateManyCreatedByInput[]
+  skipDuplicates?: boolean
+}
+
+export type WorkflowDefinitionCreateWithoutPublishedByInput = {
+  id?: string
+  name: string
+  code: string
+  status?: $Enums.WorkflowDefinitionStatus
+  version?: number
+  description?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  publishedAt?: Date | string | null
+  deletedAt?: Date | string | null
+  resource: Prisma.ResourceCreateNestedOneWithoutWorkflowsInput
+  createdBy?: Prisma.UserCreateNestedOneWithoutCreatedWorkflowsInput
+  stages?: Prisma.WorkflowStageCreateNestedManyWithoutWorkflowInput
+  transitions?: Prisma.WorkflowTransitionCreateNestedManyWithoutWorkflowInput
+  instances?: Prisma.WorkflowInstanceCreateNestedManyWithoutWorkflowInput
+}
+
+export type WorkflowDefinitionUncheckedCreateWithoutPublishedByInput = {
+  id?: string
+  name: string
+  code: string
+  resourceId: string
+  status?: $Enums.WorkflowDefinitionStatus
+  version?: number
+  description?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdById?: string | null
+  publishedAt?: Date | string | null
+  deletedAt?: Date | string | null
+  stages?: Prisma.WorkflowStageUncheckedCreateNestedManyWithoutWorkflowInput
+  transitions?: Prisma.WorkflowTransitionUncheckedCreateNestedManyWithoutWorkflowInput
+  instances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutWorkflowInput
+}
+
+export type WorkflowDefinitionCreateOrConnectWithoutPublishedByInput = {
+  where: Prisma.WorkflowDefinitionWhereUniqueInput
+  create: Prisma.XOR<Prisma.WorkflowDefinitionCreateWithoutPublishedByInput, Prisma.WorkflowDefinitionUncheckedCreateWithoutPublishedByInput>
+}
+
+export type WorkflowDefinitionCreateManyPublishedByInputEnvelope = {
+  data: Prisma.WorkflowDefinitionCreateManyPublishedByInput | Prisma.WorkflowDefinitionCreateManyPublishedByInput[]
   skipDuplicates?: boolean
 }
 
@@ -719,41 +887,66 @@ export type WorkflowDefinitionScalarWhereInput = {
   name?: Prisma.StringFilter<"WorkflowDefinition"> | string
   code?: Prisma.StringFilter<"WorkflowDefinition"> | string
   resourceId?: Prisma.StringFilter<"WorkflowDefinition"> | string
+  status?: Prisma.EnumWorkflowDefinitionStatusFilter<"WorkflowDefinition"> | $Enums.WorkflowDefinitionStatus
   version?: Prisma.IntFilter<"WorkflowDefinition"> | number
   description?: Prisma.StringNullableFilter<"WorkflowDefinition"> | string | null
   isActive?: Prisma.BoolFilter<"WorkflowDefinition"> | boolean
   createdAt?: Prisma.DateTimeFilter<"WorkflowDefinition"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WorkflowDefinition"> | Date | string
   createdById?: Prisma.StringNullableFilter<"WorkflowDefinition"> | string | null
+  publishedAt?: Prisma.DateTimeNullableFilter<"WorkflowDefinition"> | Date | string | null
+  publishedById?: Prisma.StringNullableFilter<"WorkflowDefinition"> | string | null
   deletedAt?: Prisma.DateTimeNullableFilter<"WorkflowDefinition"> | Date | string | null
+}
+
+export type WorkflowDefinitionUpsertWithWhereUniqueWithoutPublishedByInput = {
+  where: Prisma.WorkflowDefinitionWhereUniqueInput
+  update: Prisma.XOR<Prisma.WorkflowDefinitionUpdateWithoutPublishedByInput, Prisma.WorkflowDefinitionUncheckedUpdateWithoutPublishedByInput>
+  create: Prisma.XOR<Prisma.WorkflowDefinitionCreateWithoutPublishedByInput, Prisma.WorkflowDefinitionUncheckedCreateWithoutPublishedByInput>
+}
+
+export type WorkflowDefinitionUpdateWithWhereUniqueWithoutPublishedByInput = {
+  where: Prisma.WorkflowDefinitionWhereUniqueInput
+  data: Prisma.XOR<Prisma.WorkflowDefinitionUpdateWithoutPublishedByInput, Prisma.WorkflowDefinitionUncheckedUpdateWithoutPublishedByInput>
+}
+
+export type WorkflowDefinitionUpdateManyWithWhereWithoutPublishedByInput = {
+  where: Prisma.WorkflowDefinitionScalarWhereInput
+  data: Prisma.XOR<Prisma.WorkflowDefinitionUpdateManyMutationInput, Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutPublishedByInput>
 }
 
 export type WorkflowDefinitionCreateWithoutResourceInput = {
   id?: string
   name: string
   code: string
+  status?: $Enums.WorkflowDefinitionStatus
   version?: number
   description?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  publishedAt?: Date | string | null
   deletedAt?: Date | string | null
-  createdBy?: Prisma.UserCreateNestedOneWithoutWorkflowDefinitionsInput
+  createdBy?: Prisma.UserCreateNestedOneWithoutCreatedWorkflowsInput
   stages?: Prisma.WorkflowStageCreateNestedManyWithoutWorkflowInput
   transitions?: Prisma.WorkflowTransitionCreateNestedManyWithoutWorkflowInput
   instances?: Prisma.WorkflowInstanceCreateNestedManyWithoutWorkflowInput
+  publishedBy?: Prisma.UserCreateNestedOneWithoutPublishedWorkflowsInput
 }
 
 export type WorkflowDefinitionUncheckedCreateWithoutResourceInput = {
   id?: string
   name: string
   code: string
+  status?: $Enums.WorkflowDefinitionStatus
   version?: number
   description?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   createdById?: string | null
+  publishedAt?: Date | string | null
+  publishedById?: string | null
   deletedAt?: Date | string | null
   stages?: Prisma.WorkflowStageUncheckedCreateNestedManyWithoutWorkflowInput
   transitions?: Prisma.WorkflowTransitionUncheckedCreateNestedManyWithoutWorkflowInput
@@ -790,16 +983,19 @@ export type WorkflowDefinitionCreateWithoutStagesInput = {
   id?: string
   name: string
   code: string
+  status?: $Enums.WorkflowDefinitionStatus
   version?: number
   description?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  publishedAt?: Date | string | null
   deletedAt?: Date | string | null
   resource: Prisma.ResourceCreateNestedOneWithoutWorkflowsInput
-  createdBy?: Prisma.UserCreateNestedOneWithoutWorkflowDefinitionsInput
+  createdBy?: Prisma.UserCreateNestedOneWithoutCreatedWorkflowsInput
   transitions?: Prisma.WorkflowTransitionCreateNestedManyWithoutWorkflowInput
   instances?: Prisma.WorkflowInstanceCreateNestedManyWithoutWorkflowInput
+  publishedBy?: Prisma.UserCreateNestedOneWithoutPublishedWorkflowsInput
 }
 
 export type WorkflowDefinitionUncheckedCreateWithoutStagesInput = {
@@ -807,12 +1003,15 @@ export type WorkflowDefinitionUncheckedCreateWithoutStagesInput = {
   name: string
   code: string
   resourceId: string
+  status?: $Enums.WorkflowDefinitionStatus
   version?: number
   description?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   createdById?: string | null
+  publishedAt?: Date | string | null
+  publishedById?: string | null
   deletedAt?: Date | string | null
   transitions?: Prisma.WorkflowTransitionUncheckedCreateNestedManyWithoutWorkflowInput
   instances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutWorkflowInput
@@ -838,16 +1037,19 @@ export type WorkflowDefinitionUpdateWithoutStagesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumWorkflowDefinitionStatusFieldUpdateOperationsInput | $Enums.WorkflowDefinitionStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   resource?: Prisma.ResourceUpdateOneRequiredWithoutWorkflowsNestedInput
-  createdBy?: Prisma.UserUpdateOneWithoutWorkflowDefinitionsNestedInput
+  createdBy?: Prisma.UserUpdateOneWithoutCreatedWorkflowsNestedInput
   transitions?: Prisma.WorkflowTransitionUpdateManyWithoutWorkflowNestedInput
   instances?: Prisma.WorkflowInstanceUpdateManyWithoutWorkflowNestedInput
+  publishedBy?: Prisma.UserUpdateOneWithoutPublishedWorkflowsNestedInput
 }
 
 export type WorkflowDefinitionUncheckedUpdateWithoutStagesInput = {
@@ -855,12 +1057,15 @@ export type WorkflowDefinitionUncheckedUpdateWithoutStagesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   resourceId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumWorkflowDefinitionStatusFieldUpdateOperationsInput | $Enums.WorkflowDefinitionStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   transitions?: Prisma.WorkflowTransitionUncheckedUpdateManyWithoutWorkflowNestedInput
   instances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutWorkflowNestedInput
@@ -870,16 +1075,19 @@ export type WorkflowDefinitionCreateWithoutTransitionsInput = {
   id?: string
   name: string
   code: string
+  status?: $Enums.WorkflowDefinitionStatus
   version?: number
   description?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  publishedAt?: Date | string | null
   deletedAt?: Date | string | null
   resource: Prisma.ResourceCreateNestedOneWithoutWorkflowsInput
-  createdBy?: Prisma.UserCreateNestedOneWithoutWorkflowDefinitionsInput
+  createdBy?: Prisma.UserCreateNestedOneWithoutCreatedWorkflowsInput
   stages?: Prisma.WorkflowStageCreateNestedManyWithoutWorkflowInput
   instances?: Prisma.WorkflowInstanceCreateNestedManyWithoutWorkflowInput
+  publishedBy?: Prisma.UserCreateNestedOneWithoutPublishedWorkflowsInput
 }
 
 export type WorkflowDefinitionUncheckedCreateWithoutTransitionsInput = {
@@ -887,12 +1095,15 @@ export type WorkflowDefinitionUncheckedCreateWithoutTransitionsInput = {
   name: string
   code: string
   resourceId: string
+  status?: $Enums.WorkflowDefinitionStatus
   version?: number
   description?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   createdById?: string | null
+  publishedAt?: Date | string | null
+  publishedById?: string | null
   deletedAt?: Date | string | null
   stages?: Prisma.WorkflowStageUncheckedCreateNestedManyWithoutWorkflowInput
   instances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutWorkflowInput
@@ -918,16 +1129,19 @@ export type WorkflowDefinitionUpdateWithoutTransitionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumWorkflowDefinitionStatusFieldUpdateOperationsInput | $Enums.WorkflowDefinitionStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   resource?: Prisma.ResourceUpdateOneRequiredWithoutWorkflowsNestedInput
-  createdBy?: Prisma.UserUpdateOneWithoutWorkflowDefinitionsNestedInput
+  createdBy?: Prisma.UserUpdateOneWithoutCreatedWorkflowsNestedInput
   stages?: Prisma.WorkflowStageUpdateManyWithoutWorkflowNestedInput
   instances?: Prisma.WorkflowInstanceUpdateManyWithoutWorkflowNestedInput
+  publishedBy?: Prisma.UserUpdateOneWithoutPublishedWorkflowsNestedInput
 }
 
 export type WorkflowDefinitionUncheckedUpdateWithoutTransitionsInput = {
@@ -935,12 +1149,15 @@ export type WorkflowDefinitionUncheckedUpdateWithoutTransitionsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   resourceId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumWorkflowDefinitionStatusFieldUpdateOperationsInput | $Enums.WorkflowDefinitionStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   stages?: Prisma.WorkflowStageUncheckedUpdateManyWithoutWorkflowNestedInput
   instances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutWorkflowNestedInput
@@ -950,16 +1167,19 @@ export type WorkflowDefinitionCreateWithoutInstancesInput = {
   id?: string
   name: string
   code: string
+  status?: $Enums.WorkflowDefinitionStatus
   version?: number
   description?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  publishedAt?: Date | string | null
   deletedAt?: Date | string | null
   resource: Prisma.ResourceCreateNestedOneWithoutWorkflowsInput
-  createdBy?: Prisma.UserCreateNestedOneWithoutWorkflowDefinitionsInput
+  createdBy?: Prisma.UserCreateNestedOneWithoutCreatedWorkflowsInput
   stages?: Prisma.WorkflowStageCreateNestedManyWithoutWorkflowInput
   transitions?: Prisma.WorkflowTransitionCreateNestedManyWithoutWorkflowInput
+  publishedBy?: Prisma.UserCreateNestedOneWithoutPublishedWorkflowsInput
 }
 
 export type WorkflowDefinitionUncheckedCreateWithoutInstancesInput = {
@@ -967,12 +1187,15 @@ export type WorkflowDefinitionUncheckedCreateWithoutInstancesInput = {
   name: string
   code: string
   resourceId: string
+  status?: $Enums.WorkflowDefinitionStatus
   version?: number
   description?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   createdById?: string | null
+  publishedAt?: Date | string | null
+  publishedById?: string | null
   deletedAt?: Date | string | null
   stages?: Prisma.WorkflowStageUncheckedCreateNestedManyWithoutWorkflowInput
   transitions?: Prisma.WorkflowTransitionUncheckedCreateNestedManyWithoutWorkflowInput
@@ -998,16 +1221,19 @@ export type WorkflowDefinitionUpdateWithoutInstancesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumWorkflowDefinitionStatusFieldUpdateOperationsInput | $Enums.WorkflowDefinitionStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   resource?: Prisma.ResourceUpdateOneRequiredWithoutWorkflowsNestedInput
-  createdBy?: Prisma.UserUpdateOneWithoutWorkflowDefinitionsNestedInput
+  createdBy?: Prisma.UserUpdateOneWithoutCreatedWorkflowsNestedInput
   stages?: Prisma.WorkflowStageUpdateManyWithoutWorkflowNestedInput
   transitions?: Prisma.WorkflowTransitionUpdateManyWithoutWorkflowNestedInput
+  publishedBy?: Prisma.UserUpdateOneWithoutPublishedWorkflowsNestedInput
 }
 
 export type WorkflowDefinitionUncheckedUpdateWithoutInstancesInput = {
@@ -1015,12 +1241,15 @@ export type WorkflowDefinitionUncheckedUpdateWithoutInstancesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   resourceId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumWorkflowDefinitionStatusFieldUpdateOperationsInput | $Enums.WorkflowDefinitionStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   stages?: Prisma.WorkflowStageUncheckedUpdateManyWithoutWorkflowNestedInput
   transitions?: Prisma.WorkflowTransitionUncheckedUpdateManyWithoutWorkflowNestedInput
@@ -1031,11 +1260,30 @@ export type WorkflowDefinitionCreateManyCreatedByInput = {
   name: string
   code: string
   resourceId: string
+  status?: $Enums.WorkflowDefinitionStatus
   version?: number
   description?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  publishedAt?: Date | string | null
+  publishedById?: string | null
+  deletedAt?: Date | string | null
+}
+
+export type WorkflowDefinitionCreateManyPublishedByInput = {
+  id?: string
+  name: string
+  code: string
+  resourceId: string
+  status?: $Enums.WorkflowDefinitionStatus
+  version?: number
+  description?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdById?: string | null
+  publishedAt?: Date | string | null
   deletedAt?: Date | string | null
 }
 
@@ -1043,16 +1291,19 @@ export type WorkflowDefinitionUpdateWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumWorkflowDefinitionStatusFieldUpdateOperationsInput | $Enums.WorkflowDefinitionStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   resource?: Prisma.ResourceUpdateOneRequiredWithoutWorkflowsNestedInput
   stages?: Prisma.WorkflowStageUpdateManyWithoutWorkflowNestedInput
   transitions?: Prisma.WorkflowTransitionUpdateManyWithoutWorkflowNestedInput
   instances?: Prisma.WorkflowInstanceUpdateManyWithoutWorkflowNestedInput
+  publishedBy?: Prisma.UserUpdateOneWithoutPublishedWorkflowsNestedInput
 }
 
 export type WorkflowDefinitionUncheckedUpdateWithoutCreatedByInput = {
@@ -1060,11 +1311,14 @@ export type WorkflowDefinitionUncheckedUpdateWithoutCreatedByInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   resourceId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumWorkflowDefinitionStatusFieldUpdateOperationsInput | $Enums.WorkflowDefinitionStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   stages?: Prisma.WorkflowStageUncheckedUpdateManyWithoutWorkflowNestedInput
   transitions?: Prisma.WorkflowTransitionUncheckedUpdateManyWithoutWorkflowNestedInput
@@ -1076,11 +1330,68 @@ export type WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   resourceId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumWorkflowDefinitionStatusFieldUpdateOperationsInput | $Enums.WorkflowDefinitionStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type WorkflowDefinitionUpdateWithoutPublishedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumWorkflowDefinitionStatusFieldUpdateOperationsInput | $Enums.WorkflowDefinitionStatus
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resource?: Prisma.ResourceUpdateOneRequiredWithoutWorkflowsNestedInput
+  createdBy?: Prisma.UserUpdateOneWithoutCreatedWorkflowsNestedInput
+  stages?: Prisma.WorkflowStageUpdateManyWithoutWorkflowNestedInput
+  transitions?: Prisma.WorkflowTransitionUpdateManyWithoutWorkflowNestedInput
+  instances?: Prisma.WorkflowInstanceUpdateManyWithoutWorkflowNestedInput
+}
+
+export type WorkflowDefinitionUncheckedUpdateWithoutPublishedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  resourceId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumWorkflowDefinitionStatusFieldUpdateOperationsInput | $Enums.WorkflowDefinitionStatus
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  stages?: Prisma.WorkflowStageUncheckedUpdateManyWithoutWorkflowNestedInput
+  transitions?: Prisma.WorkflowTransitionUncheckedUpdateManyWithoutWorkflowNestedInput
+  instances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutWorkflowNestedInput
+}
+
+export type WorkflowDefinitionUncheckedUpdateManyWithoutPublishedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  resourceId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumWorkflowDefinitionStatusFieldUpdateOperationsInput | $Enums.WorkflowDefinitionStatus
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -1088,12 +1399,15 @@ export type WorkflowDefinitionCreateManyResourceInput = {
   id?: string
   name: string
   code: string
+  status?: $Enums.WorkflowDefinitionStatus
   version?: number
   description?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   createdById?: string | null
+  publishedAt?: Date | string | null
+  publishedById?: string | null
   deletedAt?: Date | string | null
 }
 
@@ -1101,28 +1415,34 @@ export type WorkflowDefinitionUpdateWithoutResourceInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumWorkflowDefinitionStatusFieldUpdateOperationsInput | $Enums.WorkflowDefinitionStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.UserUpdateOneWithoutWorkflowDefinitionsNestedInput
+  createdBy?: Prisma.UserUpdateOneWithoutCreatedWorkflowsNestedInput
   stages?: Prisma.WorkflowStageUpdateManyWithoutWorkflowNestedInput
   transitions?: Prisma.WorkflowTransitionUpdateManyWithoutWorkflowNestedInput
   instances?: Prisma.WorkflowInstanceUpdateManyWithoutWorkflowNestedInput
+  publishedBy?: Prisma.UserUpdateOneWithoutPublishedWorkflowsNestedInput
 }
 
 export type WorkflowDefinitionUncheckedUpdateWithoutResourceInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumWorkflowDefinitionStatusFieldUpdateOperationsInput | $Enums.WorkflowDefinitionStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   stages?: Prisma.WorkflowStageUncheckedUpdateManyWithoutWorkflowNestedInput
   transitions?: Prisma.WorkflowTransitionUncheckedUpdateManyWithoutWorkflowNestedInput
@@ -1133,12 +1453,15 @@ export type WorkflowDefinitionUncheckedUpdateManyWithoutResourceInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumWorkflowDefinitionStatusFieldUpdateOperationsInput | $Enums.WorkflowDefinitionStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -1196,18 +1519,22 @@ export type WorkflowDefinitionSelect<ExtArgs extends runtime.Types.Extensions.In
   name?: boolean
   code?: boolean
   resourceId?: boolean
+  status?: boolean
   version?: boolean
   description?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   createdById?: boolean
+  publishedAt?: boolean
+  publishedById?: boolean
   deletedAt?: boolean
   resource?: boolean | Prisma.ResourceDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.WorkflowDefinition$createdByArgs<ExtArgs>
   stages?: boolean | Prisma.WorkflowDefinition$stagesArgs<ExtArgs>
   transitions?: boolean | Prisma.WorkflowDefinition$transitionsArgs<ExtArgs>
   instances?: boolean | Prisma.WorkflowDefinition$instancesArgs<ExtArgs>
+  publishedBy?: boolean | Prisma.WorkflowDefinition$publishedByArgs<ExtArgs>
   _count?: boolean | Prisma.WorkflowDefinitionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["workflowDefinition"]>
 
@@ -1216,15 +1543,19 @@ export type WorkflowDefinitionSelectCreateManyAndReturn<ExtArgs extends runtime.
   name?: boolean
   code?: boolean
   resourceId?: boolean
+  status?: boolean
   version?: boolean
   description?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   createdById?: boolean
+  publishedAt?: boolean
+  publishedById?: boolean
   deletedAt?: boolean
   resource?: boolean | Prisma.ResourceDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.WorkflowDefinition$createdByArgs<ExtArgs>
+  publishedBy?: boolean | Prisma.WorkflowDefinition$publishedByArgs<ExtArgs>
 }, ExtArgs["result"]["workflowDefinition"]>
 
 export type WorkflowDefinitionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1232,15 +1563,19 @@ export type WorkflowDefinitionSelectUpdateManyAndReturn<ExtArgs extends runtime.
   name?: boolean
   code?: boolean
   resourceId?: boolean
+  status?: boolean
   version?: boolean
   description?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   createdById?: boolean
+  publishedAt?: boolean
+  publishedById?: boolean
   deletedAt?: boolean
   resource?: boolean | Prisma.ResourceDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.WorkflowDefinition$createdByArgs<ExtArgs>
+  publishedBy?: boolean | Prisma.WorkflowDefinition$publishedByArgs<ExtArgs>
 }, ExtArgs["result"]["workflowDefinition"]>
 
 export type WorkflowDefinitionSelectScalar = {
@@ -1248,31 +1583,37 @@ export type WorkflowDefinitionSelectScalar = {
   name?: boolean
   code?: boolean
   resourceId?: boolean
+  status?: boolean
   version?: boolean
   description?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   createdById?: boolean
+  publishedAt?: boolean
+  publishedById?: boolean
   deletedAt?: boolean
 }
 
-export type WorkflowDefinitionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "code" | "resourceId" | "version" | "description" | "isActive" | "createdAt" | "updatedAt" | "createdById" | "deletedAt", ExtArgs["result"]["workflowDefinition"]>
+export type WorkflowDefinitionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "code" | "resourceId" | "status" | "version" | "description" | "isActive" | "createdAt" | "updatedAt" | "createdById" | "publishedAt" | "publishedById" | "deletedAt", ExtArgs["result"]["workflowDefinition"]>
 export type WorkflowDefinitionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   resource?: boolean | Prisma.ResourceDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.WorkflowDefinition$createdByArgs<ExtArgs>
   stages?: boolean | Prisma.WorkflowDefinition$stagesArgs<ExtArgs>
   transitions?: boolean | Prisma.WorkflowDefinition$transitionsArgs<ExtArgs>
   instances?: boolean | Prisma.WorkflowDefinition$instancesArgs<ExtArgs>
+  publishedBy?: boolean | Prisma.WorkflowDefinition$publishedByArgs<ExtArgs>
   _count?: boolean | Prisma.WorkflowDefinitionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type WorkflowDefinitionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   resource?: boolean | Prisma.ResourceDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.WorkflowDefinition$createdByArgs<ExtArgs>
+  publishedBy?: boolean | Prisma.WorkflowDefinition$publishedByArgs<ExtArgs>
 }
 export type WorkflowDefinitionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   resource?: boolean | Prisma.ResourceDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.WorkflowDefinition$createdByArgs<ExtArgs>
+  publishedBy?: boolean | Prisma.WorkflowDefinition$publishedByArgs<ExtArgs>
 }
 
 export type $WorkflowDefinitionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1283,18 +1624,22 @@ export type $WorkflowDefinitionPayload<ExtArgs extends runtime.Types.Extensions.
     stages: Prisma.$WorkflowStagePayload<ExtArgs>[]
     transitions: Prisma.$WorkflowTransitionPayload<ExtArgs>[]
     instances: Prisma.$WorkflowInstancePayload<ExtArgs>[]
+    publishedBy: Prisma.$UserPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
     code: string
     resourceId: string
+    status: $Enums.WorkflowDefinitionStatus
     version: number
     description: string | null
     isActive: boolean
     createdAt: Date
     updatedAt: Date
     createdById: string | null
+    publishedAt: Date | null
+    publishedById: string | null
     deletedAt: Date | null
   }, ExtArgs["result"]["workflowDefinition"]>
   composites: {}
@@ -1695,6 +2040,7 @@ export interface Prisma__WorkflowDefinitionClient<T, Null = never, ExtArgs exten
   stages<T extends Prisma.WorkflowDefinition$stagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkflowDefinition$stagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkflowStagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   transitions<T extends Prisma.WorkflowDefinition$transitionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkflowDefinition$transitionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkflowTransitionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   instances<T extends Prisma.WorkflowDefinition$instancesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkflowDefinition$instancesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkflowInstancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  publishedBy<T extends Prisma.WorkflowDefinition$publishedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkflowDefinition$publishedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1728,12 +2074,15 @@ export interface WorkflowDefinitionFieldRefs {
   readonly name: Prisma.FieldRef<"WorkflowDefinition", 'String'>
   readonly code: Prisma.FieldRef<"WorkflowDefinition", 'String'>
   readonly resourceId: Prisma.FieldRef<"WorkflowDefinition", 'String'>
+  readonly status: Prisma.FieldRef<"WorkflowDefinition", 'WorkflowDefinitionStatus'>
   readonly version: Prisma.FieldRef<"WorkflowDefinition", 'Int'>
   readonly description: Prisma.FieldRef<"WorkflowDefinition", 'String'>
   readonly isActive: Prisma.FieldRef<"WorkflowDefinition", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"WorkflowDefinition", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"WorkflowDefinition", 'DateTime'>
   readonly createdById: Prisma.FieldRef<"WorkflowDefinition", 'String'>
+  readonly publishedAt: Prisma.FieldRef<"WorkflowDefinition", 'DateTime'>
+  readonly publishedById: Prisma.FieldRef<"WorkflowDefinition", 'String'>
   readonly deletedAt: Prisma.FieldRef<"WorkflowDefinition", 'DateTime'>
 }
     
@@ -2219,6 +2568,25 @@ export type WorkflowDefinition$instancesArgs<ExtArgs extends runtime.Types.Exten
   take?: number
   skip?: number
   distinct?: Prisma.WorkflowInstanceScalarFieldEnum | Prisma.WorkflowInstanceScalarFieldEnum[]
+}
+
+/**
+ * WorkflowDefinition.publishedBy
+ */
+export type WorkflowDefinition$publishedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
 }
 
 /**

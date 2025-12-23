@@ -4,18 +4,13 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 
-
-
 import { DataTable } from "@/components/table/data-table";
-
 
 import { setTotal } from "@/store/dataTableSlice";
 
 import { CreateButton } from "@/components/table/create-button";
 
-import {
-  createWorkflowSchema,
-} from "../schema/workflow-schema";
+import { createWorkflowSchema } from "../schema/workflow-schema";
 
 import { useZodForm } from "@/hooks/useZodForm";
 import { useCreateWorkflow, useWorkflows } from "../hooks";
@@ -24,10 +19,11 @@ import { workflowColumns } from "./column";
 import { useResourceList } from "@/lib/resource/hook";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { WorkflowForm } from "../forms/create-workflow";
 
 export default function WorkflowsTable() {
   const dispatch = useDispatch();
-const router = useRouter()
+  const router = useRouter();
   // --- Mutations ---
   const createWorkflow = useCreateWorkflow();
 
@@ -37,7 +33,7 @@ const router = useRouter()
       name: "",
       description: "",
       resourceId: "",
-      isActive:true,
+      isActive: true,
     });
 
   // --- Redux DataTable State ---
@@ -55,24 +51,24 @@ const router = useRouter()
     sortOrder: sorting?.[0]?.desc ? "desc" : "asc",
   });
 
-   useEffect(() => {
+  useEffect(() => {
     if (data?.workflows) dispatch(setTotal(data.workflows.total));
-  }, [data?.workflows?.total, dispatch])
+  }, [data?.workflows?.total, dispatch]);
 
-    // const [sortColumn] = useState("createdAt");
-    // const [sortOrder] = useState<"asc" | "desc">("desc");
+  // const [sortColumn] = useState("createdAt");
+  // const [sortOrder] = useState<"asc" | "desc">("desc");
 
-    // const { data: roleData } = useRoles({
-    //   page,
-    //   limit: 100,
-    //   search,
-    //   filters,
-    //   sortBy: sortColumn,
-    //   sortOrder,
-    // });
-  
-    // const roles = roleData?.roles.data ?? [];
-    const { data: resources = [] } = useResourceList();
+  // const { data: roleData } = useRoles({
+  //   page,
+  //   limit: 100,
+  //   search,
+  //   filters,
+  //   sortBy: sortColumn,
+  //   sortOrder,
+  // });
+
+  // const roles = roleData?.roles.data ?? [];
+  const { data: resources = [] } = useResourceList();
 
   // --- Table Filters ---
   const tableFilters = [
@@ -95,12 +91,11 @@ const router = useRouter()
 
     if (!validation.success) return;
 
-
     createWorkflow.mutate(validation.data, {
       onSuccess: () => {
         reset();
         close();
-      }
+      },
     });
   };
 
@@ -115,33 +110,25 @@ const router = useRouter()
       sorting={sorting}
       search={search}
       filters={tableFilters}
-      // createButton={
-      //   <CreateButton
-      //     triggerText="Add Workflow"
-      //     title="Create Workflow"
-      //     size="lg"
-      //     onSubmit={handleSubmit}
-      //     onOpenReset={reset}
-      //   >
-      //     {({ close }) => (
-      //       <WorkflowForm
-      //         form={form}
-      //         errors={errors}
-      //         touched={touched}
-      //         setValue={setValue}
-      //         onBlur={onBlur}
-      //         resources={resources}
-      //       />
-      //     )}
-      //   </CreateButton>
-      // }
-            createButton={
-        <Button
-          onClick={() => router.push("/create-workflow")}
-          className="ml-auto"
+      createButton={
+        <CreateButton
+          triggerText="Add Workflow"
+          title="Create Workflow"
+          size="lg"
+          onSubmit={handleSubmit}
+          onOpenReset={reset}
         >
-          Add Workflow
-        </Button>
+          {({ close }) => (
+            <WorkflowForm
+              form={form}
+              errors={errors}
+              touched={touched}
+              setValue={setValue}
+              onBlur={onBlur}
+              resources={resources}
+            />
+          )}
+        </CreateButton>
       }
     />
   );

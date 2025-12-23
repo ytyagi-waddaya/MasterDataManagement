@@ -6,15 +6,17 @@ import { store } from "@/store";
 import {
   userOnline,
   userOffline,
+  resetPresence,
 } from "@/store/presenceSlice";
 
 export default function PresenceInitializer() {
   useEffect(() => {
     const dispatch = store.dispatch;
 
-    const onSnapshot = ({ users }: { users: string[] }) => {
-      users.forEach((id) => dispatch(userOnline(id)));
-    };
+const onSnapshot = ({ users }: { users: string[] }) => {
+  dispatch(resetPresence());
+  users.forEach((id) => dispatch(userOnline(id)));
+};
 
     const onUserOnline = ({ userId }: { userId: string }) => {
       dispatch(userOnline(userId));

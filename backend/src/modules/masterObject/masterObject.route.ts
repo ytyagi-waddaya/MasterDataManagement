@@ -7,6 +7,7 @@ import {
   masterObjectFilterSchema,
 } from "./dto/masterObject.dto.js";
 import { asyncHandler } from "../../middlewares/asyncHandler.js";
+import { requireAuth } from "../../middlewares/authMiddleware.js";
 
 const router = Router();
 
@@ -19,6 +20,7 @@ router.get(
 
 router.get(
   "/:masterObjectId",
+  requireAuth,
   validate(masterObjectIdSchema, "params"),
   asyncHandler(masterObjectController.getMasterObject)
 );
@@ -29,6 +31,7 @@ router.put(
   validate(updateMasterObjectSchema, "body"),
   asyncHandler(masterObjectController.updateMasterObject)
 );
+
 router.patch(
   "/:masterObjectId/archive",
   validate(masterObjectIdSchema, "params"),

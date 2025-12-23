@@ -29,7 +29,7 @@ import {
 } from "../dialog/masterObject-actions-dialog";
 
 import { FormDialog } from "@/components/dialog/edit-dialog";
-import {updateMasterObjectInput} from "../schema/masterObject.schema";
+import {UpdateMasterObjectInput} from "../schema/masterObject.schema";
 
 import { EditMasterObjectForm } from "../form/edit-masterObject";
 import { MasterObject } from "./masterObjecctTable";
@@ -180,14 +180,13 @@ export const masterObjectColumns: ColumnDef<MasterObject>[] = [
               })
             }
           />
-          <FormDialog<updateMasterObjectInput>
+          <FormDialog<UpdateMasterObjectInput>
             open={openEdit}
             onOpenChange={setOpenEdit}
             title="Edit MasterObject"
             description="Modify masterObject details and system assignment."
             initialValues={{
               name: masterObject.name,
-              isSystem: masterObject.isSystem,
               isActive: masterObject.isActive,
             }}
             onSave={(data) =>

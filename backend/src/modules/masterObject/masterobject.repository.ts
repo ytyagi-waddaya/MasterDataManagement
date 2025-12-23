@@ -42,7 +42,146 @@ const masterObjectRepository = {
       where: { id },
       include: {
         resources: true,
-        records: true,
+
+        schemas: {
+          where: { status: "PUBLISHED" },
+          orderBy: { version: "desc" },
+          take: 1,
+        },
+      },
+    });
+  },
+
+  findByIdObj: (id: string) => {
+    return prisma.masterObject.findUnique({
+      where: { id },
+
+      include: {
+        /* =====================================================
+         MASTEROBJECT CORE
+      ===================================================== */
+
+        resources: true,
+
+        formEventHooks: {
+          where: { deletedAt: null },
+        },
+
+        recordPermissions: {
+          where: { deletedAt: null },
+          include: {
+            role: true,
+            user: true,
+          },
+        },
+
+        /* =====================================================
+         SCHEMAS (LATEST FIRST)
+      ===================================================== */
+
+        schemas: {
+          where: { deletedAt: null },
+          orderBy: { version: "desc" },
+
+          include: {
+            /* =================================================
+             FIELD DEFINITIONS (ORDER IS CRITICAL)
+          ================================================= */
+
+            fieldDefinitions: {
+              where: { deletedAt: null },
+              orderBy: { order: "asc" },
+
+              include: {
+                /* -------- PERMISSIONS -------- */
+                fieldPermissions: {
+                  where: { deletedAt: null },
+                  include: {
+                    role: true,
+                    user: true,
+                  },
+                },
+
+                /* -------- VALIDATION RULES -------- */
+                fieldValidationRules: {
+                  where: { deletedAt: null },
+                  orderBy: { order: "asc" },
+                },
+
+                /* -------- FORMULA -------- */
+                fieldFormula: true,
+
+                /* -------- REFERENCE -------- */
+                fieldReference: {
+                  include: {
+                    targetObject: {
+                      select: {
+                        id: true,
+                        name: true,
+                        key: true,
+                      },
+                    },
+                  },
+                },
+
+                /* -------- CONDITIONAL BINDINGS -------- */
+                fieldConditionBindings: {
+                  where: { deletedAt: null },
+                },
+              },
+            },
+
+            /* =================================================
+             SCHEMA CHANGE LOG
+          ================================================= */
+
+            schemaChanges: {
+              where: { deletedAt: null },
+              orderBy: { createdAt: "desc" },
+            },
+          },
+        },
+
+        /* =====================================================
+         INBOUND FIELD REFERENCES (OTHER OBJECTS)
+      ===================================================== */
+
+        fieldReferences: {
+          where: { deletedAt: null },
+          include: {
+            field: {
+              select: {
+                id: true,
+                key: true,
+                label: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  },
+
+  findByIdWithSchema: ({
+    id,
+    includeDraft,
+  }: {
+    id: string;
+    includeDraft: boolean;
+  }) => {
+    return prisma.masterObject.findUnique({
+      where: { id },
+      include: {
+        resources: true,
+
+        schemas: {
+          where: includeDraft
+            ? { status: { in: ["PUBLISHED", "DRAFT"] } }
+            : { status: "PUBLISHED" },
+
+          orderBy: { version: "desc" },
+          take: 1,
+        },
       },
     });
   },

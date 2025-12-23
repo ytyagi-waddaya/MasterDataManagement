@@ -40,22 +40,12 @@ const dbPayload: Prisma.NotificationDeliveryCreateInput = {
 
   await enqueueDelivery({ deliveryId: id });
 
-  try {
-    await publishToUser(opts.userId, {
-      deliveryId: id,
-      userId: opts.userId,
-      title: opts.title,
-      message: opts.message,
-      data: opts.data ?? null,
-      channel: NotificationChannel.WEB,
-    });
-  } catch (err) {
-    logger.warn("[DeliveryService] publishToUser failed", err);
-  }
-
   return id;
 },
-  listForUser: NotificationRepository.listForUser,
+ listForUser: async (userId: string, take = 20, skip = 0) => {
+  return NotificationRepository.listForUser(userId, take, skip);
+},
+
   markRead: NotificationRepository.markRead,
 
   // Notify many users

@@ -47,13 +47,22 @@ export const NotificationRepository = {
       data: { read: true, readAt: new Date() },
     }),
 
-  listForUser: (userId: string, take = 20, skip = 0) =>
+listForUser: async (userId: string, take = 20, skip = 0) => {
+  const [data, total] = await prisma.$transaction([
     prisma.notificationDelivery.findMany({
       where: { userId },
       orderBy: { createdAt: "desc" },
       take,
       skip,
     }),
+    prisma.notificationDelivery.count({
+      where: { userId },
+    }),
+  ]);
+
+  return { data, total };
+},
+
 
   createBatch: (data: {
     title: string;

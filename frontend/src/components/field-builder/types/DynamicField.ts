@@ -1,5 +1,6 @@
-// components/fieldBuilder/types.ts
-export type FieldType =
+import { FieldCategory } from "../contracts/field-config.contract";
+
+export type UIFieldType =
   | "text"
   | "textarea"
   | "number"
@@ -12,40 +13,76 @@ export type FieldType =
   | "currency"
   | "radio";
 
-export interface FieldOption {
-  label: string;
-  value: string;
-}
-
 export interface DynamicField {
   id: string;
-  label: string;
-  type: FieldType;
-  required?: boolean;
-  placeholder?: string | null;
-  defaultValue?: any;
-  order: number;
   key: string;
-  showInList: boolean;
+  label: string;
+  type: UIFieldType;
+  order: number;
+
+  required?: boolean;
+  readOnly?: boolean;
+
+  placeholder?: string;
+  helperText?: string;
+  defaultValue?: any;
 
   layout?: "full" | "half" | "third" | "quarter" | "two-third";
 
-  min?: number | null;
-  max?: number | null;
+  min?: number;
+  max?: number;
 
-  options?: FieldOption[];
+  options?: { label: string; value: string }[];
 
-  // conditional visibility: show this field only when another field has a specific value
   visibleIf?: {
-    fieldId: string | null;
-    value: any;
-  } | null;
+    operator: "AND" | "OR";
+    rules: {
+      field: string;
+      operator: "EQUALS" | "IN" | "GT" | "LT";
+      value: any;
+    }[];
+  };
 
   permissions?: {
     read?: string[];
     write?: string[];
   };
+
+  category?: FieldCategory;
+
+  formula?: {
+    expression: string;
+    dependencies: string[];
+  };
+
+  /** ✅ ADD THIS */
+  integration?: {
+    type: "API" | "REFERENCE";
+
+    /** API-driven dropdown */
+    url?: string;
+    method?: "GET" | "POST";
+    valueField?: string;
+    labelField?: string;
+
+    /** Dependency (state → city) */
+    dependsOn?: string[];
+
+    /** Dynamic query params */
+    params?: Record<string, string>;
+
+    /** Reference object */
+    targetObject?: string;
+    displayField?: string;
+  };
+
+  showInList?: boolean;
+
+  icon?: string;
+  color?: string;
+  iconIntent?: "default" | "info" | "success" | "warning" | "error";
 }
+
 
 export interface FormSection {
   id: string;

@@ -60,7 +60,7 @@ export const EditMasterObjectForm: React.FC<Props> = ({
       </div>
 
       {/* System MasterObject */}
-      <div className="flex justify-between items-center rounded-md border p-3 bg-muted/30">
+      {/* <div className="flex justify-between items-center rounded-md border p-3 bg-muted/30">
         <div>
           <Label htmlFor="isSystem" className="font-medium mb-2">
             System MasterObject
@@ -78,7 +78,7 @@ export const EditMasterObjectForm: React.FC<Props> = ({
           onCheckedChange={(val) => setValue("isSystem", val)}
           disabled={disabled}
         />
-      </div>
+      </div> */}
 
       {/* Buttons */}
       <div className="flex justify-end gap-2 pt-4">

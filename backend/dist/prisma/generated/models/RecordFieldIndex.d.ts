@@ -1,0 +1,1327 @@
+import type * as runtime from "@prisma/client/runtime/client";
+import type * as Prisma from "../internal/prismaNamespace.js";
+/**
+ * Model RecordFieldIndex
+ *
+ */
+export type RecordFieldIndexModel = runtime.Types.Result.DefaultSelection<Prisma.$RecordFieldIndexPayload>;
+export type AggregateRecordFieldIndex = {
+    _count: RecordFieldIndexCountAggregateOutputType | null;
+    _avg: RecordFieldIndexAvgAggregateOutputType | null;
+    _sum: RecordFieldIndexSumAggregateOutputType | null;
+    _min: RecordFieldIndexMinAggregateOutputType | null;
+    _max: RecordFieldIndexMaxAggregateOutputType | null;
+};
+export type RecordFieldIndexAvgAggregateOutputType = {
+    numberValue: number | null;
+};
+export type RecordFieldIndexSumAggregateOutputType = {
+    numberValue: number | null;
+};
+export type RecordFieldIndexMinAggregateOutputType = {
+    id: string | null;
+    recordId: string | null;
+    fieldKey: string | null;
+    stringValue: string | null;
+    numberValue: number | null;
+    dateValue: Date | null;
+    createdAt: Date | null;
+    deletedAt: Date | null;
+};
+export type RecordFieldIndexMaxAggregateOutputType = {
+    id: string | null;
+    recordId: string | null;
+    fieldKey: string | null;
+    stringValue: string | null;
+    numberValue: number | null;
+    dateValue: Date | null;
+    createdAt: Date | null;
+    deletedAt: Date | null;
+};
+export type RecordFieldIndexCountAggregateOutputType = {
+    id: number;
+    recordId: number;
+    fieldKey: number;
+    stringValue: number;
+    numberValue: number;
+    dateValue: number;
+    createdAt: number;
+    deletedAt: number;
+    _all: number;
+};
+export type RecordFieldIndexAvgAggregateInputType = {
+    numberValue?: true;
+};
+export type RecordFieldIndexSumAggregateInputType = {
+    numberValue?: true;
+};
+export type RecordFieldIndexMinAggregateInputType = {
+    id?: true;
+    recordId?: true;
+    fieldKey?: true;
+    stringValue?: true;
+    numberValue?: true;
+    dateValue?: true;
+    createdAt?: true;
+    deletedAt?: true;
+};
+export type RecordFieldIndexMaxAggregateInputType = {
+    id?: true;
+    recordId?: true;
+    fieldKey?: true;
+    stringValue?: true;
+    numberValue?: true;
+    dateValue?: true;
+    createdAt?: true;
+    deletedAt?: true;
+};
+export type RecordFieldIndexCountAggregateInputType = {
+    id?: true;
+    recordId?: true;
+    fieldKey?: true;
+    stringValue?: true;
+    numberValue?: true;
+    dateValue?: true;
+    createdAt?: true;
+    deletedAt?: true;
+    _all?: true;
+};
+export type RecordFieldIndexAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which RecordFieldIndex to aggregate.
+     */
+    where?: Prisma.RecordFieldIndexWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of RecordFieldIndices to fetch.
+     */
+    orderBy?: Prisma.RecordFieldIndexOrderByWithRelationInput | Prisma.RecordFieldIndexOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: Prisma.RecordFieldIndexWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` RecordFieldIndices from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` RecordFieldIndices.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned RecordFieldIndices
+    **/
+    _count?: true | RecordFieldIndexCountAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to average
+    **/
+    _avg?: RecordFieldIndexAvgAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to sum
+    **/
+    _sum?: RecordFieldIndexSumAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: RecordFieldIndexMinAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: RecordFieldIndexMaxAggregateInputType;
+};
+export type GetRecordFieldIndexAggregateType<T extends RecordFieldIndexAggregateArgs> = {
+    [P in keyof T & keyof AggregateRecordFieldIndex]: P extends '_count' | 'count' ? T[P] extends true ? number : Prisma.GetScalarType<T[P], AggregateRecordFieldIndex[P]> : Prisma.GetScalarType<T[P], AggregateRecordFieldIndex[P]>;
+};
+export type RecordFieldIndexGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.RecordFieldIndexWhereInput;
+    orderBy?: Prisma.RecordFieldIndexOrderByWithAggregationInput | Prisma.RecordFieldIndexOrderByWithAggregationInput[];
+    by: Prisma.RecordFieldIndexScalarFieldEnum[] | Prisma.RecordFieldIndexScalarFieldEnum;
+    having?: Prisma.RecordFieldIndexScalarWhereWithAggregatesInput;
+    take?: number;
+    skip?: number;
+    _count?: RecordFieldIndexCountAggregateInputType | true;
+    _avg?: RecordFieldIndexAvgAggregateInputType;
+    _sum?: RecordFieldIndexSumAggregateInputType;
+    _min?: RecordFieldIndexMinAggregateInputType;
+    _max?: RecordFieldIndexMaxAggregateInputType;
+};
+export type RecordFieldIndexGroupByOutputType = {
+    id: string;
+    recordId: string;
+    fieldKey: string;
+    stringValue: string | null;
+    numberValue: number | null;
+    dateValue: Date | null;
+    createdAt: Date;
+    deletedAt: Date | null;
+    _count: RecordFieldIndexCountAggregateOutputType | null;
+    _avg: RecordFieldIndexAvgAggregateOutputType | null;
+    _sum: RecordFieldIndexSumAggregateOutputType | null;
+    _min: RecordFieldIndexMinAggregateOutputType | null;
+    _max: RecordFieldIndexMaxAggregateOutputType | null;
+};
+type GetRecordFieldIndexGroupByPayload<T extends RecordFieldIndexGroupByArgs> = Prisma.PrismaPromise<Array<Prisma.PickEnumerable<RecordFieldIndexGroupByOutputType, T['by']> & {
+    [P in ((keyof T) & (keyof RecordFieldIndexGroupByOutputType))]: P extends '_count' ? T[P] extends boolean ? number : Prisma.GetScalarType<T[P], RecordFieldIndexGroupByOutputType[P]> : Prisma.GetScalarType<T[P], RecordFieldIndexGroupByOutputType[P]>;
+}>>;
+export type RecordFieldIndexWhereInput = {
+    AND?: Prisma.RecordFieldIndexWhereInput | Prisma.RecordFieldIndexWhereInput[];
+    OR?: Prisma.RecordFieldIndexWhereInput[];
+    NOT?: Prisma.RecordFieldIndexWhereInput | Prisma.RecordFieldIndexWhereInput[];
+    id?: Prisma.StringFilter<"RecordFieldIndex"> | string;
+    recordId?: Prisma.StringFilter<"RecordFieldIndex"> | string;
+    fieldKey?: Prisma.StringFilter<"RecordFieldIndex"> | string;
+    stringValue?: Prisma.StringNullableFilter<"RecordFieldIndex"> | string | null;
+    numberValue?: Prisma.FloatNullableFilter<"RecordFieldIndex"> | number | null;
+    dateValue?: Prisma.DateTimeNullableFilter<"RecordFieldIndex"> | Date | string | null;
+    createdAt?: Prisma.DateTimeFilter<"RecordFieldIndex"> | Date | string;
+    deletedAt?: Prisma.DateTimeNullableFilter<"RecordFieldIndex"> | Date | string | null;
+    record?: Prisma.XOR<Prisma.MasterRecordScalarRelationFilter, Prisma.MasterRecordWhereInput>;
+};
+export type RecordFieldIndexOrderByWithRelationInput = {
+    id?: Prisma.SortOrder;
+    recordId?: Prisma.SortOrder;
+    fieldKey?: Prisma.SortOrder;
+    stringValue?: Prisma.SortOrderInput | Prisma.SortOrder;
+    numberValue?: Prisma.SortOrderInput | Prisma.SortOrder;
+    dateValue?: Prisma.SortOrderInput | Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    record?: Prisma.MasterRecordOrderByWithRelationInput;
+};
+export type RecordFieldIndexWhereUniqueInput = Prisma.AtLeast<{
+    id?: string;
+    recordId_fieldKey?: Prisma.RecordFieldIndexRecordIdFieldKeyCompoundUniqueInput;
+    AND?: Prisma.RecordFieldIndexWhereInput | Prisma.RecordFieldIndexWhereInput[];
+    OR?: Prisma.RecordFieldIndexWhereInput[];
+    NOT?: Prisma.RecordFieldIndexWhereInput | Prisma.RecordFieldIndexWhereInput[];
+    recordId?: Prisma.StringFilter<"RecordFieldIndex"> | string;
+    fieldKey?: Prisma.StringFilter<"RecordFieldIndex"> | string;
+    stringValue?: Prisma.StringNullableFilter<"RecordFieldIndex"> | string | null;
+    numberValue?: Prisma.FloatNullableFilter<"RecordFieldIndex"> | number | null;
+    dateValue?: Prisma.DateTimeNullableFilter<"RecordFieldIndex"> | Date | string | null;
+    createdAt?: Prisma.DateTimeFilter<"RecordFieldIndex"> | Date | string;
+    deletedAt?: Prisma.DateTimeNullableFilter<"RecordFieldIndex"> | Date | string | null;
+    record?: Prisma.XOR<Prisma.MasterRecordScalarRelationFilter, Prisma.MasterRecordWhereInput>;
+}, "id" | "recordId_fieldKey">;
+export type RecordFieldIndexOrderByWithAggregationInput = {
+    id?: Prisma.SortOrder;
+    recordId?: Prisma.SortOrder;
+    fieldKey?: Prisma.SortOrder;
+    stringValue?: Prisma.SortOrderInput | Prisma.SortOrder;
+    numberValue?: Prisma.SortOrderInput | Prisma.SortOrder;
+    dateValue?: Prisma.SortOrderInput | Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    _count?: Prisma.RecordFieldIndexCountOrderByAggregateInput;
+    _avg?: Prisma.RecordFieldIndexAvgOrderByAggregateInput;
+    _max?: Prisma.RecordFieldIndexMaxOrderByAggregateInput;
+    _min?: Prisma.RecordFieldIndexMinOrderByAggregateInput;
+    _sum?: Prisma.RecordFieldIndexSumOrderByAggregateInput;
+};
+export type RecordFieldIndexScalarWhereWithAggregatesInput = {
+    AND?: Prisma.RecordFieldIndexScalarWhereWithAggregatesInput | Prisma.RecordFieldIndexScalarWhereWithAggregatesInput[];
+    OR?: Prisma.RecordFieldIndexScalarWhereWithAggregatesInput[];
+    NOT?: Prisma.RecordFieldIndexScalarWhereWithAggregatesInput | Prisma.RecordFieldIndexScalarWhereWithAggregatesInput[];
+    id?: Prisma.StringWithAggregatesFilter<"RecordFieldIndex"> | string;
+    recordId?: Prisma.StringWithAggregatesFilter<"RecordFieldIndex"> | string;
+    fieldKey?: Prisma.StringWithAggregatesFilter<"RecordFieldIndex"> | string;
+    stringValue?: Prisma.StringNullableWithAggregatesFilter<"RecordFieldIndex"> | string | null;
+    numberValue?: Prisma.FloatNullableWithAggregatesFilter<"RecordFieldIndex"> | number | null;
+    dateValue?: Prisma.DateTimeNullableWithAggregatesFilter<"RecordFieldIndex"> | Date | string | null;
+    createdAt?: Prisma.DateTimeWithAggregatesFilter<"RecordFieldIndex"> | Date | string;
+    deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"RecordFieldIndex"> | Date | string | null;
+};
+export type RecordFieldIndexCreateInput = {
+    id?: string;
+    fieldKey: string;
+    stringValue?: string | null;
+    numberValue?: number | null;
+    dateValue?: Date | string | null;
+    createdAt?: Date | string;
+    deletedAt?: Date | string | null;
+    record: Prisma.MasterRecordCreateNestedOneWithoutRecordFieldIndexesInput;
+};
+export type RecordFieldIndexUncheckedCreateInput = {
+    id?: string;
+    recordId: string;
+    fieldKey: string;
+    stringValue?: string | null;
+    numberValue?: number | null;
+    dateValue?: Date | string | null;
+    createdAt?: Date | string;
+    deletedAt?: Date | string | null;
+};
+export type RecordFieldIndexUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    fieldKey?: Prisma.StringFieldUpdateOperationsInput | string;
+    stringValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    numberValue?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    dateValue?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    record?: Prisma.MasterRecordUpdateOneRequiredWithoutRecordFieldIndexesNestedInput;
+};
+export type RecordFieldIndexUncheckedUpdateInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    recordId?: Prisma.StringFieldUpdateOperationsInput | string;
+    fieldKey?: Prisma.StringFieldUpdateOperationsInput | string;
+    stringValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    numberValue?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    dateValue?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type RecordFieldIndexCreateManyInput = {
+    id?: string;
+    recordId: string;
+    fieldKey: string;
+    stringValue?: string | null;
+    numberValue?: number | null;
+    dateValue?: Date | string | null;
+    createdAt?: Date | string;
+    deletedAt?: Date | string | null;
+};
+export type RecordFieldIndexUpdateManyMutationInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    fieldKey?: Prisma.StringFieldUpdateOperationsInput | string;
+    stringValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    numberValue?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    dateValue?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type RecordFieldIndexUncheckedUpdateManyInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    recordId?: Prisma.StringFieldUpdateOperationsInput | string;
+    fieldKey?: Prisma.StringFieldUpdateOperationsInput | string;
+    stringValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    numberValue?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    dateValue?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type RecordFieldIndexListRelationFilter = {
+    every?: Prisma.RecordFieldIndexWhereInput;
+    some?: Prisma.RecordFieldIndexWhereInput;
+    none?: Prisma.RecordFieldIndexWhereInput;
+};
+export type RecordFieldIndexOrderByRelationAggregateInput = {
+    _count?: Prisma.SortOrder;
+};
+export type RecordFieldIndexRecordIdFieldKeyCompoundUniqueInput = {
+    recordId: string;
+    fieldKey: string;
+};
+export type RecordFieldIndexCountOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    recordId?: Prisma.SortOrder;
+    fieldKey?: Prisma.SortOrder;
+    stringValue?: Prisma.SortOrder;
+    numberValue?: Prisma.SortOrder;
+    dateValue?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrder;
+};
+export type RecordFieldIndexAvgOrderByAggregateInput = {
+    numberValue?: Prisma.SortOrder;
+};
+export type RecordFieldIndexMaxOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    recordId?: Prisma.SortOrder;
+    fieldKey?: Prisma.SortOrder;
+    stringValue?: Prisma.SortOrder;
+    numberValue?: Prisma.SortOrder;
+    dateValue?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrder;
+};
+export type RecordFieldIndexMinOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    recordId?: Prisma.SortOrder;
+    fieldKey?: Prisma.SortOrder;
+    stringValue?: Prisma.SortOrder;
+    numberValue?: Prisma.SortOrder;
+    dateValue?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrder;
+};
+export type RecordFieldIndexSumOrderByAggregateInput = {
+    numberValue?: Prisma.SortOrder;
+};
+export type RecordFieldIndexCreateNestedManyWithoutRecordInput = {
+    create?: Prisma.XOR<Prisma.RecordFieldIndexCreateWithoutRecordInput, Prisma.RecordFieldIndexUncheckedCreateWithoutRecordInput> | Prisma.RecordFieldIndexCreateWithoutRecordInput[] | Prisma.RecordFieldIndexUncheckedCreateWithoutRecordInput[];
+    connectOrCreate?: Prisma.RecordFieldIndexCreateOrConnectWithoutRecordInput | Prisma.RecordFieldIndexCreateOrConnectWithoutRecordInput[];
+    createMany?: Prisma.RecordFieldIndexCreateManyRecordInputEnvelope;
+    connect?: Prisma.RecordFieldIndexWhereUniqueInput | Prisma.RecordFieldIndexWhereUniqueInput[];
+};
+export type RecordFieldIndexUncheckedCreateNestedManyWithoutRecordInput = {
+    create?: Prisma.XOR<Prisma.RecordFieldIndexCreateWithoutRecordInput, Prisma.RecordFieldIndexUncheckedCreateWithoutRecordInput> | Prisma.RecordFieldIndexCreateWithoutRecordInput[] | Prisma.RecordFieldIndexUncheckedCreateWithoutRecordInput[];
+    connectOrCreate?: Prisma.RecordFieldIndexCreateOrConnectWithoutRecordInput | Prisma.RecordFieldIndexCreateOrConnectWithoutRecordInput[];
+    createMany?: Prisma.RecordFieldIndexCreateManyRecordInputEnvelope;
+    connect?: Prisma.RecordFieldIndexWhereUniqueInput | Prisma.RecordFieldIndexWhereUniqueInput[];
+};
+export type RecordFieldIndexUpdateManyWithoutRecordNestedInput = {
+    create?: Prisma.XOR<Prisma.RecordFieldIndexCreateWithoutRecordInput, Prisma.RecordFieldIndexUncheckedCreateWithoutRecordInput> | Prisma.RecordFieldIndexCreateWithoutRecordInput[] | Prisma.RecordFieldIndexUncheckedCreateWithoutRecordInput[];
+    connectOrCreate?: Prisma.RecordFieldIndexCreateOrConnectWithoutRecordInput | Prisma.RecordFieldIndexCreateOrConnectWithoutRecordInput[];
+    upsert?: Prisma.RecordFieldIndexUpsertWithWhereUniqueWithoutRecordInput | Prisma.RecordFieldIndexUpsertWithWhereUniqueWithoutRecordInput[];
+    createMany?: Prisma.RecordFieldIndexCreateManyRecordInputEnvelope;
+    set?: Prisma.RecordFieldIndexWhereUniqueInput | Prisma.RecordFieldIndexWhereUniqueInput[];
+    disconnect?: Prisma.RecordFieldIndexWhereUniqueInput | Prisma.RecordFieldIndexWhereUniqueInput[];
+    delete?: Prisma.RecordFieldIndexWhereUniqueInput | Prisma.RecordFieldIndexWhereUniqueInput[];
+    connect?: Prisma.RecordFieldIndexWhereUniqueInput | Prisma.RecordFieldIndexWhereUniqueInput[];
+    update?: Prisma.RecordFieldIndexUpdateWithWhereUniqueWithoutRecordInput | Prisma.RecordFieldIndexUpdateWithWhereUniqueWithoutRecordInput[];
+    updateMany?: Prisma.RecordFieldIndexUpdateManyWithWhereWithoutRecordInput | Prisma.RecordFieldIndexUpdateManyWithWhereWithoutRecordInput[];
+    deleteMany?: Prisma.RecordFieldIndexScalarWhereInput | Prisma.RecordFieldIndexScalarWhereInput[];
+};
+export type RecordFieldIndexUncheckedUpdateManyWithoutRecordNestedInput = {
+    create?: Prisma.XOR<Prisma.RecordFieldIndexCreateWithoutRecordInput, Prisma.RecordFieldIndexUncheckedCreateWithoutRecordInput> | Prisma.RecordFieldIndexCreateWithoutRecordInput[] | Prisma.RecordFieldIndexUncheckedCreateWithoutRecordInput[];
+    connectOrCreate?: Prisma.RecordFieldIndexCreateOrConnectWithoutRecordInput | Prisma.RecordFieldIndexCreateOrConnectWithoutRecordInput[];
+    upsert?: Prisma.RecordFieldIndexUpsertWithWhereUniqueWithoutRecordInput | Prisma.RecordFieldIndexUpsertWithWhereUniqueWithoutRecordInput[];
+    createMany?: Prisma.RecordFieldIndexCreateManyRecordInputEnvelope;
+    set?: Prisma.RecordFieldIndexWhereUniqueInput | Prisma.RecordFieldIndexWhereUniqueInput[];
+    disconnect?: Prisma.RecordFieldIndexWhereUniqueInput | Prisma.RecordFieldIndexWhereUniqueInput[];
+    delete?: Prisma.RecordFieldIndexWhereUniqueInput | Prisma.RecordFieldIndexWhereUniqueInput[];
+    connect?: Prisma.RecordFieldIndexWhereUniqueInput | Prisma.RecordFieldIndexWhereUniqueInput[];
+    update?: Prisma.RecordFieldIndexUpdateWithWhereUniqueWithoutRecordInput | Prisma.RecordFieldIndexUpdateWithWhereUniqueWithoutRecordInput[];
+    updateMany?: Prisma.RecordFieldIndexUpdateManyWithWhereWithoutRecordInput | Prisma.RecordFieldIndexUpdateManyWithWhereWithoutRecordInput[];
+    deleteMany?: Prisma.RecordFieldIndexScalarWhereInput | Prisma.RecordFieldIndexScalarWhereInput[];
+};
+export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null;
+    increment?: number;
+    decrement?: number;
+    multiply?: number;
+    divide?: number;
+};
+export type RecordFieldIndexCreateWithoutRecordInput = {
+    id?: string;
+    fieldKey: string;
+    stringValue?: string | null;
+    numberValue?: number | null;
+    dateValue?: Date | string | null;
+    createdAt?: Date | string;
+    deletedAt?: Date | string | null;
+};
+export type RecordFieldIndexUncheckedCreateWithoutRecordInput = {
+    id?: string;
+    fieldKey: string;
+    stringValue?: string | null;
+    numberValue?: number | null;
+    dateValue?: Date | string | null;
+    createdAt?: Date | string;
+    deletedAt?: Date | string | null;
+};
+export type RecordFieldIndexCreateOrConnectWithoutRecordInput = {
+    where: Prisma.RecordFieldIndexWhereUniqueInput;
+    create: Prisma.XOR<Prisma.RecordFieldIndexCreateWithoutRecordInput, Prisma.RecordFieldIndexUncheckedCreateWithoutRecordInput>;
+};
+export type RecordFieldIndexCreateManyRecordInputEnvelope = {
+    data: Prisma.RecordFieldIndexCreateManyRecordInput | Prisma.RecordFieldIndexCreateManyRecordInput[];
+    skipDuplicates?: boolean;
+};
+export type RecordFieldIndexUpsertWithWhereUniqueWithoutRecordInput = {
+    where: Prisma.RecordFieldIndexWhereUniqueInput;
+    update: Prisma.XOR<Prisma.RecordFieldIndexUpdateWithoutRecordInput, Prisma.RecordFieldIndexUncheckedUpdateWithoutRecordInput>;
+    create: Prisma.XOR<Prisma.RecordFieldIndexCreateWithoutRecordInput, Prisma.RecordFieldIndexUncheckedCreateWithoutRecordInput>;
+};
+export type RecordFieldIndexUpdateWithWhereUniqueWithoutRecordInput = {
+    where: Prisma.RecordFieldIndexWhereUniqueInput;
+    data: Prisma.XOR<Prisma.RecordFieldIndexUpdateWithoutRecordInput, Prisma.RecordFieldIndexUncheckedUpdateWithoutRecordInput>;
+};
+export type RecordFieldIndexUpdateManyWithWhereWithoutRecordInput = {
+    where: Prisma.RecordFieldIndexScalarWhereInput;
+    data: Prisma.XOR<Prisma.RecordFieldIndexUpdateManyMutationInput, Prisma.RecordFieldIndexUncheckedUpdateManyWithoutRecordInput>;
+};
+export type RecordFieldIndexScalarWhereInput = {
+    AND?: Prisma.RecordFieldIndexScalarWhereInput | Prisma.RecordFieldIndexScalarWhereInput[];
+    OR?: Prisma.RecordFieldIndexScalarWhereInput[];
+    NOT?: Prisma.RecordFieldIndexScalarWhereInput | Prisma.RecordFieldIndexScalarWhereInput[];
+    id?: Prisma.StringFilter<"RecordFieldIndex"> | string;
+    recordId?: Prisma.StringFilter<"RecordFieldIndex"> | string;
+    fieldKey?: Prisma.StringFilter<"RecordFieldIndex"> | string;
+    stringValue?: Prisma.StringNullableFilter<"RecordFieldIndex"> | string | null;
+    numberValue?: Prisma.FloatNullableFilter<"RecordFieldIndex"> | number | null;
+    dateValue?: Prisma.DateTimeNullableFilter<"RecordFieldIndex"> | Date | string | null;
+    createdAt?: Prisma.DateTimeFilter<"RecordFieldIndex"> | Date | string;
+    deletedAt?: Prisma.DateTimeNullableFilter<"RecordFieldIndex"> | Date | string | null;
+};
+export type RecordFieldIndexCreateManyRecordInput = {
+    id?: string;
+    fieldKey: string;
+    stringValue?: string | null;
+    numberValue?: number | null;
+    dateValue?: Date | string | null;
+    createdAt?: Date | string;
+    deletedAt?: Date | string | null;
+};
+export type RecordFieldIndexUpdateWithoutRecordInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    fieldKey?: Prisma.StringFieldUpdateOperationsInput | string;
+    stringValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    numberValue?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    dateValue?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type RecordFieldIndexUncheckedUpdateWithoutRecordInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    fieldKey?: Prisma.StringFieldUpdateOperationsInput | string;
+    stringValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    numberValue?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    dateValue?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type RecordFieldIndexUncheckedUpdateManyWithoutRecordInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    fieldKey?: Prisma.StringFieldUpdateOperationsInput | string;
+    stringValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    numberValue?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    dateValue?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type RecordFieldIndexSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    recordId?: boolean;
+    fieldKey?: boolean;
+    stringValue?: boolean;
+    numberValue?: boolean;
+    dateValue?: boolean;
+    createdAt?: boolean;
+    deletedAt?: boolean;
+    record?: boolean | Prisma.MasterRecordDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["recordFieldIndex"]>;
+export type RecordFieldIndexSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    recordId?: boolean;
+    fieldKey?: boolean;
+    stringValue?: boolean;
+    numberValue?: boolean;
+    dateValue?: boolean;
+    createdAt?: boolean;
+    deletedAt?: boolean;
+    record?: boolean | Prisma.MasterRecordDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["recordFieldIndex"]>;
+export type RecordFieldIndexSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    recordId?: boolean;
+    fieldKey?: boolean;
+    stringValue?: boolean;
+    numberValue?: boolean;
+    dateValue?: boolean;
+    createdAt?: boolean;
+    deletedAt?: boolean;
+    record?: boolean | Prisma.MasterRecordDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["recordFieldIndex"]>;
+export type RecordFieldIndexSelectScalar = {
+    id?: boolean;
+    recordId?: boolean;
+    fieldKey?: boolean;
+    stringValue?: boolean;
+    numberValue?: boolean;
+    dateValue?: boolean;
+    createdAt?: boolean;
+    deletedAt?: boolean;
+};
+export type RecordFieldIndexOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "recordId" | "fieldKey" | "stringValue" | "numberValue" | "dateValue" | "createdAt" | "deletedAt", ExtArgs["result"]["recordFieldIndex"]>;
+export type RecordFieldIndexInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    record?: boolean | Prisma.MasterRecordDefaultArgs<ExtArgs>;
+};
+export type RecordFieldIndexIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    record?: boolean | Prisma.MasterRecordDefaultArgs<ExtArgs>;
+};
+export type RecordFieldIndexIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    record?: boolean | Prisma.MasterRecordDefaultArgs<ExtArgs>;
+};
+export type $RecordFieldIndexPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    name: "RecordFieldIndex";
+    objects: {
+        record: Prisma.$MasterRecordPayload<ExtArgs>;
+    };
+    scalars: runtime.Types.Extensions.GetPayloadResult<{
+        id: string;
+        recordId: string;
+        fieldKey: string;
+        stringValue: string | null;
+        numberValue: number | null;
+        dateValue: Date | null;
+        createdAt: Date;
+        deletedAt: Date | null;
+    }, ExtArgs["result"]["recordFieldIndex"]>;
+    composites: {};
+};
+export type RecordFieldIndexGetPayload<S extends boolean | null | undefined | RecordFieldIndexDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$RecordFieldIndexPayload, S>;
+export type RecordFieldIndexCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = Omit<RecordFieldIndexFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    select?: RecordFieldIndexCountAggregateInputType | true;
+};
+export interface RecordFieldIndexDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: {
+        types: Prisma.TypeMap<ExtArgs>['model']['RecordFieldIndex'];
+        meta: {
+            name: 'RecordFieldIndex';
+        };
+    };
+    /**
+     * Find zero or one RecordFieldIndex that matches the filter.
+     * @param {RecordFieldIndexFindUniqueArgs} args - Arguments to find a RecordFieldIndex
+     * @example
+     * // Get one RecordFieldIndex
+     * const recordFieldIndex = await prisma.recordFieldIndex.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RecordFieldIndexFindUniqueArgs>(args: Prisma.SelectSubset<T, RecordFieldIndexFindUniqueArgs<ExtArgs>>): Prisma.Prisma__RecordFieldIndexClient<runtime.Types.Result.GetResult<Prisma.$RecordFieldIndexPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find one RecordFieldIndex that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RecordFieldIndexFindUniqueOrThrowArgs} args - Arguments to find a RecordFieldIndex
+     * @example
+     * // Get one RecordFieldIndex
+     * const recordFieldIndex = await prisma.recordFieldIndex.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RecordFieldIndexFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, RecordFieldIndexFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__RecordFieldIndexClient<runtime.Types.Result.GetResult<Prisma.$RecordFieldIndexPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first RecordFieldIndex that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecordFieldIndexFindFirstArgs} args - Arguments to find a RecordFieldIndex
+     * @example
+     * // Get one RecordFieldIndex
+     * const recordFieldIndex = await prisma.recordFieldIndex.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RecordFieldIndexFindFirstArgs>(args?: Prisma.SelectSubset<T, RecordFieldIndexFindFirstArgs<ExtArgs>>): Prisma.Prisma__RecordFieldIndexClient<runtime.Types.Result.GetResult<Prisma.$RecordFieldIndexPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first RecordFieldIndex that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecordFieldIndexFindFirstOrThrowArgs} args - Arguments to find a RecordFieldIndex
+     * @example
+     * // Get one RecordFieldIndex
+     * const recordFieldIndex = await prisma.recordFieldIndex.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RecordFieldIndexFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, RecordFieldIndexFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__RecordFieldIndexClient<runtime.Types.Result.GetResult<Prisma.$RecordFieldIndexPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find zero or more RecordFieldIndices that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecordFieldIndexFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RecordFieldIndices
+     * const recordFieldIndices = await prisma.recordFieldIndex.findMany()
+     *
+     * // Get first 10 RecordFieldIndices
+     * const recordFieldIndices = await prisma.recordFieldIndex.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const recordFieldIndexWithIdOnly = await prisma.recordFieldIndex.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends RecordFieldIndexFindManyArgs>(args?: Prisma.SelectSubset<T, RecordFieldIndexFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordFieldIndexPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>;
+    /**
+     * Create a RecordFieldIndex.
+     * @param {RecordFieldIndexCreateArgs} args - Arguments to create a RecordFieldIndex.
+     * @example
+     * // Create one RecordFieldIndex
+     * const RecordFieldIndex = await prisma.recordFieldIndex.create({
+     *   data: {
+     *     // ... data to create a RecordFieldIndex
+     *   }
+     * })
+     *
+     */
+    create<T extends RecordFieldIndexCreateArgs>(args: Prisma.SelectSubset<T, RecordFieldIndexCreateArgs<ExtArgs>>): Prisma.Prisma__RecordFieldIndexClient<runtime.Types.Result.GetResult<Prisma.$RecordFieldIndexPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Create many RecordFieldIndices.
+     * @param {RecordFieldIndexCreateManyArgs} args - Arguments to create many RecordFieldIndices.
+     * @example
+     * // Create many RecordFieldIndices
+     * const recordFieldIndex = await prisma.recordFieldIndex.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends RecordFieldIndexCreateManyArgs>(args?: Prisma.SelectSubset<T, RecordFieldIndexCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Create many RecordFieldIndices and returns the data saved in the database.
+     * @param {RecordFieldIndexCreateManyAndReturnArgs} args - Arguments to create many RecordFieldIndices.
+     * @example
+     * // Create many RecordFieldIndices
+     * const recordFieldIndex = await prisma.recordFieldIndex.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Create many RecordFieldIndices and only return the `id`
+     * const recordFieldIndexWithIdOnly = await prisma.recordFieldIndex.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    createManyAndReturn<T extends RecordFieldIndexCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, RecordFieldIndexCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordFieldIndexPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Delete a RecordFieldIndex.
+     * @param {RecordFieldIndexDeleteArgs} args - Arguments to delete one RecordFieldIndex.
+     * @example
+     * // Delete one RecordFieldIndex
+     * const RecordFieldIndex = await prisma.recordFieldIndex.delete({
+     *   where: {
+     *     // ... filter to delete one RecordFieldIndex
+     *   }
+     * })
+     *
+     */
+    delete<T extends RecordFieldIndexDeleteArgs>(args: Prisma.SelectSubset<T, RecordFieldIndexDeleteArgs<ExtArgs>>): Prisma.Prisma__RecordFieldIndexClient<runtime.Types.Result.GetResult<Prisma.$RecordFieldIndexPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Update one RecordFieldIndex.
+     * @param {RecordFieldIndexUpdateArgs} args - Arguments to update one RecordFieldIndex.
+     * @example
+     * // Update one RecordFieldIndex
+     * const recordFieldIndex = await prisma.recordFieldIndex.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends RecordFieldIndexUpdateArgs>(args: Prisma.SelectSubset<T, RecordFieldIndexUpdateArgs<ExtArgs>>): Prisma.Prisma__RecordFieldIndexClient<runtime.Types.Result.GetResult<Prisma.$RecordFieldIndexPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Delete zero or more RecordFieldIndices.
+     * @param {RecordFieldIndexDeleteManyArgs} args - Arguments to filter RecordFieldIndices to delete.
+     * @example
+     * // Delete a few RecordFieldIndices
+     * const { count } = await prisma.recordFieldIndex.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends RecordFieldIndexDeleteManyArgs>(args?: Prisma.SelectSubset<T, RecordFieldIndexDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more RecordFieldIndices.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecordFieldIndexUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RecordFieldIndices
+     * const recordFieldIndex = await prisma.recordFieldIndex.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends RecordFieldIndexUpdateManyArgs>(args: Prisma.SelectSubset<T, RecordFieldIndexUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more RecordFieldIndices and returns the data updated in the database.
+     * @param {RecordFieldIndexUpdateManyAndReturnArgs} args - Arguments to update many RecordFieldIndices.
+     * @example
+     * // Update many RecordFieldIndices
+     * const recordFieldIndex = await prisma.recordFieldIndex.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Update zero or more RecordFieldIndices and only return the `id`
+     * const recordFieldIndexWithIdOnly = await prisma.recordFieldIndex.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    updateManyAndReturn<T extends RecordFieldIndexUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, RecordFieldIndexUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordFieldIndexPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Create or update one RecordFieldIndex.
+     * @param {RecordFieldIndexUpsertArgs} args - Arguments to update or create a RecordFieldIndex.
+     * @example
+     * // Update or create a RecordFieldIndex
+     * const recordFieldIndex = await prisma.recordFieldIndex.upsert({
+     *   create: {
+     *     // ... data to create a RecordFieldIndex
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RecordFieldIndex we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RecordFieldIndexUpsertArgs>(args: Prisma.SelectSubset<T, RecordFieldIndexUpsertArgs<ExtArgs>>): Prisma.Prisma__RecordFieldIndexClient<runtime.Types.Result.GetResult<Prisma.$RecordFieldIndexPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Count the number of RecordFieldIndices.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecordFieldIndexCountArgs} args - Arguments to filter RecordFieldIndices to count.
+     * @example
+     * // Count the number of RecordFieldIndices
+     * const count = await prisma.recordFieldIndex.count({
+     *   where: {
+     *     // ... the filter for the RecordFieldIndices we want to count
+     *   }
+     * })
+    **/
+    count<T extends RecordFieldIndexCountArgs>(args?: Prisma.Subset<T, RecordFieldIndexCountArgs>): Prisma.PrismaPromise<T extends runtime.Types.Utils.Record<'select', any> ? T['select'] extends true ? number : Prisma.GetScalarType<T['select'], RecordFieldIndexCountAggregateOutputType> : number>;
+    /**
+     * Allows you to perform aggregations operations on a RecordFieldIndex.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecordFieldIndexAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RecordFieldIndexAggregateArgs>(args: Prisma.Subset<T, RecordFieldIndexAggregateArgs>): Prisma.PrismaPromise<GetRecordFieldIndexAggregateType<T>>;
+    /**
+     * Group by RecordFieldIndex.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecordFieldIndexGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<T extends RecordFieldIndexGroupByArgs, HasSelectOrTake extends Prisma.Or<Prisma.Extends<'skip', Prisma.Keys<T>>, Prisma.Extends<'take', Prisma.Keys<T>>>, OrderByArg extends Prisma.True extends HasSelectOrTake ? {
+        orderBy: RecordFieldIndexGroupByArgs['orderBy'];
+    } : {
+        orderBy?: RecordFieldIndexGroupByArgs['orderBy'];
+    }, OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>, ByFields extends Prisma.MaybeTupleToUnion<T['by']>, ByValid extends Prisma.Has<ByFields, OrderFields>, HavingFields extends Prisma.GetHavingFields<T['having']>, HavingValid extends Prisma.Has<ByFields, HavingFields>, ByEmpty extends T['by'] extends never[] ? Prisma.True : Prisma.False, InputErrors extends ByEmpty extends Prisma.True ? `Error: "by" must not be empty.` : HavingValid extends Prisma.False ? {
+        [P in HavingFields]: P extends ByFields ? never : P extends string ? `Error: Field "${P}" used in "having" needs to be provided in "by".` : [
+            Error,
+            'Field ',
+            P,
+            ` in "having" needs to be provided in "by"`
+        ];
+    }[HavingFields] : 'take' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "take", you also need to provide "orderBy"' : 'skip' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "skip", you also need to provide "orderBy"' : ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields]>(args: Prisma.SubsetIntersection<T, RecordFieldIndexGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRecordFieldIndexGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>;
+    /**
+     * Fields of the RecordFieldIndex model
+     */
+    readonly fields: RecordFieldIndexFieldRefs;
+}
+/**
+ * The delegate class that acts as a "Promise-like" for RecordFieldIndex.
+ * Why is this prefixed with `Prisma__`?
+ * Because we want to prevent naming conflicts as mentioned in
+ * https://github.com/prisma/prisma-client-js/issues/707
+ */
+export interface Prisma__RecordFieldIndexClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise";
+    record<T extends Prisma.MasterRecordDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MasterRecordDefaultArgs<ExtArgs>>): Prisma.Prisma__MasterRecordClient<runtime.Types.Result.GetResult<Prisma.$MasterRecordPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
+}
+/**
+ * Fields of the RecordFieldIndex model
+ */
+export interface RecordFieldIndexFieldRefs {
+    readonly id: Prisma.FieldRef<"RecordFieldIndex", 'String'>;
+    readonly recordId: Prisma.FieldRef<"RecordFieldIndex", 'String'>;
+    readonly fieldKey: Prisma.FieldRef<"RecordFieldIndex", 'String'>;
+    readonly stringValue: Prisma.FieldRef<"RecordFieldIndex", 'String'>;
+    readonly numberValue: Prisma.FieldRef<"RecordFieldIndex", 'Float'>;
+    readonly dateValue: Prisma.FieldRef<"RecordFieldIndex", 'DateTime'>;
+    readonly createdAt: Prisma.FieldRef<"RecordFieldIndex", 'DateTime'>;
+    readonly deletedAt: Prisma.FieldRef<"RecordFieldIndex", 'DateTime'>;
+}
+/**
+ * RecordFieldIndex findUnique
+ */
+export type RecordFieldIndexFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecordFieldIndex
+     */
+    select?: Prisma.RecordFieldIndexSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the RecordFieldIndex
+     */
+    omit?: Prisma.RecordFieldIndexOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.RecordFieldIndexInclude<ExtArgs> | null;
+    /**
+     * Filter, which RecordFieldIndex to fetch.
+     */
+    where: Prisma.RecordFieldIndexWhereUniqueInput;
+};
+/**
+ * RecordFieldIndex findUniqueOrThrow
+ */
+export type RecordFieldIndexFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecordFieldIndex
+     */
+    select?: Prisma.RecordFieldIndexSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the RecordFieldIndex
+     */
+    omit?: Prisma.RecordFieldIndexOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.RecordFieldIndexInclude<ExtArgs> | null;
+    /**
+     * Filter, which RecordFieldIndex to fetch.
+     */
+    where: Prisma.RecordFieldIndexWhereUniqueInput;
+};
+/**
+ * RecordFieldIndex findFirst
+ */
+export type RecordFieldIndexFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecordFieldIndex
+     */
+    select?: Prisma.RecordFieldIndexSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the RecordFieldIndex
+     */
+    omit?: Prisma.RecordFieldIndexOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.RecordFieldIndexInclude<ExtArgs> | null;
+    /**
+     * Filter, which RecordFieldIndex to fetch.
+     */
+    where?: Prisma.RecordFieldIndexWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of RecordFieldIndices to fetch.
+     */
+    orderBy?: Prisma.RecordFieldIndexOrderByWithRelationInput | Prisma.RecordFieldIndexOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for RecordFieldIndices.
+     */
+    cursor?: Prisma.RecordFieldIndexWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` RecordFieldIndices from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` RecordFieldIndices.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of RecordFieldIndices.
+     */
+    distinct?: Prisma.RecordFieldIndexScalarFieldEnum | Prisma.RecordFieldIndexScalarFieldEnum[];
+};
+/**
+ * RecordFieldIndex findFirstOrThrow
+ */
+export type RecordFieldIndexFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecordFieldIndex
+     */
+    select?: Prisma.RecordFieldIndexSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the RecordFieldIndex
+     */
+    omit?: Prisma.RecordFieldIndexOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.RecordFieldIndexInclude<ExtArgs> | null;
+    /**
+     * Filter, which RecordFieldIndex to fetch.
+     */
+    where?: Prisma.RecordFieldIndexWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of RecordFieldIndices to fetch.
+     */
+    orderBy?: Prisma.RecordFieldIndexOrderByWithRelationInput | Prisma.RecordFieldIndexOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for RecordFieldIndices.
+     */
+    cursor?: Prisma.RecordFieldIndexWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` RecordFieldIndices from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` RecordFieldIndices.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of RecordFieldIndices.
+     */
+    distinct?: Prisma.RecordFieldIndexScalarFieldEnum | Prisma.RecordFieldIndexScalarFieldEnum[];
+};
+/**
+ * RecordFieldIndex findMany
+ */
+export type RecordFieldIndexFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecordFieldIndex
+     */
+    select?: Prisma.RecordFieldIndexSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the RecordFieldIndex
+     */
+    omit?: Prisma.RecordFieldIndexOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.RecordFieldIndexInclude<ExtArgs> | null;
+    /**
+     * Filter, which RecordFieldIndices to fetch.
+     */
+    where?: Prisma.RecordFieldIndexWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of RecordFieldIndices to fetch.
+     */
+    orderBy?: Prisma.RecordFieldIndexOrderByWithRelationInput | Prisma.RecordFieldIndexOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing RecordFieldIndices.
+     */
+    cursor?: Prisma.RecordFieldIndexWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` RecordFieldIndices from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` RecordFieldIndices.
+     */
+    skip?: number;
+    distinct?: Prisma.RecordFieldIndexScalarFieldEnum | Prisma.RecordFieldIndexScalarFieldEnum[];
+};
+/**
+ * RecordFieldIndex create
+ */
+export type RecordFieldIndexCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecordFieldIndex
+     */
+    select?: Prisma.RecordFieldIndexSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the RecordFieldIndex
+     */
+    omit?: Prisma.RecordFieldIndexOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.RecordFieldIndexInclude<ExtArgs> | null;
+    /**
+     * The data needed to create a RecordFieldIndex.
+     */
+    data: Prisma.XOR<Prisma.RecordFieldIndexCreateInput, Prisma.RecordFieldIndexUncheckedCreateInput>;
+};
+/**
+ * RecordFieldIndex createMany
+ */
+export type RecordFieldIndexCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RecordFieldIndices.
+     */
+    data: Prisma.RecordFieldIndexCreateManyInput | Prisma.RecordFieldIndexCreateManyInput[];
+    skipDuplicates?: boolean;
+};
+/**
+ * RecordFieldIndex createManyAndReturn
+ */
+export type RecordFieldIndexCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecordFieldIndex
+     */
+    select?: Prisma.RecordFieldIndexSelectCreateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the RecordFieldIndex
+     */
+    omit?: Prisma.RecordFieldIndexOmit<ExtArgs> | null;
+    /**
+     * The data used to create many RecordFieldIndices.
+     */
+    data: Prisma.RecordFieldIndexCreateManyInput | Prisma.RecordFieldIndexCreateManyInput[];
+    skipDuplicates?: boolean;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.RecordFieldIndexIncludeCreateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * RecordFieldIndex update
+ */
+export type RecordFieldIndexUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecordFieldIndex
+     */
+    select?: Prisma.RecordFieldIndexSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the RecordFieldIndex
+     */
+    omit?: Prisma.RecordFieldIndexOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.RecordFieldIndexInclude<ExtArgs> | null;
+    /**
+     * The data needed to update a RecordFieldIndex.
+     */
+    data: Prisma.XOR<Prisma.RecordFieldIndexUpdateInput, Prisma.RecordFieldIndexUncheckedUpdateInput>;
+    /**
+     * Choose, which RecordFieldIndex to update.
+     */
+    where: Prisma.RecordFieldIndexWhereUniqueInput;
+};
+/**
+ * RecordFieldIndex updateMany
+ */
+export type RecordFieldIndexUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RecordFieldIndices.
+     */
+    data: Prisma.XOR<Prisma.RecordFieldIndexUpdateManyMutationInput, Prisma.RecordFieldIndexUncheckedUpdateManyInput>;
+    /**
+     * Filter which RecordFieldIndices to update
+     */
+    where?: Prisma.RecordFieldIndexWhereInput;
+    /**
+     * Limit how many RecordFieldIndices to update.
+     */
+    limit?: number;
+};
+/**
+ * RecordFieldIndex updateManyAndReturn
+ */
+export type RecordFieldIndexUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecordFieldIndex
+     */
+    select?: Prisma.RecordFieldIndexSelectUpdateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the RecordFieldIndex
+     */
+    omit?: Prisma.RecordFieldIndexOmit<ExtArgs> | null;
+    /**
+     * The data used to update RecordFieldIndices.
+     */
+    data: Prisma.XOR<Prisma.RecordFieldIndexUpdateManyMutationInput, Prisma.RecordFieldIndexUncheckedUpdateManyInput>;
+    /**
+     * Filter which RecordFieldIndices to update
+     */
+    where?: Prisma.RecordFieldIndexWhereInput;
+    /**
+     * Limit how many RecordFieldIndices to update.
+     */
+    limit?: number;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.RecordFieldIndexIncludeUpdateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * RecordFieldIndex upsert
+ */
+export type RecordFieldIndexUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecordFieldIndex
+     */
+    select?: Prisma.RecordFieldIndexSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the RecordFieldIndex
+     */
+    omit?: Prisma.RecordFieldIndexOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.RecordFieldIndexInclude<ExtArgs> | null;
+    /**
+     * The filter to search for the RecordFieldIndex to update in case it exists.
+     */
+    where: Prisma.RecordFieldIndexWhereUniqueInput;
+    /**
+     * In case the RecordFieldIndex found by the `where` argument doesn't exist, create a new RecordFieldIndex with this data.
+     */
+    create: Prisma.XOR<Prisma.RecordFieldIndexCreateInput, Prisma.RecordFieldIndexUncheckedCreateInput>;
+    /**
+     * In case the RecordFieldIndex was found with the provided `where` argument, update it with this data.
+     */
+    update: Prisma.XOR<Prisma.RecordFieldIndexUpdateInput, Prisma.RecordFieldIndexUncheckedUpdateInput>;
+};
+/**
+ * RecordFieldIndex delete
+ */
+export type RecordFieldIndexDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecordFieldIndex
+     */
+    select?: Prisma.RecordFieldIndexSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the RecordFieldIndex
+     */
+    omit?: Prisma.RecordFieldIndexOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.RecordFieldIndexInclude<ExtArgs> | null;
+    /**
+     * Filter which RecordFieldIndex to delete.
+     */
+    where: Prisma.RecordFieldIndexWhereUniqueInput;
+};
+/**
+ * RecordFieldIndex deleteMany
+ */
+export type RecordFieldIndexDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which RecordFieldIndices to delete
+     */
+    where?: Prisma.RecordFieldIndexWhereInput;
+    /**
+     * Limit how many RecordFieldIndices to delete.
+     */
+    limit?: number;
+};
+/**
+ * RecordFieldIndex without action
+ */
+export type RecordFieldIndexDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecordFieldIndex
+     */
+    select?: Prisma.RecordFieldIndexSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the RecordFieldIndex
+     */
+    omit?: Prisma.RecordFieldIndexOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.RecordFieldIndexInclude<ExtArgs> | null;
+};
+export {};
+//# sourceMappingURL=RecordFieldIndex.d.ts.map

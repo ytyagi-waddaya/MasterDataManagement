@@ -28,7 +28,6 @@ const masterRecordRepository = {
               id: true,
               name: true,
               key: true,
-              fields: true,
               resources: {
                 select: {
                   id: true,
@@ -92,8 +91,6 @@ const masterRecordRepository = {
             id: true,
             name: true,
             key: true,
-            fields: true,
-
             resources: {
               select: {
                 id: true,

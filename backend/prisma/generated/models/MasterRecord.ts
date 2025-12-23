@@ -30,6 +30,7 @@ export type MasterRecordMinAggregateOutputType = {
   currentStageId: string | null
   createdById: string | null
   linkedUserId: string | null
+  schemaId: string | null
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -42,6 +43,7 @@ export type MasterRecordMaxAggregateOutputType = {
   currentStageId: string | null
   createdById: string | null
   linkedUserId: string | null
+  schemaId: string | null
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -55,6 +57,7 @@ export type MasterRecordCountAggregateOutputType = {
   currentStageId: number
   createdById: number
   linkedUserId: number
+  schemaId: number
   isActive: number
   createdAt: number
   updatedAt: number
@@ -69,6 +72,7 @@ export type MasterRecordMinAggregateInputType = {
   currentStageId?: true
   createdById?: true
   linkedUserId?: true
+  schemaId?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -81,6 +85,7 @@ export type MasterRecordMaxAggregateInputType = {
   currentStageId?: true
   createdById?: true
   linkedUserId?: true
+  schemaId?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -94,6 +99,7 @@ export type MasterRecordCountAggregateInputType = {
   currentStageId?: true
   createdById?: true
   linkedUserId?: true
+  schemaId?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -180,6 +186,7 @@ export type MasterRecordGroupByOutputType = {
   currentStageId: string | null
   createdById: string | null
   linkedUserId: string | null
+  schemaId: string
   isActive: boolean
   createdAt: Date
   updatedAt: Date
@@ -214,6 +221,7 @@ export type MasterRecordWhereInput = {
   currentStageId?: Prisma.StringNullableFilter<"MasterRecord"> | string | null
   createdById?: Prisma.StringNullableFilter<"MasterRecord"> | string | null
   linkedUserId?: Prisma.StringNullableFilter<"MasterRecord"> | string | null
+  schemaId?: Prisma.StringFilter<"MasterRecord"> | string
   isActive?: Prisma.BoolFilter<"MasterRecord"> | boolean
   createdAt?: Prisma.DateTimeFilter<"MasterRecord"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"MasterRecord"> | Date | string
@@ -222,6 +230,9 @@ export type MasterRecordWhereInput = {
   currentStage?: Prisma.XOR<Prisma.WorkflowStageNullableScalarRelationFilter, Prisma.WorkflowStageWhereInput> | null
   createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   linkedUser?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  schema?: Prisma.XOR<Prisma.MasterObjectSchemaScalarRelationFilter, Prisma.MasterObjectSchemaWhereInput>
+  recordFieldHistories?: Prisma.RecordFieldHistoryListRelationFilter
+  recordFieldIndexes?: Prisma.RecordFieldIndexListRelationFilter
   tasks?: Prisma.TaskListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
 }
@@ -233,6 +244,7 @@ export type MasterRecordOrderByWithRelationInput = {
   currentStageId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdById?: Prisma.SortOrderInput | Prisma.SortOrder
   linkedUserId?: Prisma.SortOrderInput | Prisma.SortOrder
+  schemaId?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -241,6 +253,9 @@ export type MasterRecordOrderByWithRelationInput = {
   currentStage?: Prisma.WorkflowStageOrderByWithRelationInput
   createdBy?: Prisma.UserOrderByWithRelationInput
   linkedUser?: Prisma.UserOrderByWithRelationInput
+  schema?: Prisma.MasterObjectSchemaOrderByWithRelationInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryOrderByRelationAggregateInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexOrderByRelationAggregateInput
   tasks?: Prisma.TaskOrderByRelationAggregateInput
   auditLogs?: Prisma.AuditLogOrderByRelationAggregateInput
 }
@@ -255,6 +270,7 @@ export type MasterRecordWhereUniqueInput = Prisma.AtLeast<{
   currentStageId?: Prisma.StringNullableFilter<"MasterRecord"> | string | null
   createdById?: Prisma.StringNullableFilter<"MasterRecord"> | string | null
   linkedUserId?: Prisma.StringNullableFilter<"MasterRecord"> | string | null
+  schemaId?: Prisma.StringFilter<"MasterRecord"> | string
   isActive?: Prisma.BoolFilter<"MasterRecord"> | boolean
   createdAt?: Prisma.DateTimeFilter<"MasterRecord"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"MasterRecord"> | Date | string
@@ -263,6 +279,9 @@ export type MasterRecordWhereUniqueInput = Prisma.AtLeast<{
   currentStage?: Prisma.XOR<Prisma.WorkflowStageNullableScalarRelationFilter, Prisma.WorkflowStageWhereInput> | null
   createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   linkedUser?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  schema?: Prisma.XOR<Prisma.MasterObjectSchemaScalarRelationFilter, Prisma.MasterObjectSchemaWhereInput>
+  recordFieldHistories?: Prisma.RecordFieldHistoryListRelationFilter
+  recordFieldIndexes?: Prisma.RecordFieldIndexListRelationFilter
   tasks?: Prisma.TaskListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
 }, "id">
@@ -274,6 +293,7 @@ export type MasterRecordOrderByWithAggregationInput = {
   currentStageId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdById?: Prisma.SortOrderInput | Prisma.SortOrder
   linkedUserId?: Prisma.SortOrderInput | Prisma.SortOrder
+  schemaId?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -293,6 +313,7 @@ export type MasterRecordScalarWhereWithAggregatesInput = {
   currentStageId?: Prisma.StringNullableWithAggregatesFilter<"MasterRecord"> | string | null
   createdById?: Prisma.StringNullableWithAggregatesFilter<"MasterRecord"> | string | null
   linkedUserId?: Prisma.StringNullableWithAggregatesFilter<"MasterRecord"> | string | null
+  schemaId?: Prisma.StringWithAggregatesFilter<"MasterRecord"> | string
   isActive?: Prisma.BoolWithAggregatesFilter<"MasterRecord"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"MasterRecord"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"MasterRecord"> | Date | string
@@ -310,6 +331,9 @@ export type MasterRecordCreateInput = {
   currentStage?: Prisma.WorkflowStageCreateNestedOneWithoutMasterRecordsInput
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedRecordsInput
   linkedUser?: Prisma.UserCreateNestedOneWithoutLinkedRecordsInput
+  schema: Prisma.MasterObjectSchemaCreateNestedOneWithoutMasterRecordsInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutRecordInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexCreateNestedManyWithoutRecordInput
   tasks?: Prisma.TaskCreateNestedManyWithoutMasterRecordInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutMasterRecordInput
 }
@@ -321,10 +345,13 @@ export type MasterRecordUncheckedCreateInput = {
   currentStageId?: string | null
   createdById?: string | null
   linkedUserId?: string | null
+  schemaId: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutRecordInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexUncheckedCreateNestedManyWithoutRecordInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutMasterRecordInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutMasterRecordInput
 }
@@ -340,6 +367,9 @@ export type MasterRecordUpdateInput = {
   currentStage?: Prisma.WorkflowStageUpdateOneWithoutMasterRecordsNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutCreatedRecordsNestedInput
   linkedUser?: Prisma.UserUpdateOneWithoutLinkedRecordsNestedInput
+  schema?: Prisma.MasterObjectSchemaUpdateOneRequiredWithoutMasterRecordsNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutRecordNestedInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexUpdateManyWithoutRecordNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutMasterRecordNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutMasterRecordNestedInput
 }
@@ -351,10 +381,13 @@ export type MasterRecordUncheckedUpdateInput = {
   currentStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   linkedUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schemaId?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutRecordNestedInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexUncheckedUpdateManyWithoutRecordNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutMasterRecordNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutMasterRecordNestedInput
 }
@@ -366,6 +399,7 @@ export type MasterRecordCreateManyInput = {
   currentStageId?: string | null
   createdById?: string | null
   linkedUserId?: string | null
+  schemaId: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -388,6 +422,7 @@ export type MasterRecordUncheckedUpdateManyInput = {
   currentStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   linkedUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schemaId?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -411,6 +446,7 @@ export type MasterRecordCountOrderByAggregateInput = {
   currentStageId?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   linkedUserId?: Prisma.SortOrder
+  schemaId?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -423,6 +459,7 @@ export type MasterRecordMaxOrderByAggregateInput = {
   currentStageId?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   linkedUserId?: Prisma.SortOrder
+  schemaId?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -435,6 +472,7 @@ export type MasterRecordMinOrderByAggregateInput = {
   currentStageId?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   linkedUserId?: Prisma.SortOrder
+  schemaId?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -577,6 +615,76 @@ export type MasterRecordUncheckedUpdateManyWithoutMasterObjectNestedInput = {
   deleteMany?: Prisma.MasterRecordScalarWhereInput | Prisma.MasterRecordScalarWhereInput[]
 }
 
+export type MasterRecordCreateNestedManyWithoutSchemaInput = {
+  create?: Prisma.XOR<Prisma.MasterRecordCreateWithoutSchemaInput, Prisma.MasterRecordUncheckedCreateWithoutSchemaInput> | Prisma.MasterRecordCreateWithoutSchemaInput[] | Prisma.MasterRecordUncheckedCreateWithoutSchemaInput[]
+  connectOrCreate?: Prisma.MasterRecordCreateOrConnectWithoutSchemaInput | Prisma.MasterRecordCreateOrConnectWithoutSchemaInput[]
+  createMany?: Prisma.MasterRecordCreateManySchemaInputEnvelope
+  connect?: Prisma.MasterRecordWhereUniqueInput | Prisma.MasterRecordWhereUniqueInput[]
+}
+
+export type MasterRecordUncheckedCreateNestedManyWithoutSchemaInput = {
+  create?: Prisma.XOR<Prisma.MasterRecordCreateWithoutSchemaInput, Prisma.MasterRecordUncheckedCreateWithoutSchemaInput> | Prisma.MasterRecordCreateWithoutSchemaInput[] | Prisma.MasterRecordUncheckedCreateWithoutSchemaInput[]
+  connectOrCreate?: Prisma.MasterRecordCreateOrConnectWithoutSchemaInput | Prisma.MasterRecordCreateOrConnectWithoutSchemaInput[]
+  createMany?: Prisma.MasterRecordCreateManySchemaInputEnvelope
+  connect?: Prisma.MasterRecordWhereUniqueInput | Prisma.MasterRecordWhereUniqueInput[]
+}
+
+export type MasterRecordUpdateManyWithoutSchemaNestedInput = {
+  create?: Prisma.XOR<Prisma.MasterRecordCreateWithoutSchemaInput, Prisma.MasterRecordUncheckedCreateWithoutSchemaInput> | Prisma.MasterRecordCreateWithoutSchemaInput[] | Prisma.MasterRecordUncheckedCreateWithoutSchemaInput[]
+  connectOrCreate?: Prisma.MasterRecordCreateOrConnectWithoutSchemaInput | Prisma.MasterRecordCreateOrConnectWithoutSchemaInput[]
+  upsert?: Prisma.MasterRecordUpsertWithWhereUniqueWithoutSchemaInput | Prisma.MasterRecordUpsertWithWhereUniqueWithoutSchemaInput[]
+  createMany?: Prisma.MasterRecordCreateManySchemaInputEnvelope
+  set?: Prisma.MasterRecordWhereUniqueInput | Prisma.MasterRecordWhereUniqueInput[]
+  disconnect?: Prisma.MasterRecordWhereUniqueInput | Prisma.MasterRecordWhereUniqueInput[]
+  delete?: Prisma.MasterRecordWhereUniqueInput | Prisma.MasterRecordWhereUniqueInput[]
+  connect?: Prisma.MasterRecordWhereUniqueInput | Prisma.MasterRecordWhereUniqueInput[]
+  update?: Prisma.MasterRecordUpdateWithWhereUniqueWithoutSchemaInput | Prisma.MasterRecordUpdateWithWhereUniqueWithoutSchemaInput[]
+  updateMany?: Prisma.MasterRecordUpdateManyWithWhereWithoutSchemaInput | Prisma.MasterRecordUpdateManyWithWhereWithoutSchemaInput[]
+  deleteMany?: Prisma.MasterRecordScalarWhereInput | Prisma.MasterRecordScalarWhereInput[]
+}
+
+export type MasterRecordUncheckedUpdateManyWithoutSchemaNestedInput = {
+  create?: Prisma.XOR<Prisma.MasterRecordCreateWithoutSchemaInput, Prisma.MasterRecordUncheckedCreateWithoutSchemaInput> | Prisma.MasterRecordCreateWithoutSchemaInput[] | Prisma.MasterRecordUncheckedCreateWithoutSchemaInput[]
+  connectOrCreate?: Prisma.MasterRecordCreateOrConnectWithoutSchemaInput | Prisma.MasterRecordCreateOrConnectWithoutSchemaInput[]
+  upsert?: Prisma.MasterRecordUpsertWithWhereUniqueWithoutSchemaInput | Prisma.MasterRecordUpsertWithWhereUniqueWithoutSchemaInput[]
+  createMany?: Prisma.MasterRecordCreateManySchemaInputEnvelope
+  set?: Prisma.MasterRecordWhereUniqueInput | Prisma.MasterRecordWhereUniqueInput[]
+  disconnect?: Prisma.MasterRecordWhereUniqueInput | Prisma.MasterRecordWhereUniqueInput[]
+  delete?: Prisma.MasterRecordWhereUniqueInput | Prisma.MasterRecordWhereUniqueInput[]
+  connect?: Prisma.MasterRecordWhereUniqueInput | Prisma.MasterRecordWhereUniqueInput[]
+  update?: Prisma.MasterRecordUpdateWithWhereUniqueWithoutSchemaInput | Prisma.MasterRecordUpdateWithWhereUniqueWithoutSchemaInput[]
+  updateMany?: Prisma.MasterRecordUpdateManyWithWhereWithoutSchemaInput | Prisma.MasterRecordUpdateManyWithWhereWithoutSchemaInput[]
+  deleteMany?: Prisma.MasterRecordScalarWhereInput | Prisma.MasterRecordScalarWhereInput[]
+}
+
+export type MasterRecordCreateNestedOneWithoutRecordFieldHistoriesInput = {
+  create?: Prisma.XOR<Prisma.MasterRecordCreateWithoutRecordFieldHistoriesInput, Prisma.MasterRecordUncheckedCreateWithoutRecordFieldHistoriesInput>
+  connectOrCreate?: Prisma.MasterRecordCreateOrConnectWithoutRecordFieldHistoriesInput
+  connect?: Prisma.MasterRecordWhereUniqueInput
+}
+
+export type MasterRecordUpdateOneRequiredWithoutRecordFieldHistoriesNestedInput = {
+  create?: Prisma.XOR<Prisma.MasterRecordCreateWithoutRecordFieldHistoriesInput, Prisma.MasterRecordUncheckedCreateWithoutRecordFieldHistoriesInput>
+  connectOrCreate?: Prisma.MasterRecordCreateOrConnectWithoutRecordFieldHistoriesInput
+  upsert?: Prisma.MasterRecordUpsertWithoutRecordFieldHistoriesInput
+  connect?: Prisma.MasterRecordWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MasterRecordUpdateToOneWithWhereWithoutRecordFieldHistoriesInput, Prisma.MasterRecordUpdateWithoutRecordFieldHistoriesInput>, Prisma.MasterRecordUncheckedUpdateWithoutRecordFieldHistoriesInput>
+}
+
+export type MasterRecordCreateNestedOneWithoutRecordFieldIndexesInput = {
+  create?: Prisma.XOR<Prisma.MasterRecordCreateWithoutRecordFieldIndexesInput, Prisma.MasterRecordUncheckedCreateWithoutRecordFieldIndexesInput>
+  connectOrCreate?: Prisma.MasterRecordCreateOrConnectWithoutRecordFieldIndexesInput
+  connect?: Prisma.MasterRecordWhereUniqueInput
+}
+
+export type MasterRecordUpdateOneRequiredWithoutRecordFieldIndexesNestedInput = {
+  create?: Prisma.XOR<Prisma.MasterRecordCreateWithoutRecordFieldIndexesInput, Prisma.MasterRecordUncheckedCreateWithoutRecordFieldIndexesInput>
+  connectOrCreate?: Prisma.MasterRecordCreateOrConnectWithoutRecordFieldIndexesInput
+  upsert?: Prisma.MasterRecordUpsertWithoutRecordFieldIndexesInput
+  connect?: Prisma.MasterRecordWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MasterRecordUpdateToOneWithWhereWithoutRecordFieldIndexesInput, Prisma.MasterRecordUpdateWithoutRecordFieldIndexesInput>, Prisma.MasterRecordUncheckedUpdateWithoutRecordFieldIndexesInput>
+}
+
 export type MasterRecordCreateNestedManyWithoutCurrentStageInput = {
   create?: Prisma.XOR<Prisma.MasterRecordCreateWithoutCurrentStageInput, Prisma.MasterRecordUncheckedCreateWithoutCurrentStageInput> | Prisma.MasterRecordCreateWithoutCurrentStageInput[] | Prisma.MasterRecordUncheckedCreateWithoutCurrentStageInput[]
   connectOrCreate?: Prisma.MasterRecordCreateOrConnectWithoutCurrentStageInput | Prisma.MasterRecordCreateOrConnectWithoutCurrentStageInput[]
@@ -659,6 +767,9 @@ export type MasterRecordCreateWithoutCreatedByInput = {
   masterObject: Prisma.MasterObjectCreateNestedOneWithoutRecordsInput
   currentStage?: Prisma.WorkflowStageCreateNestedOneWithoutMasterRecordsInput
   linkedUser?: Prisma.UserCreateNestedOneWithoutLinkedRecordsInput
+  schema: Prisma.MasterObjectSchemaCreateNestedOneWithoutMasterRecordsInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutRecordInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexCreateNestedManyWithoutRecordInput
   tasks?: Prisma.TaskCreateNestedManyWithoutMasterRecordInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutMasterRecordInput
 }
@@ -669,10 +780,13 @@ export type MasterRecordUncheckedCreateWithoutCreatedByInput = {
   data: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentStageId?: string | null
   linkedUserId?: string | null
+  schemaId: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutRecordInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexUncheckedCreateNestedManyWithoutRecordInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutMasterRecordInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutMasterRecordInput
 }
@@ -697,6 +811,9 @@ export type MasterRecordCreateWithoutLinkedUserInput = {
   masterObject: Prisma.MasterObjectCreateNestedOneWithoutRecordsInput
   currentStage?: Prisma.WorkflowStageCreateNestedOneWithoutMasterRecordsInput
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedRecordsInput
+  schema: Prisma.MasterObjectSchemaCreateNestedOneWithoutMasterRecordsInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutRecordInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexCreateNestedManyWithoutRecordInput
   tasks?: Prisma.TaskCreateNestedManyWithoutMasterRecordInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutMasterRecordInput
 }
@@ -707,10 +824,13 @@ export type MasterRecordUncheckedCreateWithoutLinkedUserInput = {
   data: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentStageId?: string | null
   createdById?: string | null
+  schemaId: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutRecordInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexUncheckedCreateNestedManyWithoutRecordInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutMasterRecordInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutMasterRecordInput
 }
@@ -751,6 +871,7 @@ export type MasterRecordScalarWhereInput = {
   currentStageId?: Prisma.StringNullableFilter<"MasterRecord"> | string | null
   createdById?: Prisma.StringNullableFilter<"MasterRecord"> | string | null
   linkedUserId?: Prisma.StringNullableFilter<"MasterRecord"> | string | null
+  schemaId?: Prisma.StringFilter<"MasterRecord"> | string
   isActive?: Prisma.BoolFilter<"MasterRecord"> | boolean
   createdAt?: Prisma.DateTimeFilter<"MasterRecord"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"MasterRecord"> | Date | string
@@ -783,6 +904,9 @@ export type MasterRecordCreateWithoutMasterObjectInput = {
   currentStage?: Prisma.WorkflowStageCreateNestedOneWithoutMasterRecordsInput
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedRecordsInput
   linkedUser?: Prisma.UserCreateNestedOneWithoutLinkedRecordsInput
+  schema: Prisma.MasterObjectSchemaCreateNestedOneWithoutMasterRecordsInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutRecordInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexCreateNestedManyWithoutRecordInput
   tasks?: Prisma.TaskCreateNestedManyWithoutMasterRecordInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutMasterRecordInput
 }
@@ -793,10 +917,13 @@ export type MasterRecordUncheckedCreateWithoutMasterObjectInput = {
   currentStageId?: string | null
   createdById?: string | null
   linkedUserId?: string | null
+  schemaId: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutRecordInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexUncheckedCreateNestedManyWithoutRecordInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutMasterRecordInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutMasterRecordInput
 }
@@ -827,6 +954,234 @@ export type MasterRecordUpdateManyWithWhereWithoutMasterObjectInput = {
   data: Prisma.XOR<Prisma.MasterRecordUpdateManyMutationInput, Prisma.MasterRecordUncheckedUpdateManyWithoutMasterObjectInput>
 }
 
+export type MasterRecordCreateWithoutSchemaInput = {
+  id?: string
+  data: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  masterObject: Prisma.MasterObjectCreateNestedOneWithoutRecordsInput
+  currentStage?: Prisma.WorkflowStageCreateNestedOneWithoutMasterRecordsInput
+  createdBy?: Prisma.UserCreateNestedOneWithoutCreatedRecordsInput
+  linkedUser?: Prisma.UserCreateNestedOneWithoutLinkedRecordsInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutRecordInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexCreateNestedManyWithoutRecordInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutMasterRecordInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutMasterRecordInput
+}
+
+export type MasterRecordUncheckedCreateWithoutSchemaInput = {
+  id?: string
+  masterObjectId: string
+  data: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  currentStageId?: string | null
+  createdById?: string | null
+  linkedUserId?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutRecordInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexUncheckedCreateNestedManyWithoutRecordInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutMasterRecordInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutMasterRecordInput
+}
+
+export type MasterRecordCreateOrConnectWithoutSchemaInput = {
+  where: Prisma.MasterRecordWhereUniqueInput
+  create: Prisma.XOR<Prisma.MasterRecordCreateWithoutSchemaInput, Prisma.MasterRecordUncheckedCreateWithoutSchemaInput>
+}
+
+export type MasterRecordCreateManySchemaInputEnvelope = {
+  data: Prisma.MasterRecordCreateManySchemaInput | Prisma.MasterRecordCreateManySchemaInput[]
+  skipDuplicates?: boolean
+}
+
+export type MasterRecordUpsertWithWhereUniqueWithoutSchemaInput = {
+  where: Prisma.MasterRecordWhereUniqueInput
+  update: Prisma.XOR<Prisma.MasterRecordUpdateWithoutSchemaInput, Prisma.MasterRecordUncheckedUpdateWithoutSchemaInput>
+  create: Prisma.XOR<Prisma.MasterRecordCreateWithoutSchemaInput, Prisma.MasterRecordUncheckedCreateWithoutSchemaInput>
+}
+
+export type MasterRecordUpdateWithWhereUniqueWithoutSchemaInput = {
+  where: Prisma.MasterRecordWhereUniqueInput
+  data: Prisma.XOR<Prisma.MasterRecordUpdateWithoutSchemaInput, Prisma.MasterRecordUncheckedUpdateWithoutSchemaInput>
+}
+
+export type MasterRecordUpdateManyWithWhereWithoutSchemaInput = {
+  where: Prisma.MasterRecordScalarWhereInput
+  data: Prisma.XOR<Prisma.MasterRecordUpdateManyMutationInput, Prisma.MasterRecordUncheckedUpdateManyWithoutSchemaInput>
+}
+
+export type MasterRecordCreateWithoutRecordFieldHistoriesInput = {
+  id?: string
+  data: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  masterObject: Prisma.MasterObjectCreateNestedOneWithoutRecordsInput
+  currentStage?: Prisma.WorkflowStageCreateNestedOneWithoutMasterRecordsInput
+  createdBy?: Prisma.UserCreateNestedOneWithoutCreatedRecordsInput
+  linkedUser?: Prisma.UserCreateNestedOneWithoutLinkedRecordsInput
+  schema: Prisma.MasterObjectSchemaCreateNestedOneWithoutMasterRecordsInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexCreateNestedManyWithoutRecordInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutMasterRecordInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutMasterRecordInput
+}
+
+export type MasterRecordUncheckedCreateWithoutRecordFieldHistoriesInput = {
+  id?: string
+  masterObjectId: string
+  data: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  currentStageId?: string | null
+  createdById?: string | null
+  linkedUserId?: string | null
+  schemaId: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  recordFieldIndexes?: Prisma.RecordFieldIndexUncheckedCreateNestedManyWithoutRecordInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutMasterRecordInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutMasterRecordInput
+}
+
+export type MasterRecordCreateOrConnectWithoutRecordFieldHistoriesInput = {
+  where: Prisma.MasterRecordWhereUniqueInput
+  create: Prisma.XOR<Prisma.MasterRecordCreateWithoutRecordFieldHistoriesInput, Prisma.MasterRecordUncheckedCreateWithoutRecordFieldHistoriesInput>
+}
+
+export type MasterRecordUpsertWithoutRecordFieldHistoriesInput = {
+  update: Prisma.XOR<Prisma.MasterRecordUpdateWithoutRecordFieldHistoriesInput, Prisma.MasterRecordUncheckedUpdateWithoutRecordFieldHistoriesInput>
+  create: Prisma.XOR<Prisma.MasterRecordCreateWithoutRecordFieldHistoriesInput, Prisma.MasterRecordUncheckedCreateWithoutRecordFieldHistoriesInput>
+  where?: Prisma.MasterRecordWhereInput
+}
+
+export type MasterRecordUpdateToOneWithWhereWithoutRecordFieldHistoriesInput = {
+  where?: Prisma.MasterRecordWhereInput
+  data: Prisma.XOR<Prisma.MasterRecordUpdateWithoutRecordFieldHistoriesInput, Prisma.MasterRecordUncheckedUpdateWithoutRecordFieldHistoriesInput>
+}
+
+export type MasterRecordUpdateWithoutRecordFieldHistoriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  masterObject?: Prisma.MasterObjectUpdateOneRequiredWithoutRecordsNestedInput
+  currentStage?: Prisma.WorkflowStageUpdateOneWithoutMasterRecordsNestedInput
+  createdBy?: Prisma.UserUpdateOneWithoutCreatedRecordsNestedInput
+  linkedUser?: Prisma.UserUpdateOneWithoutLinkedRecordsNestedInput
+  schema?: Prisma.MasterObjectSchemaUpdateOneRequiredWithoutMasterRecordsNestedInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexUpdateManyWithoutRecordNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutMasterRecordNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutMasterRecordNestedInput
+}
+
+export type MasterRecordUncheckedUpdateWithoutRecordFieldHistoriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  masterObjectId?: Prisma.StringFieldUpdateOperationsInput | string
+  data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  currentStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkedUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schemaId?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recordFieldIndexes?: Prisma.RecordFieldIndexUncheckedUpdateManyWithoutRecordNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutMasterRecordNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutMasterRecordNestedInput
+}
+
+export type MasterRecordCreateWithoutRecordFieldIndexesInput = {
+  id?: string
+  data: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  masterObject: Prisma.MasterObjectCreateNestedOneWithoutRecordsInput
+  currentStage?: Prisma.WorkflowStageCreateNestedOneWithoutMasterRecordsInput
+  createdBy?: Prisma.UserCreateNestedOneWithoutCreatedRecordsInput
+  linkedUser?: Prisma.UserCreateNestedOneWithoutLinkedRecordsInput
+  schema: Prisma.MasterObjectSchemaCreateNestedOneWithoutMasterRecordsInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutRecordInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutMasterRecordInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutMasterRecordInput
+}
+
+export type MasterRecordUncheckedCreateWithoutRecordFieldIndexesInput = {
+  id?: string
+  masterObjectId: string
+  data: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  currentStageId?: string | null
+  createdById?: string | null
+  linkedUserId?: string | null
+  schemaId: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutRecordInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutMasterRecordInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutMasterRecordInput
+}
+
+export type MasterRecordCreateOrConnectWithoutRecordFieldIndexesInput = {
+  where: Prisma.MasterRecordWhereUniqueInput
+  create: Prisma.XOR<Prisma.MasterRecordCreateWithoutRecordFieldIndexesInput, Prisma.MasterRecordUncheckedCreateWithoutRecordFieldIndexesInput>
+}
+
+export type MasterRecordUpsertWithoutRecordFieldIndexesInput = {
+  update: Prisma.XOR<Prisma.MasterRecordUpdateWithoutRecordFieldIndexesInput, Prisma.MasterRecordUncheckedUpdateWithoutRecordFieldIndexesInput>
+  create: Prisma.XOR<Prisma.MasterRecordCreateWithoutRecordFieldIndexesInput, Prisma.MasterRecordUncheckedCreateWithoutRecordFieldIndexesInput>
+  where?: Prisma.MasterRecordWhereInput
+}
+
+export type MasterRecordUpdateToOneWithWhereWithoutRecordFieldIndexesInput = {
+  where?: Prisma.MasterRecordWhereInput
+  data: Prisma.XOR<Prisma.MasterRecordUpdateWithoutRecordFieldIndexesInput, Prisma.MasterRecordUncheckedUpdateWithoutRecordFieldIndexesInput>
+}
+
+export type MasterRecordUpdateWithoutRecordFieldIndexesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  masterObject?: Prisma.MasterObjectUpdateOneRequiredWithoutRecordsNestedInput
+  currentStage?: Prisma.WorkflowStageUpdateOneWithoutMasterRecordsNestedInput
+  createdBy?: Prisma.UserUpdateOneWithoutCreatedRecordsNestedInput
+  linkedUser?: Prisma.UserUpdateOneWithoutLinkedRecordsNestedInput
+  schema?: Prisma.MasterObjectSchemaUpdateOneRequiredWithoutMasterRecordsNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutRecordNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutMasterRecordNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutMasterRecordNestedInput
+}
+
+export type MasterRecordUncheckedUpdateWithoutRecordFieldIndexesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  masterObjectId?: Prisma.StringFieldUpdateOperationsInput | string
+  data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  currentStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkedUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schemaId?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutRecordNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutMasterRecordNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutMasterRecordNestedInput
+}
+
 export type MasterRecordCreateWithoutCurrentStageInput = {
   id?: string
   data: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -837,6 +1192,9 @@ export type MasterRecordCreateWithoutCurrentStageInput = {
   masterObject: Prisma.MasterObjectCreateNestedOneWithoutRecordsInput
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedRecordsInput
   linkedUser?: Prisma.UserCreateNestedOneWithoutLinkedRecordsInput
+  schema: Prisma.MasterObjectSchemaCreateNestedOneWithoutMasterRecordsInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutRecordInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexCreateNestedManyWithoutRecordInput
   tasks?: Prisma.TaskCreateNestedManyWithoutMasterRecordInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutMasterRecordInput
 }
@@ -847,10 +1205,13 @@ export type MasterRecordUncheckedCreateWithoutCurrentStageInput = {
   data: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdById?: string | null
   linkedUserId?: string | null
+  schemaId: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutRecordInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexUncheckedCreateNestedManyWithoutRecordInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutMasterRecordInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutMasterRecordInput
 }
@@ -892,6 +1253,9 @@ export type MasterRecordCreateWithoutTasksInput = {
   currentStage?: Prisma.WorkflowStageCreateNestedOneWithoutMasterRecordsInput
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedRecordsInput
   linkedUser?: Prisma.UserCreateNestedOneWithoutLinkedRecordsInput
+  schema: Prisma.MasterObjectSchemaCreateNestedOneWithoutMasterRecordsInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutRecordInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexCreateNestedManyWithoutRecordInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutMasterRecordInput
 }
 
@@ -902,10 +1266,13 @@ export type MasterRecordUncheckedCreateWithoutTasksInput = {
   currentStageId?: string | null
   createdById?: string | null
   linkedUserId?: string | null
+  schemaId: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutRecordInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexUncheckedCreateNestedManyWithoutRecordInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutMasterRecordInput
 }
 
@@ -936,6 +1303,9 @@ export type MasterRecordUpdateWithoutTasksInput = {
   currentStage?: Prisma.WorkflowStageUpdateOneWithoutMasterRecordsNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutCreatedRecordsNestedInput
   linkedUser?: Prisma.UserUpdateOneWithoutLinkedRecordsNestedInput
+  schema?: Prisma.MasterObjectSchemaUpdateOneRequiredWithoutMasterRecordsNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutRecordNestedInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexUpdateManyWithoutRecordNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutMasterRecordNestedInput
 }
 
@@ -946,10 +1316,13 @@ export type MasterRecordUncheckedUpdateWithoutTasksInput = {
   currentStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   linkedUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schemaId?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutRecordNestedInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexUncheckedUpdateManyWithoutRecordNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutMasterRecordNestedInput
 }
 
@@ -964,6 +1337,9 @@ export type MasterRecordCreateWithoutAuditLogsInput = {
   currentStage?: Prisma.WorkflowStageCreateNestedOneWithoutMasterRecordsInput
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedRecordsInput
   linkedUser?: Prisma.UserCreateNestedOneWithoutLinkedRecordsInput
+  schema: Prisma.MasterObjectSchemaCreateNestedOneWithoutMasterRecordsInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutRecordInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexCreateNestedManyWithoutRecordInput
   tasks?: Prisma.TaskCreateNestedManyWithoutMasterRecordInput
 }
 
@@ -974,10 +1350,13 @@ export type MasterRecordUncheckedCreateWithoutAuditLogsInput = {
   currentStageId?: string | null
   createdById?: string | null
   linkedUserId?: string | null
+  schemaId: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutRecordInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexUncheckedCreateNestedManyWithoutRecordInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutMasterRecordInput
 }
 
@@ -1008,6 +1387,9 @@ export type MasterRecordUpdateWithoutAuditLogsInput = {
   currentStage?: Prisma.WorkflowStageUpdateOneWithoutMasterRecordsNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutCreatedRecordsNestedInput
   linkedUser?: Prisma.UserUpdateOneWithoutLinkedRecordsNestedInput
+  schema?: Prisma.MasterObjectSchemaUpdateOneRequiredWithoutMasterRecordsNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutRecordNestedInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexUpdateManyWithoutRecordNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutMasterRecordNestedInput
 }
 
@@ -1018,10 +1400,13 @@ export type MasterRecordUncheckedUpdateWithoutAuditLogsInput = {
   currentStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   linkedUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schemaId?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutRecordNestedInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexUncheckedUpdateManyWithoutRecordNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutMasterRecordNestedInput
 }
 
@@ -1031,6 +1416,7 @@ export type MasterRecordCreateManyCreatedByInput = {
   data: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentStageId?: string | null
   linkedUserId?: string | null
+  schemaId: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1043,6 +1429,7 @@ export type MasterRecordCreateManyLinkedUserInput = {
   data: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentStageId?: string | null
   createdById?: string | null
+  schemaId: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1059,6 +1446,9 @@ export type MasterRecordUpdateWithoutCreatedByInput = {
   masterObject?: Prisma.MasterObjectUpdateOneRequiredWithoutRecordsNestedInput
   currentStage?: Prisma.WorkflowStageUpdateOneWithoutMasterRecordsNestedInput
   linkedUser?: Prisma.UserUpdateOneWithoutLinkedRecordsNestedInput
+  schema?: Prisma.MasterObjectSchemaUpdateOneRequiredWithoutMasterRecordsNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutRecordNestedInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexUpdateManyWithoutRecordNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutMasterRecordNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutMasterRecordNestedInput
 }
@@ -1069,10 +1459,13 @@ export type MasterRecordUncheckedUpdateWithoutCreatedByInput = {
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   linkedUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schemaId?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutRecordNestedInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexUncheckedUpdateManyWithoutRecordNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutMasterRecordNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutMasterRecordNestedInput
 }
@@ -1083,6 +1476,7 @@ export type MasterRecordUncheckedUpdateManyWithoutCreatedByInput = {
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   linkedUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schemaId?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1099,6 +1493,9 @@ export type MasterRecordUpdateWithoutLinkedUserInput = {
   masterObject?: Prisma.MasterObjectUpdateOneRequiredWithoutRecordsNestedInput
   currentStage?: Prisma.WorkflowStageUpdateOneWithoutMasterRecordsNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutCreatedRecordsNestedInput
+  schema?: Prisma.MasterObjectSchemaUpdateOneRequiredWithoutMasterRecordsNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutRecordNestedInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexUpdateManyWithoutRecordNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutMasterRecordNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutMasterRecordNestedInput
 }
@@ -1109,10 +1506,13 @@ export type MasterRecordUncheckedUpdateWithoutLinkedUserInput = {
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schemaId?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutRecordNestedInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexUncheckedUpdateManyWithoutRecordNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutMasterRecordNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutMasterRecordNestedInput
 }
@@ -1123,6 +1523,7 @@ export type MasterRecordUncheckedUpdateManyWithoutLinkedUserInput = {
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schemaId?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1135,6 +1536,7 @@ export type MasterRecordCreateManyMasterObjectInput = {
   currentStageId?: string | null
   createdById?: string | null
   linkedUserId?: string | null
+  schemaId: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1151,6 +1553,9 @@ export type MasterRecordUpdateWithoutMasterObjectInput = {
   currentStage?: Prisma.WorkflowStageUpdateOneWithoutMasterRecordsNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutCreatedRecordsNestedInput
   linkedUser?: Prisma.UserUpdateOneWithoutLinkedRecordsNestedInput
+  schema?: Prisma.MasterObjectSchemaUpdateOneRequiredWithoutMasterRecordsNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutRecordNestedInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexUpdateManyWithoutRecordNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutMasterRecordNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutMasterRecordNestedInput
 }
@@ -1161,16 +1566,80 @@ export type MasterRecordUncheckedUpdateWithoutMasterObjectInput = {
   currentStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   linkedUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schemaId?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutRecordNestedInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexUncheckedUpdateManyWithoutRecordNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutMasterRecordNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutMasterRecordNestedInput
 }
 
 export type MasterRecordUncheckedUpdateManyWithoutMasterObjectInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  currentStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkedUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schemaId?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type MasterRecordCreateManySchemaInput = {
+  id?: string
+  masterObjectId: string
+  data: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  currentStageId?: string | null
+  createdById?: string | null
+  linkedUserId?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+}
+
+export type MasterRecordUpdateWithoutSchemaInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  masterObject?: Prisma.MasterObjectUpdateOneRequiredWithoutRecordsNestedInput
+  currentStage?: Prisma.WorkflowStageUpdateOneWithoutMasterRecordsNestedInput
+  createdBy?: Prisma.UserUpdateOneWithoutCreatedRecordsNestedInput
+  linkedUser?: Prisma.UserUpdateOneWithoutLinkedRecordsNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutRecordNestedInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexUpdateManyWithoutRecordNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutMasterRecordNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutMasterRecordNestedInput
+}
+
+export type MasterRecordUncheckedUpdateWithoutSchemaInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  masterObjectId?: Prisma.StringFieldUpdateOperationsInput | string
+  data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  currentStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkedUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutRecordNestedInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexUncheckedUpdateManyWithoutRecordNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutMasterRecordNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutMasterRecordNestedInput
+}
+
+export type MasterRecordUncheckedUpdateManyWithoutSchemaInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  masterObjectId?: Prisma.StringFieldUpdateOperationsInput | string
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   currentStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1187,6 +1656,7 @@ export type MasterRecordCreateManyCurrentStageInput = {
   data: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdById?: string | null
   linkedUserId?: string | null
+  schemaId: string
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1203,6 +1673,9 @@ export type MasterRecordUpdateWithoutCurrentStageInput = {
   masterObject?: Prisma.MasterObjectUpdateOneRequiredWithoutRecordsNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutCreatedRecordsNestedInput
   linkedUser?: Prisma.UserUpdateOneWithoutLinkedRecordsNestedInput
+  schema?: Prisma.MasterObjectSchemaUpdateOneRequiredWithoutMasterRecordsNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutRecordNestedInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexUpdateManyWithoutRecordNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutMasterRecordNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutMasterRecordNestedInput
 }
@@ -1213,10 +1686,13 @@ export type MasterRecordUncheckedUpdateWithoutCurrentStageInput = {
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   linkedUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schemaId?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutRecordNestedInput
+  recordFieldIndexes?: Prisma.RecordFieldIndexUncheckedUpdateManyWithoutRecordNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutMasterRecordNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutMasterRecordNestedInput
 }
@@ -1227,6 +1703,7 @@ export type MasterRecordUncheckedUpdateManyWithoutCurrentStageInput = {
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   linkedUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schemaId?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1239,11 +1716,15 @@ export type MasterRecordUncheckedUpdateManyWithoutCurrentStageInput = {
  */
 
 export type MasterRecordCountOutputType = {
+  recordFieldHistories: number
+  recordFieldIndexes: number
   tasks: number
   auditLogs: number
 }
 
 export type MasterRecordCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  recordFieldHistories?: boolean | MasterRecordCountOutputTypeCountRecordFieldHistoriesArgs
+  recordFieldIndexes?: boolean | MasterRecordCountOutputTypeCountRecordFieldIndexesArgs
   tasks?: boolean | MasterRecordCountOutputTypeCountTasksArgs
   auditLogs?: boolean | MasterRecordCountOutputTypeCountAuditLogsArgs
 }
@@ -1256,6 +1737,20 @@ export type MasterRecordCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types
    * Select specific fields to fetch from the MasterRecordCountOutputType
    */
   select?: Prisma.MasterRecordCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * MasterRecordCountOutputType without action
+ */
+export type MasterRecordCountOutputTypeCountRecordFieldHistoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RecordFieldHistoryWhereInput
+}
+
+/**
+ * MasterRecordCountOutputType without action
+ */
+export type MasterRecordCountOutputTypeCountRecordFieldIndexesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RecordFieldIndexWhereInput
 }
 
 /**
@@ -1280,6 +1775,7 @@ export type MasterRecordSelect<ExtArgs extends runtime.Types.Extensions.Internal
   currentStageId?: boolean
   createdById?: boolean
   linkedUserId?: boolean
+  schemaId?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1288,6 +1784,9 @@ export type MasterRecordSelect<ExtArgs extends runtime.Types.Extensions.Internal
   currentStage?: boolean | Prisma.MasterRecord$currentStageArgs<ExtArgs>
   createdBy?: boolean | Prisma.MasterRecord$createdByArgs<ExtArgs>
   linkedUser?: boolean | Prisma.MasterRecord$linkedUserArgs<ExtArgs>
+  schema?: boolean | Prisma.MasterObjectSchemaDefaultArgs<ExtArgs>
+  recordFieldHistories?: boolean | Prisma.MasterRecord$recordFieldHistoriesArgs<ExtArgs>
+  recordFieldIndexes?: boolean | Prisma.MasterRecord$recordFieldIndexesArgs<ExtArgs>
   tasks?: boolean | Prisma.MasterRecord$tasksArgs<ExtArgs>
   auditLogs?: boolean | Prisma.MasterRecord$auditLogsArgs<ExtArgs>
   _count?: boolean | Prisma.MasterRecordCountOutputTypeDefaultArgs<ExtArgs>
@@ -1300,6 +1799,7 @@ export type MasterRecordSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   currentStageId?: boolean
   createdById?: boolean
   linkedUserId?: boolean
+  schemaId?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1308,6 +1808,7 @@ export type MasterRecordSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   currentStage?: boolean | Prisma.MasterRecord$currentStageArgs<ExtArgs>
   createdBy?: boolean | Prisma.MasterRecord$createdByArgs<ExtArgs>
   linkedUser?: boolean | Prisma.MasterRecord$linkedUserArgs<ExtArgs>
+  schema?: boolean | Prisma.MasterObjectSchemaDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["masterRecord"]>
 
 export type MasterRecordSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1317,6 +1818,7 @@ export type MasterRecordSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   currentStageId?: boolean
   createdById?: boolean
   linkedUserId?: boolean
+  schemaId?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1325,6 +1827,7 @@ export type MasterRecordSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   currentStage?: boolean | Prisma.MasterRecord$currentStageArgs<ExtArgs>
   createdBy?: boolean | Prisma.MasterRecord$createdByArgs<ExtArgs>
   linkedUser?: boolean | Prisma.MasterRecord$linkedUserArgs<ExtArgs>
+  schema?: boolean | Prisma.MasterObjectSchemaDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["masterRecord"]>
 
 export type MasterRecordSelectScalar = {
@@ -1334,18 +1837,22 @@ export type MasterRecordSelectScalar = {
   currentStageId?: boolean
   createdById?: boolean
   linkedUserId?: boolean
+  schemaId?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
 }
 
-export type MasterRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "masterObjectId" | "data" | "currentStageId" | "createdById" | "linkedUserId" | "isActive" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["masterRecord"]>
+export type MasterRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "masterObjectId" | "data" | "currentStageId" | "createdById" | "linkedUserId" | "schemaId" | "isActive" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["masterRecord"]>
 export type MasterRecordInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   masterObject?: boolean | Prisma.MasterObjectDefaultArgs<ExtArgs>
   currentStage?: boolean | Prisma.MasterRecord$currentStageArgs<ExtArgs>
   createdBy?: boolean | Prisma.MasterRecord$createdByArgs<ExtArgs>
   linkedUser?: boolean | Prisma.MasterRecord$linkedUserArgs<ExtArgs>
+  schema?: boolean | Prisma.MasterObjectSchemaDefaultArgs<ExtArgs>
+  recordFieldHistories?: boolean | Prisma.MasterRecord$recordFieldHistoriesArgs<ExtArgs>
+  recordFieldIndexes?: boolean | Prisma.MasterRecord$recordFieldIndexesArgs<ExtArgs>
   tasks?: boolean | Prisma.MasterRecord$tasksArgs<ExtArgs>
   auditLogs?: boolean | Prisma.MasterRecord$auditLogsArgs<ExtArgs>
   _count?: boolean | Prisma.MasterRecordCountOutputTypeDefaultArgs<ExtArgs>
@@ -1355,12 +1862,14 @@ export type MasterRecordIncludeCreateManyAndReturn<ExtArgs extends runtime.Types
   currentStage?: boolean | Prisma.MasterRecord$currentStageArgs<ExtArgs>
   createdBy?: boolean | Prisma.MasterRecord$createdByArgs<ExtArgs>
   linkedUser?: boolean | Prisma.MasterRecord$linkedUserArgs<ExtArgs>
+  schema?: boolean | Prisma.MasterObjectSchemaDefaultArgs<ExtArgs>
 }
 export type MasterRecordIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   masterObject?: boolean | Prisma.MasterObjectDefaultArgs<ExtArgs>
   currentStage?: boolean | Prisma.MasterRecord$currentStageArgs<ExtArgs>
   createdBy?: boolean | Prisma.MasterRecord$createdByArgs<ExtArgs>
   linkedUser?: boolean | Prisma.MasterRecord$linkedUserArgs<ExtArgs>
+  schema?: boolean | Prisma.MasterObjectSchemaDefaultArgs<ExtArgs>
 }
 
 export type $MasterRecordPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1370,6 +1879,9 @@ export type $MasterRecordPayload<ExtArgs extends runtime.Types.Extensions.Intern
     currentStage: Prisma.$WorkflowStagePayload<ExtArgs> | null
     createdBy: Prisma.$UserPayload<ExtArgs> | null
     linkedUser: Prisma.$UserPayload<ExtArgs> | null
+    schema: Prisma.$MasterObjectSchemaPayload<ExtArgs>
+    recordFieldHistories: Prisma.$RecordFieldHistoryPayload<ExtArgs>[]
+    recordFieldIndexes: Prisma.$RecordFieldIndexPayload<ExtArgs>[]
     tasks: Prisma.$TaskPayload<ExtArgs>[]
     auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
   }
@@ -1383,6 +1895,7 @@ export type $MasterRecordPayload<ExtArgs extends runtime.Types.Extensions.Intern
     currentStageId: string | null
     createdById: string | null
     linkedUserId: string | null
+    schemaId: string
     isActive: boolean
     createdAt: Date
     updatedAt: Date
@@ -1785,6 +2298,9 @@ export interface Prisma__MasterRecordClient<T, Null = never, ExtArgs extends run
   currentStage<T extends Prisma.MasterRecord$currentStageArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MasterRecord$currentStageArgs<ExtArgs>>): Prisma.Prisma__WorkflowStageClient<runtime.Types.Result.GetResult<Prisma.$WorkflowStagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   createdBy<T extends Prisma.MasterRecord$createdByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MasterRecord$createdByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   linkedUser<T extends Prisma.MasterRecord$linkedUserArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MasterRecord$linkedUserArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  schema<T extends Prisma.MasterObjectSchemaDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MasterObjectSchemaDefaultArgs<ExtArgs>>): Prisma.Prisma__MasterObjectSchemaClient<runtime.Types.Result.GetResult<Prisma.$MasterObjectSchemaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  recordFieldHistories<T extends Prisma.MasterRecord$recordFieldHistoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MasterRecord$recordFieldHistoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordFieldHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  recordFieldIndexes<T extends Prisma.MasterRecord$recordFieldIndexesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MasterRecord$recordFieldIndexesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordFieldIndexPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tasks<T extends Prisma.MasterRecord$tasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MasterRecord$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   auditLogs<T extends Prisma.MasterRecord$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MasterRecord$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -1822,6 +2338,7 @@ export interface MasterRecordFieldRefs {
   readonly currentStageId: Prisma.FieldRef<"MasterRecord", 'String'>
   readonly createdById: Prisma.FieldRef<"MasterRecord", 'String'>
   readonly linkedUserId: Prisma.FieldRef<"MasterRecord", 'String'>
+  readonly schemaId: Prisma.FieldRef<"MasterRecord", 'String'>
   readonly isActive: Prisma.FieldRef<"MasterRecord", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"MasterRecord", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"MasterRecord", 'DateTime'>
@@ -2276,6 +2793,54 @@ export type MasterRecord$linkedUserArgs<ExtArgs extends runtime.Types.Extensions
    */
   include?: Prisma.UserInclude<ExtArgs> | null
   where?: Prisma.UserWhereInput
+}
+
+/**
+ * MasterRecord.recordFieldHistories
+ */
+export type MasterRecord$recordFieldHistoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RecordFieldHistory
+   */
+  select?: Prisma.RecordFieldHistorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RecordFieldHistory
+   */
+  omit?: Prisma.RecordFieldHistoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RecordFieldHistoryInclude<ExtArgs> | null
+  where?: Prisma.RecordFieldHistoryWhereInput
+  orderBy?: Prisma.RecordFieldHistoryOrderByWithRelationInput | Prisma.RecordFieldHistoryOrderByWithRelationInput[]
+  cursor?: Prisma.RecordFieldHistoryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RecordFieldHistoryScalarFieldEnum | Prisma.RecordFieldHistoryScalarFieldEnum[]
+}
+
+/**
+ * MasterRecord.recordFieldIndexes
+ */
+export type MasterRecord$recordFieldIndexesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RecordFieldIndex
+   */
+  select?: Prisma.RecordFieldIndexSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RecordFieldIndex
+   */
+  omit?: Prisma.RecordFieldIndexOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RecordFieldIndexInclude<ExtArgs> | null
+  where?: Prisma.RecordFieldIndexWhereInput
+  orderBy?: Prisma.RecordFieldIndexOrderByWithRelationInput | Prisma.RecordFieldIndexOrderByWithRelationInput[]
+  cursor?: Prisma.RecordFieldIndexWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RecordFieldIndexScalarFieldEnum | Prisma.RecordFieldIndexScalarFieldEnum[]
 }
 
 /**

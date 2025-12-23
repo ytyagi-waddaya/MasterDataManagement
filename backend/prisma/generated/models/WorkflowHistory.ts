@@ -33,7 +33,9 @@ export type WorkflowHistoryMinAggregateOutputType = {
   notes: string | null
   workflowTransitionId: string | null
   actionLabel: string | null
+  actionType: $Enums.HistoryAction | null
   createdAt: Date | null
+  performedByType: string | null
 }
 
 export type WorkflowHistoryMaxAggregateOutputType = {
@@ -45,7 +47,9 @@ export type WorkflowHistoryMaxAggregateOutputType = {
   notes: string | null
   workflowTransitionId: string | null
   actionLabel: string | null
+  actionType: $Enums.HistoryAction | null
   createdAt: Date | null
+  performedByType: string | null
 }
 
 export type WorkflowHistoryCountAggregateOutputType = {
@@ -58,7 +62,9 @@ export type WorkflowHistoryCountAggregateOutputType = {
   workflowTransitionId: number
   actionLabel: number
   metadata: number
+  actionType: number
   createdAt: number
+  performedByType: number
   _all: number
 }
 
@@ -72,7 +78,9 @@ export type WorkflowHistoryMinAggregateInputType = {
   notes?: true
   workflowTransitionId?: true
   actionLabel?: true
+  actionType?: true
   createdAt?: true
+  performedByType?: true
 }
 
 export type WorkflowHistoryMaxAggregateInputType = {
@@ -84,7 +92,9 @@ export type WorkflowHistoryMaxAggregateInputType = {
   notes?: true
   workflowTransitionId?: true
   actionLabel?: true
+  actionType?: true
   createdAt?: true
+  performedByType?: true
 }
 
 export type WorkflowHistoryCountAggregateInputType = {
@@ -97,7 +107,9 @@ export type WorkflowHistoryCountAggregateInputType = {
   workflowTransitionId?: true
   actionLabel?: true
   metadata?: true
+  actionType?: true
   createdAt?: true
+  performedByType?: true
   _all?: true
 }
 
@@ -183,7 +195,9 @@ export type WorkflowHistoryGroupByOutputType = {
   workflowTransitionId: string | null
   actionLabel: string | null
   metadata: runtime.JsonValue | null
+  actionType: $Enums.HistoryAction
   createdAt: Date
+  performedByType: string | null
   _count: WorkflowHistoryCountAggregateOutputType | null
   _min: WorkflowHistoryMinAggregateOutputType | null
   _max: WorkflowHistoryMaxAggregateOutputType | null
@@ -217,7 +231,9 @@ export type WorkflowHistoryWhereInput = {
   workflowTransitionId?: Prisma.StringNullableFilter<"WorkflowHistory"> | string | null
   actionLabel?: Prisma.StringNullableFilter<"WorkflowHistory"> | string | null
   metadata?: Prisma.JsonNullableFilter<"WorkflowHistory">
+  actionType?: Prisma.EnumHistoryActionFilter<"WorkflowHistory"> | $Enums.HistoryAction
   createdAt?: Prisma.DateTimeFilter<"WorkflowHistory"> | Date | string
+  performedByType?: Prisma.StringNullableFilter<"WorkflowHistory"> | string | null
   workflowInstance?: Prisma.XOR<Prisma.WorkflowInstanceScalarRelationFilter, Prisma.WorkflowInstanceWhereInput>
   fromStage?: Prisma.XOR<Prisma.WorkflowStageNullableScalarRelationFilter, Prisma.WorkflowStageWhereInput> | null
   toStage?: Prisma.XOR<Prisma.WorkflowStageScalarRelationFilter, Prisma.WorkflowStageWhereInput>
@@ -235,7 +251,9 @@ export type WorkflowHistoryOrderByWithRelationInput = {
   workflowTransitionId?: Prisma.SortOrderInput | Prisma.SortOrder
   actionLabel?: Prisma.SortOrderInput | Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
+  actionType?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  performedByType?: Prisma.SortOrderInput | Prisma.SortOrder
   workflowInstance?: Prisma.WorkflowInstanceOrderByWithRelationInput
   fromStage?: Prisma.WorkflowStageOrderByWithRelationInput
   toStage?: Prisma.WorkflowStageOrderByWithRelationInput
@@ -256,7 +274,9 @@ export type WorkflowHistoryWhereUniqueInput = Prisma.AtLeast<{
   workflowTransitionId?: Prisma.StringNullableFilter<"WorkflowHistory"> | string | null
   actionLabel?: Prisma.StringNullableFilter<"WorkflowHistory"> | string | null
   metadata?: Prisma.JsonNullableFilter<"WorkflowHistory">
+  actionType?: Prisma.EnumHistoryActionFilter<"WorkflowHistory"> | $Enums.HistoryAction
   createdAt?: Prisma.DateTimeFilter<"WorkflowHistory"> | Date | string
+  performedByType?: Prisma.StringNullableFilter<"WorkflowHistory"> | string | null
   workflowInstance?: Prisma.XOR<Prisma.WorkflowInstanceScalarRelationFilter, Prisma.WorkflowInstanceWhereInput>
   fromStage?: Prisma.XOR<Prisma.WorkflowStageNullableScalarRelationFilter, Prisma.WorkflowStageWhereInput> | null
   toStage?: Prisma.XOR<Prisma.WorkflowStageScalarRelationFilter, Prisma.WorkflowStageWhereInput>
@@ -274,7 +294,9 @@ export type WorkflowHistoryOrderByWithAggregationInput = {
   workflowTransitionId?: Prisma.SortOrderInput | Prisma.SortOrder
   actionLabel?: Prisma.SortOrderInput | Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
+  actionType?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  performedByType?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.WorkflowHistoryCountOrderByAggregateInput
   _max?: Prisma.WorkflowHistoryMaxOrderByAggregateInput
   _min?: Prisma.WorkflowHistoryMinOrderByAggregateInput
@@ -293,7 +315,9 @@ export type WorkflowHistoryScalarWhereWithAggregatesInput = {
   workflowTransitionId?: Prisma.StringNullableWithAggregatesFilter<"WorkflowHistory"> | string | null
   actionLabel?: Prisma.StringNullableWithAggregatesFilter<"WorkflowHistory"> | string | null
   metadata?: Prisma.JsonNullableWithAggregatesFilter<"WorkflowHistory">
+  actionType?: Prisma.EnumHistoryActionWithAggregatesFilter<"WorkflowHistory"> | $Enums.HistoryAction
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"WorkflowHistory"> | Date | string
+  performedByType?: Prisma.StringNullableWithAggregatesFilter<"WorkflowHistory"> | string | null
 }
 
 export type WorkflowHistoryCreateInput = {
@@ -301,7 +325,9 @@ export type WorkflowHistoryCreateInput = {
   notes?: string | null
   actionLabel?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType: $Enums.HistoryAction
   createdAt?: Date | string
+  performedByType?: string | null
   workflowInstance: Prisma.WorkflowInstanceCreateNestedOneWithoutHistoriesInput
   fromStage?: Prisma.WorkflowStageCreateNestedOneWithoutHistoriesFromInput
   toStage: Prisma.WorkflowStageCreateNestedOneWithoutHistoriesToInput
@@ -319,7 +345,9 @@ export type WorkflowHistoryUncheckedCreateInput = {
   workflowTransitionId?: string | null
   actionLabel?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType: $Enums.HistoryAction
   createdAt?: Date | string
+  performedByType?: string | null
 }
 
 export type WorkflowHistoryUpdateInput = {
@@ -327,7 +355,9 @@ export type WorkflowHistoryUpdateInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actionLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType?: Prisma.EnumHistoryActionFieldUpdateOperationsInput | $Enums.HistoryAction
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  performedByType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workflowInstance?: Prisma.WorkflowInstanceUpdateOneRequiredWithoutHistoriesNestedInput
   fromStage?: Prisma.WorkflowStageUpdateOneWithoutHistoriesFromNestedInput
   toStage?: Prisma.WorkflowStageUpdateOneRequiredWithoutHistoriesToNestedInput
@@ -345,7 +375,9 @@ export type WorkflowHistoryUncheckedUpdateInput = {
   workflowTransitionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actionLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType?: Prisma.EnumHistoryActionFieldUpdateOperationsInput | $Enums.HistoryAction
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  performedByType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type WorkflowHistoryCreateManyInput = {
@@ -358,7 +390,9 @@ export type WorkflowHistoryCreateManyInput = {
   workflowTransitionId?: string | null
   actionLabel?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType: $Enums.HistoryAction
   createdAt?: Date | string
+  performedByType?: string | null
 }
 
 export type WorkflowHistoryUpdateManyMutationInput = {
@@ -366,7 +400,9 @@ export type WorkflowHistoryUpdateManyMutationInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actionLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType?: Prisma.EnumHistoryActionFieldUpdateOperationsInput | $Enums.HistoryAction
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  performedByType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type WorkflowHistoryUncheckedUpdateManyInput = {
@@ -379,7 +415,9 @@ export type WorkflowHistoryUncheckedUpdateManyInput = {
   workflowTransitionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actionLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType?: Prisma.EnumHistoryActionFieldUpdateOperationsInput | $Enums.HistoryAction
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  performedByType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type WorkflowHistoryListRelationFilter = {
@@ -402,7 +440,9 @@ export type WorkflowHistoryCountOrderByAggregateInput = {
   workflowTransitionId?: Prisma.SortOrder
   actionLabel?: Prisma.SortOrder
   metadata?: Prisma.SortOrder
+  actionType?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  performedByType?: Prisma.SortOrder
 }
 
 export type WorkflowHistoryMaxOrderByAggregateInput = {
@@ -414,7 +454,9 @@ export type WorkflowHistoryMaxOrderByAggregateInput = {
   notes?: Prisma.SortOrder
   workflowTransitionId?: Prisma.SortOrder
   actionLabel?: Prisma.SortOrder
+  actionType?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  performedByType?: Prisma.SortOrder
 }
 
 export type WorkflowHistoryMinOrderByAggregateInput = {
@@ -426,7 +468,9 @@ export type WorkflowHistoryMinOrderByAggregateInput = {
   notes?: Prisma.SortOrder
   workflowTransitionId?: Prisma.SortOrder
   actionLabel?: Prisma.SortOrder
+  actionType?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  performedByType?: Prisma.SortOrder
 }
 
 export type WorkflowHistoryCreateNestedManyWithoutPerformedByInput = {
@@ -639,12 +683,18 @@ export type WorkflowHistoryUncheckedUpdateManyWithoutWorkflowInstanceNestedInput
   deleteMany?: Prisma.WorkflowHistoryScalarWhereInput | Prisma.WorkflowHistoryScalarWhereInput[]
 }
 
+export type EnumHistoryActionFieldUpdateOperationsInput = {
+  set?: $Enums.HistoryAction
+}
+
 export type WorkflowHistoryCreateWithoutPerformedByInput = {
   id?: string
   notes?: string | null
   actionLabel?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType: $Enums.HistoryAction
   createdAt?: Date | string
+  performedByType?: string | null
   workflowInstance: Prisma.WorkflowInstanceCreateNestedOneWithoutHistoriesInput
   fromStage?: Prisma.WorkflowStageCreateNestedOneWithoutHistoriesFromInput
   toStage: Prisma.WorkflowStageCreateNestedOneWithoutHistoriesToInput
@@ -660,7 +710,9 @@ export type WorkflowHistoryUncheckedCreateWithoutPerformedByInput = {
   workflowTransitionId?: string | null
   actionLabel?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType: $Enums.HistoryAction
   createdAt?: Date | string
+  performedByType?: string | null
 }
 
 export type WorkflowHistoryCreateOrConnectWithoutPerformedByInput = {
@@ -702,7 +754,9 @@ export type WorkflowHistoryScalarWhereInput = {
   workflowTransitionId?: Prisma.StringNullableFilter<"WorkflowHistory"> | string | null
   actionLabel?: Prisma.StringNullableFilter<"WorkflowHistory"> | string | null
   metadata?: Prisma.JsonNullableFilter<"WorkflowHistory">
+  actionType?: Prisma.EnumHistoryActionFilter<"WorkflowHistory"> | $Enums.HistoryAction
   createdAt?: Prisma.DateTimeFilter<"WorkflowHistory"> | Date | string
+  performedByType?: Prisma.StringNullableFilter<"WorkflowHistory"> | string | null
 }
 
 export type WorkflowHistoryCreateWithoutFromStageInput = {
@@ -710,7 +764,9 @@ export type WorkflowHistoryCreateWithoutFromStageInput = {
   notes?: string | null
   actionLabel?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType: $Enums.HistoryAction
   createdAt?: Date | string
+  performedByType?: string | null
   workflowInstance: Prisma.WorkflowInstanceCreateNestedOneWithoutHistoriesInput
   toStage: Prisma.WorkflowStageCreateNestedOneWithoutHistoriesToInput
   workflowTransition?: Prisma.WorkflowTransitionCreateNestedOneWithoutHistoriesInput
@@ -726,7 +782,9 @@ export type WorkflowHistoryUncheckedCreateWithoutFromStageInput = {
   workflowTransitionId?: string | null
   actionLabel?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType: $Enums.HistoryAction
   createdAt?: Date | string
+  performedByType?: string | null
 }
 
 export type WorkflowHistoryCreateOrConnectWithoutFromStageInput = {
@@ -744,7 +802,9 @@ export type WorkflowHistoryCreateWithoutToStageInput = {
   notes?: string | null
   actionLabel?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType: $Enums.HistoryAction
   createdAt?: Date | string
+  performedByType?: string | null
   workflowInstance: Prisma.WorkflowInstanceCreateNestedOneWithoutHistoriesInput
   fromStage?: Prisma.WorkflowStageCreateNestedOneWithoutHistoriesFromInput
   workflowTransition?: Prisma.WorkflowTransitionCreateNestedOneWithoutHistoriesInput
@@ -760,7 +820,9 @@ export type WorkflowHistoryUncheckedCreateWithoutToStageInput = {
   workflowTransitionId?: string | null
   actionLabel?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType: $Enums.HistoryAction
   createdAt?: Date | string
+  performedByType?: string | null
 }
 
 export type WorkflowHistoryCreateOrConnectWithoutToStageInput = {
@@ -810,7 +872,9 @@ export type WorkflowHistoryCreateWithoutWorkflowTransitionInput = {
   notes?: string | null
   actionLabel?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType: $Enums.HistoryAction
   createdAt?: Date | string
+  performedByType?: string | null
   workflowInstance: Prisma.WorkflowInstanceCreateNestedOneWithoutHistoriesInput
   fromStage?: Prisma.WorkflowStageCreateNestedOneWithoutHistoriesFromInput
   toStage: Prisma.WorkflowStageCreateNestedOneWithoutHistoriesToInput
@@ -826,7 +890,9 @@ export type WorkflowHistoryUncheckedCreateWithoutWorkflowTransitionInput = {
   notes?: string | null
   actionLabel?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType: $Enums.HistoryAction
   createdAt?: Date | string
+  performedByType?: string | null
 }
 
 export type WorkflowHistoryCreateOrConnectWithoutWorkflowTransitionInput = {
@@ -860,7 +926,9 @@ export type WorkflowHistoryCreateWithoutWorkflowInstanceInput = {
   notes?: string | null
   actionLabel?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType: $Enums.HistoryAction
   createdAt?: Date | string
+  performedByType?: string | null
   fromStage?: Prisma.WorkflowStageCreateNestedOneWithoutHistoriesFromInput
   toStage: Prisma.WorkflowStageCreateNestedOneWithoutHistoriesToInput
   workflowTransition?: Prisma.WorkflowTransitionCreateNestedOneWithoutHistoriesInput
@@ -876,7 +944,9 @@ export type WorkflowHistoryUncheckedCreateWithoutWorkflowInstanceInput = {
   workflowTransitionId?: string | null
   actionLabel?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType: $Enums.HistoryAction
   createdAt?: Date | string
+  performedByType?: string | null
 }
 
 export type WorkflowHistoryCreateOrConnectWithoutWorkflowInstanceInput = {
@@ -914,7 +984,9 @@ export type WorkflowHistoryCreateManyPerformedByInput = {
   workflowTransitionId?: string | null
   actionLabel?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType: $Enums.HistoryAction
   createdAt?: Date | string
+  performedByType?: string | null
 }
 
 export type WorkflowHistoryUpdateWithoutPerformedByInput = {
@@ -922,7 +994,9 @@ export type WorkflowHistoryUpdateWithoutPerformedByInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actionLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType?: Prisma.EnumHistoryActionFieldUpdateOperationsInput | $Enums.HistoryAction
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  performedByType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workflowInstance?: Prisma.WorkflowInstanceUpdateOneRequiredWithoutHistoriesNestedInput
   fromStage?: Prisma.WorkflowStageUpdateOneWithoutHistoriesFromNestedInput
   toStage?: Prisma.WorkflowStageUpdateOneRequiredWithoutHistoriesToNestedInput
@@ -938,7 +1012,9 @@ export type WorkflowHistoryUncheckedUpdateWithoutPerformedByInput = {
   workflowTransitionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actionLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType?: Prisma.EnumHistoryActionFieldUpdateOperationsInput | $Enums.HistoryAction
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  performedByType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type WorkflowHistoryUncheckedUpdateManyWithoutPerformedByInput = {
@@ -950,7 +1026,9 @@ export type WorkflowHistoryUncheckedUpdateManyWithoutPerformedByInput = {
   workflowTransitionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actionLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType?: Prisma.EnumHistoryActionFieldUpdateOperationsInput | $Enums.HistoryAction
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  performedByType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type WorkflowHistoryCreateManyFromStageInput = {
@@ -962,7 +1040,9 @@ export type WorkflowHistoryCreateManyFromStageInput = {
   workflowTransitionId?: string | null
   actionLabel?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType: $Enums.HistoryAction
   createdAt?: Date | string
+  performedByType?: string | null
 }
 
 export type WorkflowHistoryCreateManyToStageInput = {
@@ -974,7 +1054,9 @@ export type WorkflowHistoryCreateManyToStageInput = {
   workflowTransitionId?: string | null
   actionLabel?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType: $Enums.HistoryAction
   createdAt?: Date | string
+  performedByType?: string | null
 }
 
 export type WorkflowHistoryUpdateWithoutFromStageInput = {
@@ -982,7 +1064,9 @@ export type WorkflowHistoryUpdateWithoutFromStageInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actionLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType?: Prisma.EnumHistoryActionFieldUpdateOperationsInput | $Enums.HistoryAction
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  performedByType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workflowInstance?: Prisma.WorkflowInstanceUpdateOneRequiredWithoutHistoriesNestedInput
   toStage?: Prisma.WorkflowStageUpdateOneRequiredWithoutHistoriesToNestedInput
   workflowTransition?: Prisma.WorkflowTransitionUpdateOneWithoutHistoriesNestedInput
@@ -998,7 +1082,9 @@ export type WorkflowHistoryUncheckedUpdateWithoutFromStageInput = {
   workflowTransitionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actionLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType?: Prisma.EnumHistoryActionFieldUpdateOperationsInput | $Enums.HistoryAction
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  performedByType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type WorkflowHistoryUncheckedUpdateManyWithoutFromStageInput = {
@@ -1010,7 +1096,9 @@ export type WorkflowHistoryUncheckedUpdateManyWithoutFromStageInput = {
   workflowTransitionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actionLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType?: Prisma.EnumHistoryActionFieldUpdateOperationsInput | $Enums.HistoryAction
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  performedByType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type WorkflowHistoryUpdateWithoutToStageInput = {
@@ -1018,7 +1106,9 @@ export type WorkflowHistoryUpdateWithoutToStageInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actionLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType?: Prisma.EnumHistoryActionFieldUpdateOperationsInput | $Enums.HistoryAction
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  performedByType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workflowInstance?: Prisma.WorkflowInstanceUpdateOneRequiredWithoutHistoriesNestedInput
   fromStage?: Prisma.WorkflowStageUpdateOneWithoutHistoriesFromNestedInput
   workflowTransition?: Prisma.WorkflowTransitionUpdateOneWithoutHistoriesNestedInput
@@ -1034,7 +1124,9 @@ export type WorkflowHistoryUncheckedUpdateWithoutToStageInput = {
   workflowTransitionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actionLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType?: Prisma.EnumHistoryActionFieldUpdateOperationsInput | $Enums.HistoryAction
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  performedByType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type WorkflowHistoryUncheckedUpdateManyWithoutToStageInput = {
@@ -1046,7 +1138,9 @@ export type WorkflowHistoryUncheckedUpdateManyWithoutToStageInput = {
   workflowTransitionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actionLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType?: Prisma.EnumHistoryActionFieldUpdateOperationsInput | $Enums.HistoryAction
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  performedByType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type WorkflowHistoryCreateManyWorkflowTransitionInput = {
@@ -1058,7 +1152,9 @@ export type WorkflowHistoryCreateManyWorkflowTransitionInput = {
   notes?: string | null
   actionLabel?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType: $Enums.HistoryAction
   createdAt?: Date | string
+  performedByType?: string | null
 }
 
 export type WorkflowHistoryUpdateWithoutWorkflowTransitionInput = {
@@ -1066,7 +1162,9 @@ export type WorkflowHistoryUpdateWithoutWorkflowTransitionInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actionLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType?: Prisma.EnumHistoryActionFieldUpdateOperationsInput | $Enums.HistoryAction
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  performedByType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workflowInstance?: Prisma.WorkflowInstanceUpdateOneRequiredWithoutHistoriesNestedInput
   fromStage?: Prisma.WorkflowStageUpdateOneWithoutHistoriesFromNestedInput
   toStage?: Prisma.WorkflowStageUpdateOneRequiredWithoutHistoriesToNestedInput
@@ -1082,7 +1180,9 @@ export type WorkflowHistoryUncheckedUpdateWithoutWorkflowTransitionInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actionLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType?: Prisma.EnumHistoryActionFieldUpdateOperationsInput | $Enums.HistoryAction
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  performedByType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type WorkflowHistoryUncheckedUpdateManyWithoutWorkflowTransitionInput = {
@@ -1094,7 +1194,9 @@ export type WorkflowHistoryUncheckedUpdateManyWithoutWorkflowTransitionInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actionLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType?: Prisma.EnumHistoryActionFieldUpdateOperationsInput | $Enums.HistoryAction
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  performedByType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type WorkflowHistoryCreateManyWorkflowInstanceInput = {
@@ -1106,7 +1208,9 @@ export type WorkflowHistoryCreateManyWorkflowInstanceInput = {
   workflowTransitionId?: string | null
   actionLabel?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType: $Enums.HistoryAction
   createdAt?: Date | string
+  performedByType?: string | null
 }
 
 export type WorkflowHistoryUpdateWithoutWorkflowInstanceInput = {
@@ -1114,7 +1218,9 @@ export type WorkflowHistoryUpdateWithoutWorkflowInstanceInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actionLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType?: Prisma.EnumHistoryActionFieldUpdateOperationsInput | $Enums.HistoryAction
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  performedByType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fromStage?: Prisma.WorkflowStageUpdateOneWithoutHistoriesFromNestedInput
   toStage?: Prisma.WorkflowStageUpdateOneRequiredWithoutHistoriesToNestedInput
   workflowTransition?: Prisma.WorkflowTransitionUpdateOneWithoutHistoriesNestedInput
@@ -1130,7 +1236,9 @@ export type WorkflowHistoryUncheckedUpdateWithoutWorkflowInstanceInput = {
   workflowTransitionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actionLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType?: Prisma.EnumHistoryActionFieldUpdateOperationsInput | $Enums.HistoryAction
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  performedByType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type WorkflowHistoryUncheckedUpdateManyWithoutWorkflowInstanceInput = {
@@ -1142,7 +1250,9 @@ export type WorkflowHistoryUncheckedUpdateManyWithoutWorkflowInstanceInput = {
   workflowTransitionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actionLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actionType?: Prisma.EnumHistoryActionFieldUpdateOperationsInput | $Enums.HistoryAction
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  performedByType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -1157,7 +1267,9 @@ export type WorkflowHistorySelect<ExtArgs extends runtime.Types.Extensions.Inter
   workflowTransitionId?: boolean
   actionLabel?: boolean
   metadata?: boolean
+  actionType?: boolean
   createdAt?: boolean
+  performedByType?: boolean
   workflowInstance?: boolean | Prisma.WorkflowInstanceDefaultArgs<ExtArgs>
   fromStage?: boolean | Prisma.WorkflowHistory$fromStageArgs<ExtArgs>
   toStage?: boolean | Prisma.WorkflowStageDefaultArgs<ExtArgs>
@@ -1175,7 +1287,9 @@ export type WorkflowHistorySelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   workflowTransitionId?: boolean
   actionLabel?: boolean
   metadata?: boolean
+  actionType?: boolean
   createdAt?: boolean
+  performedByType?: boolean
   workflowInstance?: boolean | Prisma.WorkflowInstanceDefaultArgs<ExtArgs>
   fromStage?: boolean | Prisma.WorkflowHistory$fromStageArgs<ExtArgs>
   toStage?: boolean | Prisma.WorkflowStageDefaultArgs<ExtArgs>
@@ -1193,7 +1307,9 @@ export type WorkflowHistorySelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   workflowTransitionId?: boolean
   actionLabel?: boolean
   metadata?: boolean
+  actionType?: boolean
   createdAt?: boolean
+  performedByType?: boolean
   workflowInstance?: boolean | Prisma.WorkflowInstanceDefaultArgs<ExtArgs>
   fromStage?: boolean | Prisma.WorkflowHistory$fromStageArgs<ExtArgs>
   toStage?: boolean | Prisma.WorkflowStageDefaultArgs<ExtArgs>
@@ -1211,10 +1327,12 @@ export type WorkflowHistorySelectScalar = {
   workflowTransitionId?: boolean
   actionLabel?: boolean
   metadata?: boolean
+  actionType?: boolean
   createdAt?: boolean
+  performedByType?: boolean
 }
 
-export type WorkflowHistoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "workflowInstanceId" | "fromStageId" | "toStageId" | "performedById" | "notes" | "workflowTransitionId" | "actionLabel" | "metadata" | "createdAt", ExtArgs["result"]["workflowHistory"]>
+export type WorkflowHistoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "workflowInstanceId" | "fromStageId" | "toStageId" | "performedById" | "notes" | "workflowTransitionId" | "actionLabel" | "metadata" | "actionType" | "createdAt" | "performedByType", ExtArgs["result"]["workflowHistory"]>
 export type WorkflowHistoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   workflowInstance?: boolean | Prisma.WorkflowInstanceDefaultArgs<ExtArgs>
   fromStage?: boolean | Prisma.WorkflowHistory$fromStageArgs<ExtArgs>
@@ -1256,7 +1374,9 @@ export type $WorkflowHistoryPayload<ExtArgs extends runtime.Types.Extensions.Int
     workflowTransitionId: string | null
     actionLabel: string | null
     metadata: runtime.JsonValue | null
+    actionType: $Enums.HistoryAction
     createdAt: Date
+    performedByType: string | null
   }, ExtArgs["result"]["workflowHistory"]>
   composites: {}
 }
@@ -1694,7 +1814,9 @@ export interface WorkflowHistoryFieldRefs {
   readonly workflowTransitionId: Prisma.FieldRef<"WorkflowHistory", 'String'>
   readonly actionLabel: Prisma.FieldRef<"WorkflowHistory", 'String'>
   readonly metadata: Prisma.FieldRef<"WorkflowHistory", 'Json'>
+  readonly actionType: Prisma.FieldRef<"WorkflowHistory", 'HistoryAction'>
   readonly createdAt: Prisma.FieldRef<"WorkflowHistory", 'DateTime'>
+  readonly performedByType: Prisma.FieldRef<"WorkflowHistory", 'String'>
 }
     
 

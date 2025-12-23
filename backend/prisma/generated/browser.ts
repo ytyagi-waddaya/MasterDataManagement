@@ -78,10 +78,70 @@ export type Policy = Prisma.PolicyModel
  */
 export type MasterObject = Prisma.MasterObjectModel
 /**
+ * Model MasterObjectSchema
+ * 
+ */
+export type MasterObjectSchema = Prisma.MasterObjectSchemaModel
+/**
+ * Model FieldDefinition
+ * 
+ */
+export type FieldDefinition = Prisma.FieldDefinitionModel
+/**
+ * Model FieldPermission
+ * 
+ */
+export type FieldPermission = Prisma.FieldPermissionModel
+/**
+ * Model FieldValidationRule
+ * 
+ */
+export type FieldValidationRule = Prisma.FieldValidationRuleModel
+/**
+ * Model FieldFormula
+ * 
+ */
+export type FieldFormula = Prisma.FieldFormulaModel
+/**
+ * Model FieldReference
+ * 
+ */
+export type FieldReference = Prisma.FieldReferenceModel
+/**
+ * Model FieldConditionBinding
+ * 
+ */
+export type FieldConditionBinding = Prisma.FieldConditionBindingModel
+/**
  * Model MasterRecord
  * 
  */
 export type MasterRecord = Prisma.MasterRecordModel
+/**
+ * Model RecordFieldHistory
+ * 
+ */
+export type RecordFieldHistory = Prisma.RecordFieldHistoryModel
+/**
+ * Model RecordFieldIndex
+ * 
+ */
+export type RecordFieldIndex = Prisma.RecordFieldIndexModel
+/**
+ * Model SchemaChange
+ * 
+ */
+export type SchemaChange = Prisma.SchemaChangeModel
+/**
+ * Model FormEventHook
+ * 
+ */
+export type FormEventHook = Prisma.FormEventHookModel
+/**
+ * Model RecordPermission
+ * 
+ */
+export type RecordPermission = Prisma.RecordPermissionModel
 /**
  * Model WorkflowDefinition
  * 
@@ -117,6 +177,11 @@ export type WorkflowTransitionAllowedRole = Prisma.WorkflowTransitionAllowedRole
  * 
  */
 export type WorkflowTransitionAllowedUser = Prisma.WorkflowTransitionAllowedUserModel
+/**
+ * Model WorkflowApproval
+ * 
+ */
+export type WorkflowApproval = Prisma.WorkflowApprovalModel
 /**
  * Model Task
  * 

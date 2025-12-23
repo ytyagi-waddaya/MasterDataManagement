@@ -8,10 +8,11 @@ import { HTTPSTATUS } from "../../config/http.config.js";
 const masterObjectController = {
   getMasterObject: async (req: Request, res: Response) => {
     const masterObjectId = req.params?.masterObjectId;
-    if (!masterObjectId)
+    if (!masterObjectId) {
       throw new BadRequestException("MasterObject ID is required");
+    }
 
-    const masterObject= await masterObjectService.getMasterObject({
+    const masterObject = await masterObjectService.getMasterObject({
       masterObjectId,
     });
 
@@ -27,7 +28,6 @@ const masterObjectController = {
   getMasterObjects: async (req: Request, res: Response) => {
     const filters = req.query;
     const masterObjects = await masterObjectService.getMasterObjects(filters);
-console.log("MasterObject:", masterObjects);
     sendResponse({
       res,
       statusCode: HTTPSTATUS.OK,

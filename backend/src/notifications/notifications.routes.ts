@@ -16,7 +16,6 @@ router.post(
 router.get(
   "/user/:userId",
   validate(listSchema, "params"),
-  validate(listSchema, "query"),
   asyncHandler(notificationsController.listUserNotifications)
 );
 

@@ -8,6 +8,7 @@ import { redisPub } from "../redis/client.js";
 import { BroadcastPayload } from "../events/event.registry.js";
 import { config } from "../config/app.config.js";
 import { setReady } from "../utils/health.js";
+import { DeliveryService } from "../notifications/delivery.service.js";
 
 let running = true;
 process.once("SIGINT", () => shutdown("SIGINT"));
@@ -25,7 +26,7 @@ async function shutdown(reason = "signal") {
 }
 
 async function publishToRedis(evt: BroadcastPayload) {
-   logger.info("[RT][outbox.worker] publishing to redis", {
+  logger.info("[RT][outbox.worker] publishing to redis", {
     event: evt.event,
     resource: evt.payload?.resource,
   });
@@ -36,16 +37,14 @@ async function publishToRedis(evt: BroadcastPayload) {
   await redisPub.publish("erp:events", JSON.stringify(evt));
 }
 
-
 async function processBatch(limit = 50) {
   const pending = (await prisma.$queryRawUnsafe(
     `SELECT * FROM "OutboxEvent" WHERE "processedAt" IS NULL ORDER BY "createdAt" ASC LIMIT ${limit} FOR UPDATE SKIP LOCKED`
   )) as any[];
 
   logger.info("[RT][outbox.worker] pending events", {
-  count: pending.length,
-});
-
+    count: pending.length,
+  });
 
   for (const row of pending) {
     const id = row.id;
@@ -76,35 +75,34 @@ async function processBatch(limit = 50) {
       // ----------------------------------------
       await publishToRedis(evt);
 
+      if (evt.entity === "notification" && evt.action === "created") {
+        logger.info("[RT][outbox.worker] handling notification event", {
+          outboxId: evt.outboxId,
+        });
 
+        const { title, message, data } = evt.payload;
 
-      // ----------------------------------------
-      // 2️⃣ CREATE NOTIFICATION DELIVERY (🔥 NEW)
-      // Only if targetUsers exist
-      // ----------------------------------------
-      if (evt.targetUsers && evt.targetUsers.length > 0) {
-        for (const uid of evt.targetUsers) {
-          // Create Notification Delivery entry
-          const delivery = await prisma.notificationDelivery.create({
-            data: {
-              userId: uid,
-              title: `Workflow Update: ${evt.action}`,
-              message: `Workflow instance updated (${evt.action})`,
-              channels: ["WEB"],  // extend later (EMAIL/SMS)
-              data: evt.payload,
-            },
+        const targetUsers =
+          evt.targetUsers && evt.targetUsers.length > 0 ? evt.targetUsers : [];
+
+        if (targetUsers.length === 0) {
+          logger.warn("[RT][outbox.worker] no target users for notification", {
+            outboxId: evt.outboxId,
           });
+        }  
 
-          // Push delivery into Notification Worker Stream
-          await addToStream({
-            type: "notification",
-            deliveryId: delivery.id,
+        for (const userId of targetUsers) {
+          await DeliveryService.createAndDispatch({
+            userId,
+            title,
+            message,
+            data,
+            channels: ["WEB"],
           });
         }
       }
+
       // ----------------------------------------
-
-
 
       // ----------------------------------------
       // 3️⃣ Mark Outbox Event Processed (same as before)
@@ -117,7 +115,6 @@ async function processBatch(limit = 50) {
         payload: row.payload,
         result: "success",
       });
-
     } catch (err: any) {
       logger.error("[outbox.worker] processing failed", { id, err });
 
@@ -125,8 +122,14 @@ async function processBatch(limit = 50) {
         await OutboxRepository.incrementAttempts(id);
         const current = await prisma.outboxEvent.findUnique({ where: { id } });
 
-        if (current && (current.attempts ?? 0) >= (current.maxAttempts ?? config.MAX_RETRY)) {
-          await redisPub.publish("erp:events:dlq", JSON.stringify({ outboxId: id, error: String(err) }));
+        if (
+          current &&
+          (current.attempts ?? 0) >= (current.maxAttempts ?? config.MAX_RETRY)
+        ) {
+          await redisPub.publish(
+            "erp:events:dlq",
+            JSON.stringify({ outboxId: id, error: String(err) })
+          );
           await OutboxRepository.moveToFailed(id);
 
           await OutboxRepository.writeEventLog({
@@ -137,13 +140,14 @@ async function processBatch(limit = 50) {
           });
         }
       } catch (e) {
-        logger.error("[outbox.worker] failed to update attempts/dlq", { id, error: e });
+        logger.error("[outbox.worker] failed to update attempts/dlq", {
+          id,
+          error: e,
+        });
       }
     }
   }
 }
-
-
 
 export async function runOutboxWorker() {
   setReady(true);
@@ -161,8 +165,8 @@ export async function runOutboxWorker() {
 }
 
 // if (require.main === module) {
-  runOutboxWorker().catch(async (e) => {
-    logger.error("[outbox.worker] fatal", { e });
-    await shutdown("fatal");
-  });
+runOutboxWorker().catch(async (e) => {
+  logger.error("[outbox.worker] fatal", { e });
+  await shutdown("fatal");
+});
 // }

@@ -65,6 +65,7 @@ export function useResources<T = any>({
       };
 
       const res = await apiClient.get("/resource", { params });
+      console.log("RESOURCE:",res);
       
       return {
         resources: {
