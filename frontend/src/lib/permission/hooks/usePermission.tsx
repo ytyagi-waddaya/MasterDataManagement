@@ -78,7 +78,7 @@ export function usePermissions<T = any>({
 
       const res = await apiClient.get("/permission", { params });
 
-      console.log("RESULT:", res);
+      
       
       return {
         permissions: {

@@ -7,6 +7,9 @@ export interface Workflow {
   description?: string;
   isActive: boolean;
   createdAt: string;
+
+  publish?: boolean;         // true => Published, false/undefined => Draft
+  status?: "DRAFT" | "PUBLISHED" | string; // optional if backend sends status
 }
 
 export interface WorkflowListResponse {

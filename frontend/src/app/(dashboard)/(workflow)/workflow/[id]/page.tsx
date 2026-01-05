@@ -4,16 +4,17 @@ import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {  ChevronLeft } from "lucide-react";
 import WorkflowDetailPage from "@/lib/workflow/forms/workflowDetail";
-
+import { useRouter } from "next/navigation";
 export default function WorkflowDetailsPage() {
   const { id } = useParams() as { id: string };
+  const router = useRouter();
 
   return (
     <div className="flex flex-col gap-4 p-2 ">
       <div className="flex items-center gap-2">
         <Button
           className="h-8 w-8"
-          onClick={() => window.history.back()}
+          onClick={() => router.push("/workflow")} // ✅ now works
           variant="outline"
         >
           <ChevronLeft/>

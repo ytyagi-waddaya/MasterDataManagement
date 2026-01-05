@@ -203,11 +203,17 @@ export const useWorkflowVisualizer = (workflowId: string) => {
     queryKey: ["workflow-visualizer", workflowId],
     queryFn: async () => {
       const res = await apiClient.get(`/workflow/${workflowId}/visualizer`);
-      return res.data;
+
+      // ✅ DEBUG
+      console.log("[useWorkflowVisualizer] raw res.data =", res.data);
+
+      // ✅ SHAPE SAFE: agar backend {data:{...}} deta hai to data return
+      return res.data?.data ?? res.data;
     },
     enabled: !!workflowId,
   });
 };
+
 
 export const useStartWorkflowInstance = (workflowId: string) => {
   return useMutation({

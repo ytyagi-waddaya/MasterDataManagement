@@ -1,1 +1,0 @@
-{"version":3,"file":"notifications.controller.d.ts","sourceRoot":"","sources":["../../../src/notifications/notifications.controller.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,OAAO,EAAE,QAAQ,EAAE,MAAM,SAAS,CAAC;AAK5C,QAAA,MAAM,uBAAuB;4BACG,OAAO,OAAO,QAAQ;iCAqBjB,OAAO,OAAO,QAAQ;oBAoBnC,OAAO,OAAO,QAAQ;CAa7C,CAAC;AAEF,eAAe,uBAAuB,CAAC"}

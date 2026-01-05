@@ -17,7 +17,7 @@ import { useSelector } from "react-redux";
 
 export function UserNav() {
     const user = useSelector(selectUser);
-console.log("ME:", user);
+// console.log("ME:", user);
 
   const name = user?.name ?? "User";
   const email = user?.email ?? "user@example.com";

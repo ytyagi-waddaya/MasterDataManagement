@@ -1,1 +1,0 @@
-{"version":3,"file":"mapFields.d.ts","sourceRoot":"","sources":["../../../../src/runtime/mappers/mapFields.ts"],"names":[],"mappings":"AAEA,OAAO,EACL,eAAe,EACf,eAAe,EAChB,MAAM,qCAAqC,CAAC;AAC7C,OAAO,EAAE,YAAY,EAAyB,MAAM,cAAc,CAAC;AAEnE,KAAK,WAAW,GAAG,eAAe,GAAG;IACnC,gBAAgB,EAAE,eAAe,EAAE,CAAC;CACrC,CAAC;AAEF,wBAAgB,SAAS,CAAC,MAAM,EAAE,WAAW,EAAE,GAAG,YAAY,EAAE,CA6B/D"}

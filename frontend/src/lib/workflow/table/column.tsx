@@ -37,6 +37,19 @@ import {
   useUpdateWorkflow,
 } from "../hooks";
 
+/** Decide Draft vs Published safely */
+function isWorkflowPublished(workflow: any): boolean {
+  // If backend sends boolean
+  if (typeof workflow?.publish === "boolean") return workflow.publish;
+
+  // If backend sends status
+  const status = String(workflow?.status ?? "").toUpperCase();
+  if (status) return status !== "DRAFT";
+
+  // Default -> Draft
+  return false;
+}
+
 export const workflowColumns: ColumnDef<Workflow>[] = [
   {
     id: "select",
@@ -74,6 +87,29 @@ export const workflowColumns: ColumnDef<Workflow>[] = [
     header: "Description",
     enableSorting: false,
   },
+
+  // ✅ ADD THIS BLOCK: Publish column (place here)
+  {
+    id: "publish",
+    header: "Publish",
+    enableSorting: false,
+    cell: ({ row }) => {
+      const workflow = row.original as any;
+      const published = isWorkflowPublished(workflow);
+
+      return (
+        <span
+          className={`px-2 py-1 text-xs rounded-full ${published
+              ? "bg-blue-100 text-blue-800"
+              : "bg-yellow-100 text-yellow-800"
+            }`}
+        >
+          {published ? "Published" : "Draft"}
+        </span>
+      );
+    },
+  },
+
   {
     accessorKey: "isActive",
     header: "Status",
@@ -82,9 +118,8 @@ export const workflowColumns: ColumnDef<Workflow>[] = [
       const isActive = row.original.isActive;
       return (
         <span
-          className={`px-2 py-1 text-xs rounded-full ${
-            isActive ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
-          }`}
+          className={`px-2 py-1 text-xs rounded-full ${isActive ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+            }`}
         >
           {isActive ? "Active" : "Inactive"}
         </span>

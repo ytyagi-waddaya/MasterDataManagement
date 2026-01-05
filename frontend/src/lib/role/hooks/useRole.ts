@@ -7,6 +7,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { toast } from "sonner";
 import { CreateRoleInput, UpdateRoleInput } from "../schema/role-schema";
+import { loadMe } from "@/store/auth/loadMe";
 
 export interface RoleFilters {
   status?: "active" | "inactive" | "all";
@@ -83,7 +84,7 @@ export function useRoleList() {
     queryKey: ["roles"],
     queryFn: async () => {
       const res = await apiClient.get("/role", {
-        params: { skip: 0, take: 100 }, 
+        params: { skip: 0, take: 100 },
       });
 
       const roles =
@@ -105,7 +106,7 @@ export function useRole(roleId: string) {
       const res = await apiClient.get(`/role/${roleId}`);
       return res.data.data.role;
     },
-    enabled: !!roleId, 
+    enabled: !!roleId,
   });
 }
 
@@ -138,7 +139,7 @@ export function useUpdateRole() {
       roleId: string;
       payload: UpdateRoleInput;
     }) => {
-      
+
       const res = await apiClient.put(`/role/${roleId}`, payload);
       return res.data;
     },
@@ -290,10 +291,24 @@ export function useUpdateRolePermissionAccess() {
       return res.data;
     },
 
-    onSuccess: (_, variables) => {
+    // onSuccess: (_, variables) => {
+    //   toast.success("Permission updated");
+    //   queryClient.invalidateQueries({ queryKey: ["role", variables.roleId] });
+    //   queryClient.invalidateQueries({ queryKey: ["roles"] });
+    // },
+
+    onSuccess: async (_, variables) => {
       toast.success("Permission updated");
+
+      // 🔥 reload auth → useCan() update
+      await loadMe();
+
+      // tables
       queryClient.invalidateQueries({ queryKey: ["role", variables.roleId] });
       queryClient.invalidateQueries({ queryKey: ["roles"] });
+
+      // 🔥 sidebar + SPA
+      queryClient.invalidateQueries({ queryKey: ["modulesWithResources"] });
     },
 
     onError: (err: any) => {
@@ -319,10 +334,20 @@ export function useGrantAllModulePermissions() {
       return res.data;
     },
 
-    onSuccess: (_, variables) => {
+    // onSuccess: (_, variables) => {
+    //   toast.success("All module permissions granted");
+    //   queryClient.invalidateQueries({ queryKey: ["role", variables.roleId] });
+    // },
+
+    onSuccess: async (_, variables) => {
       toast.success("All module permissions granted");
+
+      await loadMe(); // 🔥
+
       queryClient.invalidateQueries({ queryKey: ["role", variables.roleId] });
+      queryClient.invalidateQueries({ queryKey: ["modulesWithResources"] }); // 🔥
     },
+
 
     onError: (err: any) => {
       toast.error(
@@ -349,9 +374,17 @@ export function useRevokeAllModulePermissions() {
       return res.data;
     },
 
-    onSuccess: (_, variables) => {
+    // onSuccess: (_, variables) => {
+    //   toast.success("All module permissions revoked");
+    //   queryClient.invalidateQueries({ queryKey: ["role", variables.roleId] });
+    // },
+    onSuccess: async (_, variables) => {
       toast.success("All module permissions revoked");
+
+      await loadMe(); // 🔥
+
       queryClient.invalidateQueries({ queryKey: ["role", variables.roleId] });
+      queryClient.invalidateQueries({ queryKey: ["modulesWithResources"] }); // 🔥
     },
 
     onError: (err: any) => {

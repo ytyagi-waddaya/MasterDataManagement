@@ -1,1 +1,0 @@
-{"version":3,"file":"authorizePolicy.d.ts","sourceRoot":"","sources":["../../../src/middlewares/authorizePolicy.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,OAAO,EAAE,QAAQ,EAAE,YAAY,EAAE,MAAM,SAAS,CAAC;AAG1D,eAAO,MAAM,eAAe,GAAI,UAAU,MAAM,EAAE,QAAQ,MAAM,MAChD,KAAK,OAAO,EAAE,KAAK,QAAQ,EAAE,MAAM,YAAY,4DAoB9D,CAAC"}

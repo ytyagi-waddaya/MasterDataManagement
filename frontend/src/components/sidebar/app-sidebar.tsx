@@ -395,6 +395,259 @@
 //     </Sidebar>
 //   )
 // }
+
+// ///////////////////////////////////////////////////////////
+
+
+
+
+
+// "use client";
+
+// import {
+//   Database,
+//   Folder,
+//   IdCardLanyard,
+//   Key,
+//   LayoutDashboard,
+//   UserCog,
+//   Workflow,
+//   Layers,
+// } from "lucide-react";
+
+// import { NavMain } from "@/components/sidebar/nav-main";
+// import { NavUser } from "@/components/sidebar/nav-user";
+// import {
+//   Sidebar,
+//   SidebarContent,
+//   SidebarFooter,
+//   SidebarHeader,
+//   SidebarMenu,
+//   SidebarMenuButton,
+//   SidebarMenuItem,
+// } from "@/components/ui/sidebar";
+
+// import { useSelector } from "react-redux";
+// import { selectRoles, selectUser } from "@/store/auth";
+// import { useModuleswithresources } from "@/lib/module/hook";
+// import useCan from "@/store/auth/useCan";
+
+// export function AppSidebar(props: any) {
+//   const user = useSelector(selectUser);
+//   const role = useSelector(selectRoles);
+//   const { data: modules } = useModuleswithresources();
+//   const can = useCan();
+
+
+//   const sidebarUser = {
+//     id:user?.id ?? "",
+//     name: user?.name ?? "User",
+//     email: user?.email ?? "user@example.com",
+//     avatar: user?.attributes?.avatarUrl ?? "https://ui.shadcn.com/avatars/01.png",
+//   };
+
+
+// /* -----------------------------
+//     STATIC MENU (RBAC Based)
+// ------------------------------ */
+
+// // RBAC helper
+// const isAdmin = role?.some((r: any) => r.key === "ADMIN") ?? false;
+
+// console.log("ISADMIN:", isAdmin);
+
+
+// const canAccessStatic = (permissionKey: string) => {
+//   if (isAdmin) return true; // admin sees everything
+//   if (!permissionKey) return false;
+//   return can.canByPermissionKey(permissionKey);
+// };
+
+// const filterMenuByPermission = (items: any[]): any[] =>
+//   items
+//     .map((item) => {
+//       // Case 1: Parent with children
+//       if (item.items?.length) {
+//         const visibleChildren = item.items.filter((child: any) =>
+//           canAccessStatic(child.permissionKey)
+//         );
+
+//         // Hide parent if no visible children
+//         if (visibleChildren.length === 0) return null;
+
+//         return {
+//           ...item,
+//           items: visibleChildren,
+//         };
+//       }
+
+//       // Case 2: Leaf item
+//       if (!item.permissionKey) return null;
+
+//       return canAccessStatic(item.permissionKey) ? item : null;
+//     })
+//     .filter(Boolean);
+
+
+// const staticMenu = [
+//   {
+//     title: "Home",
+//     items: filterMenuByPermission([
+//       {
+//         title: "Dashboard",
+//         url: "/dashboard",
+//         icon: LayoutDashboard,
+//         permissionKey: "READ__DASHBOARD",
+//       },
+//     ]),
+//   },
+
+//   {
+//     title: "Access Control",
+//     items: filterMenuByPermission([
+//       {
+//         title: "User Management",
+//         icon: UserCog,
+//         url: "#",
+//         items: [
+//           { title: "User", url: "/user", permissionKey: "READ__USER" },
+//         ],
+//       },
+//       {
+//         title: "Role Management",
+//         icon: IdCardLanyard,
+//         url: "#",
+//         items: [
+//           { title: "Role", url: "/roles", permissionKey: "READ__ROLE" },
+//         ],
+//       },
+//       {
+//         title: "Permission Management",
+//         icon: Key,
+//         url: "#",
+//         items: [
+//           { title: "Module", url: "/modules", permissionKey: "READ__MODULE" },
+//           { title: "Resource", url: "/resources", permissionKey: "READ__RESOURCE" },
+//           { title: "Action", url: "/actions", permissionKey: "READ__ACTION" },
+//           { title: "Permission", url: "/permissions", permissionKey: "READ__PERMISSION" },
+//         ],
+//       },
+//     ]),
+//   },
+
+//   {
+//     title: "Automation",
+//     items: filterMenuByPermission([
+//       {
+//         title: "Workflow",
+//         url: "/workflow",
+//         icon: Workflow,
+//         permissionKey: "READ__WORKFLOW",
+//       },
+//     ]),
+//   },
+
+//   {
+//     title: "Data Modeling",
+//     items: filterMenuByPermission([
+//       {
+//         title: "MasterObject",
+//         url: "/master-object",
+//         icon: Database,
+//         permissionKey: "READ__MASTER_OBJECT",
+//       },
+//     ]),
+//   },
+// ].filter((section) => section.items.length > 0);
+
+
+//   /* -----------------------------
+//       DYNAMIC MODULES (RBAC Filtered)
+//   ------------------------------ */
+// const normalizeKey = (v?: string | null): string => {
+//   if (!v) return "";
+//   return v
+//     .trim()
+//     .replace(/[\s-]+/g, "_")  // spaces & dashes → underscore
+//     .replace(/[^A-Z0-9_]/gi, "") // remove weird characters
+//     .toUpperCase();
+// };
+
+// const dynamicModulesMenu = {
+//   title: "Modules",
+//   items:
+//     modules
+//       ?.map((module: any) => {
+//         const visibleResources =
+//           module.resources
+//             ?.filter((resource: any) => {
+//                const rawKey = resource.key ?? resource.code ?? resource.slug ?? resource.name;
+//               const key = normalizeKey(resource.key);
+
+//               console.log(
+//                 "RESOURCE:", rawKey,
+//                 "normalized:", key,
+//                 "permission:", can.canByActionResource("READ", key)
+//               );
+
+//               return can.canByActionResource("READ", key);
+//             })
+//             .map((resource: any) => ({
+//               title: resource.name,
+//               url: `/resources/${resource.id}`,
+//               icon: Folder,
+//             })) ?? [];
+
+//         if (visibleResources.length === 0) return null;
+
+//         return {
+//           title: module.name,
+//           icon: Layers,
+//           url: "#",
+//           items: visibleResources,
+//         };
+//       })
+//       .filter(Boolean) ?? [],
+// };
+
+
+
+//   const finalMenu = [...staticMenu, dynamicModulesMenu];
+
+//   return (
+//     <Sidebar variant="inset" {...props}>
+//       <SidebarHeader>
+//         <SidebarMenu>
+//           <SidebarMenuItem>
+//             <SidebarMenuButton size="lg" asChild>
+//               <a href="#">
+//                 <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+//                   <LayoutDashboard className="size-4" />
+//                 </div>
+//                 <div className="grid text-sm">
+//                   <span className="font-medium truncate">Acme Inc</span>
+//                   <span className="text-xs truncate">Enterprise</span>
+//                 </div>
+//               </a>
+//             </SidebarMenuButton>
+//           </SidebarMenuItem>
+//         </SidebarMenu>
+//       </SidebarHeader>
+
+//       <SidebarContent>
+//         <NavMain items={finalMenu} />
+//       </SidebarContent>
+
+//       <SidebarFooter>
+//         <NavUser user={sidebarUser} />
+//       </SidebarFooter>
+//     </Sidebar>
+//   );
+// }
+
+
+
+
 "use client";
 
 import {
@@ -427,193 +680,181 @@ import useCan from "@/store/auth/useCan";
 
 export function AppSidebar(props: any) {
   const user = useSelector(selectUser);
-  const role = useSelector(selectRoles);
+  const roles = useSelector(selectRoles);
   const { data: modules } = useModuleswithresources();
   const can = useCan();
 
-
+  /* -----------------------------
+     USER
+  ------------------------------ */
   const sidebarUser = {
-    id:user?.id ?? "",
+    id: user?.id ?? "",
     name: user?.name ?? "User",
     email: user?.email ?? "user@example.com",
-    avatar: user?.attributes?.avatarUrl ?? "https://ui.shadcn.com/avatars/01.png",
+    avatar:
+      user?.attributes?.avatarUrl ??
+      "https://ui.shadcn.com/avatars/01.png",
   };
 
+  /* -----------------------------
+     RBAC HELPERS
+  ------------------------------ */
+  const isAdmin = roles?.some((r: any) => r.key === "ADMIN") ?? false;
 
-/* -----------------------------
-    STATIC MENU (RBAC Based)
------------------------------- */
+  const canAccess = (permissionKey?: string) => {
+    if (isAdmin) return true;
+    if (!permissionKey) return false;
+    return can.canByPermissionKey(permissionKey);
+  };
 
-// RBAC helper
-const isAdmin = role?.some((r: any) => r.key === "ADMIN") ?? false;
-
-console.log("ISADMIN:", isAdmin);
-
-
-const canAccessStatic = (permissionKey: string) => {
-  if (isAdmin) return true; // admin sees everything
-  if (!permissionKey) return false;
-  return can.canByPermissionKey(permissionKey);
-};
-
-const filterMenuByPermission = (items: any[]): any[] =>
-  items
-    .map((item) => {
-      // Case 1: Parent with children
-      if (item.items?.length) {
-        const visibleChildren = item.items.filter((child: any) =>
-          canAccessStatic(child.permissionKey)
-        );
-
-        // Hide parent if no visible children
-        if (visibleChildren.length === 0) return null;
-
-        return {
-          ...item,
-          items: visibleChildren,
-        };
-      }
-
-      // Case 2: Leaf item
-      if (!item.permissionKey) return null;
-
-      return canAccessStatic(item.permissionKey) ? item : null;
-    })
-    .filter(Boolean);
-
-
-const staticMenu = [
-  {
-    title: "Home",
-    items: filterMenuByPermission([
-      {
-        title: "Dashboard",
-        url: "/dashboard",
-        icon: LayoutDashboard,
-        permissionKey: "READ__DASHBOARD",
-      },
-    ]),
-  },
-
-  {
-    title: "Access Control",
-    items: filterMenuByPermission([
-      {
-        title: "User Management",
-        icon: UserCog,
-        url: "#",
-        items: [
-          { title: "User", url: "/user", permissionKey: "READ__USER" },
-        ],
-      },
-      {
-        title: "Role Management",
-        icon: IdCardLanyard,
-        url: "#",
-        items: [
-          { title: "Role", url: "/roles", permissionKey: "READ__ROLE" },
-        ],
-      },
-      {
-        title: "Permission Management",
-        icon: Key,
-        url: "#",
-        items: [
-          { title: "Module", url: "/modules", permissionKey: "READ__MODULE" },
-          { title: "Resource", url: "/resources", permissionKey: "READ__RESOURCE" },
-          { title: "Action", url: "/actions", permissionKey: "READ__ACTION" },
-          { title: "Permission", url: "/permissions", permissionKey: "READ__PERMISSION" },
-        ],
-      },
-    ]),
-  },
-
-  {
-    title: "Automation",
-    items: filterMenuByPermission([
-      {
-        title: "Workflow",
-        url: "/workflow",
-        icon: Workflow,
-        permissionKey: "READ__WORKFLOW",
-      },
-    ]),
-  },
-
-  {
-    title: "Data Modeling",
-    items: filterMenuByPermission([
-      {
-        title: "MasterObject",
-        url: "/master-object",
-        icon: Database,
-        permissionKey: "READ__MASTER_OBJECT",
-      },
-    ]),
-  },
-].filter((section) => section.items.length > 0);
-
+  const filterMenu = (items: any[]) =>
+    items
+      .map((item) => {
+        if (item.items?.length) {
+          const visibleChildren = item.items.filter((c: any) =>
+            canAccess(c.permissionKey)
+          );
+          if (!visibleChildren.length) return null;
+          return { ...item, items: visibleChildren };
+        }
+        return canAccess(item.permissionKey) ? item : null;
+      })
+      .filter(Boolean);
 
   /* -----------------------------
-      DYNAMIC MODULES (RBAC Filtered)
+     STATIC MENU
   ------------------------------ */
-const normalizeKey = (v?: string | null): string => {
-  if (!v) return "";
-  return v
-    .trim()
-    .replace(/[\s-]+/g, "_")  // spaces & dashes → underscore
-    .replace(/[^A-Z0-9_]/gi, "") // remove weird characters
-    .toUpperCase();
-};
+  const staticMenu = [
+    {
+      title: "Home",
+      items: filterMenu([
+        {
+          title: "Dashboard",
+          url: "/dashboard",
+          icon: LayoutDashboard,
+          permissionKey: "READ__DASHBOARD",
+        },
+      ]),
+    },
+    {
+      title: "Access Control",
+      items: filterMenu([
+        {
+          title: "User Management",
+          icon: UserCog,
+          items: [
+            { title: "User", url: "/user", permissionKey: "READ__USER" },
+          ],
+        },
+        {
+          title: "Role Management",
+          icon: IdCardLanyard,
+          items: [
+            { title: "Role", url: "/roles", permissionKey: "READ__ROLE" },
+          ],
+        },
+        {
+          title: "Permission Management",
+          icon: Key,
+          items: [
+            { title: "Module", url: "/modules", permissionKey: "READ__MODULE" },
+            {
+              title: "Resource",
+              url: "/resources",
+              permissionKey: "READ__RESOURCE",
+            },
+            {
+              title: "Action",
+              url: "/actions",
+              permissionKey: "READ__ACTION",
+            },
+            {
+              title: "Permission",
+              url: "/permissions",
+              permissionKey: "READ__PERMISSION",
+            },
+          ],
+        },
+      ]),
+    },
+    {
+      title: "Automation",
+      items: filterMenu([
+        {
+          title: "Workflow",
+          url: "/workflow",
+          icon: Workflow,
+          permissionKey: "READ__WORKFLOW",
+        },
+      ]),
+    },
+    {
+      title: "Data Modeling",
+      items: filterMenu([
+        {
+          title: "MasterObject",
+          url: "/master-object",
+          icon: Database,
+          permissionKey: "READ__MASTER_OBJECT",
+        },
+      ]),
+    },
+  ].filter((section) => section.items.length > 0);
 
-const dynamicModulesMenu = {
-  title: "Modules",
-  items:
-    modules
-      ?.map((module: any) => {
-        const visibleResources =
-          module.resources
-            ?.filter((resource: any) => {
-               const rawKey = resource.key ?? resource.code ?? resource.slug ?? resource.name;
-              const key = normalizeKey(resource.key);
+  /* -----------------------------
+     DYNAMIC MODULES
+  ------------------------------ */
+  const normalizeKey = (v?: string | null) =>
+    v
+      ?.trim()
+      .replace(/[\s-]+/g, "_")
+      .replace(/[^A-Z0-9_]/gi, "")
+      .toUpperCase() ?? "";
 
-              console.log(
-                "RESOURCE:", rawKey,
-                "normalized:", key,
-                "permission:", can.canByActionResource("READ", key)
-              );
+  const dynamicModulesMenu = {
+    title: "Modules",
+    items:
+      modules
+        ?.map((module: any) => {
+          const resources =
+            module.resources
+              ?.filter((r: any) => {
+                const key = normalizeKey(
+                  r.key ?? r.code ?? r.slug ?? r.name
+                );
+                return can.canByActionResource("READ", key);
+              })
+              .map((r: any) => ({
+                title: r.name,
+                url: `/resources/${r.id}`,
+                icon: Folder,
+              })) ?? [];
 
-              return can.canByActionResource("READ", key);
-            })
-            .map((resource: any) => ({
-              title: resource.name,
-              url: `/resources/${resource.id}`,
-              icon: Folder,
-            })) ?? [];
+          if (!resources.length) return null;
 
-        if (visibleResources.length === 0) return null;
-
-        return {
-          title: module.name,
-          icon: Layers,
-          url: "#",
-          items: visibleResources,
-        };
-      })
-      .filter(Boolean) ?? [],
-};
-
-
+          return {
+            title: module.name,
+            icon: Layers,
+            items: resources,
+          };
+        })
+        .filter(Boolean) ?? [],
+  };
 
   const finalMenu = [...staticMenu, dynamicModulesMenu];
 
+  /* -----------------------------
+     RENDER
+  ------------------------------ */
   return (
     <Sidebar variant="inset" {...props}>
+      {/* ---------- HEADER ---------- */}
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
-              <a href="#">
+            {/* 🔥 NO <a href> HERE */}
+            <SidebarMenuButton size="lg">
+              <div className="flex items-center gap-2">
                 <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
                   <LayoutDashboard className="size-4" />
                 </div>
@@ -621,16 +862,21 @@ const dynamicModulesMenu = {
                   <span className="font-medium truncate">Acme Inc</span>
                   <span className="text-xs truncate">Enterprise</span>
                 </div>
-              </a>
+              </div>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
 
+      {/* ---------- CONTENT ---------- */}
       <SidebarContent>
-        <NavMain items={finalMenu} />
+        <NavMain
+          key={modules?.length ?? 0}
+          items={finalMenu}
+        />
       </SidebarContent>
 
+      {/* ---------- FOOTER ---------- */}
       <SidebarFooter>
         <NavUser user={sidebarUser} />
       </SidebarFooter>

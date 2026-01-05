@@ -20,7 +20,7 @@ export default function CreateWorkflowPage({
       <div className="flex items-center gap-2">
         <Button
           className="h-8 w-8"
-          onClick={() => router.back()}
+          onClick={() => router.push(`/workflow/${workflowId}`)}
           variant="outline"
         >
           <ChevronLeft />

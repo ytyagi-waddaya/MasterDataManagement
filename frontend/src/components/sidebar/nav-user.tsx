@@ -53,10 +53,10 @@ export function NavUser({
 
   const online = myUserId ? !!onlineUsers[myUserId] : false;
 
-  console.log("NAV USER ID:", user.id);
-  console.log("AUTH USER ID:", myUserId);
-  console.log("ONLINE USERS KEYS:", Object.keys(onlineUsers));
-  console.log("USER STATUS:", online);
+  // console.log("NAV USER ID:", user.id);
+  // console.log("AUTH USER ID:", myUserId);
+  // console.log("ONLINE USERS KEYS:", Object.keys(onlineUsers));
+  // console.log("USER STATUS:", online);
 
   const { mutate: logout, isPending } = useLogout();
 
