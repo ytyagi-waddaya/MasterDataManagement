@@ -62,6 +62,23 @@ const resourcesController = {
     });
   },
 
+  getFields: async (req: Request, res: Response) => {
+    const { resourceKey } = req.params;
+    if (!resourceKey) {
+      throw new UnauthorizedException("Resource not found");
+    }
+
+    const resource = await resourcesService.getResourceFields(resourceKey);
+
+    sendResponse({
+      res,
+      statusCode: HTTPSTATUS.OK,
+      success: true,
+      message: "Resource fetched successfully",
+      data: { resource },
+    });
+  },
+
   updateResourceById: async (req: Request, res: Response) => {
     const resourceId = req.params?.resourceId;
 
@@ -233,7 +250,6 @@ const resourcesController = {
       data: resources,
     });
   },
-
 };
 
 export default resourcesController;

@@ -28,6 +28,7 @@ export type ResourceMinAggregateOutputType = {
   id: string | null
   name: string | null
   key: string | null
+  codePrefix: string | null
   category: string | null
   description: string | null
   isActive: boolean | null
@@ -43,6 +44,7 @@ export type ResourceMaxAggregateOutputType = {
   id: string | null
   name: string | null
   key: string | null
+  codePrefix: string | null
   category: string | null
   description: string | null
   isActive: boolean | null
@@ -58,6 +60,7 @@ export type ResourceCountAggregateOutputType = {
   id: number
   name: number
   key: number
+  codePrefix: number
   category: number
   description: number
   isActive: number
@@ -75,6 +78,7 @@ export type ResourceMinAggregateInputType = {
   id?: true
   name?: true
   key?: true
+  codePrefix?: true
   category?: true
   description?: true
   isActive?: true
@@ -90,6 +94,7 @@ export type ResourceMaxAggregateInputType = {
   id?: true
   name?: true
   key?: true
+  codePrefix?: true
   category?: true
   description?: true
   isActive?: true
@@ -105,6 +110,7 @@ export type ResourceCountAggregateInputType = {
   id?: true
   name?: true
   key?: true
+  codePrefix?: true
   category?: true
   description?: true
   isActive?: true
@@ -193,6 +199,7 @@ export type ResourceGroupByOutputType = {
   id: string
   name: string
   key: string
+  codePrefix: string
   category: string | null
   description: string | null
   isActive: boolean
@@ -229,6 +236,7 @@ export type ResourceWhereInput = {
   id?: Prisma.StringFilter<"Resource"> | string
   name?: Prisma.StringFilter<"Resource"> | string
   key?: Prisma.StringFilter<"Resource"> | string
+  codePrefix?: Prisma.StringFilter<"Resource"> | string
   category?: Prisma.StringNullableFilter<"Resource"> | string | null
   description?: Prisma.StringNullableFilter<"Resource"> | string | null
   isActive?: Prisma.BoolFilter<"Resource"> | boolean
@@ -250,6 +258,7 @@ export type ResourceOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   key?: Prisma.SortOrder
+  codePrefix?: Prisma.SortOrder
   category?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -270,6 +279,7 @@ export type ResourceOrderByWithRelationInput = {
 export type ResourceWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   key?: string
+  codePrefix?: string
   AND?: Prisma.ResourceWhereInput | Prisma.ResourceWhereInput[]
   OR?: Prisma.ResourceWhereInput[]
   NOT?: Prisma.ResourceWhereInput | Prisma.ResourceWhereInput[]
@@ -289,12 +299,13 @@ export type ResourceWhereUniqueInput = Prisma.AtLeast<{
   conditionFieldRegistry?: Prisma.ConditionFieldRegistryListRelationFilter
   workflows?: Prisma.WorkflowDefinitionListRelationFilter
   masterObject?: Prisma.XOR<Prisma.MasterObjectNullableScalarRelationFilter, Prisma.MasterObjectWhereInput> | null
-}, "id" | "key">
+}, "id" | "key" | "codePrefix">
 
 export type ResourceOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   key?: Prisma.SortOrder
+  codePrefix?: Prisma.SortOrder
   category?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -316,6 +327,7 @@ export type ResourceScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Resource"> | string
   name?: Prisma.StringWithAggregatesFilter<"Resource"> | string
   key?: Prisma.StringWithAggregatesFilter<"Resource"> | string
+  codePrefix?: Prisma.StringWithAggregatesFilter<"Resource"> | string
   category?: Prisma.StringNullableWithAggregatesFilter<"Resource"> | string | null
   description?: Prisma.StringNullableWithAggregatesFilter<"Resource"> | string | null
   isActive?: Prisma.BoolWithAggregatesFilter<"Resource"> | boolean
@@ -331,6 +343,7 @@ export type ResourceCreateInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   category?: string | null
   description?: string | null
   isActive?: boolean
@@ -350,6 +363,7 @@ export type ResourceUncheckedCreateInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   category?: string | null
   description?: string | null
   isActive?: boolean
@@ -369,6 +383,7 @@ export type ResourceUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -388,6 +403,7 @@ export type ResourceUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -407,6 +423,7 @@ export type ResourceCreateManyInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   category?: string | null
   description?: string | null
   isActive?: boolean
@@ -422,6 +439,7 @@ export type ResourceUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -435,6 +453,7 @@ export type ResourceUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -460,6 +479,7 @@ export type ResourceCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   key?: Prisma.SortOrder
+  codePrefix?: Prisma.SortOrder
   category?: Prisma.SortOrder
   description?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -475,6 +495,7 @@ export type ResourceMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   key?: Prisma.SortOrder
+  codePrefix?: Prisma.SortOrder
   category?: Prisma.SortOrder
   description?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -490,6 +511,7 @@ export type ResourceMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   key?: Prisma.SortOrder
+  codePrefix?: Prisma.SortOrder
   category?: Prisma.SortOrder
   description?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -659,6 +681,7 @@ export type ResourceCreateWithoutModuleInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   category?: string | null
   description?: string | null
   isActive?: boolean
@@ -677,6 +700,7 @@ export type ResourceUncheckedCreateWithoutModuleInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   category?: string | null
   description?: string | null
   isActive?: boolean
@@ -724,6 +748,7 @@ export type ResourceScalarWhereInput = {
   id?: Prisma.StringFilter<"Resource"> | string
   name?: Prisma.StringFilter<"Resource"> | string
   key?: Prisma.StringFilter<"Resource"> | string
+  codePrefix?: Prisma.StringFilter<"Resource"> | string
   category?: Prisma.StringNullableFilter<"Resource"> | string | null
   description?: Prisma.StringNullableFilter<"Resource"> | string | null
   isActive?: Prisma.BoolFilter<"Resource"> | boolean
@@ -739,6 +764,7 @@ export type ResourceCreateWithoutPermissionsInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   category?: string | null
   description?: string | null
   isActive?: boolean
@@ -757,6 +783,7 @@ export type ResourceUncheckedCreateWithoutPermissionsInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   category?: string | null
   description?: string | null
   isActive?: boolean
@@ -791,6 +818,7 @@ export type ResourceUpdateWithoutPermissionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -809,6 +837,7 @@ export type ResourceUncheckedUpdateWithoutPermissionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -827,6 +856,7 @@ export type ResourceCreateWithoutConditionFieldRegistryInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   category?: string | null
   description?: string | null
   isActive?: boolean
@@ -845,6 +875,7 @@ export type ResourceUncheckedCreateWithoutConditionFieldRegistryInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   category?: string | null
   description?: string | null
   isActive?: boolean
@@ -879,6 +910,7 @@ export type ResourceUpdateWithoutConditionFieldRegistryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -897,6 +929,7 @@ export type ResourceUncheckedUpdateWithoutConditionFieldRegistryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -915,6 +948,7 @@ export type ResourceCreateWithoutPoliciesInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   category?: string | null
   description?: string | null
   isActive?: boolean
@@ -933,6 +967,7 @@ export type ResourceUncheckedCreateWithoutPoliciesInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   category?: string | null
   description?: string | null
   isActive?: boolean
@@ -967,6 +1002,7 @@ export type ResourceUpdateWithoutPoliciesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -985,6 +1021,7 @@ export type ResourceUncheckedUpdateWithoutPoliciesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1003,6 +1040,7 @@ export type ResourceCreateWithoutMasterObjectInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   category?: string | null
   description?: string | null
   isActive?: boolean
@@ -1021,6 +1059,7 @@ export type ResourceUncheckedCreateWithoutMasterObjectInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   category?: string | null
   description?: string | null
   isActive?: boolean
@@ -1065,6 +1104,7 @@ export type ResourceCreateWithoutWorkflowsInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   category?: string | null
   description?: string | null
   isActive?: boolean
@@ -1083,6 +1123,7 @@ export type ResourceUncheckedCreateWithoutWorkflowsInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   category?: string | null
   description?: string | null
   isActive?: boolean
@@ -1117,6 +1158,7 @@ export type ResourceUpdateWithoutWorkflowsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1135,6 +1177,7 @@ export type ResourceUncheckedUpdateWithoutWorkflowsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1153,6 +1196,7 @@ export type ResourceCreateManyModuleInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   category?: string | null
   description?: string | null
   isActive?: boolean
@@ -1167,6 +1211,7 @@ export type ResourceUpdateWithoutModuleInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1185,6 +1230,7 @@ export type ResourceUncheckedUpdateWithoutModuleInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1203,6 +1249,7 @@ export type ResourceUncheckedUpdateManyWithoutModuleInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1217,6 +1264,7 @@ export type ResourceCreateManyMasterObjectInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   category?: string | null
   description?: string | null
   isActive?: boolean
@@ -1231,6 +1279,7 @@ export type ResourceUpdateWithoutMasterObjectInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1249,6 +1298,7 @@ export type ResourceUncheckedUpdateWithoutMasterObjectInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1267,6 +1317,7 @@ export type ResourceUncheckedUpdateManyWithoutMasterObjectInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1339,6 +1390,7 @@ export type ResourceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   id?: boolean
   name?: boolean
   key?: boolean
+  codePrefix?: boolean
   category?: boolean
   description?: boolean
   isActive?: boolean
@@ -1361,6 +1413,7 @@ export type ResourceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   id?: boolean
   name?: boolean
   key?: boolean
+  codePrefix?: boolean
   category?: boolean
   description?: boolean
   isActive?: boolean
@@ -1378,6 +1431,7 @@ export type ResourceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   id?: boolean
   name?: boolean
   key?: boolean
+  codePrefix?: boolean
   category?: boolean
   description?: boolean
   isActive?: boolean
@@ -1395,6 +1449,7 @@ export type ResourceSelectScalar = {
   id?: boolean
   name?: boolean
   key?: boolean
+  codePrefix?: boolean
   category?: boolean
   description?: boolean
   isActive?: boolean
@@ -1406,7 +1461,7 @@ export type ResourceSelectScalar = {
   deletedAt?: boolean
 }
 
-export type ResourceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "key" | "category" | "description" | "isActive" | "isSystem" | "moduleId" | "masterObjectId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["resource"]>
+export type ResourceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "key" | "codePrefix" | "category" | "description" | "isActive" | "isSystem" | "moduleId" | "masterObjectId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["resource"]>
 export type ResourceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   module?: boolean | Prisma.Resource$moduleArgs<ExtArgs>
   permissions?: boolean | Prisma.Resource$permissionsArgs<ExtArgs>
@@ -1439,6 +1494,7 @@ export type $ResourcePayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     id: string
     name: string
     key: string
+    codePrefix: string
     category: string | null
     description: string | null
     isActive: boolean
@@ -1880,6 +1936,7 @@ export interface ResourceFieldRefs {
   readonly id: Prisma.FieldRef<"Resource", 'String'>
   readonly name: Prisma.FieldRef<"Resource", 'String'>
   readonly key: Prisma.FieldRef<"Resource", 'String'>
+  readonly codePrefix: Prisma.FieldRef<"Resource", 'String'>
   readonly category: Prisma.FieldRef<"Resource", 'String'>
   readonly description: Prisma.FieldRef<"Resource", 'String'>
   readonly isActive: Prisma.FieldRef<"Resource", 'Boolean'>

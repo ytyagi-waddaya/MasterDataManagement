@@ -1,31 +1,37 @@
 import { z } from "zod";
 
-export const zUUID = z.uuid("Invalid UUID");
+/* =====================
+   COMMON
+===================== */
 
+export const zUUID = z.string().uuid("Invalid UUID");
 export const zUUIDOptional = z.uuid().optional();
+export const zJson = z.unknown();
 
-export const zJson = z.any();
+/* =====================
+   ENUMS (Industry-grade)
+===================== */
 
-const TriggerStrategyEnum = z.enum([
-  "ANY_ALLOWED",
-  "ALL_ALLOWED",
-  "CREATOR_ONLY",
-  "ASSIGNEE_ONLY",
-  "APPROVER_ONLY",
-  "SYSTEM_ONLY",
+export const TriggerStrategyEnum = z.enum([
+  "ANY_ALLOWED", // any allowed role/user
+  "ALL_ALLOWED", // all allowed role/users must agree
+  "CREATOR_ONLY", // workflow initiator
+  "ASSIGNEE_ONLY", // current assignee
+  "APPROVER_ONLY", // approval authority
+  "SYSTEM_ONLY", // automation / system
 ]);
 
-const TransitionTypeEnum = z.enum([
-  "NORMAL",
-  "APPROVAL",
-  "SEND_BACK",
-  "REVIEW",
-  "AUTO",
+export const TransitionTypeEnum = z.enum([
+  "NORMAL", // manual move
+  "APPROVAL", // approval-gated
+  "SEND_BACK", // rollback / correction
+  "REVIEW", // no stage change
+  "AUTO", // system triggered
 ]);
 
-const ApprovalStrategyEnum = z.enum(["ALL", "ANY", "MAJORITY"]);
+export const ApprovalStrategyEnum = z.enum(["ALL", "ANY", "MAJORITY"]);
 
-const CategoryEnum = z.enum([
+export const CategoryEnum = z.enum([
   "DRAFT",
   "SUBMITTED",
   "NORMAL",
@@ -37,7 +43,6 @@ const CategoryEnum = z.enum([
   "COMPLETED",
 ]);
 
-
 /* =====================
    APPROVAL
 ===================== */
@@ -48,19 +53,24 @@ const approvalLevelSchema = z
     roleIds: z.array(zUUID).default([]),
     userIds: z.array(zUUID).default([]),
   })
-  .refine(v => v.roleIds.length || v.userIds.length, {
-    message: "Each approval level must have at least one role or user",
-  });
+  .refine(
+    (v) => v.roleIds.length > 0 || v.userIds.length > 0,
+    "Each approval level must define at least one role or user"
+  );
 
-const approvalConfigSchema = z.object({
-  mode: z.enum(["PARALLEL", "SEQUENTIAL"]),
-  levels: z.array(approvalLevelSchema).optional(),
-});
-
-
+const approvalConfigSchema = z.discriminatedUnion("mode", [
+  z.object({
+    mode: z.literal("PARALLEL"),
+    levels: z.array(approvalLevelSchema).min(1),
+  }),
+  z.object({
+    mode: z.literal("SEQUENTIAL"),
+    levels: z.array(approvalLevelSchema).min(1),
+  }),
+]);
 
 /* =====================
-   TRANSITION
+   TRANSITION (Industry-safe)
 ===================== */
 
 export const transitionSchema = z
@@ -71,8 +81,6 @@ export const transitionSchema = z
     toStageId: zUUID,
 
     transitionType: TransitionTypeEnum,
-
-    /** ✅ REQUIRED FOR BACKEND */
     triggerStrategy: TriggerStrategyEnum.default("ANY_ALLOWED"),
 
     approvalStrategy: ApprovalStrategyEnum.optional(),
@@ -86,76 +94,98 @@ export const transitionSchema = z
     allowedUserIds: z.array(zUUID).default([]),
   })
   .superRefine((t, ctx) => {
-    /* ---------------- REVIEW ---------------- */
+    /* ---------- REVIEW ---------- */
     if (t.transitionType === "REVIEW" && t.fromStageId !== t.toStageId) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "REVIEW transition must be a self-loop",
-      });
+      ctx.addIssue("REVIEW transition must be a self-loop");
     }
 
-    /* ---------------- AUTO SAFETY ---------------- */
+    /* ---------- SEND BACK ---------- */
+    if (t.transitionType === "SEND_BACK" && t.fromStageId === t.toStageId) {
+      ctx.addIssue("SEND_BACK cannot be a self-loop");
+    }
+
+    /* ---------- AUTO ---------- */
     if (t.transitionType === "AUTO") {
       if (t.triggerStrategy !== "SYSTEM_ONLY") {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "AUTO transitions must use SYSTEM_ONLY trigger strategy",
-        });
+        ctx.addIssue("AUTO transitions must use SYSTEM_ONLY trigger strategy");
+      }
+
+      if (!t.condition) {
+        ctx.addIssue("AUTO transitions must define a condition");
       }
 
       if (t.allowedRoleIds.length || t.allowedUserIds.length) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "AUTO transitions cannot have users or roles",
-        });
+        ctx.addIssue("AUTO transitions cannot have users or roles");
       }
     }
 
-    if (
-      t.triggerStrategy === "SYSTEM_ONLY" &&
-      t.transitionType !== "AUTO"
-    ) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "SYSTEM_ONLY trigger strategy is only valid for AUTO transitions",
-      });
+    if (t.triggerStrategy === "SYSTEM_ONLY" && t.transitionType !== "AUTO") {
+      ctx.addIssue("SYSTEM_ONLY trigger is valid only for AUTO transitions");
     }
 
-    /* ---------------- APPROVER_ONLY ---------------- */
+    /* ---------- APPROVER ONLY ---------- */
     if (
       t.triggerStrategy === "APPROVER_ONLY" &&
       t.transitionType !== "APPROVAL"
     ) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "APPROVER_ONLY trigger strategy is only valid for APPROVAL transitions",
-      });
+      ctx.addIssue("APPROVER_ONLY is valid only for APPROVAL transitions");
     }
 
-    /* ---------------- APPROVAL ---------------- */
+    /* ---------- APPROVAL ---------- */
     if (t.transitionType === "APPROVAL") {
-      if (!t.approvalConfig || !t.approvalStrategy) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "APPROVAL transitions require approvalConfig and approvalStrategy",
-        });
+      if (!t.approvalStrategy || !t.approvalConfig) {
+        ctx.addIssue(
+          "APPROVAL transitions require approvalStrategy and approvalConfig"
+        );
+      }
+
+      const { mode, levels } = t.approvalConfig ?? {};
+      if (!levels?.length) {
+        ctx.addIssue("Approval transitions must define approval levels");
+      }
+
+      if (mode === "SEQUENTIAL") {
+        if (!levels || levels.length === 0) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Sequential approval requires approval levels",
+          });
+          return;
+        }
+
+        const orders = levels.map((l) => l.order);
+        const sorted = [...orders].sort((a, b) => a - b);
+
+        if (orders.some((o, i) => o !== sorted[i])) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Sequential approval levels must be strictly ordered",
+          });
+        }
       }
     }
 
-    /* ---------------- NON-APPROVAL ---------------- */
     if (t.transitionType !== "APPROVAL") {
       if (t.approvalConfig || t.approvalStrategy) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Approval fields are only allowed for APPROVAL transitions",
-        });
+        ctx.addIssue(
+          "Approval fields are allowed only for APPROVAL transitions"
+        );
       }
+    }
+
+    /* ---------- TRIGGER STRATEGY SAFETY ---------- */
+    if (
+      (t.triggerStrategy === "ANY_ALLOWED" ||
+        t.triggerStrategy === "ALL_ALLOWED") &&
+      !t.allowedRoleIds.length &&
+      !t.allowedUserIds.length
+    ) {
+      ctx.addIssue(`${t.triggerStrategy} requires at least one role or user`);
     }
   });
 
-
 /* =====================
-   WORKFLOW SCHEMA
+   WORKFLOW GRAPH
 ===================== */
 
 export const createFullWorkflowSchema = z
@@ -164,12 +194,13 @@ export const createFullWorkflowSchema = z
 
     stages: z.array(
       z.object({
-        tempId: z.string().optional(),
+        tempId: z.string().min(1, "Stage tempId is required"),
         name: z.string().min(1),
         isInitial: z.boolean(),
         isFinal: z.boolean(),
         order: z.number().int().nonnegative(),
         category: CategoryEnum,
+        allowedNextCategories: z.array(CategoryEnum).default([]),
         color: z.string().optional(),
         metadata: zJson.optional(),
         position: z
@@ -184,37 +215,48 @@ export const createFullWorkflowSchema = z
     transitions: z.array(transitionSchema).default([]),
   })
   .superRefine((data, ctx) => {
-    const initial = data.stages.filter(s => s.isInitial);
-    const finals = data.stages.filter(s => s.isFinal);
+    /* ---------- INITIAL / FINAL ---------- */
+    const initial = data.stages.filter((s) => s.isInitial);
+    const finals = data.stages.filter((s) => s.isFinal);
 
     if (initial.length !== 1) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Exactly one initial stage is required",
-      });
+      ctx.addIssue("Exactly one initial stage is required");
     }
 
     if (!finals.length) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "At least one final stage is required",
-      });
+      ctx.addIssue("At least one final stage is required");
     }
 
     for (const s of data.stages) {
       if (s.isInitial && s.isFinal) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Stage cannot be both initial and final",
-        });
+        ctx.addIssue("Stage cannot be both initial and final");
+      }
+    }
+
+    /* ---------- UNIQUE STAGE NAMES ---------- */
+    const names = data.stages.map((s) => s.name.trim().toLowerCase());
+    if (names.length !== new Set(names).size) {
+      ctx.addIssue("Stage names must be unique");
+    }
+
+    /* ---------- TRANSITION REFERENCES ---------- */
+    const stageIds = new Set(data.stages.map((s) => s.tempId));
+
+    for (const t of data.transitions) {
+      if (!stageIds.has(t.fromStageId)) {
+        ctx.addIssue(
+          `Transition fromStageId "${t.fromStageId}" does not exist`
+        );
+      }
+      if (!stageIds.has(t.toStageId)) {
+        ctx.addIssue(`Transition toStageId "${t.toStageId}" does not exist`);
       }
     }
   });
 
-
-/* -------------------------------------------------------------------------- */
-/*                         WORKFLOW DEFINITION SCHEMAS                        */
-/* -------------------------------------------------------------------------- */
+/* =====================
+   WORKFLOW DEFINITION
+===================== */
 
 export const createWorkflowDefinitionSchema = z.object({
   name: z.string().min(1, "Workflow name is required"),

@@ -404,6 +404,7 @@ export const ModelName = {
   FieldReference: 'FieldReference',
   FieldConditionBinding: 'FieldConditionBinding',
   MasterRecord: 'MasterRecord',
+  MasterObjectCounter: 'MasterObjectCounter',
   RecordFieldHistory: 'RecordFieldHistory',
   RecordFieldIndex: 'RecordFieldIndex',
   SchemaChange: 'SchemaChange',
@@ -443,7 +444,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "roleHierarchy" | "userRole" | "module" | "action" | "resource" | "permission" | "rolePermission" | "conditionFieldRegistry" | "policy" | "masterObject" | "masterObjectSchema" | "fieldDefinition" | "fieldPermission" | "fieldValidationRule" | "fieldFormula" | "fieldReference" | "fieldConditionBinding" | "masterRecord" | "recordFieldHistory" | "recordFieldIndex" | "schemaChange" | "formEventHook" | "recordPermission" | "workflowDefinition" | "workflowStage" | "workflowTransition" | "workflowInstance" | "workflowHistory" | "workflowTransitionAllowedRole" | "workflowTransitionAllowedUser" | "workflowApproval" | "task" | "taskAssignment" | "auditLog" | "notificationTemplate" | "notificationBatch" | "notificationDelivery" | "notification" | "outboxEvent" | "eventLog" | "attachment" | "refreshToken"
+    modelProps: "user" | "role" | "roleHierarchy" | "userRole" | "module" | "action" | "resource" | "permission" | "rolePermission" | "conditionFieldRegistry" | "policy" | "masterObject" | "masterObjectSchema" | "fieldDefinition" | "fieldPermission" | "fieldValidationRule" | "fieldFormula" | "fieldReference" | "fieldConditionBinding" | "masterRecord" | "masterObjectCounter" | "recordFieldHistory" | "recordFieldIndex" | "schemaChange" | "formEventHook" | "recordPermission" | "workflowDefinition" | "workflowStage" | "workflowTransition" | "workflowInstance" | "workflowHistory" | "workflowTransitionAllowedRole" | "workflowTransitionAllowedUser" | "workflowApproval" | "task" | "taskAssignment" | "auditLog" | "notificationTemplate" | "notificationBatch" | "notificationDelivery" | "notification" | "outboxEvent" | "eventLog" | "attachment" | "refreshToken"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1924,6 +1925,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.MasterRecordCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.MasterRecordCountAggregateOutputType> | number
+        }
+      }
+    }
+    MasterObjectCounter: {
+      payload: Prisma.$MasterObjectCounterPayload<ExtArgs>
+      fields: Prisma.MasterObjectCounterFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MasterObjectCounterFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MasterObjectCounterPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MasterObjectCounterFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MasterObjectCounterPayload>
+        }
+        findFirst: {
+          args: Prisma.MasterObjectCounterFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MasterObjectCounterPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MasterObjectCounterFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MasterObjectCounterPayload>
+        }
+        findMany: {
+          args: Prisma.MasterObjectCounterFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MasterObjectCounterPayload>[]
+        }
+        create: {
+          args: Prisma.MasterObjectCounterCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MasterObjectCounterPayload>
+        }
+        createMany: {
+          args: Prisma.MasterObjectCounterCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MasterObjectCounterCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MasterObjectCounterPayload>[]
+        }
+        delete: {
+          args: Prisma.MasterObjectCounterDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MasterObjectCounterPayload>
+        }
+        update: {
+          args: Prisma.MasterObjectCounterUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MasterObjectCounterPayload>
+        }
+        deleteMany: {
+          args: Prisma.MasterObjectCounterDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MasterObjectCounterUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MasterObjectCounterUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MasterObjectCounterPayload>[]
+        }
+        upsert: {
+          args: Prisma.MasterObjectCounterUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MasterObjectCounterPayload>
+        }
+        aggregate: {
+          args: Prisma.MasterObjectCounterAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMasterObjectCounter>
+        }
+        groupBy: {
+          args: Prisma.MasterObjectCounterGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MasterObjectCounterGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MasterObjectCounterCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MasterObjectCounterCountAggregateOutputType> | number
         }
       }
     }
@@ -3828,6 +3903,7 @@ export const ResourceScalarFieldEnum = {
   id: 'id',
   name: 'name',
   key: 'key',
+  codePrefix: 'codePrefix',
   category: 'category',
   description: 'description',
   isActive: 'isActive',
@@ -3913,6 +3989,7 @@ export const MasterObjectScalarFieldEnum = {
   id: 'id',
   name: 'name',
   key: 'key',
+  codePrefix: 'codePrefix',
   isActive: 'isActive',
   isSystem: 'isSystem',
   createdAt: 'createdAt',
@@ -4033,6 +4110,7 @@ export type FieldConditionBindingScalarFieldEnum = (typeof FieldConditionBinding
 
 export const MasterRecordScalarFieldEnum = {
   id: 'id',
+  code: 'code',
   masterObjectId: 'masterObjectId',
   data: 'data',
   currentStageId: 'currentStageId',
@@ -4046,6 +4124,14 @@ export const MasterRecordScalarFieldEnum = {
 } as const
 
 export type MasterRecordScalarFieldEnum = (typeof MasterRecordScalarFieldEnum)[keyof typeof MasterRecordScalarFieldEnum]
+
+
+export const MasterObjectCounterScalarFieldEnum = {
+  masterObjectId: 'masterObjectId',
+  lastNumber: 'lastNumber'
+} as const
+
+export type MasterObjectCounterScalarFieldEnum = (typeof MasterObjectCounterScalarFieldEnum)[keyof typeof MasterObjectCounterScalarFieldEnum]
 
 
 export const RecordFieldHistoryScalarFieldEnum = {
@@ -5064,6 +5150,7 @@ export type GlobalOmitConfig = {
   fieldReference?: Prisma.FieldReferenceOmit
   fieldConditionBinding?: Prisma.FieldConditionBindingOmit
   masterRecord?: Prisma.MasterRecordOmit
+  masterObjectCounter?: Prisma.MasterObjectCounterOmit
   recordFieldHistory?: Prisma.RecordFieldHistoryOmit
   recordFieldIndex?: Prisma.RecordFieldIndexOmit
   schemaChange?: Prisma.SchemaChangeOmit

@@ -36,12 +36,14 @@ import { useStartInstance } from "@/lib/workflow/hooks";
 export function RecordActions({
   record,
   workflowId,
+  router,
+  resourceId
 }: {
   record: any;
   workflowId?: string;
+  router: any;
+  resourceId:string
 }) {
-  console.log("RECORD:", record);
-  console.log("WORKFLOW ID:", workflowId);
   const [openArchive, setOpenArchive] = useState(false);
   const [openRestore, setOpenRestore] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
@@ -51,19 +53,16 @@ export function RecordActions({
   const restoreMutation = useRestoreRecord();
   const deleteMutation = useDeleteRecord();
 
-  // ------------------------------------------------------------
-  // 🟢 Workflow Trigger Mutation (Send for Approval)
-  // ------------------------------------------------------------
+  const hasWorkflow = Boolean(workflowId);
 
-  // You need to know which workflow the master object uses
-  if (!workflowId) {
-    console.error("Missing workflowId for record:", record);
-    return null;
-  }
-
-  const startInstanceMutation = useStartInstance(workflowId);
+  // ✅ CORRECT: hook accepts ONLY workflowId
+  const startInstanceMutation = hasWorkflow
+    ? useStartInstance(workflowId!)
+    : null;
 
   const handleSendForApproval = () => {
+    if (!startInstanceMutation) return;
+
     startInstanceMutation.mutate(
       {
         recordId: record.id,
@@ -71,17 +70,17 @@ export function RecordActions({
       },
       {
         onSuccess: () => {
-          console.log("Workflow started successfully");
           setOpenSendApproval(false);
-        },
-        onError: (err) => {
-          console.error("Workflow start failed", err);
         },
       }
     );
   };
 
   const isActive = !record.deletedAt;
+  // const handleView = () => router.push(`/record/${record.id}`);
+  const handleView = () => {
+    router.push(`/resources/${resourceId}/record/${record.id}`);
+  };
 
   return (
     <>
@@ -93,13 +92,17 @@ export function RecordActions({
         </DropdownMenuTrigger>
 
         <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={() => alert("View Record")}>
+          <DropdownMenuItem onClick={handleView}>
             <Eye className="mr-2 h-4 w-4" /> View
           </DropdownMenuItem>
 
           {/* Send for Approval */}
-          <DropdownMenuItem onClick={() => setOpenSendApproval(true)}>
-            <Send className="mr-2 h-4 w-4" /> Send for Approval
+          <DropdownMenuItem
+            disabled={!hasWorkflow}
+            onClick={() => setOpenSendApproval(true)}
+          >
+            <Send className="mr-2 h-4 w-4" />
+            Send for Approval
           </DropdownMenuItem>
 
           <DropdownMenuItem onClick={() => alert("Edit form coming soon")}>
@@ -158,13 +161,12 @@ export function RecordActions({
         }
       />
 
-      {/* SEND FOR APPROVAL DIALOG */}
       <SendApprovalDialog
         open={openSendApproval}
         onOpenChange={setOpenSendApproval}
         name={record.id}
         onConfirm={handleSendForApproval}
-        loading={startInstanceMutation.isPending}
+        loading={startInstanceMutation?.isPending ?? false}
       />
     </>
   );

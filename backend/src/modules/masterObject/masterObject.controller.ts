@@ -42,6 +42,7 @@ const masterObjectController = {
     if (!masterObjectId)
       throw new BadRequestException("MasterObject ID is required");
     const data = req.body;
+console.log("MASTEROBJECT PAYLOAD:", data);
 
     const masterObject = await masterObjectService.updateMasterObject(
       { masterObjectId },
@@ -133,6 +134,29 @@ const masterObjectController = {
       data: { result },
     });
   },
+  duplicateSchema: async (req: Request, res: Response) => {
+  const masterObjectId = req.params.masterObjectId;
+ if (!masterObjectId)
+      throw new BadRequestException("MasterObject ID is required");
+  const schema = await masterObjectService.duplicateSchema(
+    { masterObjectId },
+    {
+      actorId: req.user?.id ?? null,
+      performedBy: PerformedByType.USER,
+      userAgent: req.get("user-agent") ?? null,
+      ipAddress: req.ip,
+    }
+  );
+
+  sendResponse({
+    res,
+    statusCode: HTTPSTATUS.CREATED,
+    success: true,
+    message: "Schema duplicated successfully",
+    data: { schema },
+  });
+},
+
 };
 
 export default masterObjectController;

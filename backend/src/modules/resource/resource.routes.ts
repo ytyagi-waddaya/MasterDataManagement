@@ -47,6 +47,10 @@ router.get(
   validate(resourceIdSchema, "params"),
   asyncHandler(resourcesController.getResourceById)
 );
+router.get(
+  "/:resourceId/fields",
+  resourcesController.getFields
+);
 router.put(
   "/:resourceId",
   validate(resourceIdSchema, "params"),

@@ -47,11 +47,22 @@
 //     process.exit(1);
 //   });
 
-
-
 import { prisma } from "../src/lib/prisma.js";
 import bcrypt from "bcrypt";
 import { generateKey } from "../src/common/utils/generate-key.js";
+
+/* ---------------------------------------------------------
+   SYSTEM PREFIX MAP (GLOBAL, UNIQUE, SHORT)
+--------------------------------------------------------- */
+const SYSTEM_PREFIX_MAP: Record<string, string> = {
+  User: "USR",
+  Role: "ROL",
+  Module: "MOD",
+  Dashboard: "DSH",
+  Resource: "RES",
+  Action: "ACT",
+  Permission: "PER",
+};
 
 async function main() {
   console.log("🌱 Running seed script...");
@@ -60,20 +71,18 @@ async function main() {
    * 1️⃣ SEED DEFAULT ACTIONS
    * --------------------------------------------------------- */
   const defaultActions = [
-    { name: "Create", description: "Grants the ability to create new records within the system." },
-    { name: "Read", description: "Allows viewing and retrieving system records and data." },
-    { name: "Update", description: "Allows editing and modifying existing system records." },
-    { name: "Delete", description: "Grants permission to remove or permanently delete records." },
-    { name: "Approve", description: "Authorizes the user to approve workflow items or requests." },
-    { name: "Reject", description: "Allows rejecting workflow items, submissions, or approval requests." },
+    { name: "Create", description: "Grants the ability to create records." },
+    { name: "Read", description: "Allows viewing records." },
+    { name: "Update", description: "Allows editing records." },
+    { name: "Delete", description: "Allows deleting records." },
+    { name: "Approve", description: "Allows approval actions." },
+    { name: "Reject", description: "Allows rejection actions." },
   ];
 
-  // Keep created rows for later
   const actionRows = [];
   for (const action of defaultActions) {
     const key = generateKey(action.name);
 
-    // ✅ safer: where by key (because some schemas don't have name unique)
     const row = await prisma.action.upsert({
       where: { key },
       update: {
@@ -93,45 +102,88 @@ async function main() {
 
     actionRows.push(row);
   }
+
   console.log("✅ Default Actions seeded");
 
   /* ---------------------------------------------------------
-   * 2️⃣ SEED DEFAULT RESOURCES
+   * 2️⃣ SEED SYSTEM RESOURCES + MASTER OBJECTS
    * --------------------------------------------------------- */
   const defaultResources = [
-    { name: "User", description: "Represents system users and their authentication/identity settings." },
-    { name: "Role", description: "Defines user roles, access levels, and associated permissions within the system." },
-    { name: "Module", description: "Logical grouping of system features and functional capabilities." },
-    { name: "Dashboard", description: "Provides visual summaries, analytics, and performance insights for the application." },
-    { name: "Resource", description: "Represents manageable system entities used for authorization and access control mapping." },
-    { name: "Action", description: "Represents individual CRUD or workflow-level operations available for permission policies." },
-    { name: "Permission", description: "Defines authorization mapping between resources and actions within the RBAC framework." },
+    { name: "User", description: "System users" },
+    { name: "Role", description: "Access roles" },
+    { name: "Module", description: "System modules" },
+    { name: "Dashboard", description: "Dashboards" },
+    { name: "Resource", description: "Resources for RBAC" },
+    { name: "Action", description: "System actions" },
+    { name: "Permission", description: "RBAC permissions" },
   ];
 
   const resourceRows = [];
+
   for (const res of defaultResources) {
     const key = generateKey(res.name);
+    const codePrefix = SYSTEM_PREFIX_MAP[res.name];
 
-    const row = await prisma.resource.upsert({
-      where: { key },
-      update: {
-        name: res.name,
-        description: res.description,
-        isActive: true,
-        isSystem: true,
-      },
-      create: {
-        name: res.name,
-        key,
-        description: res.description,
-        isActive: true,
-        isSystem: true,
-      },
+    if (!codePrefix) {
+      throw new Error(`❌ Missing codePrefix for resource: ${res.name}`);
+    }
+
+    const row = await prisma.$transaction(async (tx) => {
+      /* ---------------- CREATE MASTER OBJECT ---------------- */
+      const masterObject = await tx.masterObject.upsert({
+        where: { key },
+        update: {
+          name: res.name,
+          codePrefix,
+          isActive: true,
+          isSystem: true,
+        },
+        create: {
+          name: res.name,
+          key,
+          codePrefix,
+          isActive: true,
+          isSystem: true,
+        },
+      });
+
+      /* ---------------- INIT RECORD COUNTER ---------------- */
+      await tx.masterObjectCounter.upsert({
+        where: { masterObjectId: masterObject.id },
+        update: {},
+        create: {
+          masterObjectId: masterObject.id,
+          lastNumber: 0,
+        },
+      });
+
+      /* ---------------- CREATE RESOURCE ---------------- */
+      return tx.resource.upsert({
+        where: { key },
+        update: {
+          name: res.name,
+          description: res.description,
+          isActive: true,
+          isSystem: true,
+          codePrefix, // ✅ REQUIRED
+          masterObjectId: masterObject.id,
+        },
+        create: {
+          name: res.name,
+          key,
+          description: res.description,
+          isActive: true,
+          isSystem: true,
+          codePrefix, // ✅ REQUIRED
+          masterObjectId: masterObject.id,
+        },
+      });
     });
 
     resourceRows.push(row);
   }
-  console.log("✅ Default Resources seeded");
+
+  console.log("✅ Default Resources + MasterObjects seeded");
 
   /* ---------------------------------------------------------
    * 3️⃣ ADMIN ROLE
@@ -149,8 +201,7 @@ async function main() {
     create: {
       name: adminRoleName,
       key: adminKey,
-      description:
-        "System Administrator role with unrestricted access to all modules, settings, and management capabilities.",
+      description: "System administrator with full access",
       isActive: true,
       isSystem: true,
     },
@@ -180,12 +231,10 @@ async function main() {
     });
 
     console.log("👤 User created:", user.email);
-  } else {
-    console.log("⚠️ User exists:", user.email);
   }
 
   /* ---------------------------------------------------------
-   * 5️⃣ ASSIGN ADMIN ROLE → ALICE
+   * 5️⃣ ASSIGN ADMIN ROLE
    * --------------------------------------------------------- */
   await prisma.userRole.upsert({
     where: {
@@ -201,26 +250,22 @@ async function main() {
     },
   });
 
-  console.log(`🏷️ Assigned Admin role → ${user.email}`);
+  console.log("🏷️ Admin role assigned");
 
   /* ---------------------------------------------------------
-   * 6️⃣ GENERATE ALL PERMISSIONS (Resource × Action)
+   * 6️⃣ GENERATE PERMISSIONS (RESOURCE × ACTION)
    * --------------------------------------------------------- */
   const permissionRows = [];
 
   for (const res of resourceRows) {
     for (const act of actionRows) {
-      // Example: USER_CREATE
       const permKey = generateKey(`${res.key}_${act.key}`);
       const permName = `${res.name}_${act.name}`;
 
-      const permDescription = `Allows ${act.name.toLowerCase()} on ${res.name}.`;
-
       const perm = await prisma.permission.upsert({
-        where: { key: permKey }, // ✅ safe unique
+        where: { key: permKey },
         update: {
           name: permName,
-          description: permDescription,
           isActive: true,
           isSystem: true,
           resourceId: res.id,
@@ -229,7 +274,7 @@ async function main() {
         create: {
           name: permName,
           key: permKey,
-          description: permDescription,
+          description: `Allows ${act.name.toLowerCase()} on ${res.name}`,
           isActive: true,
           isSystem: true,
           resourceId: res.id,
@@ -244,40 +289,26 @@ async function main() {
   console.log(`✅ Permissions generated: ${permissionRows.length}`);
 
   /* ---------------------------------------------------------
-   * 7️⃣ ASSIGN ALL PERMISSIONS TO ADMIN ROLE
+   * 7️⃣ ASSIGN ALL PERMISSIONS TO ADMIN
    * --------------------------------------------------------- */
-  /* ---------------------------------------------------------
- * 7️⃣ ASSIGN ALL PERMISSIONS TO ADMIN ROLE
- *    + accessLevel: "full"
- * --------------------------------------------------------- */
   for (const perm of permissionRows) {
-    const exists = await prisma.rolePermission.findFirst({
+    await prisma.rolePermission.upsert({
       where: {
-        roleId: adminRole.id,
-        permissionId: perm.id,
-      },
-      select: { id: true },
-    });
-
-    if (!exists) {
-      await prisma.rolePermission.create({
-        data: {
+        roleId_permissionId: {
           roleId: adminRole.id,
           permissionId: perm.id,
-          accessLevel: "FULL", // ✅ ADD
         },
-      });
-    } else {
-      // Optional: agar already exist hai to also enforce full
-      await prisma.rolePermission.update({
-        where: { id: exists.id },
-        data: { accessLevel: "FULL" }, // ✅ ensure full
-      });
-    }
+      },
+      update: { accessLevel: "FULL" },
+      create: {
+        roleId: adminRole.id,
+        permissionId: perm.id,
+        accessLevel: "FULL",
+      },
+    });
   }
 
-  console.log(`✅ Admin role assigned all permissions (${permissionRows.length}) with accessLevel=full`);
-
+  console.log("✅ Admin granted FULL access to all permissions");
   console.log("🌱 Seed complete!");
 }
 

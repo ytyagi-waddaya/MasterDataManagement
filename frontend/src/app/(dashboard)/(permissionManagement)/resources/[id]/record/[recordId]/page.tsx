@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { useRecord } from "@/lib/masterRecord/hooks";
 import { RecordHeader } from "@/lib/masterRecord/components/RecordHeader";
 import { RecordFormRenderer } from "@/lib/masterRecord/components/RecordFormRenderer";
-import { WorkflowTimeline } from "@/lib/masterRecord/components/WorkflowTimeline";
+import { FormRuntimePreview } from "@/components/field-builder-drag-drop/runtime/FormRuntimePreview";
+// import { WorkflowTimeline } from "@/lib/masterRecord/components/WorkflowTimeline";
 
 export default function RecordDetailsPage() {
   const { recordId } = useParams() as { recordId: string };
@@ -31,15 +32,15 @@ export default function RecordDetailsPage() {
 
       {/* Record Form */}
       <RecordFormRenderer record={record} />
+      {/* <FormRuntimePreview sections={sections} /> */}
 
       {/* Workflow Timeline */}
-      {record.workflowInstanceId && (
+      {/* {record.workflowInstanceId && (
         <WorkflowTimeline instanceId={record.workflowInstanceId} />
-      )}
+      )} */}
     </div>
   );
 }
-
 
 //         <pre className="bg-gray-900 text-green-400 p-4 rounded-md text-sm overflow-auto">
 //           {JSON.stringify(recordData, null, 2)}

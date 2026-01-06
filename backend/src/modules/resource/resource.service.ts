@@ -1,6 +1,7 @@
 import {
   AuditAction,
   AuditEntity,
+  FieldDataType,
   PerformedByType,
   Prisma,
 } from "../../../prisma/generated/client.js";
@@ -13,6 +14,9 @@ import {
 import {
   CreateResourceInput,
   createResourceSchema,
+  ResourceFieldDTO,
+  ResourceFieldsResponse,
+  ResourceFieldType,
   ResourceFilterInput,
   resourceFilterSchema,
   ResourceId,
@@ -242,93 +246,211 @@ const actionsService = {
   //   }
   // },
 
+  // createResource: async (data: CreateResourceInput, meta?: ActorMeta) => {
+  //   const validatedData = createResourceSchema.parse(data);
+  //   const key = generateKey(validatedData.name);
+
+  //   // Check duplicate resource
+  //   const existing = await resourcesRepository.findByNameAndTenant(
+  //     validatedData.name
+  //   );
+
+  //   if (existing) {
+  //     throw new BadRequestException(
+  //       `Resource "${validatedData.name}" already exists.`
+  //     );
+  //   }
+
+  //   try {
+  //     const resource = await prisma.$transaction(async (tx) => {
+  //       let masterObjectId: string | null = null;
+
+  //       // ⭐ Create MasterObject ONLY IF moduleId exists
+  //       if (validatedData.moduleId) {
+  //         const masterObject = await tx.masterObject.create({
+  //           data: {
+  //             name: validatedData.name,
+  //             key,
+  //           },
+  //         });
+
+  //         masterObjectId = masterObject.id;
+  //       }
+
+  //       // ⭐ Prepare ResourceCreateInput safely
+  //       const toCreate: Prisma.ResourceCreateInput = {
+  //         name: validatedData.name,
+  //         key,
+  //         description: validatedData.description ?? null,
+  //         isActive: validatedData.isActive ?? true,
+  //         isSystem: validatedData.isSystem ?? false,
+  //       };
+
+  //       // Add module only if provided
+  //       if (validatedData.moduleId) {
+  //         toCreate.module = { connect: { id: validatedData.moduleId } };
+  //       }
+
+  //       // Add masterObject only if created
+  //       if (masterObjectId) {
+  //         toCreate.masterObject = { connect: { id: masterObjectId } };
+  //       }
+
+  //       const createdResource = await tx.resource.create({
+  //         data: toCreate,
+  //       });
+
+  //       // ⭐ Audit log
+  //       await tx.auditLog.create({
+  //         data: {
+  //           userId: meta?.actorId ?? null,
+  //           entity: AuditEntity.RESOURCE,
+  //           action: AuditAction.CREATE,
+  //           comment: "Resource created",
+  //           after: createdResource,
+  //           ipAddress: meta?.ipAddress ?? null,
+  //           userAgent: meta?.userAgent ?? null,
+  //           performedBy: meta?.performedBy ?? PerformedByType.USER,
+  //         },
+  //       });
+
+  //       return createdResource;
+  //     });
+
+  //     return resource;
+  //   } catch (err: any) {
+  //     if (err?.code === "P2002") {
+  //       const target = err?.meta?.target ?? [];
+  //       if (target.includes("key")) {
+  //         throw new BadRequestException(
+  //           `Resource key "${key}" already exists.`
+  //         );
+  //       }
+  //       if (target.includes("name")) {
+  //         throw new BadRequestException("Resource name already exists.");
+  //       }
+  //     }
+  //     throw err;
+  //   }
+  // },
   createResource: async (data: CreateResourceInput, meta?: ActorMeta) => {
-  const validatedData = createResourceSchema.parse(data);
-  const key = generateKey(validatedData.name);
+    const validatedData = createResourceSchema.parse(data);
 
-  // Check duplicate resource
-  const existing = await resourcesRepository.findByNameAndTenant(
-    validatedData.name
-  );
+    const resourceKey = generateKey(validatedData.name);
+    const codePrefix = validatedData.codePrefix.toUpperCase();
 
-  if (existing) {
-    throw new BadRequestException(
-      `Resource "${validatedData.name}" already exists.`
+    /* =====================================================
+     1️⃣ DUPLICATE RESOURCE NAME
+  ===================================================== */
+    const existing = await resourcesRepository.findByNameAndTenant(
+      validatedData.name
     );
-  }
 
-  try {
-    const resource = await prisma.$transaction(async (tx) => {
-      let masterObjectId: string | null = null;
+    if (existing) {
+      throw new BadRequestException(
+        `Resource "${validatedData.name}" already exists.`
+      );
+    }
 
-      // ⭐ Create MasterObject ONLY IF moduleId exists
-      if (validatedData.moduleId) {
-        const masterObject = await tx.masterObject.create({
+    /* =====================================================
+     2️⃣ DUPLICATE PREFIX CHECK
+  ===================================================== */
+    const prefixExists = await prisma.masterObject.findFirst({
+      where: { codePrefix },
+    });
+
+    if (prefixExists) {
+      throw new BadRequestException(
+        `Code prefix "${codePrefix}" is already in use.`
+      );
+    }
+
+    /* =====================================================
+     3️⃣ TRANSACTION
+  ===================================================== */
+    try {
+      return await prisma.$transaction(async (tx) => {
+        let masterObjectId: string | null = null;
+
+        /* ================= MASTER OBJECT ================= */
+        if (validatedData.moduleId) {
+          const masterObject = await tx.masterObject.create({
+            data: {
+              name: validatedData.name,
+              key: resourceKey,
+              codePrefix, // ✅ REQUIRED
+              isActive: true,
+              isSystem: false,
+            },
+          });
+
+          masterObjectId = masterObject.id;
+
+          /* ================= COUNTER INIT ================= */
+          await tx.masterObjectCounter.create({
+            data: {
+              masterObjectId,
+              lastNumber: 0,
+            },
+          });
+        }
+
+        /* ================= RESOURCE ================= */
+        const resource = await tx.resource.create({
           data: {
             name: validatedData.name,
-            key,
+            key: resourceKey,
+            codePrefix, // ✅ 🔥 THIS WAS MISSING
+            description: validatedData.description ?? null,
+            isActive: validatedData.isActive ?? true,
+            isSystem: validatedData.isSystem ?? false,
+
+            ...(validatedData.moduleId
+              ? { module: { connect: { id: validatedData.moduleId } } }
+              : {}),
+
+            ...(masterObjectId
+              ? { masterObject: { connect: { id: masterObjectId } } }
+              : {}),
           },
         });
 
-        masterObjectId = masterObject.id;
-      }
+        /* ================= AUDIT LOG ================= */
+        await tx.auditLog.create({
+          data: {
+            userId: meta?.actorId ?? null,
+            entity: AuditEntity.RESOURCE,
+            action: AuditAction.CREATE,
+            comment: `Resource "${resource.name}" created`,
+            after: resource,
+            ipAddress: meta?.ipAddress ?? null,
+            userAgent: meta?.userAgent ?? null,
+            performedBy: meta?.performedBy ?? PerformedByType.USER,
+          },
+        });
 
-      // ⭐ Prepare ResourceCreateInput safely
-      const toCreate: Prisma.ResourceCreateInput = {
-        name: validatedData.name,
-        key,
-        description: validatedData.description ?? null,
-        isActive: validatedData.isActive ?? true,
-        isSystem: validatedData.isSystem ?? false,
-      };
-
-      // Add module only if provided
-      if (validatedData.moduleId) {
-        toCreate.module = { connect: { id: validatedData.moduleId } };
-      }
-
-      // Add masterObject only if created
-      if (masterObjectId) {
-        toCreate.masterObject = { connect: { id: masterObjectId } };
-      }
-
-      const createdResource = await tx.resource.create({
-        data: toCreate,
+        return resource;
       });
+    } catch (err: any) {
+      if (err?.code === "P2002") {
+        const target = err?.meta?.target ?? [];
 
-      // ⭐ Audit log
-      await tx.auditLog.create({
-        data: {
-          userId: meta?.actorId ?? null,
-          entity: AuditEntity.RESOURCE,
-          action: AuditAction.CREATE,
-          comment: "Resource created",
-          after: createdResource,
-          ipAddress: meta?.ipAddress ?? null,
-          userAgent: meta?.userAgent ?? null,
-          performedBy: meta?.performedBy ?? PerformedByType.USER,
-        },
-      });
+        if (target.includes("key")) {
+          throw new BadRequestException(
+            `Resource key "${resourceKey}" already exists.`
+          );
+        }
 
-      return createdResource;
-    });
-
-    return resource;
-  } catch (err: any) {
-    if (err?.code === "P2002") {
-      const target = err?.meta?.target ?? [];
-      if (target.includes("key")) {
-        throw new BadRequestException(
-          `Resource key "${key}" already exists.`
-        );
+        if (target.includes("codePrefix")) {
+          throw new BadRequestException(
+            `Code prefix "${codePrefix}" already exists.`
+          );
+        }
       }
-      if (target.includes("name")) {
-        throw new BadRequestException("Resource name already exists.");
-      }
+
+      throw err;
     }
-    throw err;
-  }
-},
+  },
 
   getResources: async (options?: Partial<ResourceFilterInput>) => {
     const filters = resourceFilterSchema.parse(options || {});
@@ -681,6 +803,68 @@ const actionsService = {
 
     return result;
   },
+
+  getResourceFields: async (
+    resourceKey: string
+  ): Promise<ResourceFieldsResponse> => {
+    const resource = await resourcesRepository.findResourceWithActiveSchema(
+      resourceKey
+    );
+
+    if (!resource || !resource.masterObject) {
+      throw new Error("Resource not found");
+    }
+
+    const schema = resource.masterObject.schemas?.[0];
+    if (!schema) {
+      throw new Error("No published schema found");
+    }
+
+    const fields = schema.fieldDefinitions
+      .filter((f) => f.isActive && !f.isSystem)
+      .map((f) => {
+        const mappedType = mapSchemaDataTypeToResourceType(f.dataType);
+        if (!mappedType) return null;
+
+        return {
+          key: f.key,
+          label: f.label,
+          dataType: mappedType,
+          fieldType: f.fieldType,
+          isReference: !!f.fieldReference,
+        };
+      })
+      .filter(Boolean) as ResourceFieldDTO[];
+
+    return {
+      resourceId: resource.id,
+      resourceKey: resource.key,
+      resourceName: resource.name,
+      fields,
+    };
+  },
 };
 
+/* ======================================================
+   HELPERS (PURE FUNCTIONS)
+====================================================== */
+
 export default actionsService;
+
+function mapSchemaDataTypeToResourceType(
+  type: FieldDataType
+): ResourceFieldType | null {
+  switch (type) {
+    case "STRING":
+    case "NUMBER":
+    case "BOOLEAN":
+    case "DATE":
+    case "DATETIME":
+      return type;
+
+    case "ARRAY":
+    case "JSON":
+    default:
+      return null; // ❗ explicitly NOT exposable
+  }
+}

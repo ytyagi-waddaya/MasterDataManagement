@@ -20,14 +20,23 @@ const descriptionSchema = z
 export const createResourceSchema = z
   .object({
     name: nameSchema,
-    description: descriptionSchema,
+    description: descriptionSchema.optional(),
+
     isActive: z.boolean().optional().default(true),
     isSystem: z.boolean().optional().default(false),
+    codePrefix: z
+      .string()
+      .trim()
+      .transform((v) => v.toUpperCase())
+      .refine(
+        (v) => /^[A-Z]{2,6}$/.test(v),
+        "codePrefix must be 2–6 uppercase letters (e.g. INC, ITEM)"
+      ),
     moduleId: z
       .string()
       .uuid()
       .optional()
-      .or(z.literal("")) 
+      .or(z.literal(""))
       .transform((val) => (val === "" ? undefined : val)),
   })
   .strict();
@@ -107,3 +116,28 @@ export type ResourceId = z.infer<typeof resourceIdSchema>;
 export type ResourceIds = z.infer<typeof resourceIdsSchema>;
 export type ResourceFilterInput = z.infer<typeof resourceFilterSchema>;
 export type SortColumn = (typeof allowedSortColumns)[number];
+
+export type ResourceFieldType =
+  | "STRING"
+  | "NUMBER"
+  | "BOOLEAN"
+  | "DATE"
+  | "DATETIME"
+  | "JSON"
+  | "ARRAY_STRING"
+  | "ARRAY_NUMBER";
+
+export interface ResourceFieldDTO {
+  key: string;
+  label: string;
+  dataType: "STRING" | "NUMBER" | "BOOLEAN" | "DATE" | "DATETIME";
+  fieldType: string;
+  isReference?: boolean;
+}
+
+export interface ResourceFieldsResponse {
+  resourceId: string;
+  resourceKey: string;
+  resourceName: string;
+  fields: ResourceFieldDTO[];
+}

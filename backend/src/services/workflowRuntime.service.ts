@@ -5,6 +5,7 @@ import {
   TransitionType,
   ApprovalStatus,
   ApprovalStrategy,
+  Prisma,
 } from "../../prisma/generated/client.js";
 
 import {
@@ -50,6 +51,24 @@ class WorkflowRuntimeService {
     meta: ActorMeta
   ) {
     return prisma.$transaction(async (tx) => {
+      const existing = await tx.workflowInstance.findFirst({
+        where: {
+          workflowId,
+          resourceId: payload.resourceId,
+          status: {
+            notIn: [
+              WorkflowInstanceStatus.CANCELLED,
+              WorkflowInstanceStatus.COMPLETED,
+            ],
+          },
+        },
+      });
+
+      if (existing) {
+        throw new BadRequestException(
+          "Workflow already started for this record"
+        );
+      }
       const workflow = await tx.workflowDefinition.findUnique({
         where: { id: workflowId },
         include: { stages: true },
@@ -129,39 +148,108 @@ class WorkflowRuntimeService {
         throw new BadRequestException("Workflow has no current stage");
       }
 
-      const transition = instance.workflow.transitions.find(
-        (t) => t.id === input.transitionId
-      );
-
-      if (!transition) {
-        throw new BadRequestException("Invalid transition");
+      /* ======================================================
+       LOCK INSTANCE
+    ====================================================== */
+      if (instance.lockedAt) {
+        throw new BadRequestException("Workflow instance is currently locked");
       }
 
-      if (transition.fromStageId !== instance.currentStageId) {
-        throw new BadRequestException("Transition not allowed from this stage");
-      }
+      await tx.workflowInstance.update({
+        where: { id: instance.id },
+        data: {
+          lockedAt: new Date(),
+          lockedBy: userId,
+        },
+      });
 
-      await enforceTransitionPermission(userId, instance, transition, tx);
+      try {
+        const transition = instance.workflow.transitions.find(
+          (t) => t.id === input.transitionId
+        );
 
-      /* ---------- APPROVAL ---------- */
-      if (transition.transitionType === TransitionType.APPROVAL) {
-        if (input.action === "APPROVE") {
-          return this.resolveApproval(instance, transition, true, meta);
+        if (!transition) {
+          throw new BadRequestException("Invalid transition");
         }
-        if (input.action === "REJECT") {
-          return this.resolveApproval(instance, transition, false, meta);
+
+        if (transition.fromStageId !== instance.currentStageId) {
+          throw new BadRequestException(
+            "Transition not allowed from this stage"
+          );
         }
-        throw new BadRequestException("Invalid approval action");
-      }
 
-      /* ---------- SEND BACK ---------- */
-      if (transition.transitionType === TransitionType.SEND_BACK) {
-        return sendBack(tx, instance, transition, meta, input.comment);
-      }
+        await enforceTransitionPermission(userId, instance, transition, tx);
 
-      /* ---------- NORMAL / REVIEW ---------- */
-      await moveToStage(tx, instance, transition, meta, input.comment);
-      return { status: "MOVED" };
+        /* ---------- APPROVAL ---------- */
+        if (transition.transitionType === TransitionType.APPROVAL) {
+          if (input.action === "APPROVE") {
+            return await this.resolveApproval(instance, transition, true, meta);
+          }
+
+          if (input.action === "REJECT") {
+            return await this.resolveApproval(
+              instance,
+              transition,
+              false,
+              meta
+            );
+          }
+
+          throw new BadRequestException("Invalid approval action");
+        }
+
+        /* ---------- SEND BACK ---------- */
+        if (transition.transitionType === TransitionType.SEND_BACK) {
+          return await sendBack(tx, instance, transition, meta, input.comment);
+        }
+
+        /* ======================================================
+         ✅ NULL-SAFE CURRENT STAGE
+      ====================================================== */
+        const fromStage = instance.currentStage;
+        if (!fromStage) {
+          throw new BadRequestException("Workflow has no current stage");
+        }
+
+        const toStage = await tx.workflowStage.findUnique({
+          where: { id: transition.toStageId },
+        });
+
+        if (!toStage) {
+          throw new BadRequestException("Target stage not found");
+        }
+
+        /* ------------------------------------
+         CATEGORY CONSTRAINT CHECK
+      ------------------------------------ */
+        if (
+          fromStage.allowedNextCategories?.length &&
+          !fromStage.allowedNextCategories.includes(toStage.category)
+        ) {
+          throw new BadRequestException(
+            `Cannot move from ${fromStage.category} to ${toStage.category}`
+          );
+        }
+
+        /* ---------- NORMAL / REVIEW ---------- */
+        await moveToStage(tx, instance, transition, meta, input.comment);
+
+        /* ---------- AUTO TRANSITIONS ---------- */
+        await runAutoTransitions(tx, instance.id);
+
+        return { status: "MOVED" };
+      } finally {
+        /* ======================================================
+         UNLOCK INSTANCE (ALWAYS)
+      ====================================================== */
+        await tx.workflowInstance.update({
+          where: { id: instance.id },
+          data: {
+            lockedAt: null,
+            lockedBy: null,
+          },
+        });
+      }
     });
   }
 
@@ -388,6 +476,35 @@ async function moveToStage(
       notes: comment ?? null,
     },
   });
+}
+
+async function runAutoTransitions(
+  tx: Prisma.TransactionClient,
+  instanceId: string
+) {
+  while (true) {
+    const instance = await tx.workflowInstance.findUnique({
+      where: { id: instanceId },
+      include: {
+        currentStage: {
+          include: { outgoingTransitions: true },
+        },
+      },
+    });
+
+    const auto = instance?.currentStage?.outgoingTransitions.find(
+      (t) => t.transitionType === "AUTO"
+    );
+
+    if (!auto) break;
+
+    await moveToStage(tx, instance, auto, {
+      actorId: null,
+      performedBy: "SYSTEM",
+      ipAddress: null,
+      userAgent: null,
+    });
+  }
 }
 
 export default new WorkflowRuntimeService();

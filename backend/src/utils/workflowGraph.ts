@@ -59,10 +59,7 @@ export const validateWorkflowGraph = async (
 
   for (const t of transitions) {
     // REVIEW self-loop → ignore
-    if (
-      t.transitionType === "REVIEW" &&
-      t.fromStageId === t.toStageId
-    ) {
+    if (t.transitionType === "REVIEW" && t.fromStageId === t.toStageId) {
       continue;
     }
 
@@ -78,9 +75,7 @@ export const validateWorkflowGraph = async (
 
     const edges = graph.get(t.fromStageId);
     if (!edges) {
-      throw new BadRequestException(
-        `Invalid fromStageId: ${t.fromStageId}`
-      );
+      throw new BadRequestException(`Invalid fromStageId: ${t.fromStageId}`);
     }
 
     edges.push(t.toStageId);
@@ -133,19 +128,38 @@ export const validateWorkflowGraph = async (
   }
 
   /* ---------- DEAD-END (NON-FINAL STAGES) ---------- */
-  for (const stage of stages) {
-    if (!stage.isFinal) {
+  // for (const stage of stages) {
+  //   if (!stage.isFinal) {
+  //     const outgoing = transitions.filter(
+  //       (t) =>
+  //         t.fromStageId === stage.id &&
+  //         t.transitionType !== "SEND_BACK" &&
+  //         t.transitionType !== "REVIEW" &&
+  //         t.transitionType !== "AUTO"
+  //     );
+
+  //     if (!outgoing.length) {
+  //       throw new BadRequestException(
+  //         `Stage "${stage.name}" has no outgoing transitions`
+  //       );
+  //     }
+  //   }
+  // }
+
+  /* ---------- DEAD-END (NON-FINAL STAGES) ---------- */
+  for (const currentStage of stages) {
+    if (!currentStage.isFinal) {
       const outgoing = transitions.filter(
         (t) =>
-          t.fromStageId === stage.id &&
-          t.transitionType !== "SEND_BACK" &&
+          t.fromStageId === currentStage.id &&
           t.transitionType !== "REVIEW" &&
           t.transitionType !== "AUTO"
+        // SEND_BACK IS COUNTED as exit (industry grade)
       );
 
       if (!outgoing.length) {
         throw new BadRequestException(
-          `Stage "${stage.name}" has no outgoing transitions`
+          `Stage "${currentStage.name}" has no outgoing transitions`
         );
       }
     }

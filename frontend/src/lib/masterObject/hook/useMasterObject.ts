@@ -83,10 +83,14 @@ export function useMasterObjectForEditor(masterObjectId: string) {
   return useQuery({
     queryKey: ["masterObject", "editor", masterObjectId],
     enabled: !!masterObjectId,
+
     queryFn: async () => {
       const masterObject = await fetchMasterObject(masterObjectId);
 
-      const latestSchema = masterObject.schemas?.[0] ?? null;
+      const latestSchema =
+        masterObject.schemas
+          ?.slice()
+          .sort((a: any, b: any) => b.version - a.version)[0] ?? null;
 
       return {
         ...masterObject,
@@ -110,14 +114,21 @@ export function useMasterObjectForRuntime(masterObjectId: string) {
         (s: any) => s.status === "PUBLISHED"
       );
 
+      const latestSchema =
+        publishedSchema ??
+        masterObject.schemas?.[0] ??
+        null;
+
       return {
         ...masterObject,
-        activeSchema: publishedSchema ?? null,
-        isRunnable: Boolean(publishedSchema),
+        activeSchema: latestSchema, // ✅ draft OR published
+        isRunnable: Boolean(publishedSchema), // ✅ only published can submit
+        isDraft: latestSchema?.status === "DRAFT",
       };
     },
   });
 }
+
 
 export function useUpdateMasterObject() {
   const queryClient = useQueryClient();
@@ -130,13 +141,26 @@ export function useUpdateMasterObject() {
       masterObjectId: string;
       payload: UpdateMasterObjectInput;
     }) => {
-      console.log("MasterobjectId:", masterObjectId);
-      console.log("Payload Object:", payload);
+      /* =====================================================
+         🚨 FRONTEND CONTRACT GUARD (MANDATORY)
+      ===================================================== */
+      if (payload.schema && !payload.fieldConfig) {
+        throw new Error(
+          "Invalid payload: fieldConfig is required when schema is provided"
+        );
+      }
+
+      if (payload.publish && (!payload.schema || !payload.fieldConfig)) {
+        throw new Error(
+          "Invalid payload: schema and fieldConfig are required when publishing"
+        );
+      }
 
       const res = await apiClient.put(
         `/master-object/${masterObjectId}`,
         payload
       );
+
       return res.data;
     },
 
@@ -156,8 +180,28 @@ export function useUpdateMasterObject() {
 
     onError: (err: any) => {
       toast.error(
-        err?.response?.data?.message || "Failed to update Master Object"
+        err?.message ||
+          err?.response?.data?.message ||
+          "Failed to update Master Object"
       );
+    },
+  });
+}
+
+export function useSubmitMasterObjectRecord() {
+  return useMutation({
+    mutationFn: async ({
+      masterObjectId,
+      values,
+    }: {
+      masterObjectId: string;
+      values: Record<string, any>;
+    }) => {
+      const res = await apiClient.post(
+        `/master-object/${masterObjectId}`,
+        values
+      );
+      return res.data;
     },
   });
 }
@@ -263,110 +307,25 @@ export function useCreateMasterObject() {
   });
 }
 
+
+export function useDuplicateMasterObject() {
+  return useMutation({
+    mutationFn: async (masterObjectId: string) => {
+      const res = await apiClient.post(
+        `/master-object/${masterObjectId}/duplicate`
+      );
+      return res.data.data;
+    },
+  });
+}
 // Base fetch (internal)
 async function fetchMasterObject(masterObjectId: string) {
   const res = await apiClient.get(`/master-object/${masterObjectId}`);
+  console.log("MASTERDATA:", res);
+
   return res.data.data.masterObject;
 }
 
-/**
- * OPTIONAL: FETCH LIST (if needed later)
- * ------------------------------------------------------------------
- */
-// export function useMasterObjects() {
-//   return useQuery({
-//     queryKey: ["masterObjects"],
-//     queryFn: async () => {
-//       const res = await apiClient.get(`/master-object`, {
-//         params: { skip: 0, take: 100 },
-//       });
 
-//       return res.data.data.masterObjects ?? [];
-//     },
-//   });
-// }
 
-// export function useMasterObjects<T = any>({
-//   page,
-//   limit,
-//   search,
-//   filters = {},
-//   sortBy,
-//   sortOrder = "desc",
-// }: {
-//   page: number;
-//   limit: number;
-//   search: string;
-//   filters?: MasterObjectFilters;
-//   sortBy?: string;
-//   sortOrder?: "asc" | "desc";
-// }) {
-//   const debouncedSearch = useDebounce(search, 500);
 
-//   // Make filters stable as a string (important!)
-//   const stableFilters = useMemo(() => JSON.stringify(filters), [filters]);
-
-//   return useQuery<{
-//     masterObjects: {
-//       data: T[];
-//       total: number;
-//       page: number;
-//       pageSize: number;
-//     };
-//   }>({
-//     queryKey: [
-//       "masterObjects",
-//       page,
-//       limit,
-//       debouncedSearch,
-//       stableFilters,
-//       sortBy,
-//       sortOrder,
-//     ],
-
-//     queryFn: async () => {
-//       const skip = (page - 1) * limit;
-
-//       const params = {
-//         search: debouncedSearch || undefined,
-//         skip,
-//         take: limit,
-//         sortBy,
-//         sortOrder,
-//         // serialize AFTER memo so it stays stable
-//         ...serializeFiltersForApi(JSON.parse(stableFilters)),
-//       };
-
-//       const res = await apiClient.get("/master-object", { params });
-
-//       const m = res.data?.data?.masterObjects ?? {};
-// console.log("MasterObject:", m);
-
-//       return {
-//         masterObjects: {
-//           data: m.data ?? [],
-//           total: m.total ?? 0,
-//           page: m.page ?? page,
-//           pageSize: m.pageSize ?? limit,
-//         },
-//       };
-//     },
-
-//     placeholderData: (old) => old,
-//   });
-// }
-
-// export function useMasterObject(masterObjectId: string) {
-//   return useQuery({
-//     queryKey: ["masterObject", masterObjectId],
-//     queryFn: async () => {
-//       const res = await apiClient.get(`/master-object/${masterObjectId}`);
-//       return res.data.data.masterObject;
-//     },
-//     enabled: !!masterObjectId,
-//   });
-// }
-
-// if (!data?.isRunnable) {
-//   return <EmptyState message="Schema not published yet" />;
-// }

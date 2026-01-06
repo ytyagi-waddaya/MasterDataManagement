@@ -71,6 +71,7 @@ export const ModelName = {
   FieldReference: 'FieldReference',
   FieldConditionBinding: 'FieldConditionBinding',
   MasterRecord: 'MasterRecord',
+  MasterObjectCounter: 'MasterObjectCounter',
   RecordFieldHistory: 'RecordFieldHistory',
   RecordFieldIndex: 'RecordFieldIndex',
   SchemaChange: 'SchemaChange',
@@ -199,6 +200,7 @@ export const ResourceScalarFieldEnum = {
   id: 'id',
   name: 'name',
   key: 'key',
+  codePrefix: 'codePrefix',
   category: 'category',
   description: 'description',
   isActive: 'isActive',
@@ -284,6 +286,7 @@ export const MasterObjectScalarFieldEnum = {
   id: 'id',
   name: 'name',
   key: 'key',
+  codePrefix: 'codePrefix',
   isActive: 'isActive',
   isSystem: 'isSystem',
   createdAt: 'createdAt',
@@ -404,6 +407,7 @@ export type FieldConditionBindingScalarFieldEnum = (typeof FieldConditionBinding
 
 export const MasterRecordScalarFieldEnum = {
   id: 'id',
+  code: 'code',
   masterObjectId: 'masterObjectId',
   data: 'data',
   currentStageId: 'currentStageId',
@@ -417,6 +421,14 @@ export const MasterRecordScalarFieldEnum = {
 } as const
 
 export type MasterRecordScalarFieldEnum = (typeof MasterRecordScalarFieldEnum)[keyof typeof MasterRecordScalarFieldEnum]
+
+
+export const MasterObjectCounterScalarFieldEnum = {
+  masterObjectId: 'masterObjectId',
+  lastNumber: 'lastNumber'
+} as const
+
+export type MasterObjectCounterScalarFieldEnum = (typeof MasterObjectCounterScalarFieldEnum)[keyof typeof MasterObjectCounterScalarFieldEnum]
 
 
 export const RecordFieldHistoryScalarFieldEnum = {

@@ -84,11 +84,12 @@ export interface FieldUI {
 
 export type ValidationRuleType =
   | "REQUIRED"
-  | "RANGE"
   | "MIN"
   | "MAX"
   | "REGEX"
-  | "REQUIRED_IF";
+  | "BETWEEN"
+  | "EMAIL"
+  | "CUSTOM";
 
 export interface FieldValidationRule {
   type: ValidationRuleType;
@@ -98,24 +99,27 @@ export interface FieldValidationRule {
 }
 
 export interface FieldValidation {
-  required?: boolean;
   rules?: FieldValidationRule[];
 }
 
 /* ================= VISIBILITY ================= */
 
-export interface VisibilityCondition {
-  field: string;
-  operator: "EQUALS" | "IN" | "GT" | "LT";
-  value: any;
-}
+export type VisibilityRule =
+  | {
+      type: "CONDITION";
+      condition: any;
+    }
+  | {
+      type: "EXPRESSION";
+      expression: {
+        expression: string;
+        dependencies?: string[];
+      };
+    };
 
 export interface FieldVisibility {
-  visible?: boolean;
-  conditions?: VisibilityCondition[];
+  rule?: VisibilityRule;
 }
-
-/* ================= PERMISSIONS ================= */
 
 export interface PermissionCondition {
   field: string;
@@ -135,18 +139,13 @@ export interface FieldPermissions {
 
 /* ================= BEHAVIOR ================= */
 
-export interface FieldFormula {
-  expression: string;
-  dependencies: string[];
-  mode?: "SYSTEM_RECALC" | "ON_CHANGE";
-}
-
 export interface FieldBehavior {
-  formula?: FieldFormula;
   readOnly?: boolean;
-  lockWhen?: {
-    field: string;
-    equals: any;
+
+  formula?: {
+    expression: string;
+    dependencies: string[];
+    mode?: "SYSTEM_RECALC" | "ON_CHANGE";
   };
 }
 
@@ -167,7 +166,7 @@ export interface ApiSourceConfig {
   valueField: string;
   labelField: string;
 
-  dependsOn?: string[]; // ["state", "department"]
+  dependsOn?: string[];
   params?: Record<string, string | number | boolean>;
 
   cache?: boolean;

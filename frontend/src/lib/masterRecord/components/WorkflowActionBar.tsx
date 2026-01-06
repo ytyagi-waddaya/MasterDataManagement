@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { api } from "@/lib/api";
-import { useWorkflowActions } from "@/lib/workflow/hooks";
+import apiClient from "@/lib/api/apiClient";
+import { useWorkflowInstanceAction } from "@/lib/workflow/hooks/useWorkflow";
 
 export function WorkflowActionBar({
   record,
@@ -10,11 +10,13 @@ export function WorkflowActionBar({
   record: any;
   onCompleted: () => void;
 }) {
-  const { actions } = useWorkflowActions(record.workflowInstanceId);
+  const { actions } = useWorkflowInstanceAction(record.workflowInstanceId);
 
+  console.log("RECORD:", record);
+  
   // Send for approval
   async function handleSendForApproval() {
-    await api.post(`/workflows/${record.workflowId}/instance`, {
+    await apiClient.post(`/workflows/${record.workflowId}/instance`, {
       resourceType: "MASTER_RECORD",
       resourceId: record.id,
     });
@@ -39,7 +41,7 @@ export function WorkflowActionBar({
         <Button
           key={action.transitionId}
           onClick={() =>
-            api.post(`/workflow/instance/${record.workflowInstanceId}/transition`, {
+            apiClient.post(`/workflow/instance/${record.workflowInstanceId}/transition`, {
               transitionId: action.transitionId,
               action: action.actions[0], // APPROVE / EXECUTE
             }).then(onCompleted)

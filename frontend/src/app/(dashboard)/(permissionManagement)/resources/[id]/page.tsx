@@ -1,219 +1,7 @@
-// "use client";
-
-// import { useMemo, useState, useEffect } from "react";
-// import { useParams } from "next/navigation";
-
-// import { DataTable } from "@/components/table/data-table";
-// import { Checkbox } from "@/components/ui/checkbox";
-
-// import { useDispatch, useSelector } from "react-redux";
-// import { setTotal } from "@/store/dataTableSlice";
-// import { RootState } from "@/store";
-
-// import { useResource } from "@/lib/resource/hook/useResource";
-// import { useCreateRecord, useRecords } from "@/lib/masterRecord/hooks";
-
-// import { CreateButton } from "@/components/table/create-button";
-// import { RecordActions } from "@/components/RecordActions";
-
-// import { FormPreviewTabs } from "@/components/field-builder/preview/FormPreviewTabs";
-// import { fromBackendSchema } from "@/components/field-builder/types/fromBackendSchema";
-
-// import { CellContext, ColumnDef } from "@tanstack/react-table";
-
-// /* --------------------------------------------------
-//    Generate Dynamic Table Columns
-// -------------------------------------------------- */
-// function generateColumns(fields: any[], workflowId?: string): ColumnDef<any>[] {
-//   const dynamicColumns: ColumnDef<any>[] = fields
-//     .filter((f) => f.showInList === true)
-//     .map((field) => ({
-//       accessorKey: field.key,
-//       header: field.label,
-//       cell: ({ row }: CellContext<any, unknown>) =>
-//         row.original?.data?.[field.key] ?? "-",
-//     }));
-
-//   return [
-//     {
-//       id: "select",
-//       header: ({ table }) => (
-//         <Checkbox
-//           checked={table.getIsAllRowsSelected()}
-//           onCheckedChange={(v) => table.toggleAllRowsSelected(!!v)}
-//         />
-//       ),
-//       cell: ({ row }: CellContext<any, unknown>) => (
-//         <Checkbox
-//           checked={row.getIsSelected()}
-//           onCheckedChange={() => row.toggleSelected()}
-//         />
-//       ),
-//       enableSorting: false,
-//       enableHiding: false,
-//     },
-
-//     ...dynamicColumns,
-
-//     {
-//       id: "status",
-//       header: "Status",
-//       accessorKey: "status",
-//       cell: ({ row }) => row.original?.status ?? "-",
-//     },
-
-//     {
-//       id: "actions",
-//       header: "Actions",
-//       cell: ({ row }) => {
-//         const wfId =
-//           row.original?.masterObject?.resources?.[0]?.workflows?.[0]?.id ??
-//           null;
-
-//         return <RecordActions record={row.original} workflowId={wfId} />;
-//       },
-//     },
-//   ];
-// }
-
-// /* --------------------------------------------------
-//    PAGE
-// -------------------------------------------------- */
-// export default function ResourceRecordsPage() {
-//   const params = useParams();
-//   const resourceId = params.id as string;
-
-//   const dispatch = useDispatch();
-//   const { page, pageSize, search, sorting, filters } = useSelector(
-//     (s: RootState) => s.dataTable
-//   );
-
-//   const sortColumn = sorting?.[0]?.id;
-//   const sortOrder = sorting?.[0]?.desc ? "desc" : "asc";
-
-//   /* ---------------- Fetch resource ---------------- */
-//   const { data: resourceData, isLoading: loadingResource } =
-//     useResource(resourceId);
-
-//   const masterObject = resourceData?.masterObject ?? null;
-
-//   /* ---------------- Resolve schema ---------------- */
-//   const schema =
-//     masterObject?.schemas?.find((s: any) => s.status === "PUBLISHED") ??
-//     masterObject?.schemas?.[0];
-
-//   const sections = schema?.layout ? fromBackendSchema(schema.layout) : [];
-
-//   /* ---------------- Extract list fields ---------------- */
-//   const listFields = useMemo(() => {
-//     return sections.flatMap((section) =>
-//       section.fields.map((f: any) => ({
-//         ...f,
-//         showInList: Boolean(f.showInList),
-//       }))
-//     );
-//   }, [sections]);
-
-//   /* ---------------- Fetch records ---------------- */
-//   const { data, isLoading } = useRecords({
-//     masterObjectId: masterObject?.id,
-//     page,
-//     limit: pageSize,
-//     search,
-//     filters,
-//     sortBy: sortColumn,
-//     sortOrder,
-//   });
-
-//   useEffect(() => {
-//     if (data?.total !== undefined) {
-//       dispatch(setTotal(data.total));
-//     }
-//   }, [data?.total, dispatch]);
-
-//   const columns = useMemo(
-//     () => generateColumns(listFields, masterObject?.workflowId),
-//     [listFields]
-//   );
-
-//   /* ---------------- Create record ---------------- */
-//   const createRecord = useCreateRecord();
-//   const [formData, setFormData] = useState<Record<string, any>>({});
-
-//   const handleSubmit = (close: () => void) => {
-//     if (!masterObject?.id) return;
-
-//     createRecord.mutate(
-//       {
-//         masterObjectId: masterObject.id,
-//         data: formData,
-//       },
-//       {
-//         onSuccess: () => {
-//           setFormData({});
-//           close();
-//         },
-//       }
-//     );
-//   };
-
-//   const tableFilters = [
-//     {
-//       type: "date",
-//       columnId: "createdAt",
-//       title: "Created Date",
-//     },
-//   ];
-//   if (loadingResource) return <div>Loading resource...</div>;
-//   if (!masterObject)
-//     return <div>No master object found.</div>;
-
-//   return (
-//     <div className="p-6">
-//       <h2 className="text-2xl font-semibold mb-4">
-//         {resourceData?.name} Records
-//       </h2>
-
-//       <DataTable
-//         columns={columns}
-//         data={data?.data ?? []}
-//         total={data?.total ?? 0}
-//         loading={isLoading}
-//         page={page}
-//         pageSize={pageSize}
-//         sorting={sorting}
-//         search={search}
-//         filters={tableFilters}
-//         createButton={
-//           <CreateButton
-//             triggerText="Create Record"
-//             title={`New ${resourceData?.name}`}
-//             onSubmit={handleSubmit}
-//             onOpenReset={() => setFormData({})}
-//           >
-//             {() => (
-//               <FormPreviewTabs
-//                 sections={sections}
-//                 values={formData}
-//                 onChange={(key, value) =>
-//                   setFormData((prev) => ({
-//                     ...prev,
-//                     [key]: value,
-//                   }))
-//                 }
-//               />
-//             )}
-//           </CreateButton>
-//         }
-//       />
-//     </div>
-//   );
-// }
-
 "use client";
 
 import { useMemo, useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 import { DataTable } from "@/components/table/data-table";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -228,25 +16,20 @@ import { useCreateRecord, useRecords } from "@/lib/masterRecord/hooks";
 import { CreateButton } from "@/components/table/create-button";
 import { RecordActions } from "@/components/RecordActions";
 
-
 import { CellContext, ColumnDef } from "@tanstack/react-table";
 import { useMasterObjectForRuntime } from "@/lib/masterObject/hook";
-import { RuntimeForm } from "@/components/field-builder/form-renderer/RuntimeForm";
-import { toRuntimeField } from "@/components/field-builder/runtime/runtimeField";
+import { FormRuntimePreview } from "@/components/field-builder-drag-drop/runtime/FormRuntimePreview";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 /* --------------------------------------------------
    Generate Dynamic Table Columns
 -------------------------------------------------- */
-function generateColumns(fields: any[], workflowId?: string): ColumnDef<any>[] {
-  const dynamicColumns: ColumnDef<any>[] = fields
-    .filter((f) => f.showInList === true)
-    .map((field) => ({
-      accessorKey: field.key,
-      header: field.label,
-      cell: ({ row }: CellContext<any, unknown>) =>
-        row.original?.data?.[field.key] ?? "-",
-    }));
-
+function generateColumns(fields: any[], resourceId:string): ColumnDef<any>[] {
   return [
     {
       id: "select",
@@ -256,7 +39,7 @@ function generateColumns(fields: any[], workflowId?: string): ColumnDef<any>[] {
           onCheckedChange={(v) => table.toggleAllRowsSelected(!!v)}
         />
       ),
-      cell: ({ row }: CellContext<any, unknown>) => (
+      cell: ({ row }) => (
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={() => row.toggleSelected()}
@@ -266,13 +49,18 @@ function generateColumns(fields: any[], workflowId?: string): ColumnDef<any>[] {
       enableHiding: false,
     },
 
-    ...dynamicColumns,
+    // ...fields.map((field) => ({
+    //   accessorKey: field.key,
+    //   header: field.label,
+    //   cell: ({ row }: CellContext<any, unknown>) =>
+    //     row.original?.data?.[field.key] ?? "-",
+    // })),
 
     {
-      id: "status",
-      header: "Status",
-      accessorKey: "status",
-      cell: ({ row }) => row.original?.status ?? "-",
+      accessorKey: "code",
+      header: "code",
+      enableSorting: true,
+      enableHiding: false,
     },
 
     {
@@ -280,9 +68,11 @@ function generateColumns(fields: any[], workflowId?: string): ColumnDef<any>[] {
       header: "Actions",
       cell: ({ row }) => {
         const wfId =
-          row.original?.masterObject?.resources?.[0]?.workflows?.[0]?.id ?? null;
+          row.original?.masterObject?.resources?.[0]?.workflows?.[0]?.id ??
+          null;
+        const router = useRouter();
 
-        return <RecordActions record={row.original} workflowId={wfId} />;
+        return <RecordActions record={row.original} workflowId={wfId} router={router} resourceId={resourceId}/>;
       },
     },
   ];
@@ -300,9 +90,6 @@ export default function ResourceRecordsPage() {
     (s: RootState) => s.dataTable
   );
 
-  const sortColumn = sorting?.[0]?.id;
-  const sortOrder = sorting?.[0]?.desc ? "desc" : "asc";
-
   /* ---------------- Fetch resource ---------------- */
   const { data: resourceData, isLoading: loadingResource } =
     useResource(resourceId);
@@ -310,31 +97,26 @@ export default function ResourceRecordsPage() {
   const masterObject = resourceData?.masterObject ?? null;
 
   /* ---------------- Fetch runtime schema ---------------- */
-  const { data: runtimeObject } = useMasterObjectForRuntime(
-    masterObject?.id
-  );
+  const { data: runtimeObject } = useMasterObjectForRuntime(masterObject?.id);
 
-  const activeSchema = runtimeObject?.activeSchema ?? null;
+  /** ✅ ONLY PUBLISHED SCHEMA */
+  const publishedSchema = useMemo(() => {
+    if (!runtimeObject?.schemas) return null;
+    return (
+      runtimeObject.schemas.find((s: any) => s.status === "PUBLISHED") ?? null
+    );
+  }, [runtimeObject]);
 
-  /* ---------------- Runtime fields ---------------- */
+  /* ---------------- Runtime form state ---------------- */
   const [formData, setFormData] = useState<Record<string, any>>({});
 
-  const runtimeFields = useMemo(() => {
-    if (!activeSchema?.layout) return [];
-
-    return activeSchema.layout.map((fieldConfig: any) =>
-      toRuntimeField(fieldConfig, formData)
-    );
-  }, [activeSchema, formData]);
-
-  /* ---------------- Extract list fields ---------------- */
+  /* ---------------- List fields ---------------- */
   const listFields = useMemo(() => {
-    if (!activeSchema?.layout) return [];
-
-    return activeSchema.layout.filter(
-      (f: any) => f?.config?.showInList === true
+    if (!publishedSchema?.fieldDefinitions) return [];
+    return publishedSchema.fieldDefinitions.filter(
+      (f: any) => f.config?.ui?.showInList === true
     );
-  }, [activeSchema]);
+  }, [publishedSchema]);
 
   /* ---------------- Fetch records ---------------- */
   const { data, isLoading } = useRecords({
@@ -343,8 +125,8 @@ export default function ResourceRecordsPage() {
     limit: pageSize,
     search,
     filters,
-    sortBy: sortColumn,
-    sortOrder,
+    sortBy: sorting?.[0]?.id,
+    sortOrder: sorting?.[0]?.desc ? "desc" : "asc",
   });
 
   useEffect(() => {
@@ -353,22 +135,16 @@ export default function ResourceRecordsPage() {
     }
   }, [data?.total, dispatch]);
 
-  const columns = useMemo(
-    () => generateColumns(listFields),
-    [listFields]
-  );
+  const columns = useMemo(() => generateColumns(listFields, resourceId), [listFields]);
 
   /* ---------------- Create record ---------------- */
   const createRecord = useCreateRecord();
 
-  const handleSubmit = (close: () => void) => {
+  const handleSubmit = (values: Record<string, any>, close: () => void) => {
     if (!masterObject?.id) return;
 
     createRecord.mutate(
-      {
-        masterObjectId: masterObject.id,
-        data: formData,
-      },
+      { masterObjectId: masterObject.id, data: values },
       {
         onSuccess: () => {
           setFormData({});
@@ -378,23 +154,32 @@ export default function ResourceRecordsPage() {
     );
   };
 
-  const tableFilters = [
-    {
-      type: "date",
-      columnId: "createdAt",
-      title: "Created Date",
-    },
-  ];
-
+  /* ---------------- Guards ---------------- */
   if (loadingResource) return <div>Loading resource...</div>;
   if (!masterObject) return <div>No master object found.</div>;
 
+  // /** 🚫 NO PUBLISHED SCHEMA → NO FORM */
+  // if (!publishedSchema) {
+  //   return (
+  //     <div className="p-6">
+  //       <h2 className="text-2xl font-semibold mb-4">
+  //         {resourceData?.name} Records
+  //       </h2>
+
+  //       <div className="rounded-md border border-yellow-200 bg-yellow-50 p-4 text-sm text-yellow-800">
+  //         This form is not available yet.
+  //         It will appear once the schema is published.
+  //       </div>
+  //     </div>
+  //   );
+  // }
+
+  /* ---------------- Render ---------------- */
   return (
     <div className="p-6">
       <h2 className="text-2xl font-semibold mb-4">
         {resourceData?.name} Records
       </h2>
-
       <DataTable
         columns={columns}
         data={data?.data ?? []}
@@ -404,27 +189,48 @@ export default function ResourceRecordsPage() {
         pageSize={pageSize}
         sorting={sorting}
         search={search}
-        filters={tableFilters}
+        filters={[
+          {
+            type: "date",
+            columnId: "createdAt",
+            title: "Created Date",
+          },
+        ]}
         createButton={
-          <CreateButton
-            triggerText="Create Record"
-            title={`New ${resourceData?.name}`}
-            onSubmit={handleSubmit}
-            onOpenReset={() => setFormData({})}
-          >
-            {() => (
-              <RuntimeForm
-                fields={runtimeFields}
-                values={formData}
-                onChange={(key, value) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    [key]: value,
-                  }))
-                }
-              />
-            )}
-          </CreateButton>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                {/* span needed so tooltip works on disabled button */}
+                <span className="inline-block">
+                  <CreateButton
+                    triggerText="Create Record"
+                    title={`New ${resourceData?.name}`}
+                    disabled={!publishedSchema}
+                    confirmDisabled={true} // ⛔ disable confirm button
+                    size="lg"
+                  >
+                    {({ close }) => (
+                      <FormRuntimePreview
+                        sections={publishedSchema?.layout.sections ?? []}
+                        hideDebug
+                        onSubmit={(values) => {
+                          handleSubmit(values, close); // ✅ form submits directly
+                        }}
+                      />
+                    )}
+                  </CreateButton>
+                </span>
+              </TooltipTrigger>
+
+              {!publishedSchema && (
+                <TooltipContent side="bottom">
+                  <p className="text-sm">
+                    Publish a schema to enable record creation
+                  </p>
+                </TooltipContent>
+              )}
+            </Tooltip>
+          </TooltipProvider>
         }
       />
     </div>

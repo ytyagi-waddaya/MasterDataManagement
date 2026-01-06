@@ -68,6 +68,12 @@ export const resourceColumns: ColumnDef<Resource>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: "codePrefix",
+    header: "Code",
+    enableSorting: true,
+    enableHiding: false,
+  },
+  {
     accessorKey: "description",
     header: "Description",
     enableSorting: false,

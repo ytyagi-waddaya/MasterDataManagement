@@ -2,8 +2,8 @@ version: "3.8"
 
 services:
   postgres:
-    image: postgres:15-alpine
-    container_name: md_postgres
+    image: postgres:17-alpine
+    container_name: mdm_postgres
     restart: unless-stopped
     environment:
       POSTGRES_USER: "${POSTGRES_USER:-mdmpostgres}"
@@ -21,7 +21,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: md_redis
+    container_name: mdm_redis
     restart: unless-stopped
     command: >
       sh -c '

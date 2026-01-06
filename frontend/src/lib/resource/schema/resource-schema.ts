@@ -20,9 +20,18 @@ const descriptionSchema = z
 export const createResourceSchema = z
   .object({
     name: nameSchema,
+    codePrefix: z
+      .string()
+      .trim()
+      .transform((v) => v.toUpperCase())
+      .refine(
+        (v) => /^[A-Z]{2,6}$/.test(v),
+        "codePrefix must be 2–6 uppercase letters (e.g. INC, ITEM)"
+      ),
     description: descriptionSchema,
     isActive: z.boolean().optional().default(true),
     isSystem: z.boolean().optional().default(false),
+
     moduleId: z
       .string()
       .uuid()

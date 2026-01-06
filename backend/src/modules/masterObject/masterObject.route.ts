@@ -27,6 +27,7 @@ router.get(
 
 router.put(
   "/:masterObjectId",
+  requireAuth,
   validate(masterObjectIdSchema, "params"),
   validate(updateMasterObjectSchema, "body"),
   asyncHandler(masterObjectController.updateMasterObject)
@@ -50,4 +51,12 @@ router.delete(
   asyncHandler(masterObjectController.deleteMasterObject)
 );
 
+router.post(
+  "/:masterObjectId/duplicate",
+  requireAuth,
+  validate(masterObjectIdSchema, "params"),
+  asyncHandler(masterObjectController.duplicateSchema)
+);
+
 export default router;
+

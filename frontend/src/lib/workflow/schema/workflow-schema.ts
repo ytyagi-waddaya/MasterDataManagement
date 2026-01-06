@@ -495,6 +495,7 @@ export const createFullWorkflowSchema = z
         isFinal: z.boolean(),
         order: z.number().int().nonnegative(),
         category: CategoryEnum,
+        allowedNextCategories: z.array(CategoryEnum).default([]),
         color: z.string().optional(),
         metadata: zJson.optional(),
       })

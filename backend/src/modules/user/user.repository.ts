@@ -8,6 +8,7 @@ import {
   UserIds,
 } from "./dto/user.dto.js";
 import { prisma } from "../../lib/prisma.js";
+import logger from "../../utils/logger.js";
 
 const usersRepository = {
   create: (data: Prisma.UserCreateInput) => {
@@ -83,10 +84,20 @@ const usersRepository = {
   },
 
   findByOnlyEmail: ({ email }: UserEmail) => {
-    return prisma.user.findUnique({
-      where: { email: email }, // compound unique field
-      include: { roles: { include: { role: true } } },
-    });
+    try {
+      return prisma.user.findUnique({
+        where: { email: email }, // compound unique field
+        include: { roles: { include: { role: true } } },
+      });
+    } catch (err: any) {
+      if (err?.code === "P1017") {
+        logger.warn("[repo:user] prisma connection closed – retrying once");
+        return prisma.user.findUnique({
+          where: { email },
+        });
+      }
+      throw err;
+    }
   },
 
   findByEmails: (emails: string[]): Promise<UserEmail[]> =>

@@ -48,10 +48,11 @@ export default function ResourcesTable() {
   const { form, errors, touched, setValue, onBlur, validateForm, reset } =
     useZodForm(createResourceSchema, {
       name: "",
+      codePrefix: "",
       description: "",
       isActive: true,
       isSystem: false,
-      moduleId: ""
+      moduleId: "",
     });
 
   const { page, pageSize, search, sorting, filters } = useSelector(

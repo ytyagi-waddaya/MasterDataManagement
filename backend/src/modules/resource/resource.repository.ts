@@ -110,7 +110,32 @@ const resourcesRepository = {
       },
     });
   },
-};
+
+findResourceWithActiveSchema:async(resourceKey: string) => {
+  return prisma.resource.findUnique({
+    where: { key: resourceKey },
+    include: {
+      masterObject: {
+        include: {
+          schemas: {
+            where: { status: "PUBLISHED" },
+            orderBy: { version: "desc" },
+            take: 1,
+            include: {
+              fieldDefinitions: {
+                include: {
+                  fieldReference: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+},
+}
+
 
 export default resourcesRepository;
 

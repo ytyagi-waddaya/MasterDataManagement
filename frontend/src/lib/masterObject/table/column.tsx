@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import {
   Archive,
+  Copy,
   Edit,
   EllipsisVertical,
   Eye,
@@ -29,11 +30,18 @@ import {
 } from "../dialog/masterObject-actions-dialog";
 
 import { FormDialog } from "@/components/dialog/edit-dialog";
-import {UpdateMasterObjectInput} from "../schema/masterObject.schema";
+import { UpdateMasterObjectInput } from "../schema/masterObject.schema";
 
 import { EditMasterObjectForm } from "../form/edit-masterObject";
 import { MasterObject } from "./masterObjecctTable";
-import { useArchiveMasterObject, useDeleteMasterObject, useRestoreMasterObject, useUpdateMasterObject } from "../hook";
+import {
+  useArchiveMasterObject,
+  useDeleteMasterObject,
+  useRestoreMasterObject,
+  useUpdateMasterObject,
+} from "../hook";
+import { useDuplicateMasterObject } from "../hook/useMasterObject";
+import { toast } from "sonner";
 
 export const masterObjectColumns: ColumnDef<MasterObject>[] = [
   {
@@ -81,6 +89,7 @@ export const masterObjectColumns: ColumnDef<MasterObject>[] = [
       );
     },
   },
+
   {
     accessorKey: "isSystem",
     header: "System MasterObject",
@@ -108,9 +117,21 @@ export const masterObjectColumns: ColumnDef<MasterObject>[] = [
       const restoreMasterObject = useRestoreMasterObject();
       const deleteMasterObject = useDeleteMasterObject();
       const updateMasterObject = useUpdateMasterObject();
+      const duplicateMasterObject = useDuplicateMasterObject();
 
       const handleView = () => router.push(`/master-object/${masterObject.id}`);
       const handleEdit = () => setOpenEdit(true);
+      const handleDuplicate = () => {
+        duplicateMasterObject.mutate(masterObject.id, {
+          onSuccess: (data: any) => {
+            // backend should return { id: newMasterObjectId }
+            router.push(`/create-master-object/${data.id}`);
+          },
+          onError: () => {
+            toast.error("Failed to duplicate MasterObject");
+          },
+        });
+      };
 
       return (
         <>
@@ -126,15 +147,20 @@ export const masterObjectColumns: ColumnDef<MasterObject>[] = [
                 <Eye className="mr-2 w-4 h-4" /> View
               </DropdownMenuItem>
 
+              {isActive && (
+                <DropdownMenuItem onClick={handleEdit}>
+                  <Edit className="mr-2 w-4 h-4" /> Edit
+                </DropdownMenuItem>
+              )}
+
+              <DropdownMenuItem onClick={handleDuplicate}>
+                <Copy className="mr-2 w-4 h-4" /> Duplicate
+              </DropdownMenuItem>
+
               {isActive ? (
-                <>
-                  <DropdownMenuItem onClick={handleEdit}>
-                    <Edit className="mr-2 w-4 h-4" /> Edit
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setOpenArchive(true)}>
-                    <Archive className="mr-2 w-4 h-4" /> Archive
-                  </DropdownMenuItem>
-                </>
+                <DropdownMenuItem onClick={() => setOpenArchive(true)}>
+                  <Archive className="mr-2 w-4 h-4" /> Archive
+                </DropdownMenuItem>
               ) : (
                 <>
                   <DropdownMenuItem onClick={() => setOpenRestore(true)}>

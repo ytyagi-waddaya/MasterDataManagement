@@ -28,6 +28,7 @@ export type MasterObjectMinAggregateOutputType = {
   id: string | null
   name: string | null
   key: string | null
+  codePrefix: string | null
   isActive: boolean | null
   isSystem: boolean | null
   createdAt: Date | null
@@ -39,6 +40,7 @@ export type MasterObjectMaxAggregateOutputType = {
   id: string | null
   name: string | null
   key: string | null
+  codePrefix: string | null
   isActive: boolean | null
   isSystem: boolean | null
   createdAt: Date | null
@@ -50,6 +52,7 @@ export type MasterObjectCountAggregateOutputType = {
   id: number
   name: number
   key: number
+  codePrefix: number
   isActive: number
   isSystem: number
   createdAt: number
@@ -63,6 +66,7 @@ export type MasterObjectMinAggregateInputType = {
   id?: true
   name?: true
   key?: true
+  codePrefix?: true
   isActive?: true
   isSystem?: true
   createdAt?: true
@@ -74,6 +78,7 @@ export type MasterObjectMaxAggregateInputType = {
   id?: true
   name?: true
   key?: true
+  codePrefix?: true
   isActive?: true
   isSystem?: true
   createdAt?: true
@@ -85,6 +90,7 @@ export type MasterObjectCountAggregateInputType = {
   id?: true
   name?: true
   key?: true
+  codePrefix?: true
   isActive?: true
   isSystem?: true
   createdAt?: true
@@ -169,6 +175,7 @@ export type MasterObjectGroupByOutputType = {
   id: string
   name: string
   key: string
+  codePrefix: string
   isActive: boolean
   isSystem: boolean
   createdAt: Date
@@ -201,6 +208,7 @@ export type MasterObjectWhereInput = {
   id?: Prisma.StringFilter<"MasterObject"> | string
   name?: Prisma.StringFilter<"MasterObject"> | string
   key?: Prisma.StringFilter<"MasterObject"> | string
+  codePrefix?: Prisma.StringFilter<"MasterObject"> | string
   isActive?: Prisma.BoolFilter<"MasterObject"> | boolean
   isSystem?: Prisma.BoolFilter<"MasterObject"> | boolean
   createdAt?: Prisma.DateTimeFilter<"MasterObject"> | Date | string
@@ -213,12 +221,14 @@ export type MasterObjectWhereInput = {
   formEventHooks?: Prisma.FormEventHookListRelationFilter
   recordPermissions?: Prisma.RecordPermissionListRelationFilter
   fieldReferences?: Prisma.FieldReferenceListRelationFilter
+  masterObjectCounters?: Prisma.MasterObjectCounterListRelationFilter
 }
 
 export type MasterObjectOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   key?: Prisma.SortOrder
+  codePrefix?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   isSystem?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -231,6 +241,7 @@ export type MasterObjectOrderByWithRelationInput = {
   formEventHooks?: Prisma.FormEventHookOrderByRelationAggregateInput
   recordPermissions?: Prisma.RecordPermissionOrderByRelationAggregateInput
   fieldReferences?: Prisma.FieldReferenceOrderByRelationAggregateInput
+  masterObjectCounters?: Prisma.MasterObjectCounterOrderByRelationAggregateInput
 }
 
 export type MasterObjectWhereUniqueInput = Prisma.AtLeast<{
@@ -240,6 +251,7 @@ export type MasterObjectWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.MasterObjectWhereInput | Prisma.MasterObjectWhereInput[]
   OR?: Prisma.MasterObjectWhereInput[]
   NOT?: Prisma.MasterObjectWhereInput | Prisma.MasterObjectWhereInput[]
+  codePrefix?: Prisma.StringFilter<"MasterObject"> | string
   isActive?: Prisma.BoolFilter<"MasterObject"> | boolean
   isSystem?: Prisma.BoolFilter<"MasterObject"> | boolean
   createdAt?: Prisma.DateTimeFilter<"MasterObject"> | Date | string
@@ -252,12 +264,14 @@ export type MasterObjectWhereUniqueInput = Prisma.AtLeast<{
   formEventHooks?: Prisma.FormEventHookListRelationFilter
   recordPermissions?: Prisma.RecordPermissionListRelationFilter
   fieldReferences?: Prisma.FieldReferenceListRelationFilter
+  masterObjectCounters?: Prisma.MasterObjectCounterListRelationFilter
 }, "id" | "key" | "name">
 
 export type MasterObjectOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   key?: Prisma.SortOrder
+  codePrefix?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   isSystem?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -275,6 +289,7 @@ export type MasterObjectScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"MasterObject"> | string
   name?: Prisma.StringWithAggregatesFilter<"MasterObject"> | string
   key?: Prisma.StringWithAggregatesFilter<"MasterObject"> | string
+  codePrefix?: Prisma.StringWithAggregatesFilter<"MasterObject"> | string
   isActive?: Prisma.BoolWithAggregatesFilter<"MasterObject"> | boolean
   isSystem?: Prisma.BoolWithAggregatesFilter<"MasterObject"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"MasterObject"> | Date | string
@@ -286,6 +301,7 @@ export type MasterObjectCreateInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   isActive?: boolean
   isSystem?: boolean
   createdAt?: Date | string
@@ -298,12 +314,14 @@ export type MasterObjectCreateInput = {
   formEventHooks?: Prisma.FormEventHookCreateNestedManyWithoutMasterObjectInput
   recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutMasterObjectInput
   fieldReferences?: Prisma.FieldReferenceCreateNestedManyWithoutTargetObjectInput
+  masterObjectCounters?: Prisma.MasterObjectCounterCreateNestedManyWithoutMasterObjectInput
 }
 
 export type MasterObjectUncheckedCreateInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   isActive?: boolean
   isSystem?: boolean
   createdAt?: Date | string
@@ -316,12 +334,14 @@ export type MasterObjectUncheckedCreateInput = {
   formEventHooks?: Prisma.FormEventHookUncheckedCreateNestedManyWithoutMasterObjectInput
   recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutMasterObjectInput
   fieldReferences?: Prisma.FieldReferenceUncheckedCreateNestedManyWithoutTargetObjectInput
+  masterObjectCounters?: Prisma.MasterObjectCounterUncheckedCreateNestedManyWithoutMasterObjectInput
 }
 
 export type MasterObjectUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -334,12 +354,14 @@ export type MasterObjectUpdateInput = {
   formEventHooks?: Prisma.FormEventHookUpdateManyWithoutMasterObjectNestedInput
   recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutMasterObjectNestedInput
   fieldReferences?: Prisma.FieldReferenceUpdateManyWithoutTargetObjectNestedInput
+  masterObjectCounters?: Prisma.MasterObjectCounterUpdateManyWithoutMasterObjectNestedInput
 }
 
 export type MasterObjectUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -352,12 +374,14 @@ export type MasterObjectUncheckedUpdateInput = {
   formEventHooks?: Prisma.FormEventHookUncheckedUpdateManyWithoutMasterObjectNestedInput
   recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutMasterObjectNestedInput
   fieldReferences?: Prisma.FieldReferenceUncheckedUpdateManyWithoutTargetObjectNestedInput
+  masterObjectCounters?: Prisma.MasterObjectCounterUncheckedUpdateManyWithoutMasterObjectNestedInput
 }
 
 export type MasterObjectCreateManyInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   isActive?: boolean
   isSystem?: boolean
   createdAt?: Date | string
@@ -369,6 +393,7 @@ export type MasterObjectUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -380,6 +405,7 @@ export type MasterObjectUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -396,6 +422,7 @@ export type MasterObjectCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   key?: Prisma.SortOrder
+  codePrefix?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   isSystem?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -407,6 +434,7 @@ export type MasterObjectMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   key?: Prisma.SortOrder
+  codePrefix?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   isSystem?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -418,6 +446,7 @@ export type MasterObjectMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   key?: Prisma.SortOrder
+  codePrefix?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   isSystem?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -502,6 +531,20 @@ export type MasterObjectUpdateOneRequiredWithoutRecordsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.MasterObjectUpdateToOneWithWhereWithoutRecordsInput, Prisma.MasterObjectUpdateWithoutRecordsInput>, Prisma.MasterObjectUncheckedUpdateWithoutRecordsInput>
 }
 
+export type MasterObjectCreateNestedOneWithoutMasterObjectCountersInput = {
+  create?: Prisma.XOR<Prisma.MasterObjectCreateWithoutMasterObjectCountersInput, Prisma.MasterObjectUncheckedCreateWithoutMasterObjectCountersInput>
+  connectOrCreate?: Prisma.MasterObjectCreateOrConnectWithoutMasterObjectCountersInput
+  connect?: Prisma.MasterObjectWhereUniqueInput
+}
+
+export type MasterObjectUpdateOneRequiredWithoutMasterObjectCountersNestedInput = {
+  create?: Prisma.XOR<Prisma.MasterObjectCreateWithoutMasterObjectCountersInput, Prisma.MasterObjectUncheckedCreateWithoutMasterObjectCountersInput>
+  connectOrCreate?: Prisma.MasterObjectCreateOrConnectWithoutMasterObjectCountersInput
+  upsert?: Prisma.MasterObjectUpsertWithoutMasterObjectCountersInput
+  connect?: Prisma.MasterObjectWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MasterObjectUpdateToOneWithWhereWithoutMasterObjectCountersInput, Prisma.MasterObjectUpdateWithoutMasterObjectCountersInput>, Prisma.MasterObjectUncheckedUpdateWithoutMasterObjectCountersInput>
+}
+
 export type MasterObjectCreateNestedOneWithoutFormEventHooksInput = {
   create?: Prisma.XOR<Prisma.MasterObjectCreateWithoutFormEventHooksInput, Prisma.MasterObjectUncheckedCreateWithoutFormEventHooksInput>
   connectOrCreate?: Prisma.MasterObjectCreateOrConnectWithoutFormEventHooksInput
@@ -534,6 +577,7 @@ export type MasterObjectCreateWithoutResourcesInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   isActive?: boolean
   isSystem?: boolean
   createdAt?: Date | string
@@ -545,12 +589,14 @@ export type MasterObjectCreateWithoutResourcesInput = {
   formEventHooks?: Prisma.FormEventHookCreateNestedManyWithoutMasterObjectInput
   recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutMasterObjectInput
   fieldReferences?: Prisma.FieldReferenceCreateNestedManyWithoutTargetObjectInput
+  masterObjectCounters?: Prisma.MasterObjectCounterCreateNestedManyWithoutMasterObjectInput
 }
 
 export type MasterObjectUncheckedCreateWithoutResourcesInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   isActive?: boolean
   isSystem?: boolean
   createdAt?: Date | string
@@ -562,6 +608,7 @@ export type MasterObjectUncheckedCreateWithoutResourcesInput = {
   formEventHooks?: Prisma.FormEventHookUncheckedCreateNestedManyWithoutMasterObjectInput
   recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutMasterObjectInput
   fieldReferences?: Prisma.FieldReferenceUncheckedCreateNestedManyWithoutTargetObjectInput
+  masterObjectCounters?: Prisma.MasterObjectCounterUncheckedCreateNestedManyWithoutMasterObjectInput
 }
 
 export type MasterObjectCreateOrConnectWithoutResourcesInput = {
@@ -584,6 +631,7 @@ export type MasterObjectUpdateWithoutResourcesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -595,12 +643,14 @@ export type MasterObjectUpdateWithoutResourcesInput = {
   formEventHooks?: Prisma.FormEventHookUpdateManyWithoutMasterObjectNestedInput
   recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutMasterObjectNestedInput
   fieldReferences?: Prisma.FieldReferenceUpdateManyWithoutTargetObjectNestedInput
+  masterObjectCounters?: Prisma.MasterObjectCounterUpdateManyWithoutMasterObjectNestedInput
 }
 
 export type MasterObjectUncheckedUpdateWithoutResourcesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -612,12 +662,14 @@ export type MasterObjectUncheckedUpdateWithoutResourcesInput = {
   formEventHooks?: Prisma.FormEventHookUncheckedUpdateManyWithoutMasterObjectNestedInput
   recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutMasterObjectNestedInput
   fieldReferences?: Prisma.FieldReferenceUncheckedUpdateManyWithoutTargetObjectNestedInput
+  masterObjectCounters?: Prisma.MasterObjectCounterUncheckedUpdateManyWithoutMasterObjectNestedInput
 }
 
 export type MasterObjectCreateWithoutSchemasInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   isActive?: boolean
   isSystem?: boolean
   createdAt?: Date | string
@@ -629,12 +681,14 @@ export type MasterObjectCreateWithoutSchemasInput = {
   formEventHooks?: Prisma.FormEventHookCreateNestedManyWithoutMasterObjectInput
   recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutMasterObjectInput
   fieldReferences?: Prisma.FieldReferenceCreateNestedManyWithoutTargetObjectInput
+  masterObjectCounters?: Prisma.MasterObjectCounterCreateNestedManyWithoutMasterObjectInput
 }
 
 export type MasterObjectUncheckedCreateWithoutSchemasInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   isActive?: boolean
   isSystem?: boolean
   createdAt?: Date | string
@@ -646,6 +700,7 @@ export type MasterObjectUncheckedCreateWithoutSchemasInput = {
   formEventHooks?: Prisma.FormEventHookUncheckedCreateNestedManyWithoutMasterObjectInput
   recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutMasterObjectInput
   fieldReferences?: Prisma.FieldReferenceUncheckedCreateNestedManyWithoutTargetObjectInput
+  masterObjectCounters?: Prisma.MasterObjectCounterUncheckedCreateNestedManyWithoutMasterObjectInput
 }
 
 export type MasterObjectCreateOrConnectWithoutSchemasInput = {
@@ -668,6 +723,7 @@ export type MasterObjectUpdateWithoutSchemasInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -679,12 +735,14 @@ export type MasterObjectUpdateWithoutSchemasInput = {
   formEventHooks?: Prisma.FormEventHookUpdateManyWithoutMasterObjectNestedInput
   recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutMasterObjectNestedInput
   fieldReferences?: Prisma.FieldReferenceUpdateManyWithoutTargetObjectNestedInput
+  masterObjectCounters?: Prisma.MasterObjectCounterUpdateManyWithoutMasterObjectNestedInput
 }
 
 export type MasterObjectUncheckedUpdateWithoutSchemasInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -696,12 +754,14 @@ export type MasterObjectUncheckedUpdateWithoutSchemasInput = {
   formEventHooks?: Prisma.FormEventHookUncheckedUpdateManyWithoutMasterObjectNestedInput
   recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutMasterObjectNestedInput
   fieldReferences?: Prisma.FieldReferenceUncheckedUpdateManyWithoutTargetObjectNestedInput
+  masterObjectCounters?: Prisma.MasterObjectCounterUncheckedUpdateManyWithoutMasterObjectNestedInput
 }
 
 export type MasterObjectCreateWithoutFieldDefinitionsInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   isActive?: boolean
   isSystem?: boolean
   createdAt?: Date | string
@@ -713,12 +773,14 @@ export type MasterObjectCreateWithoutFieldDefinitionsInput = {
   formEventHooks?: Prisma.FormEventHookCreateNestedManyWithoutMasterObjectInput
   recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutMasterObjectInput
   fieldReferences?: Prisma.FieldReferenceCreateNestedManyWithoutTargetObjectInput
+  masterObjectCounters?: Prisma.MasterObjectCounterCreateNestedManyWithoutMasterObjectInput
 }
 
 export type MasterObjectUncheckedCreateWithoutFieldDefinitionsInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   isActive?: boolean
   isSystem?: boolean
   createdAt?: Date | string
@@ -730,6 +792,7 @@ export type MasterObjectUncheckedCreateWithoutFieldDefinitionsInput = {
   formEventHooks?: Prisma.FormEventHookUncheckedCreateNestedManyWithoutMasterObjectInput
   recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutMasterObjectInput
   fieldReferences?: Prisma.FieldReferenceUncheckedCreateNestedManyWithoutTargetObjectInput
+  masterObjectCounters?: Prisma.MasterObjectCounterUncheckedCreateNestedManyWithoutMasterObjectInput
 }
 
 export type MasterObjectCreateOrConnectWithoutFieldDefinitionsInput = {
@@ -752,6 +815,7 @@ export type MasterObjectUpdateWithoutFieldDefinitionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -763,12 +827,14 @@ export type MasterObjectUpdateWithoutFieldDefinitionsInput = {
   formEventHooks?: Prisma.FormEventHookUpdateManyWithoutMasterObjectNestedInput
   recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutMasterObjectNestedInput
   fieldReferences?: Prisma.FieldReferenceUpdateManyWithoutTargetObjectNestedInput
+  masterObjectCounters?: Prisma.MasterObjectCounterUpdateManyWithoutMasterObjectNestedInput
 }
 
 export type MasterObjectUncheckedUpdateWithoutFieldDefinitionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -780,12 +846,14 @@ export type MasterObjectUncheckedUpdateWithoutFieldDefinitionsInput = {
   formEventHooks?: Prisma.FormEventHookUncheckedUpdateManyWithoutMasterObjectNestedInput
   recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutMasterObjectNestedInput
   fieldReferences?: Prisma.FieldReferenceUncheckedUpdateManyWithoutTargetObjectNestedInput
+  masterObjectCounters?: Prisma.MasterObjectCounterUncheckedUpdateManyWithoutMasterObjectNestedInput
 }
 
 export type MasterObjectCreateWithoutFieldReferencesInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   isActive?: boolean
   isSystem?: boolean
   createdAt?: Date | string
@@ -797,12 +865,14 @@ export type MasterObjectCreateWithoutFieldReferencesInput = {
   fieldDefinitions?: Prisma.FieldDefinitionCreateNestedManyWithoutMasterObjectInput
   formEventHooks?: Prisma.FormEventHookCreateNestedManyWithoutMasterObjectInput
   recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutMasterObjectInput
+  masterObjectCounters?: Prisma.MasterObjectCounterCreateNestedManyWithoutMasterObjectInput
 }
 
 export type MasterObjectUncheckedCreateWithoutFieldReferencesInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   isActive?: boolean
   isSystem?: boolean
   createdAt?: Date | string
@@ -814,6 +884,7 @@ export type MasterObjectUncheckedCreateWithoutFieldReferencesInput = {
   fieldDefinitions?: Prisma.FieldDefinitionUncheckedCreateNestedManyWithoutMasterObjectInput
   formEventHooks?: Prisma.FormEventHookUncheckedCreateNestedManyWithoutMasterObjectInput
   recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutMasterObjectInput
+  masterObjectCounters?: Prisma.MasterObjectCounterUncheckedCreateNestedManyWithoutMasterObjectInput
 }
 
 export type MasterObjectCreateOrConnectWithoutFieldReferencesInput = {
@@ -836,6 +907,7 @@ export type MasterObjectUpdateWithoutFieldReferencesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -847,12 +919,14 @@ export type MasterObjectUpdateWithoutFieldReferencesInput = {
   fieldDefinitions?: Prisma.FieldDefinitionUpdateManyWithoutMasterObjectNestedInput
   formEventHooks?: Prisma.FormEventHookUpdateManyWithoutMasterObjectNestedInput
   recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutMasterObjectNestedInput
+  masterObjectCounters?: Prisma.MasterObjectCounterUpdateManyWithoutMasterObjectNestedInput
 }
 
 export type MasterObjectUncheckedUpdateWithoutFieldReferencesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -864,12 +938,14 @@ export type MasterObjectUncheckedUpdateWithoutFieldReferencesInput = {
   fieldDefinitions?: Prisma.FieldDefinitionUncheckedUpdateManyWithoutMasterObjectNestedInput
   formEventHooks?: Prisma.FormEventHookUncheckedUpdateManyWithoutMasterObjectNestedInput
   recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutMasterObjectNestedInput
+  masterObjectCounters?: Prisma.MasterObjectCounterUncheckedUpdateManyWithoutMasterObjectNestedInput
 }
 
 export type MasterObjectCreateWithoutRecordsInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   isActive?: boolean
   isSystem?: boolean
   createdAt?: Date | string
@@ -881,12 +957,14 @@ export type MasterObjectCreateWithoutRecordsInput = {
   formEventHooks?: Prisma.FormEventHookCreateNestedManyWithoutMasterObjectInput
   recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutMasterObjectInput
   fieldReferences?: Prisma.FieldReferenceCreateNestedManyWithoutTargetObjectInput
+  masterObjectCounters?: Prisma.MasterObjectCounterCreateNestedManyWithoutMasterObjectInput
 }
 
 export type MasterObjectUncheckedCreateWithoutRecordsInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   isActive?: boolean
   isSystem?: boolean
   createdAt?: Date | string
@@ -898,6 +976,7 @@ export type MasterObjectUncheckedCreateWithoutRecordsInput = {
   formEventHooks?: Prisma.FormEventHookUncheckedCreateNestedManyWithoutMasterObjectInput
   recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutMasterObjectInput
   fieldReferences?: Prisma.FieldReferenceUncheckedCreateNestedManyWithoutTargetObjectInput
+  masterObjectCounters?: Prisma.MasterObjectCounterUncheckedCreateNestedManyWithoutMasterObjectInput
 }
 
 export type MasterObjectCreateOrConnectWithoutRecordsInput = {
@@ -920,6 +999,7 @@ export type MasterObjectUpdateWithoutRecordsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -931,12 +1011,14 @@ export type MasterObjectUpdateWithoutRecordsInput = {
   formEventHooks?: Prisma.FormEventHookUpdateManyWithoutMasterObjectNestedInput
   recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutMasterObjectNestedInput
   fieldReferences?: Prisma.FieldReferenceUpdateManyWithoutTargetObjectNestedInput
+  masterObjectCounters?: Prisma.MasterObjectCounterUpdateManyWithoutMasterObjectNestedInput
 }
 
 export type MasterObjectUncheckedUpdateWithoutRecordsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -948,12 +1030,106 @@ export type MasterObjectUncheckedUpdateWithoutRecordsInput = {
   formEventHooks?: Prisma.FormEventHookUncheckedUpdateManyWithoutMasterObjectNestedInput
   recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutMasterObjectNestedInput
   fieldReferences?: Prisma.FieldReferenceUncheckedUpdateManyWithoutTargetObjectNestedInput
+  masterObjectCounters?: Prisma.MasterObjectCounterUncheckedUpdateManyWithoutMasterObjectNestedInput
+}
+
+export type MasterObjectCreateWithoutMasterObjectCountersInput = {
+  id?: string
+  name: string
+  key: string
+  codePrefix: string
+  isActive?: boolean
+  isSystem?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  resources?: Prisma.ResourceCreateNestedManyWithoutMasterObjectInput
+  records?: Prisma.MasterRecordCreateNestedManyWithoutMasterObjectInput
+  schemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutMasterObjectInput
+  fieldDefinitions?: Prisma.FieldDefinitionCreateNestedManyWithoutMasterObjectInput
+  formEventHooks?: Prisma.FormEventHookCreateNestedManyWithoutMasterObjectInput
+  recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutMasterObjectInput
+  fieldReferences?: Prisma.FieldReferenceCreateNestedManyWithoutTargetObjectInput
+}
+
+export type MasterObjectUncheckedCreateWithoutMasterObjectCountersInput = {
+  id?: string
+  name: string
+  key: string
+  codePrefix: string
+  isActive?: boolean
+  isSystem?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  resources?: Prisma.ResourceUncheckedCreateNestedManyWithoutMasterObjectInput
+  records?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutMasterObjectInput
+  schemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutMasterObjectInput
+  fieldDefinitions?: Prisma.FieldDefinitionUncheckedCreateNestedManyWithoutMasterObjectInput
+  formEventHooks?: Prisma.FormEventHookUncheckedCreateNestedManyWithoutMasterObjectInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutMasterObjectInput
+  fieldReferences?: Prisma.FieldReferenceUncheckedCreateNestedManyWithoutTargetObjectInput
+}
+
+export type MasterObjectCreateOrConnectWithoutMasterObjectCountersInput = {
+  where: Prisma.MasterObjectWhereUniqueInput
+  create: Prisma.XOR<Prisma.MasterObjectCreateWithoutMasterObjectCountersInput, Prisma.MasterObjectUncheckedCreateWithoutMasterObjectCountersInput>
+}
+
+export type MasterObjectUpsertWithoutMasterObjectCountersInput = {
+  update: Prisma.XOR<Prisma.MasterObjectUpdateWithoutMasterObjectCountersInput, Prisma.MasterObjectUncheckedUpdateWithoutMasterObjectCountersInput>
+  create: Prisma.XOR<Prisma.MasterObjectCreateWithoutMasterObjectCountersInput, Prisma.MasterObjectUncheckedCreateWithoutMasterObjectCountersInput>
+  where?: Prisma.MasterObjectWhereInput
+}
+
+export type MasterObjectUpdateToOneWithWhereWithoutMasterObjectCountersInput = {
+  where?: Prisma.MasterObjectWhereInput
+  data: Prisma.XOR<Prisma.MasterObjectUpdateWithoutMasterObjectCountersInput, Prisma.MasterObjectUncheckedUpdateWithoutMasterObjectCountersInput>
+}
+
+export type MasterObjectUpdateWithoutMasterObjectCountersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resources?: Prisma.ResourceUpdateManyWithoutMasterObjectNestedInput
+  records?: Prisma.MasterRecordUpdateManyWithoutMasterObjectNestedInput
+  schemas?: Prisma.MasterObjectSchemaUpdateManyWithoutMasterObjectNestedInput
+  fieldDefinitions?: Prisma.FieldDefinitionUpdateManyWithoutMasterObjectNestedInput
+  formEventHooks?: Prisma.FormEventHookUpdateManyWithoutMasterObjectNestedInput
+  recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutMasterObjectNestedInput
+  fieldReferences?: Prisma.FieldReferenceUpdateManyWithoutTargetObjectNestedInput
+}
+
+export type MasterObjectUncheckedUpdateWithoutMasterObjectCountersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resources?: Prisma.ResourceUncheckedUpdateManyWithoutMasterObjectNestedInput
+  records?: Prisma.MasterRecordUncheckedUpdateManyWithoutMasterObjectNestedInput
+  schemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutMasterObjectNestedInput
+  fieldDefinitions?: Prisma.FieldDefinitionUncheckedUpdateManyWithoutMasterObjectNestedInput
+  formEventHooks?: Prisma.FormEventHookUncheckedUpdateManyWithoutMasterObjectNestedInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutMasterObjectNestedInput
+  fieldReferences?: Prisma.FieldReferenceUncheckedUpdateManyWithoutTargetObjectNestedInput
 }
 
 export type MasterObjectCreateWithoutFormEventHooksInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   isActive?: boolean
   isSystem?: boolean
   createdAt?: Date | string
@@ -965,12 +1141,14 @@ export type MasterObjectCreateWithoutFormEventHooksInput = {
   fieldDefinitions?: Prisma.FieldDefinitionCreateNestedManyWithoutMasterObjectInput
   recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutMasterObjectInput
   fieldReferences?: Prisma.FieldReferenceCreateNestedManyWithoutTargetObjectInput
+  masterObjectCounters?: Prisma.MasterObjectCounterCreateNestedManyWithoutMasterObjectInput
 }
 
 export type MasterObjectUncheckedCreateWithoutFormEventHooksInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   isActive?: boolean
   isSystem?: boolean
   createdAt?: Date | string
@@ -982,6 +1160,7 @@ export type MasterObjectUncheckedCreateWithoutFormEventHooksInput = {
   fieldDefinitions?: Prisma.FieldDefinitionUncheckedCreateNestedManyWithoutMasterObjectInput
   recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutMasterObjectInput
   fieldReferences?: Prisma.FieldReferenceUncheckedCreateNestedManyWithoutTargetObjectInput
+  masterObjectCounters?: Prisma.MasterObjectCounterUncheckedCreateNestedManyWithoutMasterObjectInput
 }
 
 export type MasterObjectCreateOrConnectWithoutFormEventHooksInput = {
@@ -1004,6 +1183,7 @@ export type MasterObjectUpdateWithoutFormEventHooksInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1015,12 +1195,14 @@ export type MasterObjectUpdateWithoutFormEventHooksInput = {
   fieldDefinitions?: Prisma.FieldDefinitionUpdateManyWithoutMasterObjectNestedInput
   recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutMasterObjectNestedInput
   fieldReferences?: Prisma.FieldReferenceUpdateManyWithoutTargetObjectNestedInput
+  masterObjectCounters?: Prisma.MasterObjectCounterUpdateManyWithoutMasterObjectNestedInput
 }
 
 export type MasterObjectUncheckedUpdateWithoutFormEventHooksInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1032,12 +1214,14 @@ export type MasterObjectUncheckedUpdateWithoutFormEventHooksInput = {
   fieldDefinitions?: Prisma.FieldDefinitionUncheckedUpdateManyWithoutMasterObjectNestedInput
   recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutMasterObjectNestedInput
   fieldReferences?: Prisma.FieldReferenceUncheckedUpdateManyWithoutTargetObjectNestedInput
+  masterObjectCounters?: Prisma.MasterObjectCounterUncheckedUpdateManyWithoutMasterObjectNestedInput
 }
 
 export type MasterObjectCreateWithoutRecordPermissionsInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   isActive?: boolean
   isSystem?: boolean
   createdAt?: Date | string
@@ -1049,12 +1233,14 @@ export type MasterObjectCreateWithoutRecordPermissionsInput = {
   fieldDefinitions?: Prisma.FieldDefinitionCreateNestedManyWithoutMasterObjectInput
   formEventHooks?: Prisma.FormEventHookCreateNestedManyWithoutMasterObjectInput
   fieldReferences?: Prisma.FieldReferenceCreateNestedManyWithoutTargetObjectInput
+  masterObjectCounters?: Prisma.MasterObjectCounterCreateNestedManyWithoutMasterObjectInput
 }
 
 export type MasterObjectUncheckedCreateWithoutRecordPermissionsInput = {
   id?: string
   name: string
   key: string
+  codePrefix: string
   isActive?: boolean
   isSystem?: boolean
   createdAt?: Date | string
@@ -1066,6 +1252,7 @@ export type MasterObjectUncheckedCreateWithoutRecordPermissionsInput = {
   fieldDefinitions?: Prisma.FieldDefinitionUncheckedCreateNestedManyWithoutMasterObjectInput
   formEventHooks?: Prisma.FormEventHookUncheckedCreateNestedManyWithoutMasterObjectInput
   fieldReferences?: Prisma.FieldReferenceUncheckedCreateNestedManyWithoutTargetObjectInput
+  masterObjectCounters?: Prisma.MasterObjectCounterUncheckedCreateNestedManyWithoutMasterObjectInput
 }
 
 export type MasterObjectCreateOrConnectWithoutRecordPermissionsInput = {
@@ -1088,6 +1275,7 @@ export type MasterObjectUpdateWithoutRecordPermissionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1099,12 +1287,14 @@ export type MasterObjectUpdateWithoutRecordPermissionsInput = {
   fieldDefinitions?: Prisma.FieldDefinitionUpdateManyWithoutMasterObjectNestedInput
   formEventHooks?: Prisma.FormEventHookUpdateManyWithoutMasterObjectNestedInput
   fieldReferences?: Prisma.FieldReferenceUpdateManyWithoutTargetObjectNestedInput
+  masterObjectCounters?: Prisma.MasterObjectCounterUpdateManyWithoutMasterObjectNestedInput
 }
 
 export type MasterObjectUncheckedUpdateWithoutRecordPermissionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  codePrefix?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1116,6 +1306,7 @@ export type MasterObjectUncheckedUpdateWithoutRecordPermissionsInput = {
   fieldDefinitions?: Prisma.FieldDefinitionUncheckedUpdateManyWithoutMasterObjectNestedInput
   formEventHooks?: Prisma.FormEventHookUncheckedUpdateManyWithoutMasterObjectNestedInput
   fieldReferences?: Prisma.FieldReferenceUncheckedUpdateManyWithoutTargetObjectNestedInput
+  masterObjectCounters?: Prisma.MasterObjectCounterUncheckedUpdateManyWithoutMasterObjectNestedInput
 }
 
 
@@ -1131,6 +1322,7 @@ export type MasterObjectCountOutputType = {
   formEventHooks: number
   recordPermissions: number
   fieldReferences: number
+  masterObjectCounters: number
 }
 
 export type MasterObjectCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1141,6 +1333,7 @@ export type MasterObjectCountOutputTypeSelect<ExtArgs extends runtime.Types.Exte
   formEventHooks?: boolean | MasterObjectCountOutputTypeCountFormEventHooksArgs
   recordPermissions?: boolean | MasterObjectCountOutputTypeCountRecordPermissionsArgs
   fieldReferences?: boolean | MasterObjectCountOutputTypeCountFieldReferencesArgs
+  masterObjectCounters?: boolean | MasterObjectCountOutputTypeCountMasterObjectCountersArgs
 }
 
 /**
@@ -1202,11 +1395,19 @@ export type MasterObjectCountOutputTypeCountFieldReferencesArgs<ExtArgs extends 
   where?: Prisma.FieldReferenceWhereInput
 }
 
+/**
+ * MasterObjectCountOutputType without action
+ */
+export type MasterObjectCountOutputTypeCountMasterObjectCountersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MasterObjectCounterWhereInput
+}
+
 
 export type MasterObjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
   key?: boolean
+  codePrefix?: boolean
   isActive?: boolean
   isSystem?: boolean
   createdAt?: boolean
@@ -1219,6 +1420,7 @@ export type MasterObjectSelect<ExtArgs extends runtime.Types.Extensions.Internal
   formEventHooks?: boolean | Prisma.MasterObject$formEventHooksArgs<ExtArgs>
   recordPermissions?: boolean | Prisma.MasterObject$recordPermissionsArgs<ExtArgs>
   fieldReferences?: boolean | Prisma.MasterObject$fieldReferencesArgs<ExtArgs>
+  masterObjectCounters?: boolean | Prisma.MasterObject$masterObjectCountersArgs<ExtArgs>
   _count?: boolean | Prisma.MasterObjectCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["masterObject"]>
 
@@ -1226,6 +1428,7 @@ export type MasterObjectSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   id?: boolean
   name?: boolean
   key?: boolean
+  codePrefix?: boolean
   isActive?: boolean
   isSystem?: boolean
   createdAt?: boolean
@@ -1237,6 +1440,7 @@ export type MasterObjectSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   id?: boolean
   name?: boolean
   key?: boolean
+  codePrefix?: boolean
   isActive?: boolean
   isSystem?: boolean
   createdAt?: boolean
@@ -1248,6 +1452,7 @@ export type MasterObjectSelectScalar = {
   id?: boolean
   name?: boolean
   key?: boolean
+  codePrefix?: boolean
   isActive?: boolean
   isSystem?: boolean
   createdAt?: boolean
@@ -1255,7 +1460,7 @@ export type MasterObjectSelectScalar = {
   deletedAt?: boolean
 }
 
-export type MasterObjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "key" | "isActive" | "isSystem" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["masterObject"]>
+export type MasterObjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "key" | "codePrefix" | "isActive" | "isSystem" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["masterObject"]>
 export type MasterObjectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   resources?: boolean | Prisma.MasterObject$resourcesArgs<ExtArgs>
   records?: boolean | Prisma.MasterObject$recordsArgs<ExtArgs>
@@ -1264,6 +1469,7 @@ export type MasterObjectInclude<ExtArgs extends runtime.Types.Extensions.Interna
   formEventHooks?: boolean | Prisma.MasterObject$formEventHooksArgs<ExtArgs>
   recordPermissions?: boolean | Prisma.MasterObject$recordPermissionsArgs<ExtArgs>
   fieldReferences?: boolean | Prisma.MasterObject$fieldReferencesArgs<ExtArgs>
+  masterObjectCounters?: boolean | Prisma.MasterObject$masterObjectCountersArgs<ExtArgs>
   _count?: boolean | Prisma.MasterObjectCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MasterObjectIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1279,11 +1485,13 @@ export type $MasterObjectPayload<ExtArgs extends runtime.Types.Extensions.Intern
     formEventHooks: Prisma.$FormEventHookPayload<ExtArgs>[]
     recordPermissions: Prisma.$RecordPermissionPayload<ExtArgs>[]
     fieldReferences: Prisma.$FieldReferencePayload<ExtArgs>[]
+    masterObjectCounters: Prisma.$MasterObjectCounterPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
     key: string
+    codePrefix: string
     isActive: boolean
     isSystem: boolean
     createdAt: Date
@@ -1690,6 +1898,7 @@ export interface Prisma__MasterObjectClient<T, Null = never, ExtArgs extends run
   formEventHooks<T extends Prisma.MasterObject$formEventHooksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MasterObject$formEventHooksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FormEventHookPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   recordPermissions<T extends Prisma.MasterObject$recordPermissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MasterObject$recordPermissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordPermissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   fieldReferences<T extends Prisma.MasterObject$fieldReferencesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MasterObject$fieldReferencesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FieldReferencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  masterObjectCounters<T extends Prisma.MasterObject$masterObjectCountersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MasterObject$masterObjectCountersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MasterObjectCounterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1722,6 +1931,7 @@ export interface MasterObjectFieldRefs {
   readonly id: Prisma.FieldRef<"MasterObject", 'String'>
   readonly name: Prisma.FieldRef<"MasterObject", 'String'>
   readonly key: Prisma.FieldRef<"MasterObject", 'String'>
+  readonly codePrefix: Prisma.FieldRef<"MasterObject", 'String'>
   readonly isActive: Prisma.FieldRef<"MasterObject", 'Boolean'>
   readonly isSystem: Prisma.FieldRef<"MasterObject", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"MasterObject", 'DateTime'>
@@ -2280,6 +2490,30 @@ export type MasterObject$fieldReferencesArgs<ExtArgs extends runtime.Types.Exten
   take?: number
   skip?: number
   distinct?: Prisma.FieldReferenceScalarFieldEnum | Prisma.FieldReferenceScalarFieldEnum[]
+}
+
+/**
+ * MasterObject.masterObjectCounters
+ */
+export type MasterObject$masterObjectCountersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MasterObjectCounter
+   */
+  select?: Prisma.MasterObjectCounterSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MasterObjectCounter
+   */
+  omit?: Prisma.MasterObjectCounterOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MasterObjectCounterInclude<ExtArgs> | null
+  where?: Prisma.MasterObjectCounterWhereInput
+  orderBy?: Prisma.MasterObjectCounterOrderByWithRelationInput | Prisma.MasterObjectCounterOrderByWithRelationInput[]
+  cursor?: Prisma.MasterObjectCounterWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MasterObjectCounterScalarFieldEnum | Prisma.MasterObjectCounterScalarFieldEnum[]
 }
 
 /**

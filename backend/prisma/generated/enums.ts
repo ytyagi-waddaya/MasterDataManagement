@@ -177,6 +177,10 @@ export const FieldValidationType = {
   REQUIRED: 'REQUIRED',
   REQUIRED_IF: 'REQUIRED_IF',
   REGEX: 'REGEX',
+  MIN: 'MIN',
+  MAX: 'MAX',
+  BETWEEN: 'BETWEEN',
+  EMAIL: 'EMAIL',
   RANGE: 'RANGE',
   LENGTH: 'LENGTH',
   CUSTOM: 'CUSTOM'

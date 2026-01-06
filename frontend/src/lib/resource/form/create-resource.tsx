@@ -108,6 +108,7 @@ export function ResourceForm({
 }: {
   form: {
     name: string;
+    codePrefix:string;
     description: string | null;
     isSystem: boolean;
     isActive: boolean;
@@ -139,6 +140,26 @@ export function ResourceForm({
           <Info className="h-3.5 w-3.5 text-gray-500" />
           Must be uppercase and use underscores only (e.g.,
           <strong>CREATE_TICKET</strong>).
+        </p>
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <label className="text-sm font-medium">Resource Code</label>
+        <input
+          className={`border p-2 rounded ${
+            errors.name ? "border-red-500" : ""
+          }`}
+          value={form.codePrefix}
+          onChange={(e) => setValue("codePrefix", e.target.value)}
+          onBlur={() => onBlur("codePrefix")}
+        />
+        {touched.codePrefix && errors.codePrefix && (
+          <p className="text-xs text-red-600">{errors.codePrefix}</p>
+        )}
+        <p className="text-xs text-gray-600 flex items-center gap-1">
+          <Info className="h-3.5 w-3.5 text-gray-500" />
+          Must be uppercase and between 2–6 only (e.g.,
+          <strong>INC</strong>).
         </p>
       </div>
 

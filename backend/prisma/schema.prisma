@@ -162,6 +162,7 @@ model Resource {
   id          String  @id @default(uuid())
   name        String
   key         String  @unique
+  codePrefix  String  @unique
   category    String?
   description String?
   isActive    Boolean @default(true)
@@ -285,12 +286,12 @@ model Policy {
 // ====================================
 
 model MasterObject {
-  id   String @id @default(uuid())
-  name String
-  key  String @unique
-
-  isActive Boolean @default(true)
-  isSystem Boolean @default(false)
+  id         String  @id @default(uuid())
+  name       String
+  key        String  @unique
+  codePrefix String
+  isActive   Boolean @default(true)
+  isSystem   Boolean @default(false)
 
   resources Resource[]
 
@@ -298,12 +299,13 @@ model MasterObject {
   schemas          MasterObjectSchema[]
   fieldDefinitions FieldDefinition[]
 
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
-  deletedAt         DateTime?
-  formEventHooks    FormEventHook[]
-  recordPermissions RecordPermission[]
-  fieldReferences   FieldReference[]   @relation("TargetObjectReferences")
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+  deletedAt            DateTime?
+  formEventHooks       FormEventHook[]
+  recordPermissions    RecordPermission[]
+  fieldReferences      FieldReference[]      @relation("TargetObjectReferences")
+  masterObjectCounters MasterObjectCounter[]
 
   @@unique([name])
 }
@@ -488,6 +490,7 @@ model FieldConditionBinding {
 
 model MasterRecord {
   id             String       @id @default(uuid())
+  code           String       @unique
   masterObject   MasterObject @relation(fields: [masterObjectId], references: [id], onDelete: Cascade)
   masterObjectId String
   data           Json
@@ -520,6 +523,13 @@ model MasterRecord {
   @@index([currentStageId])
   @@index([createdAt])
   @@index([linkedUserId])
+}
+
+model MasterObjectCounter {
+  masterObjectId String @id
+  lastNumber     Int    @default(0)
+
+  masterObject MasterObject @relation(fields: [masterObjectId], references: [id], onDelete: Cascade)
 }
 
 model RecordFieldHistory {
@@ -712,9 +722,9 @@ model WorkflowTransition {
   metadata    Json?
   autoTrigger Boolean @default(false)
 
-  transitionType   TransitionType   @default(NORMAL)
-  triggerStrategy  TriggerStrategy  @default(ANY_ALLOWED)
-  
+  transitionType  TransitionType  @default(NORMAL)
+  triggerStrategy TriggerStrategy @default(ANY_ALLOWED)
+
   approvalConfig   Json?
   approvalStrategy ApprovalStrategy @default(ALL)
   priority         Int              @default(0)
@@ -1248,6 +1258,10 @@ enum FieldValidationType {
   REQUIRED
   REQUIRED_IF
   REGEX
+  MIN
+  MAX
+  BETWEEN
+  EMAIL
   RANGE
   LENGTH
   CUSTOM
@@ -1365,7 +1379,6 @@ enum TriggerStrategy {
   APPROVER_ONLY
   SYSTEM_ONLY
 }
-
 
 // model Feature {
 //   id          String   @id @default(uuid())

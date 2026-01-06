@@ -6,6 +6,7 @@ import {
 } from "../../prisma/generated/client.js";
 import crypto from "crypto";
 import { BadRequestException } from "../utils/appError.js";
+import { WIDGET_TO_FIELD_TYPE } from "../modules/masterObject/dto/masterObject.dto.js";
 
 /* ======================================================
    TYPES
@@ -28,10 +29,17 @@ type SchemaField = {
 ===================================================== */
 
 // export function extractFieldsFromSchema(schema: FieldConfig[]): SchemaField[] {
-//   const fields: SchemaField[] = schema.map((field) => {
+//   const keys = new Set<string>();
+
+//   return schema.map((field) => {
 //     if (!field?.meta?.key) {
 //       throw new BadRequestException("Field meta.key is required");
 //     }
+
+//     if (keys.has(field.meta.key)) {
+//       throw new BadRequestException(`Duplicate field key "${field.meta.key}"`);
+//     }
+//     keys.add(field.meta.key);
 
 //     if (!field?.data?.type) {
 //       throw new BadRequestException(
@@ -40,19 +48,9 @@ type SchemaField = {
 //     }
 
 //     const widget = field.ui?.widget ?? "TEXT";
-
 //     if (!(widget in FieldType)) {
 //       throw new BadRequestException(
 //         `Invalid widget "${widget}" for field "${field.meta.key}"`
-//       );
-//     }
-
-//     if (
-//       field.meta.category === FieldCategory.CALCULATED &&
-//       !field.behavior?.formula
-//     ) {
-//       throw new BadRequestException(
-//         `Calculated field "${field.meta.key}" must have a formula`
 //       );
 //     }
 
@@ -62,31 +60,35 @@ type SchemaField = {
 //       fieldType: widget as FieldType,
 //       dataType: field.data.type as FieldDataType,
 //       category: field.meta.category as FieldCategory,
+//       required: Boolean(field.validation?.required),
+
+//       // 🔑 STORE FULL UI CONFIG
 //       config: {
-//         ui: field.ui,
+//         ui: {
+//           ...field.ui,
+//           layout: {
+//             width: field.ui?.layout?.width ?? "full",
+//             order: field.ui?.layout?.order ?? 0,
+//             section: field.ui?.layout?.section ?? "default",
+//           },
+//         },
 //         validation: field.validation,
 //         visibility: field.visibility,
 //         permissions: field.permissions,
 //         behavior: field.behavior,
 //         integration: field.integration,
 //       },
-//       required: Boolean(field.validation?.required),
 //     };
 //   });
-
-//   /* --------- UNIQUE FIELD KEYS --------- */
-//   const keys = new Set<string>();
-//   for (const f of fields) {
-//     if (keys.has(f.key)) {
-//       throw new BadRequestException(`Duplicate field key "${f.key}"`);
-//     }
-//     keys.add(f.key);
-//   }
-
-//   return fields;
 // }
 
 export function extractFieldsFromSchema(schema: FieldConfig[]): SchemaField[] {
+  if (!Array.isArray(schema)) {
+    throw new BadRequestException(
+      "fieldConfig must be an array of field definitions"
+    );
+  }
+
   const keys = new Set<string>();
 
   return schema.map((field) => {
@@ -95,9 +97,7 @@ export function extractFieldsFromSchema(schema: FieldConfig[]): SchemaField[] {
     }
 
     if (keys.has(field.meta.key)) {
-      throw new BadRequestException(
-        `Duplicate field key "${field.meta.key}"`
-      );
+      throw new BadRequestException(`Duplicate field key "${field.meta.key}"`);
     }
     keys.add(field.meta.key);
 
@@ -108,30 +108,26 @@ export function extractFieldsFromSchema(schema: FieldConfig[]): SchemaField[] {
     }
 
     const widget = field.ui?.widget ?? "TEXT";
-    if (!(widget in FieldType)) {
+    const fieldType = WIDGET_TO_FIELD_TYPE[widget];
+
+    if (!fieldType) {
       throw new BadRequestException(
-        `Invalid widget "${widget}" for field "${field.meta.key}"`
+        `Unsupported widget "${widget}" for field "${field.meta.key}"`
       );
     }
 
     return {
       key: field.meta.key,
       label: field.meta.label,
-      fieldType: widget as FieldType,
+      fieldType,
       dataType: field.data.type as FieldDataType,
       category: field.meta.category as FieldCategory,
-      required: Boolean(field.validation?.required),
+      required: Boolean(
+        field.validation?.rules?.some((r: any) => r.type === "REQUIRED")
+      ),
 
-      // 🔑 STORE FULL UI CONFIG
       config: {
-        ui: {
-          ...field.ui,
-          layout: {
-            width: field.ui?.layout?.width ?? "full",
-            order: field.ui?.layout?.order ?? 0,
-            section: field.ui?.layout?.section ?? "default",
-          },
-        },
+        ui: field.ui ?? {},
         validation: field.validation,
         visibility: field.visibility,
         permissions: field.permissions,
@@ -141,7 +137,6 @@ export function extractFieldsFromSchema(schema: FieldConfig[]): SchemaField[] {
     };
   });
 }
-
 
 /* ======================================================
    FIELD DIFF ENGINE
@@ -283,13 +278,15 @@ export async function applyFieldDiff({
 export async function publishSchemaWithDiff({
   tx,
   masterObjectId,
-  schemaJson,
+  fieldConfigs,
+  layoutSchema,
   publish,
   createdById,
 }: {
   tx: Prisma.TransactionClient;
   masterObjectId: string;
-  schemaJson: FieldConfig[];
+  fieldConfigs: FieldConfig[];
+  layoutSchema: unknown;
   publish: boolean;
   createdById?: string | null;
 }) {
@@ -298,7 +295,7 @@ export async function publishSchemaWithDiff({
     orderBy: { version: "desc" },
   });
 
-  const checksum = hashSchema(schemaJson);
+  const checksum = hashSchema({ layoutSchema, fieldConfigs });
 
   if (previousSchema && previousSchema.checksum === checksum) {
     throw new BadRequestException("No schema changes detected");
@@ -316,7 +313,7 @@ export async function publishSchemaWithDiff({
       masterObjectId,
       version: (previousSchema?.version ?? 0) + 1,
       status: publish ? "PUBLISHED" : "DRAFT",
-      layout: schemaJson,
+      layout: layoutSchema as Prisma.InputJsonValue,
       checksum,
       createdById: createdById ?? null,
       publishedAt: publish ? new Date() : null,
@@ -328,7 +325,7 @@ export async function publishSchemaWithDiff({
     masterObjectId,
     previousSchemaId: previousSchema?.id ?? null,
     newSchemaId: newSchema.id,
-    schemaJson,
+    schemaJson: fieldConfigs,
   });
 
   return newSchema;
@@ -354,4 +351,117 @@ function asJsonObject(
   return {};
 }
 
+// export async function publishSchemaWithDiff({
+//   tx,
+//   masterObjectId,
+//   fieldConfigs,
+//   layoutSchema,
+//   publish,
+//   createdById,
+// }: {
+//   tx: Prisma.TransactionClient;
+//   masterObjectId: string;
+//   fieldConfigs: FieldConfig[];
+//   layoutSchema: unknown;
+//   publish: boolean;
+//   createdById?: string | null;
+// }) {
+//   const previousSchema = await tx.masterObjectSchema.findFirst({
+//     where: { masterObjectId },
+//     orderBy: { version: "desc" },
+//   });
 
+//   const checksum = hashSchema(schemaJson);
+
+//   if (previousSchema && previousSchema.checksum === checksum) {
+//     throw new BadRequestException("No schema changes detected");
+//   }
+
+//   if (publish) {
+//     await tx.masterObjectSchema.updateMany({
+//       where: { masterObjectId, status: "PUBLISHED" },
+//       data: { status: "ARCHIVED" },
+//     });
+//   }
+
+//   const newSchema = await tx.masterObjectSchema.create({
+//     data: {
+//       masterObjectId,
+//       version: (previousSchema?.version ?? 0) + 1,
+//       status: publish ? "PUBLISHED" : "DRAFT",
+//       layout: schemaJson,
+//       checksum,
+//       createdById: createdById ?? null,
+//       publishedAt: publish ? new Date() : null,
+//     },
+//   });
+
+//   await applyFieldDiff({
+//     tx,
+//     masterObjectId,
+//     previousSchemaId: previousSchema?.id ?? null,
+//     newSchemaId: newSchema.id,
+//     schemaJson,
+//   });
+
+//   return newSchema;
+// }
+
+// export function extractFieldsFromSchema(schema: FieldConfig[]): SchemaField[] {
+//   const fields: SchemaField[] = schema.map((field) => {
+//     if (!field?.meta?.key) {
+//       throw new BadRequestException("Field meta.key is required");
+//     }
+
+//     if (!field?.data?.type) {
+//       throw new BadRequestException(
+//         `Field "${field.meta.key}" is missing data.type`
+//       );
+//     }
+
+//     const widget = field.ui?.widget ?? "TEXT";
+
+//     if (!(widget in FieldType)) {
+//       throw new BadRequestException(
+//         `Invalid widget "${widget}" for field "${field.meta.key}"`
+//       );
+//     }
+
+//     if (
+//       field.meta.category === FieldCategory.CALCULATED &&
+//       !field.behavior?.formula
+//     ) {
+//       throw new BadRequestException(
+//         `Calculated field "${field.meta.key}" must have a formula`
+//       );
+//     }
+
+//     return {
+//       key: field.meta.key,
+//       label: field.meta.label,
+//       fieldType: widget as FieldType,
+//       dataType: field.data.type as FieldDataType,
+//       category: field.meta.category as FieldCategory,
+//       config: {
+//         ui: field.ui,
+//         validation: field.validation,
+//         visibility: field.visibility,
+//         permissions: field.permissions,
+//         behavior: field.behavior,
+//         integration: field.integration,
+//       },
+//       required: Boolean(field.validation?.required),
+//     };
+//   });
+
+//   /* --------- UNIQUE FIELD KEYS --------- */
+//   const keys = new Set<string>();
+//   for (const f of fields) {
+//     if (keys.has(f.key)) {
+//       throw new BadRequestException(`Duplicate field key "${f.key}"`);
+//     }
+//     keys.add(f.key);
+//   }
+
+//   return fields;
+// }

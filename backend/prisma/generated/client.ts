@@ -140,6 +140,11 @@ export type FieldConditionBinding = Prisma.FieldConditionBindingModel
  */
 export type MasterRecord = Prisma.MasterRecordModel
 /**
+ * Model MasterObjectCounter
+ * 
+ */
+export type MasterObjectCounter = Prisma.MasterObjectCounterModel
+/**
  * Model RecordFieldHistory
  * 
  */

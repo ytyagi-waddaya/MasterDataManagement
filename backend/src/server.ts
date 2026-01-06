@@ -60,14 +60,24 @@ async function gracefulShutdown(reason: string) {
 
 process.once("SIGINT", () => gracefulShutdown("SIGINT"));
 process.once("SIGTERM", () => gracefulShutdown("SIGTERM"));
+// process.on("uncaughtException", (err) => {
+//   logger.error("[api] uncaughtException", { error: err });
+//   gracefulShutdown("uncaughtException");
+// });
+// process.on("unhandledRejection", (reason) => {
+//   logger.error("[api] unhandledRejection", { reason });
+//   gracefulShutdown("unhandledRejection");
+// });
 process.on("uncaughtException", (err) => {
   logger.error("[api] uncaughtException", { error: err });
-  gracefulShutdown("uncaughtException");
+  // DO NOT shutdown – just log
 });
+
 process.on("unhandledRejection", (reason) => {
   logger.error("[api] unhandledRejection", { reason });
-  gracefulShutdown("unhandledRejection");
+  // DO NOT shutdown – just log
 });
+
 
 async function start() {
   try {

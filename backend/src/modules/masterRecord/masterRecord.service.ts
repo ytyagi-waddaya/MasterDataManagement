@@ -20,163 +20,206 @@ import {
 } from "./dto/masterRecord.dto.js";
 
 const masterRecordService = {
-
-  // createRecord: async (masterObjectId: string, data: any, meta?: ActorMeta) => {
+  // createRecord: async (
+  //   masterObjectId: string,
+  //   data: any,
+  //   meta?: ActorMeta
+  // ) => {
   //   const userId = meta?.actorId;
   //   if (!userId) throw new BadRequestException("UserId is required");
 
-  //   // STEP 1 → Find Resource for this MasterObject
+  //   /* ===============================
+  //      1️⃣ Get published schema
+  //   =============================== */
+  //   const schema = await prisma.masterObjectSchema.findFirst({
+  //     where: {
+  //       masterObjectId,
+  //       status: SchemaStatus.PUBLISHED,
+  //     },
+  //     orderBy: { version: "desc" },
+  //   });
+
+  //   if (!schema) {
+  //     throw new BadRequestException(
+  //       "No published schema found for this MasterObject"
+  //     );
+  //   }
+
+  //   /* ===============================
+  //      2️⃣ Get masterObject (for key)
+  //   =============================== */
+  //   const masterObject = await prisma.masterObject.findUnique({
+  //     where: { id: masterObjectId },
+  //     select: { key: true },
+  //   });
+
+  //   if (!masterObject) {
+  //     throw new BadRequestException("MasterObject not found");
+  //   }
+
+  //   /* ===============================
+  //      3️⃣ Get workflow + initial stage
+  //   =============================== */
   //   const resource = await prisma.resource.findFirst({
   //     where: { masterObjectId },
   //     include: { workflows: true },
   //   });
 
-  //   // STEP 2 → Select Active Workflow (latest version)
-  //   let workflowDef = null;
-  //   if (resource?.workflows?.length) {
-  //     workflowDef =
-  //       resource.workflows
-  //         .filter((w) => w.isActive)
-  //         .sort((a, b) => b.version - a.version)[0] ?? null;
-  //   }
-
-  //   // STEP 3 → Find initial stage
   //   let initialStage = null;
 
-  //   if (workflowDef) {
-  //     initialStage = await prisma.workflowStage.findFirst({
-  //       where: {
-  //         workflowId: workflowDef.id,
-  //         isInitial: true,
-  //       },
-  //     });
-  //   }
+  //   if (resource?.workflows?.length) {
+  //     const workflow = resource.workflows
+  //       .filter((w) => w.isActive)
+  //       .sort((a, b) => b.version - a.version)[0];
 
-  //   // STEP 4 → Create record
-  //   try {
-  //     const record = await prisma.$transaction(async (tx) => {
-  //       const toCreate: Prisma.MasterRecordCreateInput = {
-  //         masterObject: { connect: { id: masterObjectId } },
-  //         data,
-  //         createdBy: { connect: { id: userId } },
-  //         isActive: data.isActive ?? true,
-  //       };
-
-  //       // Attach initial workflow stage ONLY IF a workflow exists
-  //       if (initialStage) {
-  //         toCreate.currentStage = { connect: { id: initialStage.id } };
-  //       }
-
-  //       const createdRecord = await tx.masterRecord.create({ data: toCreate });
-
-  //       // Audit Log
-  //       await tx.auditLog.create({
-  //         data: {
-  //           userId,
-  //           entity: AuditEntity.MASTER_RECORD,
-  //           action: AuditAction.CREATE,
-  //           comment: "Record created",
-  //           after: createdRecord,
-  //           ipAddress: meta?.ipAddress ?? null,
-  //           userAgent: meta?.userAgent ?? null,
-  //           performedBy: meta?.performedBy ?? PerformedByType.USER,
+  //     if (workflow) {
+  //       initialStage = await prisma.workflowStage.findFirst({
+  //         where: {
+  //           workflowId: workflow.id,
+  //           isInitial: true,
   //         },
   //       });
+  //     }
+  //   }
 
-  //       return createdRecord;
+  //   /* ===============================
+  //      4️⃣ TRANSACTION (SAFE CODE GEN)
+  //   =============================== */
+  //   return prisma.$transaction(async (tx) => {
+  //     // 🔢 Increment counter atomically
+  //     const counter = await tx.masterObjectCounter.upsert({
+  //       where: { masterObjectId },
+  //       update: { lastNumber: { increment: 1 } },
+  //       create: { masterObjectId, lastNumber: 1 },
   //     });
 
-  //     return record;
-  //   } catch (err: any) {
-  //     if (err?.code === "P2002")
-  //       throw new BadRequestException("Record already exists for unique key.");
+  //     const recordNumber = counter.lastNumber;
+  //     const recordCode = `${masterObject.key}-${String(recordNumber).padStart(
+  //       6,
+  //       "0"
+  //     )}`;
 
-  //     throw err;
-  //   }
+  //     /* ===============================
+  //        5️⃣ Create record
+  //     =============================== */
+  //     const createdRecord = await tx.masterRecord.create({
+  //       data: {
+  //         code: recordCode,
+
+  //         masterObject: { connect: { id: masterObjectId } },
+  //         schema: { connect: { id: schema.id } },
+
+  //         data,
+  //         isActive: data.isActive ?? true,
+
+  //         createdBy: { connect: { id: userId } },
+
+  //         ...(initialStage && {
+  //           currentStage: { connect: { id: initialStage.id } },
+  //         }),
+  //       },
+  //     });
+
+  //     /* ===============================
+  //        6️⃣ Audit log
+  //     =============================== */
+  //     await tx.auditLog.create({
+  //       data: {
+  //         userId,
+  //         entity: AuditEntity.MASTER_RECORD,
+  //         action: AuditAction.CREATE,
+  //         comment: `Record created (${recordCode})`,
+  //         after: createdRecord,
+  //         ipAddress: meta?.ipAddress ?? null,
+  //         userAgent: meta?.userAgent ?? null,
+  //         performedBy: meta?.performedBy ?? PerformedByType.USER,
+  //       },
+  //     });
+
+  //     return createdRecord;
+  //   });
   // },
-  
+
   createRecord: async (masterObjectId: string, data: any, meta?: ActorMeta) => {
-  const userId = meta?.actorId;
-  if (!userId) throw new BadRequestException("UserId is required");
+    const userId = meta?.actorId;
+    if (!userId) throw new BadRequestException("UserId is required");
 
-  // STEP 1 → Find active schema for this MasterObject
-  const schema = await prisma.masterObjectSchema.findFirst({
-    where: {
-      masterObjectId,
-      status:SchemaStatus.PUBLISHED
-    },
-    orderBy: { version: "desc" },
-  });
-
-  if (!schema) {
-    throw new BadRequestException(
-      "No published schema found for this MasterObject"
-    );
-  }
-
-  // STEP 2 → Find Resource + Workflow
-  const resource = await prisma.resource.findFirst({
-    where: { masterObjectId },
-    include: { workflows: true },
-  });
-
-  let workflowDef = null;
-  if (resource?.workflows?.length) {
-    workflowDef =
-      resource.workflows
-        .filter((w) => w.isActive)
-        .sort((a, b) => b.version - a.version)[0] ?? null;
-  }
-
-  // STEP 3 → Find initial stage (if workflow exists)
-  let initialStage = null;
-
-  if (workflowDef) {
-    initialStage = await prisma.workflowStage.findFirst({
+    // 1️⃣ Fetch published schema
+    const schema = await prisma.masterObjectSchema.findFirst({
       where: {
-        workflowId: workflowDef.id,
-        isInitial: true,
+        masterObjectId,
+        status: SchemaStatus.PUBLISHED,
       },
-    });
-  }
-
-  // STEP 4 → Create record (TRANSACTION)
-  return prisma.$transaction(async (tx) => {
-    const createdRecord = await tx.masterRecord.create({
-      data: {
-        masterObject: { connect: { id: masterObjectId } },
-
-        // ✅ REQUIRED
-        schema: { connect: { id: schema.id } },
-
-        data,
-        isActive: data.isActive ?? true,
-
-        createdBy: { connect: { id: userId } },
-
-        ...(initialStage && {
-          currentStage: { connect: { id: initialStage.id } },
-        }),
-      },
+      orderBy: { version: "desc" },
     });
 
-    // Audit log
-    await tx.auditLog.create({
-      data: {
-        userId,
-        entity: AuditEntity.MASTER_RECORD,
-        action: AuditAction.CREATE,
-        comment: "Record created",
-        after: createdRecord,
-        ipAddress: meta?.ipAddress ?? null,
-        userAgent: meta?.userAgent ?? null,
-        performedBy: meta?.performedBy ?? PerformedByType.USER,
-      },
+    if (!schema) {
+      throw new BadRequestException(
+        "No published schema found for this MasterObject"
+      );
+    }
+
+    // 2️⃣ Fetch MasterObject (prefix required)
+    const masterObject = await prisma.masterObject.findUnique({
+      where: { id: masterObjectId },
+      select: { codePrefix: true },
     });
 
-    return createdRecord;
-  });
-},
+    if (!masterObject?.codePrefix) {
+      throw new BadRequestException(
+        "Code prefix not configured for this MasterObject"
+      );
+    }
+
+    // 3️⃣ TRANSACTION (CRITICAL)
+    return prisma.$transaction(async (tx) => {
+      // 🔒 Lock counter row
+      const counter = await tx.masterObjectCounter.upsert({
+        where: { masterObjectId },
+        update: { lastNumber: { increment: 1 } },
+        create: {
+          masterObjectId,
+          lastNumber: 1,
+        },
+      });
+
+      const nextNumber = counter.lastNumber;
+
+      // 🧠 Generate code → ITEM-000123
+      const code = `${masterObject.codePrefix}-${String(nextNumber).padStart(
+        6,
+        "0"
+      )}`;
+
+      // 4️⃣ Create record
+      const record = await tx.masterRecord.create({
+        data: {
+          code,
+          masterObject: { connect: { id: masterObjectId } },
+          schema: { connect: { id: schema.id } },
+          data,
+          createdBy: { connect: { id: userId } },
+        },
+      });
+
+      // 5️⃣ Audit log
+      await tx.auditLog.create({
+        data: {
+          userId,
+          entity: AuditEntity.MASTER_RECORD,
+          action: AuditAction.CREATE,
+          comment: `Record created (${code})`,
+          after: record,
+          ipAddress: meta?.ipAddress ?? null,
+          userAgent: meta?.userAgent ?? null,
+          performedBy: meta?.performedBy ?? PerformedByType.USER,
+        },
+      });
+
+      return record;
+    });
+  },
+
   getRecords: async (options?: Partial<MasterRecordFilterInput>) => {
     const parsed = masterRecordFilterSchema.parse(options || {});
 
@@ -259,64 +302,63 @@ const masterRecordService = {
 
 export default masterRecordService;
 
+// createRecord: async (masterObjectId: string, data: any, meta?: ActorMeta) => {
+//   const userId = meta?.actorId;
+//   if (!userId) {
+//     throw new BadRequestException("UserId is required");
+//   }
+//   const initialStage = await prisma.workflowStage.findFirst({
+//     where: {
+//       workflow: { id: masterObjectId },
+//       isInitial: true,
+//     },
+//   });
+//   try {
+//     const record = await prisma.$transaction(async (tx) => {
+//       // ⭐ 2. Create Resource and connect to MasterObject
+//       const toCreate: Prisma.MasterRecordCreateInput = {
+//         masterObject: {
+//           connect: { id: masterObjectId },
+//         },
+//         data,
+//         currentStage: initialStage
+//           ? { connect: { id: initialStage.id } }
+//           : undefined,
+//         createdBy: {
+//           connect: { id: userId },
+//         },
 
-  // createRecord: async (masterObjectId: string, data: any, meta?: ActorMeta) => {
-  //   const userId = meta?.actorId;
-  //   if (!userId) {
-  //     throw new BadRequestException("UserId is required");
-  //   }
-  //   const initialStage = await prisma.workflowStage.findFirst({
-  //     where: {
-  //       workflow: { id: masterObjectId },
-  //       isInitial: true,
-  //     },
-  //   });
-  //   try {
-  //     const record = await prisma.$transaction(async (tx) => {
-  //       // ⭐ 2. Create Resource and connect to MasterObject
-  //       const toCreate: Prisma.MasterRecordCreateInput = {
-  //         masterObject: {
-  //           connect: { id: masterObjectId },
-  //         },
-  //         data,
-  //         currentStage: initialStage
-  //           ? { connect: { id: initialStage.id } }
-  //           : undefined,
-  //         createdBy: {
-  //           connect: { id: userId },
-  //         },
+//         isActive: data.isActive ?? true,
+//       };
 
-  //         isActive: data.isActive ?? true,
-  //       };
+//       const createdRecord = await tx.masterRecord.create({ data: toCreate });
 
-  //       const createdRecord = await tx.masterRecord.create({ data: toCreate });
+//       // ⭐ 3. Audit Log
+//       await tx.auditLog.create({
+//         data: {
+//           userId: meta?.actorId ?? null,
+//           entity: AuditEntity.MASTER_RECORD,
+//           action: AuditAction.CREATE,
+//           comment: "Record created",
+//           after: createdRecord,
+//           ipAddress: meta?.ipAddress ?? null,
+//           userAgent: meta?.userAgent ?? null,
+//           performedBy: meta?.performedBy ?? PerformedByType.USER,
+//         },
+//       });
 
-  //       // ⭐ 3. Audit Log
-  //       await tx.auditLog.create({
-  //         data: {
-  //           userId: meta?.actorId ?? null,
-  //           entity: AuditEntity.MASTER_RECORD,
-  //           action: AuditAction.CREATE,
-  //           comment: "Record created",
-  //           after: createdRecord,
-  //           ipAddress: meta?.ipAddress ?? null,
-  //           userAgent: meta?.userAgent ?? null,
-  //           performedBy: meta?.performedBy ?? PerformedByType.USER,
-  //         },
-  //       });
+//       return createdRecord;
+//     });
 
-  //       return createdRecord;
-  //     });
-
-  //     return record;
-  //   } catch (err: any) {
-  //     // Handle unique constraint errors
-  //     if (err?.code === "P2002") {
-  //       const target = err?.meta?.target ?? [];
-  //       if (target.includes("name")) {
-  //         throw new BadRequestException("Reecord name already exists.");
-  //       }
-  //     }
-  //     throw err;
-  //   }
-  // },
+//     return record;
+//   } catch (err: any) {
+//     // Handle unique constraint errors
+//     if (err?.code === "P2002") {
+//       const target = err?.meta?.target ?? [];
+//       if (target.includes("name")) {
+//         throw new BadRequestException("Reecord name already exists.");
+//       }
+//     }
+//     throw err;
+//   }
+// },

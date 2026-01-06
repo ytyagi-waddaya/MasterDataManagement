@@ -6,7 +6,10 @@ import apiClient from "@/lib/api/apiClient";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { toast } from "sonner";
-import { CreateResourceInput, UpdateResourceInput } from "../schema/resource-schema";
+import {
+  CreateResourceInput,
+  UpdateResourceInput,
+} from "../schema/resource-schema";
 
 export interface ResourceFilters {
   status?: "active" | "inactive" | "all";
@@ -65,8 +68,8 @@ export function useResources<T = any>({
       };
 
       const res = await apiClient.get("/resource", { params });
-      console.log("RESOURCE:",res);
-      
+      console.log("RESOURCE:", res);
+
       return {
         resources: {
           data: res.data.data?.resources.data ?? [],
@@ -85,7 +88,7 @@ export function useResourceList() {
     queryKey: ["resources"],
     queryFn: async () => {
       const res = await apiClient.get("/resource", {
-        params: { skip: 0, take: 100 }, 
+        params: { skip: 0, take: 100 },
       });
 
       const resources =
@@ -93,10 +96,10 @@ export function useResourceList() {
           label: m.name,
           value: m.id,
         })) ?? [];
+      console.log("RESOURCES:", res);
 
       return resources;
     },
-
   });
 }
 
@@ -105,10 +108,24 @@ export function useResource(resourceId: string) {
     queryKey: ["resource", resourceId],
     queryFn: async () => {
       const res = await apiClient.get(`/resource/${resourceId}`);
+      console.log("RESOURCES:", res);
       return res.data.data.resource;
     },
-    
-    enabled: !!resourceId, 
+
+    enabled: !!resourceId,
+  });
+}
+
+export function useResourceFields(resourceKey: string) {
+  return useQuery({
+    queryKey: ["resource", resourceKey],
+    queryFn: async () => {
+      const res = await apiClient.get(`/resource/${resourceKey}/fields`);
+      console.log("RESOURCES:", res);
+      return res.data.data.resource;
+    },
+
+    enabled: !!resourceKey,
   });
 }
 
@@ -141,7 +158,6 @@ export function useUpdateResource() {
       resourceId: string;
       payload: UpdateResourceInput;
     }) => {
-      
       const res = await apiClient.put(`/resource/${resourceId}`, payload);
       return res.data;
     },
@@ -232,7 +248,9 @@ export function useBulkArchiveResources() {
 
   return useMutation({
     mutationFn: async (ResourceIds: string[]) => {
-      const res = await apiClient.patch("/resource/bulk/archive", { ResourceIds });
+      const res = await apiClient.patch("/resource/bulk/archive", {
+        ResourceIds,
+      });
       return res.data;
     },
     onSuccess: () => {
@@ -240,7 +258,9 @@ export function useBulkArchiveResources() {
       queryClient.invalidateQueries({ queryKey: ["resources"] });
     },
     onError: (err: any) => {
-      toast.error(err.response?.data?.message || "Failed to archived Resources");
+      toast.error(
+        err.response?.data?.message || "Failed to archived Resources"
+      );
     },
   });
 }
@@ -250,7 +270,9 @@ export function useBulkRestoreResources() {
 
   return useMutation({
     mutationFn: async (ResourceIds: string[]) => {
-      const res = await apiClient.patch("/resource/bulk/restore", { ResourceIds });
+      const res = await apiClient.patch("/resource/bulk/restore", {
+        ResourceIds,
+      });
       return res.data;
     },
     onSuccess: () => {
@@ -268,7 +290,9 @@ export function useBulkDeleteResources() {
 
   return useMutation({
     mutationFn: async (ResourceIds: string[]) => {
-      const res = await apiClient.delete("/resource/bulk", { data: { ResourceIds } });
+      const res = await apiClient.delete("/resource/bulk", {
+        data: { ResourceIds },
+      });
       return res.data;
     },
     onSuccess: () => {
@@ -280,5 +304,3 @@ export function useBulkDeleteResources() {
     },
   });
 }
-
-

@@ -258,249 +258,323 @@ const WorkflowService = {
   //     };
   //   });
   // },
+  //////////////
+  // saveWorkflowGraph: async (
+  //   workflowId: string,
+  //   data: {
+  //     stages: Array<{
+  //       tempId?: string;
+  //       name: string;
+  //       order: number;
+  //       isInitial: boolean;
+  //       isFinal: boolean;
+  //       category: Category;
+  //       color?: string;
+  //       metadata?: any;
+  //       allowedNextCategories?: Category[];
+  //       position?: { x: number; y: number };
+  //     }>;
+  //     transitions: Array<{
+  //       fromStageId: string;
+  //       toStageId: string;
+  //       label?: string;
+  //       transitionType?: TransitionType;
+  //       triggerStrategy?: TriggerStrategy;
+  //       approvalStrategy?: ApprovalStrategy;
+  //       autoTrigger?: boolean;
+  //       condition?: any;
+  //       metadata?: any;
+  //       approvalConfig?: any;
+  //       allowedRoleIds?: string[];
+  //       allowedUserIds?: string[];
+  //     }>;
+  //   },
+  //   meta?: ActorMeta
+  // ) => {
+  //   const actorId = meta?.actorId;
+  //   if (!actorId) throw new BadRequestException("Actor ID is required");
 
-saveWorkflowGraph: async (
-  workflowId: string,
-  data: {
-    stages: Array<{
-      tempId?: string;
-      name: string;
-      order: number;
-      isInitial: boolean;
-      isFinal: boolean;
-      category: Category;
-      color?: string;
-      metadata?: any;
-      allowedNextCategories?: Category[];
-      position?: { x: number; y: number };
-    }>;
-    transitions: Array<{
-      fromStageId: string;
-      toStageId: string;
-      label?: string;
-      transitionType?: TransitionType;
-      triggerStrategy?: TriggerStrategy;
-      approvalStrategy?: ApprovalStrategy;
-      autoTrigger?: boolean;
-      condition?: any;
-      metadata?: any;
-      approvalConfig?: any;
-      allowedRoleIds?: string[];
-      allowedUserIds?: string[];
-    }>;
+  //   const workflow = await prisma.workflowDefinition.findUnique({
+  //     where: { id: workflowId },
+  //   });
+
+  //   if (!workflow) throw new BadRequestException("Workflow not found");
+  //   if (workflow.status !== "DRAFT") {
+  //     throw new BadRequestException("Only DRAFT workflows can be edited");
+  //   }
+
+  //   /* ---------- BASIC STAGE VALIDATION ---------- */
+  //   const initialStages = data.stages.filter((s) => s.isInitial);
+  //   if (initialStages.length !== 1) {
+  //     throw new BadRequestException("Exactly one initial stage is required");
+  //   }
+
+  //   const finalStages = data.stages.filter((s) => s.isFinal);
+  //   if (!finalStages.length) {
+  //     throw new BadRequestException("At least one final stage is required");
+  //   }
+
+  //   /* ---------- UNIQUE STAGE NAMES ---------- */
+  //   const stageNames = data.stages.map((s) => s.name.trim().toLowerCase());
+  //   if (stageNames.length !== new Set(stageNames).size) {
+  //     throw new BadRequestException("Stage names must be unique");
+  //   }
+
+  //   return prisma.$transaction(async (tx) => {
+  //     /* ---------- DELETE OLD GRAPH ---------- */
+  //     await tx.workflowTransition.deleteMany({ where: { workflowId } });
+  //     await tx.workflowStage.deleteMany({ where: { workflowId } });
+
+  //     /* ---------- CREATE STAGES ---------- */
+  //     const stageMap: Record<string, string> = {};
+
+  //     for (const s of data.stages) {
+  //       const stageCode = await generateStageCode(workflow.id, s.name, tx);
+
+  //       const stage = await tx.workflowStage.create({
+  //         data: {
+  //           workflowId,
+  //           name: s.name,
+  //           code: stageCode,
+  //           order: s.order,
+  //           isInitial: s.isInitial,
+  //           isFinal: s.isFinal,
+  //           category: s.category,
+  //           color: s.color ?? null,
+  //           metadata: s.metadata ?? Prisma.JsonNull,
+  //           position: s.position
+  //             ? (s.position as Prisma.InputJsonValue)
+  //             : Prisma.JsonNull,
+  //           allowedNextCategories: s.allowedNextCategories ?? [],
+  //         },
+  //       });
+
+  //       stageMap[s.tempId ?? s.name] = stage.id;
+  //     }
+
+  //     /* ---------- CREATE TRANSITIONS ---------- */
+  //     for (const t of data.transitions) {
+  //       const fromStageId = stageMap[t.fromStageId] ?? t.fromStageId;
+  //       const toStageId = stageMap[t.toStageId] ?? t.toStageId;
+
+  //       const transitionType = t.transitionType ?? "NORMAL";
+  //       const triggerStrategy = t.triggerStrategy ?? "ANY_ALLOWED";
+
+  //       /* ---------- TRIGGER STRATEGY RULES ---------- */
+  //       if (transitionType === "AUTO" && triggerStrategy !== "SYSTEM_ONLY") {
+  //         throw new BadRequestException(
+  //           "AUTO transitions must use SYSTEM_ONLY trigger strategy"
+  //         );
+  //       }
+
+  //       if (triggerStrategy === "SYSTEM_ONLY" && transitionType !== "AUTO") {
+  //         throw new BadRequestException(
+  //           "SYSTEM_ONLY trigger strategy is only valid for AUTO transitions"
+  //         );
+  //       }
+
+  //       if (
+  //         triggerStrategy === "APPROVER_ONLY" &&
+  //         transitionType !== "APPROVAL"
+  //       ) {
+  //         throw new BadRequestException(
+  //           "APPROVER_ONLY trigger strategy is only valid for APPROVAL transitions"
+  //         );
+  //       }
+
+  //       /* ---------- REVIEW ---------- */
+  //       if (transitionType === "REVIEW" && fromStageId !== toStageId) {
+  //         throw new BadRequestException(
+  //           "REVIEW transition must be a self-loop"
+  //         );
+  //       }
+
+  //       /* ---------- AUTO ---------- */
+  //       if (
+  //         transitionType === "AUTO" &&
+  //         (t.allowedRoleIds?.length || t.allowedUserIds?.length)
+  //       ) {
+  //         throw new BadRequestException(
+  //           "AUTO transitions cannot have users or roles"
+  //         );
+  //       }
+
+  //       /* ---------- APPROVAL ---------- */
+  //       if (transitionType === "APPROVAL") {
+  //         if (!t.approvalStrategy) {
+  //           throw new BadRequestException(
+  //             "approvalStrategy is required for APPROVAL transitions"
+  //           );
+  //         }
+
+  //         if (!t.approvalConfig) {
+  //           throw new BadRequestException(
+  //             "approvalConfig is required for APPROVAL transitions"
+  //           );
+  //         }
+
+  //         const config = t.approvalConfig;
+
+  //         if (config.mode === "SEQUENTIAL") {
+  //           if (!Array.isArray(config.levels) || !config.levels.length) {
+  //             throw new BadRequestException(
+  //               "Sequential approval requires approval levels"
+  //             );
+  //           }
+
+  //           const orders = config.levels.map((l: any) => l.order);
+  //           if (orders.length !== new Set(orders).size) {
+  //             throw new BadRequestException(
+  //               "Approval levels must have unique order"
+  //             );
+  //           }
+  //         }
+
+  //         if (config.mode === "PARALLEL") {
+  //           const level = config.levels?.[0];
+  //           const count =
+  //             (level?.userIds?.length ?? 0) + (level?.roleIds?.length ?? 0);
+
+  //           if (!count) {
+  //             throw new BadRequestException(
+  //               "Parallel approval requires users or roles"
+  //             );
+  //           }
+  //         }
+  //       }
+
+  //       if (transitionType !== "APPROVAL" && t.approvalConfig) {
+  //         throw new BadRequestException(
+  //           "approvalConfig is only allowed for APPROVAL transitions"
+  //         );
+  //       }
+
+  //       /* ---------- CREATE TRANSITION ---------- */
+  //       const transitionData: Prisma.WorkflowTransitionCreateInput = {
+  //         workflow: { connect: { id: workflow.id } },
+  //         fromStage: { connect: { id: fromStageId } },
+  //         toStage: { connect: { id: toStageId } },
+
+  //         label: t.label ?? null,
+  //         transitionType,
+  //         triggerStrategy,
+
+  //         approvalStrategy:
+  //           transitionType === "APPROVAL" ? t.approvalStrategy ?? "ALL" : "ALL",
+
+  //         autoTrigger: Boolean(t.autoTrigger),
+
+  //         condition: t.condition ?? Prisma.JsonNull,
+  //         metadata: t.metadata ?? Prisma.JsonNull,
+
+  //         approvalConfig:
+  //           transitionType === "APPROVAL"
+  //             ? t.approvalConfig ?? Prisma.JsonNull
+  //             : Prisma.JsonNull,
+  //       };
+
+  //       if (t.allowedRoleIds?.length) {
+  //         transitionData.allowedRoles = {
+  //           create: t.allowedRoleIds.map((roleId) => ({ roleId })),
+  //         };
+  //       }
+
+  //       if (t.allowedUserIds?.length) {
+  //         transitionData.allowedUsers = {
+  //           create: t.allowedUserIds.map((userId) => ({ userId })),
+  //         };
+  //       }
+
+  //       await tx.workflowTransition.create({ data: transitionData });
+  //     }
+
+  //     /* ---------- FINAL GRAPH VALIDATION ---------- */
+  //     await validateWorkflowGraph(workflow.id, tx);
+
+  //     return workflow;
+  //   });
+  // },
+  saveWorkflowGraph: async (workflowId: string, data:CreateFullWorkflowInput, meta?: ActorMeta) => {
+    const actorId = meta?.actorId;
+    if (!actorId) throw new BadRequestException("Actor ID is required");
+
+    // 🔒 Zod is the source of truth
+    const validated = createFullWorkflowSchema.parse(data);
+
+    const workflow = await prisma.workflowDefinition.findUnique({
+      where: { id: workflowId },
+    });
+    if (!workflow) throw new BadRequestException("Workflow not found");
+    if (workflow.status !== "DRAFT") {
+      throw new BadRequestException("Only DRAFT workflows can be edited");
+    }
+
+    return prisma.$transaction(async (tx) => {
+      /* ---------- CLEAR OLD GRAPH ---------- */
+      await tx.workflowTransition.deleteMany({ where: { workflowId } });
+      await tx.workflowStage.deleteMany({ where: { workflowId } });
+
+      /* ---------- CREATE STAGES ---------- */
+      const stageMap = new Map<string, string>();
+
+      for (const s of validated.stages) {
+        const stage = await tx.workflowStage.create({
+          data: {
+            workflowId,
+            name: s.name,
+            code: await generateStageCode(workflowId, s.name, tx),
+            order: s.order,
+            isInitial: s.isInitial,
+            isFinal: s.isFinal,
+            category: s.category,
+            color: s.color ?? null,
+            metadata: s.metadata ?? Prisma.JsonNull,
+            position: s.position ?? Prisma.JsonNull,
+             allowedNextCategories: s.allowedNextCategories ?? [],
+          },
+        });
+
+        stageMap.set(s.tempId, stage.id);
+      }
+
+      /* ---------- CREATE TRANSITIONS ---------- */
+      for (const t of validated.transitions) {
+        const fromStageId = stageMap.get(t.fromStageId);
+        const toStageId = stageMap.get(t.toStageId);
+
+        if (!fromStageId || !toStageId) {
+          throw new BadRequestException("Transition references invalid stage");
+        }
+
+        await tx.workflowTransition.create({
+          data: {
+            workflowId,
+            fromStageId,
+            toStageId,
+            label: t.label ?? null,
+            transitionType: t.transitionType,
+            triggerStrategy: t.triggerStrategy,
+            approvalStrategy: t.approvalStrategy ?? "ALL",
+            autoTrigger: t.autoTrigger,
+            condition: t.condition ?? Prisma.JsonNull,
+            metadata: t.metadata ?? Prisma.JsonNull,
+            approvalConfig: t.approvalConfig ?? Prisma.JsonNull,
+            allowedRoles: {
+              create: t.allowedRoleIds.map((roleId) => ({ roleId })),
+            },
+            allowedUsers: {
+              create: t.allowedUserIds.map((userId) => ({ userId })),
+            },
+          },
+        });
+      }
+
+      /* ---------- FINAL GRAPH VALIDATION ---------- */
+      await validateWorkflowGraph(workflowId, tx);
+
+      return workflow;
+    });
   },
-  meta?: ActorMeta
-) => {
-  const actorId = meta?.actorId;
-  if (!actorId) throw new BadRequestException("Actor ID is required");
-
-  const workflow = await prisma.workflowDefinition.findUnique({
-    where: { id: workflowId },
-  });
-
-  if (!workflow) throw new BadRequestException("Workflow not found");
-  if (workflow.status !== "DRAFT") {
-    throw new BadRequestException("Only DRAFT workflows can be edited");
-  }
-
-  /* ---------- BASIC STAGE VALIDATION ---------- */
-  const initialStages = data.stages.filter((s) => s.isInitial);
-  if (initialStages.length !== 1) {
-    throw new BadRequestException("Exactly one initial stage is required");
-  }
-
-  const finalStages = data.stages.filter((s) => s.isFinal);
-  if (!finalStages.length) {
-    throw new BadRequestException("At least one final stage is required");
-  }
-
-  /* ---------- UNIQUE STAGE NAMES ---------- */
-  const stageNames = data.stages.map((s) => s.name.trim().toLowerCase());
-  if (stageNames.length !== new Set(stageNames).size) {
-    throw new BadRequestException("Stage names must be unique");
-  }
-
-  return prisma.$transaction(async (tx) => {
-    /* ---------- DELETE OLD GRAPH ---------- */
-    await tx.workflowTransition.deleteMany({ where: { workflowId } });
-    await tx.workflowStage.deleteMany({ where: { workflowId } });
-
-    /* ---------- CREATE STAGES ---------- */
-    const stageMap: Record<string, string> = {};
-
-    for (const s of data.stages) {
-      const stageCode = await generateStageCode(workflow.id, s.name, tx);
-
-      const stage = await tx.workflowStage.create({
-        data: {
-          workflowId,
-          name: s.name,
-          code: stageCode,
-          order: s.order,
-          isInitial: s.isInitial,
-          isFinal: s.isFinal,
-          category: s.category,
-          color: s.color ?? null,
-          metadata: s.metadata ?? Prisma.JsonNull,
-          position: s.position
-            ? (s.position as Prisma.InputJsonValue)
-            : Prisma.JsonNull,
-          allowedNextCategories: s.allowedNextCategories ?? [],
-        },
-      });
-
-      stageMap[s.tempId ?? s.name] = stage.id;
-    }
-
-    /* ---------- CREATE TRANSITIONS ---------- */
-    for (const t of data.transitions) {
-      const fromStageId = stageMap[t.fromStageId] ?? t.fromStageId;
-      const toStageId = stageMap[t.toStageId] ?? t.toStageId;
-
-      const transitionType = t.transitionType ?? "NORMAL";
-      const triggerStrategy = t.triggerStrategy ?? "ANY_ALLOWED";
-
-      /* ---------- TRIGGER STRATEGY RULES ---------- */
-      if (transitionType === "AUTO" && triggerStrategy !== "SYSTEM_ONLY") {
-        throw new BadRequestException(
-          "AUTO transitions must use SYSTEM_ONLY trigger strategy"
-        );
-      }
-
-      if (
-        triggerStrategy === "SYSTEM_ONLY" &&
-        transitionType !== "AUTO"
-      ) {
-        throw new BadRequestException(
-          "SYSTEM_ONLY trigger strategy is only valid for AUTO transitions"
-        );
-      }
-
-      if (
-        triggerStrategy === "APPROVER_ONLY" &&
-        transitionType !== "APPROVAL"
-      ) {
-        throw new BadRequestException(
-          "APPROVER_ONLY trigger strategy is only valid for APPROVAL transitions"
-        );
-      }
-
-      /* ---------- REVIEW ---------- */
-      if (transitionType === "REVIEW" && fromStageId !== toStageId) {
-        throw new BadRequestException(
-          "REVIEW transition must be a self-loop"
-        );
-      }
-
-      /* ---------- AUTO ---------- */
-      if (
-        transitionType === "AUTO" &&
-        (t.allowedRoleIds?.length || t.allowedUserIds?.length)
-      ) {
-        throw new BadRequestException(
-          "AUTO transitions cannot have users or roles"
-        );
-      }
-
-      /* ---------- APPROVAL ---------- */
-      if (transitionType === "APPROVAL") {
-        if (!t.approvalStrategy) {
-          throw new BadRequestException(
-            "approvalStrategy is required for APPROVAL transitions"
-          );
-        }
-
-        if (!t.approvalConfig) {
-          throw new BadRequestException(
-            "approvalConfig is required for APPROVAL transitions"
-          );
-        }
-
-        const config = t.approvalConfig;
-
-        if (config.mode === "SEQUENTIAL") {
-          if (!Array.isArray(config.levels) || !config.levels.length) {
-            throw new BadRequestException(
-              "Sequential approval requires approval levels"
-            );
-          }
-
-          const orders = config.levels.map((l: any) => l.order);
-          if (orders.length !== new Set(orders).size) {
-            throw new BadRequestException(
-              "Approval levels must have unique order"
-            );
-          }
-        }
-
-        if (config.mode === "PARALLEL") {
-          const level = config.levels?.[0];
-          const count =
-            (level?.userIds?.length ?? 0) +
-            (level?.roleIds?.length ?? 0);
-
-          if (!count) {
-            throw new BadRequestException(
-              "Parallel approval requires users or roles"
-            );
-          }
-        }
-      }
-
-      if (transitionType !== "APPROVAL" && t.approvalConfig) {
-        throw new BadRequestException(
-          "approvalConfig is only allowed for APPROVAL transitions"
-        );
-      }
-
-      /* ---------- CREATE TRANSITION ---------- */
-      const transitionData: Prisma.WorkflowTransitionCreateInput = {
-        workflow: { connect: { id: workflow.id } },
-        fromStage: { connect: { id: fromStageId } },
-        toStage: { connect: { id: toStageId } },
-
-        label: t.label ?? null,
-        transitionType,
-        triggerStrategy,
-
-        approvalStrategy:
-          transitionType === "APPROVAL"
-            ? t.approvalStrategy ?? "ALL"
-            : "ALL",
-
-        autoTrigger: Boolean(t.autoTrigger),
-
-        condition: t.condition ?? Prisma.JsonNull,
-        metadata: t.metadata ?? Prisma.JsonNull,
-
-        approvalConfig:
-          transitionType === "APPROVAL"
-            ? t.approvalConfig ?? Prisma.JsonNull
-            : Prisma.JsonNull,
-      };
-
-      if (t.allowedRoleIds?.length) {
-        transitionData.allowedRoles = {
-          create: t.allowedRoleIds.map((roleId) => ({ roleId })),
-        };
-      }
-
-      if (t.allowedUserIds?.length) {
-        transitionData.allowedUsers = {
-          create: t.allowedUserIds.map((userId) => ({ userId })),
-        };
-      }
-
-      await tx.workflowTransition.create({ data: transitionData });
-    }
-
-    /* ---------- FINAL GRAPH VALIDATION ---------- */
-    await validateWorkflowGraph(workflow.id, tx);
-
-    return workflow;
-  });
-},
-
 
   createWorkflow: async (
     data: CreateWorkflowDefinitionInput,
@@ -578,11 +652,7 @@ saveWorkflowGraph: async (
     const workflow = await prisma.workflowDefinition.findUnique({
       where: { id: workflowId },
     });
-
-    if (!workflow) {
-      throw new BadRequestException("Workflow not found");
-    }
-
+    if (!workflow) throw new BadRequestException("Workflow not found");
     if (workflow.status !== "DRAFT") {
       throw new BadRequestException("Only DRAFT workflows can be published");
     }
@@ -595,6 +665,8 @@ saveWorkflowGraph: async (
         data: {
           status: "PUBLISHED",
           isActive: true,
+          publishedAt: new Date(),
+          publishedById: actorId,
         },
       });
     });

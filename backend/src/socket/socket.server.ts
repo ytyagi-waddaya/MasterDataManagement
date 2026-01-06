@@ -29,7 +29,7 @@ export function createSocketServer(app: express.Express) {
   // If redis adapter available, use it for scaling / multi-instance
   try {
     // redisPub & redisSub are ioredis instances
-    io.adapter(createAdapter(redisPub.duplicate(), redisSub.duplicate()));
+    io.adapter(createAdapter(redisPub, redisSub));
     logger.info("[socket] redis adapter enabled");
   } catch (err) {
     logger.warn("[socket] redis adapter not enabled", err);
@@ -307,10 +307,6 @@ export function createSocketServer(app: express.Express) {
     logger.info("[socket] shutting down...");
     try {
       await io.close();
-      redisSub.quit();
-      redisPub.quit();
-      redisSub.disconnect();
-      redisPub.disconnect();
     } catch (err) {
       logger.error("[socket] shutdown error", err);
     }
