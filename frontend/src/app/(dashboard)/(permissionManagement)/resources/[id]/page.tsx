@@ -185,7 +185,7 @@ export default function ResourceRecordsPage() {
         data={data?.data ?? []}
         total={data?.total ?? 0}
         loading={isLoading}
-        page={page}
+        page={page} 
         pageSize={pageSize}
         sorting={sorting}
         search={search}

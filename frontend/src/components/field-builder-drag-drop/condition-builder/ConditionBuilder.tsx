@@ -28,7 +28,8 @@
 "use client";
 
 import { ConditionNode } from "../contracts/condition.contract";
-import { ConditionGroupView, FieldMeta } from "./ConditionGroupView";
+import { FieldMeta } from "./condition.types";
+import { ConditionGroupView } from "./ConditionGroupView";
 import { ConditionPreview } from "./ConditionPreview";
 import { Filter } from "lucide-react";
 

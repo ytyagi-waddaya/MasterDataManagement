@@ -90,10 +90,10 @@ router.delete(
 /*                                INSTANCES                                   */
 /* -------------------------------------------------------------------------- */
 
-router.post(
-  "/:workflowId/instance",
-  asyncHandler(workflowController.startInstance)
-); 
+// router.post(
+//   "/:workflowId/instance",
+//   asyncHandler(workflowController.startInstance)
+// ); 
 
 router.get(
   "/:workflowId/instances",

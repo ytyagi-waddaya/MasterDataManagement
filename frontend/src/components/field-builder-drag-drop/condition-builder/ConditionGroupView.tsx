@@ -273,7 +273,7 @@
 "use client";
 
 import { useState } from "react";
-import { ConditionNode, ConditionGroup, FieldKey } from "../contracts/condition.contract";
+import { ConditionNode, ConditionGroup} from "../contracts/condition.contract";
 import {
   addGroup,
   addRule,
@@ -281,15 +281,9 @@ import {
   updateChild,
 } from "./condition.helpers";
 import { ConditionRuleRow } from "./ConditionRuleRow";
-import { Plus, ChevronDown, ChevronRight, X, Filter, FolderPlus } from "lucide-react";
+import { Plus, ChevronDown, ChevronRight, X, FolderPlus } from "lucide-react";
+import { FieldMeta } from "./condition.types";
 
-export type FieldMeta = {
-  key: FieldKey
-  label: string;
-  type: FieldDataType;
-};
-
-type FieldDataType = string; // Keep the existing type or import from actual location
 
 export function ConditionGroupView({
   node,

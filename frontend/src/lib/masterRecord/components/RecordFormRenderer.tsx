@@ -12,7 +12,7 @@ export function RecordFormRenderer({ record }: { record: any }) {
 
       {/* Replace with your dynamic form renderer */}
       <pre className="text-xs">
-        {JSON.stringify(record.data, null, 2)}
+        {JSON.stringify(record, null, 2)}
       </pre>
     </div>
   );

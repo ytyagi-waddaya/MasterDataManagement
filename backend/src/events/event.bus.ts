@@ -1,5 +1,5 @@
 // src/events/event.bus.ts
-import { redisPub } from "../redis/client.js";
+import { appPub } from "../redis/client.js";
 import { logger } from "../utils/logger.js";
 import type { BroadcastPayload, EventEntity, EventAction } from "./event.registry.js";
 
@@ -60,7 +60,7 @@ export async function broadcastEvent(
   });
 
   try {
-    await redisPub.publish(CHANNEL, JSON.stringify(evt));
+    await appPub.publish(CHANNEL, JSON.stringify(evt));
   } catch (err) {
     logger.error("[event.bus] broadcastEvent failed", err);
   }
@@ -72,7 +72,7 @@ export async function broadcastEvent(
  */
 export async function broadcastEventDirect(evt: BroadcastPayload) {
   try {
-    await redisPub.publish(CHANNEL, JSON.stringify(evt));
+    await appPub.publish(CHANNEL, JSON.stringify(evt));
   } catch (err) {
     logger.error("[event.bus] broadcastEventDirect failed", err);
   }

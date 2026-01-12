@@ -13,7 +13,9 @@ export default function RecordDetailsPage() {
   const { recordId } = useParams() as { recordId: string };
   const { data: record, isLoading, refetch } = useRecord(recordId);
 
-  if (isLoading || !record) return null;
+ if (isLoading) return <div>Loading...</div>;
+if (!record) return <div>Record not found</div>;
+
 
   return (
     <div className="flex flex-col gap-4 p-4">

@@ -290,12 +290,8 @@ import { ConditionLeaf, FieldKey } from "../contracts/condition.contract";
 import { ValueInput } from "./ValueInput";
 
 import { X } from "lucide-react";
+import { FieldMeta } from "./condition.types";
 
-type FieldMeta = {
-  key: FieldKey;
-  label: string;
-  type: FieldDataType;
-};
 
 export function ConditionRuleRow({
   rule,
@@ -333,7 +329,7 @@ export function ConditionRuleRow({
       <div className="flex items-center gap-2 flex-1 min-w-[200px]">
         <select
           value={rule.field}
-          onChange={(e) => onChange({ ...rule, field: e.target.value })}
+          onChange={(e) => onChange({ ...rule, field: e.target.value as FieldKey })}
           className="
             text-sm px-2 py-1.5 rounded border border-gray-300 dark:border-gray-700
             bg-white dark:bg-gray-900

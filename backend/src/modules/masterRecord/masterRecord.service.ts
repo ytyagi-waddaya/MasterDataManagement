@@ -12,7 +12,9 @@ import {
   NotFoundException,
 } from "../../utils/appError.js";
 
-import masterRecordRepository from "./masterRecord.repository.js";
+import masterRecordRepository, {
+  getWorkflowInstanceForResource,
+} from "./masterRecord.repository.js";
 import { prisma } from "../../lib/prisma.js";
 import {
   MasterRecordFilterInput,
@@ -226,11 +228,28 @@ const masterRecordService = {
     return await masterRecordRepository.read(parsed);
   },
 
+  // getRecordById: async (recordId: string) => {
+  //   const record = await masterRecordRepository.getById(recordId);
+  //   if (!record) throw new NotFoundException("Resource not found.");
+
+  //   return record;
+  // },
+  // masterRecord.service.ts
+
   getRecordById: async (recordId: string) => {
     const record = await masterRecordRepository.getById(recordId);
     if (!record) throw new NotFoundException("Resource not found.");
 
-    return record;
+    // 🔥 fetch workflow instance generically
+    const workflowInstance = await getWorkflowInstanceForResource(
+      "MASTER_RECORD",
+      record.id
+    );
+
+    return {
+      ...record,
+      workflowInstance, // 👈 attached here
+    };
   },
 
   archiveRecord: async (recordId: string, meta?: ActorMeta) => {

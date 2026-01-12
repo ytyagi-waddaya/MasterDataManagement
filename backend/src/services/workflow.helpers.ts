@@ -21,11 +21,70 @@ export type ActorMeta = {
    PERMISSION CHECK
 ====================================================== */
 
+// export async function enforceTransitionPermission(
+//   userId: string,
+//   instance: {
+//     createdById?: string | null;
+//   },
+//   transition: {
+//     triggerStrategy: string;
+//     allowedUsers: { userId: string }[];
+//     allowedRoles: { roleId: string }[];
+//   },
+//   tx: Prisma.TransactionClient
+// ) {
+//   const strategy = transition.triggerStrategy;
+
+//   /* SYSTEM_ONLY */
+//   if (strategy === "SYSTEM_ONLY") {
+//     throw new ForbiddenException("System-only transition");
+//   }
+
+//   /* CREATOR_ONLY */
+//   if (strategy === "CREATOR_ONLY") {
+//     if (instance.createdById !== userId) {
+//       throw new ForbiddenException("Only creator can perform this transition");
+//     }
+//     return;
+//   }
+
+//   /* APPROVER_ONLY handled in approval flow */
+//   if (strategy === "APPROVER_ONLY") return;
+
+//   /* Explicit allow list */
+//   if (
+//     transition.allowedUsers.length === 0 &&
+//     transition.allowedRoles.length === 0
+//   ) {
+//     return;
+//   }
+
+//   if (transition.allowedUsers.some((u) => u.userId === userId)) {
+//     return;
+//   }
+
+//   const roles = await tx.userRole.findMany({
+//     where: { userId },
+//     select: { roleId: true },
+//   });
+
+//   const roleIds = roles.map((r) => r.roleId);
+
+//   if (!transition.allowedRoles.some((r) => roleIds.includes(r.roleId))) {
+//     throw new ForbiddenException("Transition not allowed");
+//   }
+// }
+
 export async function enforceTransitionPermission(
   userId: string,
   instance: {
     createdById?: string | null;
+    resourceType?: string;
+    resourceId?: string;
   },
+  record: {
+    createdById?: string | null;
+  } | null,
   transition: {
     triggerStrategy: string;
     allowedUsers: { userId: string }[];
@@ -40,9 +99,23 @@ export async function enforceTransitionPermission(
     throw new ForbiddenException("System-only transition");
   }
 
-  /* CREATOR_ONLY */
+  /* --------------------------------------------------
+     CREATOR_ONLY  ✅ FIXED
+  -------------------------------------------------- */
   if (strategy === "CREATOR_ONLY") {
-    if (instance.createdById !== userId) {
+    let isCreator = false;
+
+    // 1️⃣ Prefer record creator (business truth)
+    if (record?.createdById) {
+      isCreator = record.createdById === userId;
+    }
+
+    // 2️⃣ Fallback to instance creator (technical)
+    else if (instance.createdById) {
+      isCreator = instance.createdById === userId;
+    }
+
+    if (!isCreator) {
       throw new ForbiddenException("Only creator can perform this transition");
     }
     return;
@@ -70,9 +143,10 @@ export async function enforceTransitionPermission(
 
   const roleIds = roles.map((r) => r.roleId);
 
-  if (!transition.allowedRoles.some((r) => roleIds.includes(r.roleId))) {
-    throw new ForbiddenException("Transition not allowed");
+  if (transition.allowedRoles.some((r) => roleIds.includes(r.roleId))) {
+    return;
   }
+  throw new ForbiddenException("Transition not allowed");
 }
 
 
@@ -152,10 +226,56 @@ export function getCurrentApprovalLevel(
    MOVE TO STAGE
 ====================================================== */
 
+// export async function moveToStage(
+//   tx: Prisma.TransactionClient,
+//   instance: {
+//     id: string;
+//     resourceType?: string;
+//     resourceId: string;
+//   },
+//   transition: {
+//     id: string;
+//     fromStageId: string;
+//     toStageId: string;
+//     label?: string | null;
+//   },
+//   meta: ActorMeta,
+//   comment?: string
+// ) {
+//   await tx.workflowInstance.update({
+//     where: { id: instance.id },
+//     data: {
+//       currentStageId: transition.toStageId,
+//     },
+//   });
+
+//   await tx.masterRecord.update({
+//     where: { id: instance.resourceId },
+//     data: {
+//       currentStageId: transition.toStageId,
+//     },
+//   });
+
+//   await tx.workflowHistory.create({
+//     data: {
+//       workflowInstanceId: instance.id,
+//       fromStageId: transition.fromStageId,
+//       toStageId: transition.toStageId,
+//       workflowTransitionId: transition.id,
+//       actionType: HistoryAction.TRANSITION,
+//       actionLabel: transition.label ?? "Transition",
+//       performedById: meta.actorId,
+//       notes: comment ?? null,
+//     },
+//   });
+// }
+
+
 export async function moveToStage(
   tx: Prisma.TransactionClient,
   instance: {
     id: string;
+    resourceType?: string;
     resourceId: string;
   },
   transition: {
@@ -174,12 +294,15 @@ export async function moveToStage(
     },
   });
 
-  await tx.masterRecord.update({
-    where: { id: instance.resourceId },
-    data: {
-      currentStageId: transition.toStageId,
-    },
-  });
+  // 🔹 Update resource only if it is a MasterRecord
+  if (instance.resourceType === "MASTER_RECORD") {
+    await tx.masterRecord.update({
+      where: { id: instance.resourceId },
+      data: {
+        currentStageId: transition.toStageId,
+      },
+    });
+  }
 
   await tx.workflowHistory.create({
     data: {
@@ -194,4 +317,3 @@ export async function moveToStage(
     },
   });
 }
-

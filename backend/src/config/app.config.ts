@@ -40,6 +40,8 @@ export interface AppConfig {
   MAX_RETRY: number;
   WORKFLOW_STREAM:string,
   NOTIFICATION_STREAM: string,
+  USE_REDIS:string,
+
 }
 
 const appConfig = (): AppConfig => ({
@@ -85,6 +87,7 @@ const appConfig = (): AppConfig => ({
   ),
   WORKFLOW_STREAM: getEnv("WORKFLOW_STREAM","workflow_events"),
   NOTIFICATION_STREAM:getEnv( "NOTIFICATION_STREAM", "notification_events"),
+  USE_REDIS:getEnv("USE_REDIS")
 });
 
 export const config = appConfig();

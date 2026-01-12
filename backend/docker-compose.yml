@@ -24,13 +24,10 @@ services:
     container_name: mdm_redis
     restart: unless-stopped
     command: >
-      sh -c '
-        if [ -n "$$REDIS_PASSWORD" ]; then
-          exec redis-server --requirepass "$$REDIS_PASSWORD"
-        else
-          exec redis-server
-        fi
-      '
+      redis-server
+        --timeout 0
+        --tcp-keepalive 60
+        --maxclients 10000
     environment:
       REDIS_PASSWORD: "${REDIS_PASSWORD:-}"
     ports:
@@ -42,6 +39,7 @@ services:
       interval: 10s
       timeout: 3s
       retries: 10
+
 
 volumes:
   pgdata:

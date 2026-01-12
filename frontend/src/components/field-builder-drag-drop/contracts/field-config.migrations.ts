@@ -9,7 +9,6 @@ export const FIELD_CONFIG_MIGRATIONS: FieldConfigMigration[] = [
     migrate(old: FieldConfig): FieldConfig {
       return {
         ...old,
-        schemaVersion: 1,
         ui: old.ui
           ? {
               ...old.ui,

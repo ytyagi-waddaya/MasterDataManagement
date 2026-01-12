@@ -73,19 +73,20 @@ const masterRecordRepository = {
     return prisma.masterRecord.findUnique({ where: { id: recordId } });
   },
 
+  // masterRecord.repository.ts
   getById: async (recordId: string) => {
     return prisma.masterRecord.findUnique({
       where: { id: recordId },
       include: {
-        // ⭐ The current workflow stage (NEW)
+        // ⭐ Current stage
         currentStage: {
           include: {
-            outgoingTransitions: true, // optional but useful (available actions)
-            incomingTransitions: true, // optional
+            outgoingTransitions: true,
+            incomingTransitions: true,
           },
         },
 
-        // ⭐ MasterObject and its connected Resource + Workflow Definitions
+        // ⭐ MasterObject + workflows
         masterObject: {
           select: {
             id: true,
@@ -97,7 +98,7 @@ const masterRecordRepository = {
                 name: true,
                 workflows: {
                   include: {
-                    stages: true, // full workflow model
+                    stages: true,
                     transitions: true,
                   },
                 },
@@ -106,7 +107,7 @@ const masterRecordRepository = {
           },
         },
 
-        // ⭐ Who created the record
+        // ⭐ Creator
         createdBy: {
           select: {
             id: true,
@@ -115,7 +116,6 @@ const masterRecordRepository = {
           },
         },
 
-        // ⭐ Linked user (optional)
         linkedUser: {
           select: {
             id: true,
@@ -124,15 +124,8 @@ const masterRecordRepository = {
           },
         },
 
-        // ⭐ Related tasks
         tasks: true,
-
-        // ⭐ Audit log
         auditLogs: true,
-
-        // ⭐ Workflow instance/history (optional but recommended)
-        // workflowInstance: true,
-        // workflowHistory: true,
       },
     });
   },
@@ -251,7 +244,9 @@ const buildMasterRecordWhere = (filters: MasterRecordFilterInput) => {
   return where;
 };
 
-const buildOrderBy = (filters: MasterRecordFilterInput): Prisma.MasterRecordOrderByWithRelationInput => {
+const buildOrderBy = (
+  filters: MasterRecordFilterInput
+): Prisma.MasterRecordOrderByWithRelationInput => {
   // Sort by stage.name
   if (filters.sortBy === "currentStageName") {
     return {
@@ -273,3 +268,20 @@ const buildOrderBy = (filters: MasterRecordFilterInput): Prisma.MasterRecordOrde
     [filters.sortBy]: filters.sortOrder,
   };
 };
+
+// workflowInstance.repository.ts
+export async function getWorkflowInstanceForResource(
+  resourceType: string,
+  resourceId: string
+) {
+  return prisma.workflowInstance.findFirst({
+    where: {
+      resourceType,
+      resourceId,
+      status: "RUNNING",
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+}

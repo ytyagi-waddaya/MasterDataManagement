@@ -48,10 +48,10 @@
 
 import { ConditionNode } from "../contracts/condition.contract";
 import { getSampleValue } from "./condition.helpers";
-import { FieldMeta } from "./ConditionGroupView";
 import { evaluateCondition } from "./evaluateCondition";
 import { conditionToSummary } from "./conditionSummary";
 import { Eye, EyeOff, CheckCircle, XCircle, Code } from "lucide-react";
+import { FieldMeta } from "./condition.types";
 
 export function ConditionPreview({
   condition,

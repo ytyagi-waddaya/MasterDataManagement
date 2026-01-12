@@ -3,7 +3,7 @@ import {
   ConditionGroup,
   ConditionLeaf,
 } from "../contracts/condition.contract";
-import { FieldMeta } from "./ConditionGroupView";
+import { FieldMeta } from "./condition.types";
 
 /* --------------------------------------------------
    Operator → human text
