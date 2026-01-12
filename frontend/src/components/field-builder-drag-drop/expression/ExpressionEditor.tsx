@@ -206,8 +206,8 @@
 "use client";
 
 import { useState, useRef, useMemo, useEffect } from "react";
-import { FieldMeta } from "../condition-builder/ConditionGroupView";
 import { Plus, X, ChevronUp, ChevronDown } from "lucide-react";
+import { FieldMeta } from "../condition-builder/condition.types";
 
 const OPERATORS = [
   { label: "AND", value: " && " },

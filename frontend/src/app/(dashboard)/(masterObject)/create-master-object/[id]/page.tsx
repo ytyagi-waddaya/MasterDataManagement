@@ -1,9 +1,6 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { ChevronLeft } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
 import { useMasterObjectForEditor } from "@/lib/masterObject/hook";
 import { FormBuilder } from "@/components/field-builder-drag-drop/FormBuilder";
 

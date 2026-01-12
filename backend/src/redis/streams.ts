@@ -207,3 +207,51 @@ export async function ack(msgId: string) {
     logger.error("[streams] ack error", err);
   }
 }
+
+export async function moveToDLQ(
+  msgId: string,
+  payload: any,
+  reason = "FAILED"
+) {
+  if (!USE_REDIS || !redis) return;
+
+  try {
+    await redis.xadd(
+      DLQ,
+      "*",
+      "id",
+      msgId,
+      "reason",
+      reason,
+      "payload",
+      JSON.stringify(payload),
+      "at",
+      new Date().toISOString()
+    );
+
+    await redis.xack(STREAM, GROUP, msgId);
+  } catch (err) {
+    logger.error("[streams] moveToDLQ error", err);
+  }
+}
+
+
+export async function claimStuckMessages(
+  consumer: string,
+  minIdle = 60000
+) {
+  if (!USE_REDIS || !redis) return null;
+
+  try {
+    return await redis.xautoclaim(
+      STREAM,
+      GROUP,
+      consumer,
+      minIdle,
+      "0-0"
+    );
+  } catch (err) {
+    logger.error("[streams] claimStuckMessages error", err);
+    return null;
+  }
+}

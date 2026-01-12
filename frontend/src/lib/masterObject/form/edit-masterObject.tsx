@@ -8,12 +8,12 @@ import { Switch } from "@/components/ui/switch";
 import { Info, ShieldCheck } from "lucide-react";
 import { useZodForm } from "@/hooks/useZodForm";
 import { Button } from "@/components/ui/button";
-import { updateMasterObjectInput, updateMasterObjectSchema } from "../schema/masterObject.schema";
+import { UpdateMasterObjectInput, updateMasterObjectSchema } from "../schema/masterObject.schema";
 
 
 interface Props {
-  initialValues: updateMasterObjectInput;
-  onSubmit: (data: updateMasterObjectInput) => void;
+  initialValues: UpdateMasterObjectInput;
+  onSubmit: (data: UpdateMasterObjectInput) => void;
   onClose: () => void;
   disabled?: boolean;
 }

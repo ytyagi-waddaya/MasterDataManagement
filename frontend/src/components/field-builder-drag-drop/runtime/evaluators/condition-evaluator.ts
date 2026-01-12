@@ -1,4 +1,6 @@
-import { ConditionGroup, ConditionLeaf, ConditionNode } from "../../contracts/rules.contract";
+// import { ConditionGroup, ConditionLeaf, ConditionNode } from "../../contracts/rules.contract";
+
+import { ConditionGroup, ConditionLeaf, ConditionNode } from "../../contracts/condition.contract";
 
 
 export function evaluateConditionTree(

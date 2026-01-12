@@ -1,4 +1,5 @@
-import { FieldMeta } from "../condition-builder/ConditionGroupView";
+
+import { FieldMeta } from "../condition-builder/condition.types";
 import { mapEditorTypeToFieldDataType } from "../condition-builder/mapEditorTypeToConditionType";
 import { EditorNode, FormSection } from "../contracts/editor.contract";
 

@@ -131,12 +131,11 @@
 
 import { nanoid } from "nanoid";
 import { EditorNode } from "../../contracts/editor.contract";
-import { FieldKey } from "../../contracts/condition.contract";
 import { ConditionBuilder } from "../../condition-builder/ConditionBuilder";
-import { FieldMeta } from "../../condition-builder/ConditionGroupView";
 import { Expression } from "../../contracts/expression.contract";
 import { ExpressionEditor } from "../../expression/ExpressionEditor";
 import { Eye, EyeOff, Code, Filter } from "lucide-react";
+import { FieldMeta } from "../../condition-builder/condition.types";
 
 /* ================= TYPES ================= */
 

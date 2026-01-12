@@ -32,6 +32,8 @@ export interface EditorField {
     min?: number;
     max?: number;
     regex?: string;
+    patternMessage?: string;
+    errorMessage?: string;
   };
 
   options?: { label: string; value: string }[];
@@ -114,7 +116,12 @@ export interface AccordionLayoutNode extends BaseLayoutNode {
   slots: ContainerSlot[];
 }
 
-export interface RepeaterLayoutNode extends BaseLayoutNode<{ label?: string, minItems?:number, maxItems?:number| null }> {
+export interface RepeaterLayoutNode
+  extends BaseLayoutNode<{
+    label?: string;
+    minItems?: number;
+    maxItems?: number | null;
+  }> {
   type: "repeater";
   slots: ContainerSlot[];
 }

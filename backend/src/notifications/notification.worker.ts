@@ -299,9 +299,7 @@ async function processMessage(msgId: string, payload: any) {
             deliveryId: delivery.id,
             userId: delivery.userId,
           }); // 🆕 INFO
-        }
-
-        else if (ch === NotificationChannel.EMAIL) {
+        } else if (ch === NotificationChannel.EMAIL) {
           await sendEmail(
             String(delivery.userId),
             delivery.title,
@@ -311,17 +309,13 @@ async function processMessage(msgId: string, payload: any) {
           logger.info("[notification.worker] EMAIL delivered", {
             deliveryId: delivery.id,
           }); // 🆕 INFO
-        }
-
-        else if (ch === NotificationChannel.SMS) {
+        } else if (ch === NotificationChannel.SMS) {
           await sendSms(String(delivery.userId), delivery.message);
 
           logger.info("[notification.worker] SMS delivered", {
             deliveryId: delivery.id,
           }); // 🆕 INFO
-        }
-
-        else {
+        } else {
           logger.warn("[notification.worker] unknown channel", {
             channel: ch,
             deliveryId: delivery.id,
@@ -358,6 +352,12 @@ async function processMessage(msgId: string, payload: any) {
           }); // 🆕 WARN
 
           await ack(msgId);
+
+          if (!redis) {
+            logger.warn("[notification.worker] redis disabled, cannot requeue");
+            return;
+          }
+
           await redis.xadd(
             config.STREAM_KEY,
             "*",
@@ -366,6 +366,7 @@ async function processMessage(msgId: string, payload: any) {
             "retry",
             String((updated?.retryCount ?? 0) + 1)
           );
+
           return;
         }
       }
@@ -381,7 +382,6 @@ async function processMessage(msgId: string, payload: any) {
     logger.info("[notification.worker] delivery completed", {
       deliveryId: delivery.id,
     }); // 🆕 INFO
-
   } catch (err: any) {
     logger.error("[notification.worker] fatal error", {
       msgId,

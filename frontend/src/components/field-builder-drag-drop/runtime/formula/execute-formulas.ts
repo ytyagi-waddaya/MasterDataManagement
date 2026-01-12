@@ -1,7 +1,7 @@
 
 import { topoSort } from "./toposort";
 import { buildDependencyGraph } from "./dependency-graph";
-import { evaluateExpression } from "../evaluators/expression-evaluator";
+// import { evaluateExpression } from "../evaluators/expression-evaluator";
 import { FieldConfig } from "../../contracts/field-config.contract";
 
 export function executeFormulas(
@@ -17,10 +17,10 @@ export function executeFormulas(
     const field = fields.find(f => f.meta.key === fieldKey);
     if (!field?.behavior?.formula) continue;
 
-    nextValues[fieldKey] = evaluateExpression(
-      { expression: field.behavior.formula.expression },
-      nextValues
-    );
+    // nextValues[fieldKey] = evaluateExpression(
+    //   { expression: field.behavior.formula.expression },
+    //   nextValues
+    // );
   }
 
   return nextValues;

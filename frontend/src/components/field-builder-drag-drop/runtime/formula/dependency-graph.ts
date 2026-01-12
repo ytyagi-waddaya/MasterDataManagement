@@ -24,9 +24,9 @@ export function buildDependencyGraph(
       graph.set(field.meta.key, new Set());
     }
 
-    for (const dep of formula.dependencies) {
-      graph.get(field.meta.key)!.add(dep);
-    }
+    // for (const dep of formula.dependencies) {
+    //   graph.get(field.meta.key)!.add(dep);
+    // }
   }
 
   return graph;

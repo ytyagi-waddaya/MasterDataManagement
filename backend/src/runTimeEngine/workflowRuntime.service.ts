@@ -316,13 +316,13 @@ async function persistApproval(
   /* -------------------------------
    * UPDATE INSTANCE APPROVAL STATE
    * ----------------------------- */
-  await tx.workflowInstance.update({
-    where: { id: instance.id },
-    data: {
-      approvalMeta,
-      approvalStatus: "PENDING",
-    },
-  });
+  // await tx.workflowInstance.update({
+  //   where: { id: instance.id },
+  //   data: {
+  //     // approvalMeta,
+  //     approvalStatus: "PENDING",
+  //   },
+  // });
 
   /* -------------------------------
    * WRITE APPROVAL HISTORY
