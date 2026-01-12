@@ -1,4 +1,3 @@
-// D:\Raghav\MasterDataManagement\frontend\src\lib\workflow\builder\transitions\TransitionRow.tsx
 "use client";
 
 import React, { useEffect, useMemo } from "react";
@@ -18,9 +17,13 @@ import { Trash2, Plus, ArrowRight } from "lucide-react";
 import { MultiSelect } from "../../multiselect";
 import { cn } from "@/lib/utils";
 
-/* -------------------------
-   Normalizers
-------------------------- */
+const TRIGGER_STRATEGIES = [
+  { value: "ANY_ALLOWED", label: "Anyone (allowed roles/users)" },
+  { value: "CREATOR_ONLY", label: "Only creator" },
+  { value: "ASSIGNEE_ONLY", label: "Only assignee" },
+  { value: "APPROVER_ONLY", label: "Only approvers (Approval)" },
+  { value: "SYSTEM_ONLY", label: "System only (Auto)" },
+] as const;
 
 function normalizeOptions(list: any[]) {
   return (list || [])
@@ -42,10 +45,6 @@ function normalizeValueArray(v: any) {
     .filter((x) => Boolean(String(x).trim()));
 }
 
-/* -------------------------
-   UI Components
-------------------------- */
-
 function Section({
   title,
   description,
@@ -57,31 +56,16 @@ function Section({
 }) {
   return (
     <div className="rounded-2xl border bg-white/70 backdrop-blur p-4 shadow-sm space-y-3">
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <div className="text-sm font-semibold">{title}</div>
-          {description ? (
-            <div className="text-xs text-muted-foreground">{description}</div>
-          ) : null}
-        </div>
+      <div>
+        <div className="text-sm font-semibold">{title}</div>
+        {description ? <div className="text-xs text-muted-foreground">{description}</div> : null}
       </div>
       {children}
     </div>
   );
 }
 
-/* -------------------------
-   Sequential Levels Editor
-------------------------- */
-
-function ApprovalLevelsEditor({
-  control,
-  name,
-  roleOptions,
-  userOptions,
-  errors,
-  index,
-}: any) {
+function ApprovalLevelsEditor({ control, name, roleOptions, userOptions, errors, index }: any) {
   const { fields, append, remove } = useFieldArray({ control, name });
 
   return (
@@ -93,9 +77,7 @@ function ApprovalLevelsEditor({
           size="sm"
           variant="outline"
           className="rounded-xl"
-          onClick={() =>
-            append({ order: fields.length + 1, roleIds: [], userIds: [] })
-          }
+          onClick={() => append({ order: fields.length + 1, roleIds: [], userIds: [] })}
         >
           <Plus className="h-4 w-4 mr-1" />
           Add Level
@@ -108,18 +90,10 @@ function ApprovalLevelsEditor({
           errors?.transitions?.[index]?.approvalConfig?.levels?.[i]?.type;
 
         return (
-          <Card
-            key={lvl.id}
-            className="p-4 rounded-2xl border bg-gradient-to-b from-white to-slate-50 space-y-3"
-          >
+          <Card key={lvl.id} className="p-4 rounded-2xl border bg-gradient-to-b from-white to-slate-50 space-y-3">
             <div className="flex items-center justify-between">
               <div className="text-sm font-medium">Level {i + 1}</div>
-              <Button
-                type="button"
-                size="icon"
-                variant="ghost"
-                onClick={() => remove(i)}
-              >
+              <Button type="button" size="icon" variant="ghost" onClick={() => remove(i)}>
                 <Trash2 className="h-4 w-4 text-destructive" />
               </Button>
             </div>
@@ -150,19 +124,13 @@ function ApprovalLevelsEditor({
               )}
             />
 
-            {lvlErr ? (
-              <p className="text-xs text-destructive">{String(lvlErr)}</p>
-            ) : null}
+            {lvlErr ? <p className="text-xs text-destructive">{String(lvlErr)}</p> : null}
           </Card>
         );
       })}
     </div>
   );
 }
-
-/* -------------------------
-   Main Row
-------------------------- */
 
 export function TransitionRow({
   index,
@@ -174,66 +142,35 @@ export function TransitionRow({
   roleList,
   userList,
   errors,
-  onDelete, // Optional: panel-safe delete handler
+  onDelete,
 }: any) {
-  const transitionType = useWatch({
-    control,
-    name: `transitions.${index}.transitionType`,
-  });
+  const transitionType = useWatch({ control, name: `transitions.${index}.transitionType` });
+  const triggerStrategy = useWatch({ control, name: `transitions.${index}.triggerStrategy` });
 
-  const triggerStrategy = useWatch({
-    control,
-    name: `transitions.${index}.triggerStrategy`,
-  });
+  const fromStage = useWatch({ control, name: `transitions.${index}.fromStageId` });
+  const toStage = useWatch({ control, name: `transitions.${index}.toStageId` });
 
-  const fromStage = useWatch({
-    control,
-    name: `transitions.${index}.fromStageId`,
-  });
-
-  const toStage = useWatch({
-    control,
-    name: `transitions.${index}.toStageId`,
-  });
-
-  const approvalConfig = useWatch({
-    control,
-    name: `transitions.${index}.approvalConfig`,
-  });
-
+  const approvalConfig = useWatch({ control, name: `transitions.${index}.approvalConfig` });
   const approvalMode = approvalConfig?.mode;
 
-  const approvalRoleIds = useWatch({
-    control,
-    name: `transitions.${index}.approvalConfig.roleIds`,
-  });
+  const approvalRoleIds = useWatch({ control, name: `transitions.${index}.approvalConfig.roleIds` });
+  const approvalUserIds = useWatch({ control, name: `transitions.${index}.approvalConfig.userIds` });
+  const approvalLevels = useWatch({ control, name: `transitions.${index}.approvalConfig.levels` });
 
-  const approvalUserIds = useWatch({
-    control,
-    name: `transitions.${index}.approvalConfig.userIds`,
-  });
-
-  const approvalLevels = useWatch({
-    control,
-    name: `transitions.${index}.approvalConfig.levels`,
-  });
-
-  const allowedRoleIdsRaw = useWatch({
-    control,
-    name: `transitions.${index}.allowedRoleIds`,
-  });
-
-  const allowedUserIdsRaw = useWatch({
-    control,
-    name: `transitions.${index}.allowedUserIds`,
-  });
+  const allowedRoleIdsRaw = useWatch({ control, name: `transitions.${index}.allowedRoleIds` });
+  const allowedUserIdsRaw = useWatch({ control, name: `transitions.${index}.allowedUserIds` });
 
   const requiresApproval = transitionType === "APPROVAL";
-  // const showTriggerStrategy =
-  //   transitionType === "NORMAL" || transitionType === "REVIEW";
-  // NOTE: Trigger rules section is currently disabled as per requirement.
+  const isAuto = transitionType === "AUTO";
+
+  const showTriggerStrategy =
+    transitionType === "NORMAL" || transitionType === "REVIEW" || transitionType === "SEND_BACK";
+
+  const showTriggerPermissions =
+    showTriggerStrategy && (triggerStrategy ?? "ANY_ALLOWED") === "ANY_ALLOWED";
 
   const roleOptions = useMemo(() => normalizeOptions(roleList), [roleList]);
+
   const allowedRoleIds = useMemo(
     () => normalizeValueArray(allowedRoleIdsRaw),
     [allowedRoleIdsRaw]
@@ -257,53 +194,56 @@ export function TransitionRow({
   );
 
   const userOptionsAll = useMemo(
-    () =>
-      normalizeOptions(userList).map((u: any) => ({
-        label: u.label,
-        value: u.value,
-      })),
+    () => normalizeOptions(userList).map((u: any) => ({ label: u.label, value: u.value })),
     [userList]
   );
 
-  // Prevent selecting the same From and To stage
+  // ✅ FIX: Only wipe approval fields when they exist
+  useEffect(() => {
+    if (transitionType === "APPROVAL") return;
+
+    if (approvalConfig !== undefined) {
+      setValue(`transitions.${index}.approvalConfig`, undefined, { shouldDirty: true });
+    }
+    const curStrategy = (control?._formValues?.transitions?.[index]?.approvalStrategy ?? undefined) as any;
+    if (curStrategy !== undefined) {
+      setValue(`transitions.${index}.approvalStrategy`, undefined, { shouldDirty: true });
+    }
+  }, [transitionType, index, setValue, approvalConfig, control]);
+
+  // ✅ AUTO => enforce system only, autoTrigger true
+  useEffect(() => {
+    if (!isAuto) {
+      // if switching away from AUTO, turn off autoTrigger if it was true
+      const cur = control?._formValues?.transitions?.[index]?.autoTrigger;
+      if (cur === true) setValue(`transitions.${index}.autoTrigger`, false, { shouldDirty: true });
+      return;
+    }
+
+    if (triggerStrategy !== "SYSTEM_ONLY") {
+      setValue(`transitions.${index}.triggerStrategy`, "SYSTEM_ONLY", { shouldDirty: true });
+    }
+    setValue(`transitions.${index}.autoTrigger`, true, { shouldDirty: true });
+    setValue(`transitions.${index}.allowedRoleIds`, [], { shouldDirty: true });
+    setValue(`transitions.${index}.allowedUserIds`, [], { shouldDirty: true });
+  }, [isAuto, triggerStrategy, index, setValue, control]);
+
+  // Prevent from=to
   useEffect(() => {
     if (fromStage && toStage && fromStage === toStage) {
-      setValue(`transitions.${index}.toStageId`, "");
+      setValue(`transitions.${index}.toStageId`, "", { shouldDirty: true });
     }
   }, [fromStage, toStage, index, setValue]);
 
-  // Approval transitions must use APPROVER_ONLY
+  // ✅ Approval init
   useEffect(() => {
-    if (transitionType === "APPROVAL") {
-      setValue(`transitions.${index}.triggerStrategy`, "APPROVER_ONLY", {
-        shouldDirty: true,
-      });
-    }
-  }, [transitionType, index, setValue]);
+    if (transitionType !== "APPROVAL") return;
 
-  // Auto transitions must use SYSTEM_ONLY and autoTrigger = true
-  useEffect(() => {
-    if (transitionType === "AUTO") {
-      setValue(`transitions.${index}.triggerStrategy`, "SYSTEM_ONLY", {
-        shouldDirty: true,
-      });
-      setValue(`transitions.${index}.autoTrigger`, true, { shouldDirty: true });
+    if (triggerStrategy !== "APPROVER_ONLY") {
+      setValue(`transitions.${index}.triggerStrategy`, "APPROVER_ONLY", { shouldDirty: true });
     }
-  }, [transitionType, index, setValue]);
 
-  // Normal/Review transitions should not keep APPROVER_ONLY or SYSTEM_ONLY
-  useEffect(() => {
-    if (transitionType === "APPROVAL" || transitionType === "AUTO") return;
-    if (triggerStrategy === "APPROVER_ONLY" || triggerStrategy === "SYSTEM_ONLY") {
-      setValue(`transitions.${index}.triggerStrategy`, "ANY_ALLOWED", {
-        shouldDirty: true,
-      });
-    }
-  }, [transitionType, triggerStrategy, index, setValue]);
-
-  // Initialize approvalConfig once when switching to APPROVAL
-  useEffect(() => {
-    if (transitionType === "APPROVAL" && !approvalConfig) {
+    if (!approvalConfig) {
       setValue(`transitions.${index}.approvalStrategy`, "ALL", { shouldDirty: true });
       setValue(
         `transitions.${index}.approvalConfig`,
@@ -311,16 +251,32 @@ export function TransitionRow({
         { shouldDirty: true }
       );
     }
-  }, [transitionType, approvalConfig, index, setValue]);
+  }, [transitionType, triggerStrategy, approvalConfig, index, setValue]);
 
-  // Enforce strict fields for approval modes
+  // ✅ Normal/review/send_back should not keep APPROVER_ONLY/SYSTEM_ONLY
+  useEffect(() => {
+    if (!showTriggerStrategy) return;
+
+    if (triggerStrategy === "APPROVER_ONLY" || triggerStrategy === "SYSTEM_ONLY") {
+      setValue(`transitions.${index}.triggerStrategy`, "ANY_ALLOWED", { shouldDirty: true });
+    }
+
+    if (!Array.isArray(allowedRoleIdsRaw)) {
+      setValue(`transitions.${index}.allowedRoleIds`, [], { shouldDirty: true });
+    }
+    if (!Array.isArray(allowedUserIdsRaw)) {
+      setValue(`transitions.${index}.allowedUserIds`, [], { shouldDirty: true });
+    }
+  }, [showTriggerStrategy, triggerStrategy, index, setValue, allowedRoleIdsRaw, allowedUserIdsRaw]);
+
+  // ✅ Enforce approval modes
   useEffect(() => {
     if (!requiresApproval) return;
 
     if (approvalMode === "PARALLEL") {
-      setValue(`transitions.${index}.approvalConfig.levels`, undefined, {
-        shouldDirty: true,
-      });
+      if (approvalLevels !== undefined) {
+        setValue(`transitions.${index}.approvalConfig.levels`, undefined, { shouldDirty: true });
+      }
       return;
     }
 
@@ -336,9 +292,9 @@ export function TransitionRow({
         );
       }
     }
-  }, [requiresApproval, approvalMode, approvalLevels, index, setValue]);
+  }, [requiresApproval, approvalMode, approvalLevels, index, setValue, approvalLevels]);
 
-  // Cleanup selected users when role filter changes (only relevant if trigger rules section is enabled)
+  // ✅ Cleanup selected users when role filter changes
   useEffect(() => {
     if (!allowedRoleIds.length) return;
 
@@ -354,12 +310,22 @@ export function TransitionRow({
   }, [allowedRoleIds, allowedUserIdsRaw, userOptionsFiltered, index, setValue]);
 
   const labelError =
-    errors?.transitions?.[index]?.label?.message ||
-    errors?.transitions?.[index]?.label?.type;
+    errors?.transitions?.[index]?.label?.message || errors?.transitions?.[index]?.label?.type;
 
   const parallelErr =
     errors?.transitions?.[index]?.approvalConfig?.message ||
     errors?.transitions?.[index]?.approvalConfig?.type;
+
+  const triggerOptions = useMemo(() => {
+    if (transitionType === "APPROVAL") return TRIGGER_STRATEGIES.filter((x) => x.value === "APPROVER_ONLY");
+    if (transitionType === "AUTO") return TRIGGER_STRATEGIES.filter((x) => x.value === "SYSTEM_ONLY");
+    if (showTriggerStrategy) {
+      return TRIGGER_STRATEGIES.filter(
+        (x) => x.value === "ANY_ALLOWED" || x.value === "CREATOR_ONLY" || x.value === "ASSIGNEE_ONLY"
+      );
+    }
+    return TRIGGER_STRATEGIES.filter((x) => x.value === "ANY_ALLOWED");
+  }, [transitionType, showTriggerStrategy]);
 
   return (
     <Card
@@ -377,9 +343,7 @@ export function TransitionRow({
               {transitionType || "NORMAL"}
             </span>
           </div>
-          <div className="text-xs text-muted-foreground">
-            Configure action, flow, and rules
-          </div>
+          <div className="text-xs text-muted-foreground">Configure action, flow, and rules</div>
         </div>
 
         <Button
@@ -387,7 +351,6 @@ export function TransitionRow({
           size="icon"
           variant="ghost"
           onClick={() => {
-            // Use panel-safe delete when available
             if (typeof onDelete === "function") return onDelete();
             return remove(index);
           }}
@@ -408,9 +371,7 @@ export function TransitionRow({
               String(v ?? "").trim().length > 0 || "Action label is required",
           })}
         />
-        {labelError ? (
-          <p className="text-xs text-destructive">{String(labelError)}</p>
-        ) : null}
+        {labelError ? <p className="text-xs text-destructive">{String(labelError)}</p> : null}
       </Section>
 
       {/* Flow */}
@@ -490,85 +451,77 @@ export function TransitionRow({
         </div>
       </Section>
 
-      {/*
-        ---------------------------------------------------------
-        Trigger Rules Section (Disabled)
-        ---------------------------------------------------------
-        This section is intentionally commented as per requirement.
-        It controls who can trigger a NORMAL/REVIEW transition.
-        ---------------------------------------------------------
-
+      {/* Who can trigger */}
       {showTriggerStrategy && (
-        <Section title="Who can trigger this action" description="Selecting roles will filter users">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <Controller
-              name={`transitions.${index}.allowedRoleIds`}
-              control={control}
-              render={({ field }) => (
-                <div className="space-y-2">
-                  <Label className="text-xs">Allowed roles</Label>
-                  <MultiSelect
-                    options={roleOptions}
-                    value={normalizeValueArray(field.value)}
-                    onChange={(v: any) => field.onChange(normalizeValueArray(v))}
-                    placeholder="Select roles"
-                  />
-                </div>
-              )}
-            />
-
-            <Controller
-              name={`transitions.${index}.allowedUserIds`}
-              control={control}
-              render={({ field }) => (
-                <div className="space-y-2">
-                  <Label className="text-xs">Specific users</Label>
-                  <MultiSelect
-                    options={userOptionsFiltered}
-                    value={normalizeValueArray(field.value)}
-                    onChange={(v: any) => field.onChange(normalizeValueArray(v))}
-                    placeholder={
-                      allowedRoleIds.length
-                        ? userOptionsFiltered.length
-                          ? "Users (filtered by roles)"
-                          : "No users for selected roles"
-                        : "Select users"
-                    }
-                    className={cn(
-                      allowedRoleIds.length && userOptionsFiltered.length === 0
-                        ? "border-destructive/40"
-                        : ""
-                    )}
-                  />
-                </div>
-              )}
-            />
-          </div>
-
-          <div className="mt-3">
+        <>
+          <Section title="Who can trigger" description="Specify who can perform this action">
             <Controller
               name={`transitions.${index}.triggerStrategy`}
               control={control}
               render={({ field }) => (
-                <div className="space-y-2">
-                  <Label className="text-xs">Trigger strategy</Label>
-                  <Select value={field.value ?? "ANY_ALLOWED"} onValueChange={field.onChange}>
-                    <SelectTrigger className="rounded-xl bg-white">
-                      <SelectValue placeholder="Who can trigger this" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="ANY_ALLOWED">Anyone</SelectItem>
-                      <SelectItem value="CREATOR_ONLY">Creator only</SelectItem>
-                      <SelectItem value="ASSIGNEE_ONLY">Assignee only</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                <Select value={field.value ?? "ANY_ALLOWED"} onValueChange={field.onChange}>
+                  <SelectTrigger className="rounded-xl bg-white">
+                    <SelectValue placeholder="Select trigger strategy" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {triggerOptions.map((strategy) => (
+                      <SelectItem key={strategy.value} value={strategy.value}>
+                        {strategy.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               )}
             />
-          </div>
-        </Section>
+          </Section>
+
+          {showTriggerPermissions && (
+            <Section
+              title="Who is allowed to perform this action"
+              description="Limit who can use this transition"
+            >
+              <div className="space-y-4">
+                <Controller
+                  name={`transitions.${index}.allowedRoleIds`}
+                  control={control}
+                  render={({ field }) => (
+                    <MultiSelect
+                      options={roleOptions}
+                      value={normalizeValueArray(field.value)}
+                      onChange={(v: any) => field.onChange(normalizeValueArray(v))}
+                      placeholder="Select allowed roles"
+                    />
+                  )}
+                />
+
+                <Controller
+                  name={`transitions.${index}.allowedUserIds`}
+                  control={control}
+                  render={({ field }) => (
+                    <MultiSelect
+                      options={userOptionsFiltered}
+                      value={normalizeValueArray(field.value)}
+                      onChange={(v: any) => field.onChange(normalizeValueArray(v))}
+                      placeholder={
+                        allowedRoleIds.length
+                          ? userOptionsFiltered.length
+                            ? "Select specific users (filtered by roles)"
+                            : "No users for selected roles"
+                          : "Select specific users"
+                      }
+                      className={cn(
+                        allowedRoleIds.length && userOptionsFiltered.length === 0
+                          ? "border-destructive/40"
+                          : ""
+                      )}
+                    />
+                  )}
+                />
+              </div>
+            </Section>
+          )}
+        </>
       )}
-      */}
 
       {/* Approval Configuration */}
       {requiresApproval && approvalConfig && (
@@ -623,9 +576,7 @@ export function TransitionRow({
                   validate: () => {
                     const r = normalizeValueArray(approvalRoleIds);
                     const u = normalizeValueArray(approvalUserIds);
-                    return r.length || u.length
-                      ? true
-                      : "Parallel approval requires users or roles";
+                    return r.length || u.length ? true : "Parallel approval requires users or roles";
                   },
                 }}
                 render={({ field }) => (
@@ -648,9 +599,7 @@ export function TransitionRow({
                   validate: () => {
                     const r = normalizeValueArray(approvalRoleIds);
                     const u = normalizeValueArray(approvalUserIds);
-                    return r.length || u.length
-                      ? true
-                      : "Parallel approval requires users or roles";
+                    return r.length || u.length ? true : "Parallel approval requires users or roles";
                   },
                 }}
                 render={({ field }) => (
@@ -666,9 +615,7 @@ export function TransitionRow({
                 )}
               />
 
-              {parallelErr ? (
-                <p className="text-xs text-destructive">{String(parallelErr)}</p>
-              ) : null}
+              {parallelErr ? <p className="text-xs text-destructive">{String(parallelErr)}</p> : null}
             </div>
           )}
 

@@ -295,10 +295,10 @@ export default function WorkflowDetailPage({
               >
                 {isDraft ? "Draft" : "Published"}
               </Badge>
-
+              {/* ///////// */}
               {/* Action Buttons */}
               <div className="flex items-center gap-2">
-                {isPublished && (
+                {isPublished &&(
                   <Button
                     variant="ghost"
                     size="sm"

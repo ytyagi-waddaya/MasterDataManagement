@@ -9,6 +9,8 @@ import ReactFlow, {
   Connection,
   Node,
   Edge,
+  ConnectionMode,
+  addEdge,
   useNodesState,
   useEdgesState,
 } from "reactflow";
@@ -19,6 +21,9 @@ import DefinitionNode from "./nodes/DefinitionNode";
 import StageNode from "./nodes/StageNode";
 import FloatingStageLibrary from "./library/FloatingStageLibrary";
 import { TransitionPanel } from "./transitions/TransitionPanel";
+
+// ✅ Use your stageLibrary colors (single source of truth)
+import { getStageColor } from "./library/stageLibrary";
 
 const NODE_TYPES = {
   definition: DefinitionNode,
@@ -47,18 +52,27 @@ function getStagePosition(index: number) {
   return { x: START_X + col * GAP_X, y: START_Y + row * GAP_Y };
 }
 
-// ✅ default colors per stage category (optional)
-const CATEGORY_COLOR: Record<string, string> = {
-  DRAFT: "#64748b",
-  SUBMITTED: "#0ea5e9",
-  UNDER_REVIEW: "#f59e0b",
-  NORMAL: "#6366f1",
-  CORRECTION: "#a855f7",
-  ON_HOLD: "#f97316",
-  APPROVAL: "#10b981",
-  COMPLETED: "#22c55e",
-  REJECTED: "#ef4444",
-};
+const DEFAULT_COLOR = "#64748b";
+
+// ✅ never allow null/empty colors
+function safeColor(category?: any, color?: any) {
+  if (typeof color === "string" && color.trim()) return color;
+  return getStageColor(category) || DEFAULT_COLOR;
+}
+
+// Helper: choose best source handle based on node positions
+function getOptimalHandle(
+  sourcePos: { x: number; y: number },
+  targetPos: { x: number; y: number }
+) {
+  const dx = targetPos.x - sourcePos.x;
+  const dy = targetPos.y - sourcePos.y;
+  const absDx = Math.abs(dx);
+  const absDy = Math.abs(dy);
+
+  if (absDx > absDy) return dx > 0 ? "right-source" : "left-source";
+  return dy > 0 ? "bottom-source" : "top-source";
+}
 
 export default function WorkflowCanvas({
   form,
@@ -71,7 +85,7 @@ export default function WorkflowCanvas({
 }: any) {
   const isReadOnly = mode === "view";
 
-  // ✅ stop ReactFlow warning: keep stable references
+  // ✅ stable refs
   const nodeTypesRef = useRef(NODE_TYPES);
   const edgeTypesRef = useRef(EDGE_TYPES);
   const snapGridRef = useRef<[number, number]>([20, 20]);
@@ -107,8 +121,14 @@ export default function WorkflowCanvas({
     setTransitionPanelOpen(true);
   }, []);
 
+  // ✅ store handle ids (left/top/right/bottom)
   const createTransitionAndOpen = useCallback(
-    (fromStageId: string, toStageId: string) => {
+    (
+      fromStageId: string,
+      toStageId: string,
+      sourceHandle?: string | null,
+      targetHandle?: string | null
+    ) => {
       const index = transitions.length;
 
       transitionArray.append({
@@ -116,6 +136,8 @@ export default function WorkflowCanvas({
         label: "",
         fromStageId,
         toStageId,
+        sourceHandle: sourceHandle ?? null,
+        targetHandle: targetHandle ?? null,
         transitionType: "NORMAL",
         triggerStrategy: "ANY_ALLOWED",
         approvalStrategy: "ALL",
@@ -130,7 +152,7 @@ export default function WorkflowCanvas({
     [transitionArray, transitions.length, openTransitionIndex]
   );
 
-  /* ✅ normalize ids/positions once */
+  /* ✅ normalize ids/positions/colors ONCE */
   const didNormalize = useRef(false);
   useEffect(() => {
     if (!form || didNormalize.current) return;
@@ -146,26 +168,58 @@ export default function WorkflowCanvas({
       if (!st?.position) {
         form.setValue(`stages.${i}.position`, getStagePosition(i), { shouldDirty: false });
       }
+
+      // ✅ CRITICAL FIX: set color in BOTH form + fieldArray (payload uses fieldArray)
+      const fixedColor = safeColor(st?.category, st?.color);
+      if (st?.color !== fixedColor) {
+        form.setValue(`stages.${i}.color`, fixedColor, { shouldDirty: false });
+
+        if (typeof stageArray?.update === "function") {
+          stageArray.update(i, { ...st, color: fixedColor });
+        }
+      }
     });
 
     const tr = form.getValues?.("transitions") ?? [];
     tr.forEach((t: any, i: number) => {
       if (!t?.tempId) {
-        form.setValue(`transitions.${i}.tempId`, String(t?.id ?? t?.transitionId ?? makeId()), {
-          shouldDirty: false,
-        });
+        form.setValue(
+          `transitions.${i}.tempId`,
+          String(t?.id ?? t?.transitionId ?? makeId()),
+          { shouldDirty: false }
+        );
       }
     });
-  }, [form]);
+  }, [form, stageArray]);
 
-  /* AUTO INITIAL (FIRST DRAFT) */
+  /* ✅ EXTRA SAFETY: whenever stages change, repair null/empty color (form + fieldArray) */
+  useEffect(() => {
+    if (!form || !Array.isArray(stages)) return;
+
+    stages.forEach((st: any, i: number) => {
+      const bad = st?.color == null || typeof st?.color !== "string" || !String(st.color).trim();
+      if (!bad) return;
+
+      const fixedColor = safeColor(st?.category, st?.color);
+      form.setValue(`stages.${i}.color`, fixedColor, { shouldDirty: true });
+
+      if (typeof stageArray?.update === "function") {
+        const current = stageArray?.fields?.[i];
+        stageArray.update(i, { ...(current ?? st), color: fixedColor });
+      }
+    });
+  }, [stages, form, stageArray]);
+
+  /* AUTO INITIAL */
   useEffect(() => {
     if (!Array.isArray(stages) || !form) return;
 
-    const firstDraftIndex = stages.findIndex((s: any) => s?.category === "DRAFT");
+    const firstDraftIndex = stages.findIndex(
+      (s: any) => String(s?.category).toUpperCase() === "DRAFT"
+    );
 
     stages.forEach((s: any, i: number) => {
-      const shouldBeInitial = s?.category === "DRAFT" && i === firstDraftIndex;
+      const shouldBeInitial = String(s?.category).toUpperCase() === "DRAFT" && i === firstDraftIndex;
       if (s?.isInitial !== shouldBeInitial) {
         form.setValue(`stages.${i}.isInitial`, shouldBeInitial, { shouldDirty: true });
       }
@@ -191,63 +245,70 @@ export default function WorkflowCanvas({
 
     const stageNodes: Node[] = stages
       .filter((s: any) => !!s?.tempId)
-      .map((s: any, i: number) => ({
-        id: String(s.tempId),
-        type: "stage",
-        position: s.position ?? getStagePosition(i),
-        draggable: !isReadOnly,
-        selectable: true,
-        dragHandle: ".drag-handle",
-        data: {
-          ...s,
-          readOnly: isReadOnly,
-          showMenu: menuNodeId === s.tempId,
+      .map((s: any, i: number) => {
+        const fixedColor = safeColor(s?.category, s?.color);
 
-          onNameChange: (value: string) => {
-            form.setValue(`stages.${i}.name`, value, { shouldDirty: true });
+        return {
+          id: String(s.tempId),
+          type: "stage",
+          position: s.position ?? getStagePosition(i),
+          draggable: !isReadOnly,
+          selectable: true,
+          dragHandle: ".drag-handle",
+          data: {
+            ...s,
+            color: fixedColor, // ✅ always string
+            readOnly: isReadOnly,
+            showMenu: menuNodeId === s.tempId,
+
+            onNameChange: (value: string) =>
+              form.setValue(`stages.${i}.name`, value, { shouldDirty: true }),
+
+            onToggleMenu: () => setMenuNodeId(menuNodeId === s.tempId ? null : s.tempId),
+
+            onDelete: () => {
+              setMenuNodeId(null);
+
+              const index = stageArray.fields.findIndex((x: any) => x.tempId === s.tempId);
+              if (index !== -1) stageArray.remove(index);
+
+              const removeTransitionIndexes = transitions
+                .map((t: any, ti: number) =>
+                  String(t.fromStageId) === String(s.tempId) ||
+                  String(t.toStageId) === String(s.tempId)
+                    ? ti
+                    : -1
+                )
+                .filter((x: number) => x !== -1)
+                .reverse();
+
+              removeTransitionIndexes.forEach((ti: number) => transitionArray.remove(ti));
+            },
+
+            onDuplicate: () => {
+              setMenuNodeId(null);
+
+              stageArray.append({
+                ...s,
+                tempId: makeId(),
+                name: `${s.name} Copy`,
+                isInitial: false,
+                isFinal: false,
+                position: {
+                  x: (s.position?.x ?? getStagePosition(i).x) + 40,
+                  y: (s.position?.y ?? getStagePosition(i).y) + 40,
+                },
+                color: safeColor(s?.category, s?.color),
+              });
+            },
           },
-
-          onToggleMenu: () => setMenuNodeId(menuNodeId === s.tempId ? null : s.tempId),
-
-          onDelete: () => {
-            setMenuNodeId(null);
-
-            const index = stageArray.fields.findIndex((x: any) => x.tempId === s.tempId);
-            if (index !== -1) stageArray.remove(index);
-
-            const removeTransitionIndexes = transitions
-              .map((t: any, ti: number) =>
-                String(t.fromStageId) === String(s.tempId) || String(t.toStageId) === String(s.tempId)
-                  ? ti
-                  : -1
-              )
-              .filter((x: number) => x !== -1)
-              .reverse();
-
-            removeTransitionIndexes.forEach((ti: number) => transitionArray.remove(ti));
-          },
-
-          onDuplicate: () => {
-            setMenuNodeId(null);
-            stageArray.append({
-              ...s,
-              tempId: makeId(),
-              name: `${s.name} Copy`,
-              isInitial: false,
-              isFinal: false,
-              position: {
-                x: (s.position?.x ?? getStagePosition(i).x) + 40,
-                y: (s.position?.y ?? getStagePosition(i).y) + 40,
-              },
-            });
-          },
-        },
-      }));
+        };
+      });
 
     setNodes([workflowNode, ...stageNodes]);
   }, [stages, menuNodeId, isReadOnly, form, stageArray, transitionArray, transitions, setNodes]);
 
-  /* ✅ FORM → CANVAS (EDGES)  (FULL FIX: label + color + parallelIndex) */
+  /* FORM → CANVAS (EDGES) */
   useEffect(() => {
     const initialStage = stages.find((s: any) => s?.isInitial);
 
@@ -259,10 +320,12 @@ export default function WorkflowCanvas({
             target: String(initialStage.tempId),
             deletable: false,
             type: "flow",
+            sourceHandle: "right-source",
+            targetHandle: "left-target",
             data: {
               live: true,
               kind: "initial",
-              label: "Start", // optional
+              label: "Start",
               layout: "horizontal",
               parallelIndex: 1,
             },
@@ -270,10 +333,7 @@ export default function WorkflowCanvas({
         ]
       : [];
 
-    const findStage = (id: any) =>
-      stages.find((s: any) => String(s?.tempId) === String(id));
-
-    // ✅ count parallel edges per pair
+    const findStage = (id: any) => stages.find((s: any) => String(s?.tempId) === String(id));
     const seen: Record<string, number> = {};
 
     const transitionEdges: Edge[] = transitions
@@ -282,26 +342,11 @@ export default function WorkflowCanvas({
         const from = findStage(t.fromStageId);
         const to = findStage(t.toStageId);
 
-        // ✅ label priority: transition.label then other fallbacks
-        const label = String(
-          t?.label ??
-            t?.actionLabel ??
-            t?.action ??
-            t?.transitionLabel ??
-            ""
-        ).trim();
+        const label = String(t?.label ?? t?.actionLabel ?? t?.action ?? t?.transitionLabel ?? "").trim();
 
-        // ✅ edge stroke priority:
-        // 1) t.stroke (if you store)
-        // 2) fromStage.color (if you store)
-        // 3) category map
         const stroke =
-          (t?.stroke as string) ||
-          (from?.color as string) ||
-          CATEGORY_COLOR[String(from?.category ?? "")] ||
-          undefined;
+          (t?.stroke as string) || safeColor(from?.category, from?.color) || DEFAULT_COLOR;
 
-        // ✅ parallel index for same from->to pair
         const key = `${String(t.fromStageId)}→${String(t.toStageId)}`;
         const pi = (seen[key] ?? 0) + 1;
         seen[key] = pi;
@@ -310,36 +355,61 @@ export default function WorkflowCanvas({
           id: String(t.tempId),
           source: String(t.fromStageId),
           target: String(t.toStageId),
+
+          sourceHandle:
+            t?.sourceHandle ||
+            getOptimalHandle(from?.position || { x: 0, y: 0 }, to?.position || { x: 0, y: 0 }),
+
+          // ✅ if not saved, just keep a sane default
+          targetHandle: t?.targetHandle || "left-target",
+
           type: "flow",
           data: {
             live: true,
-            label, // ✅ THIS makes label box appear in builder view
-            ...(stroke ? { stroke } : {}), // ✅ stage based color line
+            label,
+            stroke,
             layout: "horizontal",
             parallelIndex: pi,
           },
-          style:
-            activeTransition?.tempId === t.tempId
-              ? { strokeWidth: 3 }
-              : undefined,
+          style: activeTransition?.tempId === t.tempId ? { strokeWidth: 3 } : undefined,
         } as Edge;
       });
 
     setEdges([...baseEdges, ...transitionEdges]);
   }, [stages, transitions, activeTransition, setEdges]);
 
-  /* CONNECT STAGES */
+  /* CONNECT (4 sides) */
   const onConnect = useCallback(
     (c: Connection) => {
-      if (isReadOnly || !c.source || !c.target) return;
+      if (isReadOnly || !c.source || !c.target || !c.sourceHandle) return;
       if (c.source === "workflow") return;
 
-      createTransitionAndOpen(String(c.source), String(c.target));
+      // visual feedback
+      setEdges((eds) =>
+        addEdge(
+          {
+            ...c,
+            id: `temp-${Date.now()}`,
+            type: "flow",
+            data: { live: true, layout: "horizontal", parallelIndex: 1 },
+          },
+          eds
+        )
+      );
+
+      // target handle (same side as source side)
+      let targetHandle = "left-target";
+      if (c.sourceHandle.includes("top")) targetHandle = "top-target";
+      else if (c.sourceHandle.includes("right")) targetHandle = "right-target";
+      else if (c.sourceHandle.includes("bottom")) targetHandle = "bottom-target";
+      else if (c.sourceHandle.includes("left")) targetHandle = "left-target";
+
+      createTransitionAndOpen(String(c.source), String(c.target), c.sourceHandle, targetHandle);
     },
-    [isReadOnly, createTransitionAndOpen]
+    [isReadOnly, createTransitionAndOpen, setEdges]
   );
 
-  /* DOUBLE CLICK NODE → open first outgoing transition */
+  /* DOUBLE CLICK NODE */
   const onNodeDoubleClick = useCallback(
     (_: any, node: Node) => {
       if (isReadOnly) return;
@@ -357,6 +427,8 @@ export default function WorkflowCanvas({
         label: "",
         fromStageId: node.id,
         toStageId: "",
+        sourceHandle: "right-source",
+        targetHandle: null,
         transitionType: "NORMAL",
         triggerStrategy: "ANY_ALLOWED",
         approvalStrategy: "ALL",
@@ -371,7 +443,7 @@ export default function WorkflowCanvas({
     [isReadOnly, transitions, transitionArray, openTransitionIndex]
   );
 
-  /* CLICK EDGE → open that transition */
+  /* CLICK EDGE */
   const onEdgeClick = useCallback(
     (e: any, edge: Edge) => {
       e?.stopPropagation?.();
@@ -405,15 +477,19 @@ export default function WorkflowCanvas({
         isInitial: t.category === "DRAFT",
         isFinal: !!t.isFinal,
         position: pos,
-
-        // ✅ OPTIONAL: auto set stage color by category
-        color: CATEGORY_COLOR[t.category] ?? null,
+        color: safeColor(t.category, t.color),
       });
 
       setLibraryOpen(false);
     },
     [stageArray, stages.length]
   );
+
+  // keep default reactflow-ish connection line (simple)
+  const connectionLineStyle = {
+    strokeWidth: 2,
+    stroke: "#94a3b8",
+  };
 
   return (
     <div className="h-full w-full relative">
@@ -439,7 +515,15 @@ export default function WorkflowCanvas({
         snapToGrid
         snapGrid={snapGridRef.current}
         fitView
+        connectionMode={ConnectionMode.Loose}
+        connectionLineStyle={connectionLineStyle}
+        defaultEdgeOptions={{
+          type: "flow",
+          animated: false,
+          style: { strokeWidth: 2, stroke: "#94a3b8" },
+        }}
       >
+        {/* ✅ Default ReactFlow background (same feel as original) */}
         <Background />
         <Controls />
       </ReactFlow>

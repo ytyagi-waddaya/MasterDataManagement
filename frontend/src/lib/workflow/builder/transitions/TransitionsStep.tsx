@@ -1,4 +1,3 @@
-// D:\Raghav\MasterDataManagement\frontend\src\lib\workflow\builder\transitions\TransitionsStep.tsx
 "use client";
 
 import { Card } from "@/components/ui/card";
@@ -7,6 +6,7 @@ import { Plus, Pencil, Trash2 } from "lucide-react";
 import { useWatch } from "react-hook-form";
 
 function makeId() {
+  // @ts-ignore
   return globalThis?.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
 }
 
@@ -14,8 +14,8 @@ export function TransitionsStep({
   form,
   transitionArray,
   stages,
-  onEdit, // (index:number)=>void  (use -1 to close)
-  activeIndex, // ✅ pass current editor index from parent (optional but recommended)
+  onEdit,      // (index:number)=>void
+  activeIndex, // current open editor index (optional)
 }: any) {
   const transitions = useWatch({ control: form.control, name: "transitions" }) || [];
 
@@ -26,28 +26,29 @@ export function TransitionsStep({
   );
 
   const handleDelete = (index: number) => {
-    const prevLen = transitionArray.fields.length;
+    const prevLen = transitions.length;
     transitionArray.remove(index);
 
-    // Sync editor selection after deletion (if parent manages it)
     setTimeout(() => {
       if (typeof onEdit !== "function") return;
-      if (typeof activeIndex !== "number") return;
 
-      const newLen = prevLen - 1;
+      const current = (form.getValues("transitions") as any[]) || [];
+      const newLen = current.length;
 
       if (newLen <= 0) {
         onEdit(-1);
         return;
       }
 
-      // If the deleted item was open -> open nearest
+      if (typeof activeIndex !== "number") return;
+
+      // if deleted was open -> open nearest
       if (activeIndex === index) {
         onEdit(Math.min(index, newLen - 1));
         return;
       }
 
-      // If open index was after deleted index -> shift left by 1
+      // if open after deleted -> shift left
       if (activeIndex > index) {
         onEdit(activeIndex - 1);
       }
@@ -67,7 +68,7 @@ export function TransitionsStep({
         <Button
           type="button"
           onClick={() => {
-            const index = transitionArray.fields.length;
+            const index = transitions.length;
             transitionArray.append({
               tempId: makeId(),
               label: "",
@@ -81,7 +82,6 @@ export function TransitionsStep({
               allowedUserIds: [],
               autoTrigger: false,
             });
-
             onEdit?.(index);
           }}
         >
@@ -117,12 +117,7 @@ export function TransitionsStep({
               </div>
 
               <div className="flex items-center gap-2 shrink-0">
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="outline"
-                  onClick={() => onEdit?.(index)}
-                >
+                <Button type="button" size="sm" variant="outline" onClick={() => onEdit?.(index)}>
                   <Pencil className="h-4 w-4 mr-1" />
                   Edit
                 </Button>
