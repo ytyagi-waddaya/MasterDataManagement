@@ -274,6 +274,8 @@ type FormRuntimePreviewProps = {
   readOnly?: boolean;
   hideDebug?: boolean;
   onSubmit?: (values: Record<string, any>) => void;
+
+  initialValues?: Record<string, any>;
 };
 
 export function FormRuntimePreview({
@@ -281,6 +283,7 @@ export function FormRuntimePreview({
   readOnly = false,
   hideDebug = false,
   onSubmit,
+ initialValues = {},
 }: FormRuntimePreviewProps) {
   /* 🔥 HARD GUARD */
   if (!Array.isArray(sections) || sections.length === 0) {
@@ -307,8 +310,10 @@ export function FormRuntimePreview({
     return Object.fromEntries(runtimeFields.map((f) => [f.config.meta.key, f]));
   }, [runtimeFields]);
 
-  const [values, setValues] = useState<Record<string, any>>({});
-
+const [values, setValues] = useState<Record<string, any>>(() => initialValues ?? {});
+//   useEffect(() => {
+//   setValues(initialValues ?? {});
+// }, [initialValues]);
   useEffect(() => {
     validateForm(runtimeFields, values);
   }, [runtimeFields, values]);

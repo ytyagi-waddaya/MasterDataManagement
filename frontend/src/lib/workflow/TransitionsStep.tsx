@@ -1932,7 +1932,7 @@ function TransitionCard({
 
   const fromStage = normalizedStages.find((s: any) => s.id === fromStageId);
   const toStage = normalizedStages.find((s: any) => s.id === toStageId);
-
+ 
   /* ======================================================
      ENFORCE BACKEND RULES
   ====================================================== */
@@ -1998,20 +1998,61 @@ function TransitionCard({
   //   }
   // }, [approvalConfig?.mode, index, setValue]);
   // 7. ALWAYS keep levels array valid (backend requires >= 1)
+  // useEffect(() => {
+  //   if (!approvalConfig) return;
+
+  //   const levels = approvalConfig.levels;
+
+  //   // For BOTH PARALLEL and SEQUENTIAL:
+  //   // ensure at least one level exists
+  //   if (!levels || levels.length === 0) {
+  //     setValue(`transitions.${index}.approvalConfig.levels`, [
+  //       { order: 1, roleIds: [], userIds: [] },
+  //     ]);
+  //   }
+  // }, [approvalConfig?.mode, index, setValue]);
+
+ useEffect(() => {
+    if (transitionType !== "APPROVAL") {
+      setValue(`transitions.${index}.approvalStrategy`, undefined);
+      setValue(`transitions.${index}.approvalConfig`, undefined);
+    }
+  }, [transitionType, index, setValue]);
   useEffect(() => {
     if (!approvalConfig) return;
 
-    const levels = approvalConfig.levels;
+    const levels = approvalConfig.levels ?? [];
 
-    // For BOTH PARALLEL and SEQUENTIAL:
-    // ensure at least one level exists
-    if (!levels || levels.length === 0) {
+    // Normalize every level
+    const normalizedLevels = levels.map((lvl: any, i: number) => ({
+      order: typeof lvl.order === "number" ? lvl.order : i + 1, // ✅ always set
+      roleIds: Array.isArray(lvl.roleIds) ? lvl.roleIds : [],
+      userIds: Array.isArray(lvl.userIds) ? lvl.userIds : [],
+    }));
+
+    // If no levels → create one
+    if (normalizedLevels.length === 0) {
       setValue(`transitions.${index}.approvalConfig.levels`, [
         { order: 1, roleIds: [], userIds: [] },
       ]);
+      return;
     }
-  }, [approvalConfig?.mode, index, setValue]);
 
+    // If any level was missing / invalid → rewrite safely
+    const hasInvalid = levels.some(
+      (lvl: any, i: number) =>
+        lvl?.order !== normalizedLevels[i].order ||
+        !Array.isArray(lvl?.roleIds) ||
+        !Array.isArray(lvl?.userIds)
+    );
+
+    if (hasInvalid) {
+      setValue(
+        `transitions.${index}.approvalConfig.levels`,
+        normalizedLevels
+      );
+    }
+  }, [approvalConfig, index, setValue]);
   return (
     <div className="border border-gray-200 rounded-xl p-5 space-y-6 bg-white">
       {/* HEADER */}
@@ -2130,10 +2171,9 @@ function TransitionCard({
                     onClick={() => field.onChange(type.value)}
                     className={`
                       flex flex-col items-center gap-2 p-3 rounded-lg border transition-all
-                      ${
-                        field.value === type.value
-                          ? "border-gray-900 bg-gray-900 text-white"
-                          : "border-gray-200 bg-white text-gray-700 hover:border-gray-300"
+                      ${field.value === type.value
+                        ? "border-gray-900 bg-gray-900 text-white"
+                        : "border-gray-200 bg-white text-gray-700 hover:border-gray-300"
                       }
                     `}
                   >

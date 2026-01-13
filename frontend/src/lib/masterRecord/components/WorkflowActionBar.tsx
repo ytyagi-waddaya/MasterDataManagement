@@ -85,15 +85,16 @@ export function WorkflowActionBar({
 }) {
   const instance = record.workflowInstance; // latest instance
   const instanceId = instance?.id;
- console.log("Instance Id Id:", instanceId);
+  console.log("Instance Id Id:", instanceId);
   const hasInstance = !!record.workflowInstance;
+  const isCompleted = record?.currentStage?.code === "COMPLETED";
 
   // 🔹 record itself is the resource
   const resourceId = record.id;
 
   // 🔹 fetch runtime actions only if instance exists
   const { data: actions = [] } = useWorkflowActions(instanceId ?? "");
-  
+
   const actionMutation = useWorkflowInstanceAction(instanceId ?? "");
   console.log("ACTIONS:", actionMutation);
   const startWorkflow = useWorkflowInstance();
@@ -114,9 +115,22 @@ export function WorkflowActionBar({
   /* ------------------------------------------------
      1️⃣ BEFORE WORKFLOW STARTED → SHOW SEND BUTTON
   ------------------------------------------------ */
+  if (isCompleted) {
+    return <div>Workflow Completed</div>;
+  }
   if (!hasInstance) {
     return <Button onClick={handleSendForApproval}>Send for approval</Button>;
   }
+  
+
+  // {
+  //   isCompleted ? (
+  //     <div>Workflow Completed</div>
+  //   ) : !hasInstance ? (
+  //     <Button onClick={handleSendForApproval}>Send for approval</Button>
+  //   ) : null
+  // }
+
 
   /* ------------------------------------------------
      2️⃣ WORKFLOW RUNNING → SHOW RUNTIME ACTIONS
