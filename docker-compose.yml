@@ -44,19 +44,30 @@ services:
       timeout: 3s
       retries: 10
 
-  # backend:
-  #   image: tyash26/backend:1.0
-  #   container_name: mdm_backend
-  #   restart: unless-stopped
-  #   depends_on:
-  #     postgres:
-  #       condition: service_healthy
-  #     redis:
-  #       condition: service_healthy
-  #   ports:
-  #     - "8000:8000"
-  #   env_file:
-  #     - .env.local
+  backend:
+    image: tyash26/backend:latest
+    container_name: mdm_backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    env_file:
+      - backend/.env.local
+
+  frontend:
+    image: tyash26/frontend:latest
+    container_name: mdm_frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - frontend/.env.example
+    depends_on:
+      - backend
 
 volumes:
   pgdata:

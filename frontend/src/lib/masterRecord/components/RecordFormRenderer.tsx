@@ -2,10 +2,9 @@ import { FormRuntimePreview } from "@/components/field-builder-drag-drop/runtime
 import { useMasterObjectForRuntime } from "@/lib/masterObject/hook";
 import { useMemo } from "react";
 export function RecordFormRenderer({ record }: { record: any }) {
-  const mode =
-    ["DRAFT", "CORRECTION"].includes(record.currentStage?.category)
-      ? "EDIT"
-      : "VIEW";
+  const mode = ["DRAFT", "CORRECTION"].includes(record.currentStage?.category)
+    ? "EDIT"
+    : "VIEW";
 
     const { data: runtimeObject } = useMasterObjectForRuntime(
     record.masterObjectId

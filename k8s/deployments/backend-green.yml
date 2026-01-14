@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mdm-backend-green
+  namespace: mdm-prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mdm-backend
+      version: green
+  template:
+    metadata:
+      labels:
+        app: mdm-backend
+        version: green
+    spec:
+      containers:
+        - name: backend
+          image: tyash26/backend:latest
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - secretRef:
+                name: backend-env

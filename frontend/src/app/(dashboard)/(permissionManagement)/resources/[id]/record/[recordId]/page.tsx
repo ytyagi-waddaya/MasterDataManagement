@@ -34,15 +34,17 @@ if (!record) return <div>Record not found</div>;
 
       {/* Record Form */}
       <RecordFormRenderer record={record} />
-      {/* <FormRuntimePreview sections={sections} /> */}
+  
+    </div>
+  );
+}
+
+    {/* <FormRuntimePreview sections={sections} /> */}
 
       {/* Workflow Timeline */}
       {/* {record.workflowInstanceId && (
         <WorkflowTimeline instanceId={record.workflowInstanceId} />
       )} */}
-    </div>
-  );
-}
 
 //         <pre className="bg-gray-900 text-green-400 p-4 rounded-md text-sm overflow-auto">
 //           {JSON.stringify(recordData, null, 2)}

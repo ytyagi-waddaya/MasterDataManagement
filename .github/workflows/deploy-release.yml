@@ -1,0 +1,68 @@
+# name: Deploy – Release (Pre-Prod)
+
+# on:
+#   push:
+#     branches:
+#       - "release/*"
+
+# env:
+#   BACKEND_IMAGE: tyash26/backend
+#   FRONTEND_IMAGE: tyash26/frontend
+#   TAG: rc
+
+# jobs:
+#   build-and-push:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - uses: actions/checkout@v4
+
+#       - name: Login to Docker Hub
+#         uses: docker/login-action@v3
+#         with:
+#           username: ${{ secrets.DOCKERHUB_USERNAME }}
+#           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+#       # -------- Backend --------
+#       - name: Build backend
+#         run: |
+#           docker build -t $BACKEND_IMAGE:$TAG ./backend
+
+#       - name: Push backend
+#         run: docker push $BACKEND_IMAGE:$TAG
+
+#       # -------- Frontend --------
+#       - name: Build frontend
+#         run: |
+#           docker build \
+#             --build-arg NEXT_PUBLIC_API_URL=http://${{ secrets.PREPROD_HOST }}:8000/api \
+#             --build-arg NEXT_PUBLIC_SOCKET_URL=http://${{ secrets.PREPROD_HOST }}:8000 \
+#             -t $FRONTEND_IMAGE:$TAG \
+#             ./frontend
+
+#       - name: Push frontend
+#         run: docker push $FRONTEND_IMAGE:$TAG
+
+#   deploy:
+#     needs: build-and-push
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Deploy to Pre-Prod
+#         uses: appleboy/ssh-action@v1.0.3
+#         with:
+#           host: ${{ secrets.PREPROD_HOST }}
+#           username: ${{ secrets.SERVER_USER }}
+#           key: ${{ secrets.SERVER_SSH_KEY }}
+#           script: |
+#             cd /opt/mdm
+
+#             docker pull tyash26/backend:rc
+#             docker pull tyash26/frontend:rc
+
+#             docker-compose -f docker/docker-compose.preprod.yml down
+#             docker-compose -f docker/docker-compose.preprod.yml up -d
+
+#             docker image prune -f
+
+# # release/* → pre-prod

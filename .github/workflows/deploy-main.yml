@@ -1,0 +1,147 @@
+name: Deploy – Production
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  BACKEND_IMAGE: tyash26/backend
+  FRONTEND_IMAGE: tyash26/frontend
+  TAG: latest
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # -------- Backend --------
+      - name: Build backend
+        run: |
+          docker build -t $BACKEND_IMAGE:$TAG ./backend
+
+      - name: Push backend
+        run: docker push $BACKEND_IMAGE:$TAG
+
+      # -------- Frontend --------
+      - name: Build frontend
+        run: |
+          docker build \
+            --build-arg NEXT_PUBLIC_API_URL=https://${{ secrets.PROD_HOST }}/api \
+            --build-arg NEXT_PUBLIC_SOCKET_URL=https://${{ secrets.PROD_HOST }} \
+            -t $FRONTEND_IMAGE:$TAG \
+            ./frontend
+
+      - name: Push frontend
+        run: docker push $FRONTEND_IMAGE:$TAG
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to Production
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd /opt/mdm
+
+            docker pull tyash26/backend:latest
+            docker pull tyash26/frontend:latest
+
+            docker-compose -f docker/docker-compose.prod.yml down
+            docker-compose -f docker/docker-compose.prod.yml up -d
+
+            docker image prune -f
+
+# docker exec mdm_backend npx prisma db push
+# docker exec mdm_backend node dist/prisma/seed.js
+
+# ├── .github/
+# │   └── workflows/
+# │       ├── ci-feature.yml          # feature/* → lint + test
+# │       ├── deploy-develop.yml      # develop → staging
+# │       ├── deploy-release.yml      # release/* → pre-prod
+# │       ├── deploy-main.yml         # main → production
+# │       └── deploy-hotfix.yml       # hotfix/* → production
+
+# name: Deploy – Production
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# env:
+#   BACKEND_IMAGE: tyash26/backend
+#   FRONTEND_IMAGE: tyash26/frontend
+#   TAG: latest
+
+# jobs:
+#   build-and-push:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - uses: actions/checkout@v4
+
+#       - name: Login to Docker Hub
+#         uses: docker/login-action@v3
+#         with:
+#           username: ${{ secrets.DOCKERHUB_USERNAME }}
+#           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+#       # -------- Backend --------
+#       - name: Build backend
+#         run: docker build -t $BACKEND_IMAGE:$TAG ./backend
+
+#       - name: Push backend
+#         run: docker push $BACKEND_IMAGE:$TAG
+
+#       # -------- Frontend --------
+#       - name: Build frontend
+#         run: |
+#           docker build \
+#             --build-arg NEXT_PUBLIC_API_URL=https://${{ secrets.PROD_HOST }}/api \
+#             --build-arg NEXT_PUBLIC_SOCKET_URL=https://${{ secrets.PROD_HOST }} \
+#             -t $FRONTEND_IMAGE:$TAG \
+#             ./frontend
+
+#       - name: Push frontend
+#         run: docker push $FRONTEND_IMAGE:$TAG
+
+#   deploy:
+#     needs: build-and-push
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - uses: actions/checkout@v4
+
+#       # 🔐 Setup kubectl
+#       - name: Setup kubectl
+#         uses: azure/setup-kubectl@v4
+
+#       # 🔐 Load kubeconfig from secret
+#       - name: Configure kubeconfig
+#         run: |
+#           mkdir -p ~/.kube
+#           echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+
+#       # 🚀 Deploy to Kubernetes
+#       - name: Deploy to cluster
+#         run: |
+#           kubectl apply -f k8s/namespace.yml
+#           kubectl apply -f k8s/secrets/
+#           kubectl apply -f k8s/volumes/
+#           kubectl apply -f k8s/deployments/
+#           kubectl apply -f k8s/services/

@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mdm-postgres
+  namespace: mdm-prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mdm-postgres
+  template:
+    metadata:
+      labels:
+        app: mdm-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:17-alpine
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: mdmpostgres
+            - name: POSTGRES_PASSWORD
+              value: mdmpostgres
+            - name: POSTGRES_DB
+              value: mdmDB
+          volumeMounts:
+            - name: pgdata
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: pgdata
+          persistentVolumeClaim:
+            claimName: postgres-pvc

@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mdm-redis
+  namespace: mdm-prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mdm-redis
+  template:
+    metadata:
+      labels:
+        app: mdm-redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:7-alpine
+          ports:
+            - containerPort: 6379

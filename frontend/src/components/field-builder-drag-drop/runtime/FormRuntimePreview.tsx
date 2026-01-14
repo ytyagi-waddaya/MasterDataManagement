@@ -323,6 +323,13 @@ const [values, setValues] = useState<Record<string, any>>(() => initialValues ??
     onSubmit?.(values);
   }
 
+  useEffect(() => {
+  if (initialValues) {
+    setValues(initialValues);
+  }
+}, [initialValues]);
+
+
   return (
     <form onSubmit={handleSubmit} className="max-w-full mx-auto p-4 sm:p-6 space-y-8">
       {sections.map((section) => (

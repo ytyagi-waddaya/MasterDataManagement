@@ -4,9 +4,11 @@ import { store } from "@/store";
 import { clearMe, setMe } from "./authSlice";
 
 export async function loadMe() {
+  console.log("Calling /user/me");
+
+  console.log("API BASE URL:", process.env.NEXT_PUBLIC_API_URL);
   try {
     const res = await apiClient.get("/user/me");
-    console.log("ME DATA:", res);
     
     const payload = res.data.data?.me ?? res.data.data ?? res.data;
     if (payload) {

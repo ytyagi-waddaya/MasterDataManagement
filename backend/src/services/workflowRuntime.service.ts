@@ -1315,6 +1315,12 @@ class WorkflowRuntimeService {
               false,
               meta
             );
+            return await this.resolveApproval(
+              instance,
+              transition,
+              false,
+              meta
+            );
           }
  
           throw new BadRequestException("Invalid approval action");
@@ -1370,6 +1376,7 @@ class WorkflowRuntimeService {
   }
  
   /* ======================================================
+     GET AVAILABLE ACTIONS   ✅ FIXED
      GET AVAILABLE ACTIONS   ✅ FIXED
   ====================================================== */
   async getAvailableActions(instanceId: string, userId: string) {

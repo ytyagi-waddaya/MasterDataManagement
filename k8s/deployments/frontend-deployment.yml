@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mdm-frontend
+  namespace: mdm-prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mdm-frontend
+  template:
+    metadata:
+      labels:
+        app: mdm-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: tyash26/frontend:latest
+          ports:
+            - containerPort: 3000
