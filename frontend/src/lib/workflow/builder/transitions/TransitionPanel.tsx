@@ -170,9 +170,10 @@ export function TransitionPanel({
         <SheetContent
           side="right"
           className={[
-            "w-[760px] max-w-[95vw] p-0",
+            "!w-[450px] !max-w-none p-0",
             "[&>button.absolute.right-4.top-4]:hidden",
           ].join(" ")}
+          style={{ maxWidth: "95vw" }}
         >
           <SheetHeader className="border-b px-5 py-4">
             <div className="flex items-start justify-between gap-3">
@@ -225,9 +226,10 @@ export function TransitionPanel({
       <SheetContent
         side="right"
         className={[
-          "w-[760px] max-w-[95vw] p-0",
+          "!w-[450px] !max-w-none p-0",
           "[&>button.absolute.right-4.top-4]:hidden",
         ].join(" ")}
+        style={{ maxWidth: "95vw" }}
       >
         <SheetHeader className="border-b px-5 py-4">
           <div className="flex items-start justify-between gap-3">
