@@ -1,9 +1,61 @@
+
 // "use client";
 
 // import * as React from "react";
 // import { Handle, Position, type NodeProps } from "reactflow";
-// import { GitBranch, Zap, Lock, Unlock } from "lucide-react";
+// import {
+//   GitBranch,
+//   Zap,
+//   Lock,
+//   Unlock,
+//   ChevronDown,
+//   ChevronUp,
+// } from "lucide-react";
 // import NodeCard from "./NodeCard";
+
+// /* ---------------------------------- Types --------------------------------- */
+
+// type StageNodeData = {
+//   name?: string;
+//   category?: string;
+//   color?: string;
+//   isFinal?: boolean;
+//   isInitial?: boolean;
+
+//   // ✅ this is the field you want to configure
+//   allowedNextCategories?: string[];
+
+//   // ✅ mode flag (IMPORTANT)
+//   // builder: show config UI
+//   // view: hide config UI
+//   mode?: "builder" | "view";
+
+//   // optional flags if you already use something else
+//   isBuilder?: boolean;
+
+//   readOnly?: boolean;
+
+//   // callbacks your builder might provide
+//   onNameChange?: (name: string) => void;
+//   onAllowedNextCategoriesChange?: (next: string[]) => void;
+
+//   // generic fallback updater (if your builder uses it)
+//   onChange?: (nextData: any) => void;
+// };
+
+// /* ---------------------------------- Category Options --------------------------------- */
+
+// const CATEGORY_OPTIONS = [
+//   { value: "DRAFT", label: "Draft" },
+//   { value: "SUBMITTED", label: "Submitted" },
+//   { value: "UNDER_REVIEW", label: "Under Review" },
+//   { value: "NORMAL", label: "Normal" },
+//   { value: "CORRECTION", label: "Correction" },
+//   { value: "ON_HOLD", label: "On Hold" },
+//   { value: "APPROVAL", label: "Approval" },
+//   { value: "COMPLETED", label: "Completed" },
+//   { value: "REJECTED", label: "Rejected" },
+// ];
 
 // /* ---------------------------------- Utils --------------------------------- */
 
@@ -35,9 +87,7 @@
 //     "!border-2 !border-white !w-4 !h-4 transition-all duration-300 shadow-lg";
 
 //   const hover =
-//     isHovered && isConnectable
-//       ? "!w-5 !h-5 !shadow-xl scale-110"
-//       : "";
+//     isHovered && isConnectable ? "!w-5 !h-5 !shadow-xl scale-110" : "";
 
 //   const disabled = !isConnectable
 //     ? "opacity-60 !bg-gradient-to-br from-slate-400 to-slate-500"
@@ -70,23 +120,77 @@
 
 // /* -------------------------------- Component -------------------------------- */
 
-// export default function StageNode({ data }: NodeProps) {
+// export default function StageNode(props: NodeProps<StageNodeData>) {
+//   const data = props.data;
+
 //   const [localName, setLocalName] = React.useState<string>(data?.name || "");
 //   const [hovered, setHovered] = React.useState(false);
+
+//   const [allowedNextCategories, setAllowedNextCategories] = React.useState<
+//     string[]
+//   >(() =>
+//     Array.isArray(data?.allowedNextCategories) ? data.allowedNextCategories : []
+//   );
+
+//   // ✅ Collapsible
+//   const [restrictOpen, setRestrictOpen] = React.useState(false);
 
 //   React.useEffect(() => {
 //     setLocalName(data?.name || "");
 //   }, [data?.name]);
 
-//   const category = String(data?.category || "NORMAL").toUpperCase();
-//   const isFinal = data?.isFinal;
-//   const isInitial = data?.isInitial;
+//   React.useEffect(() => {
+//     setAllowedNextCategories(
+//       Array.isArray(data?.allowedNextCategories) ? data.allowedNextCategories : []
+//     );
+//   }, [data?.allowedNextCategories]);
 
-//   const save = React.useCallback(() => {
+//   // optional: if selection exists, auto open
+//   React.useEffect(() => {
+//     if ((allowedNextCategories?.length || 0) > 0) setRestrictOpen(true);
+//   }, [allowedNextCategories?.length]);
+
+//   const category = String(data?.category || "NORMAL").toUpperCase();
+//   const isFinal = !!data?.isFinal;
+//   const isInitial = !!data?.isInitial;
+
+//   const saveName = React.useCallback(() => {
 //     if (!data?.readOnly) {
 //       data?.onNameChange?.(localName);
 //     }
 //   }, [data, localName]);
+
+//   /**
+//    * ✅ IMPORTANT RULE YOU ASKED:
+//    * - Builder (bnate time): UI show
+//    * - View/Preview (dekhte time): UI hide
+//    *
+//    * Set node data like:
+//    *  builder:  data.mode = "builder"
+//    *  view:     data.mode = "view"
+//    *
+//    * NOTE: publish ke time allowedNextCategories data me save rahega,
+//    * UI hide rahega, but restrictions engine me apply ho sakti hai.
+//    */
+//   const isBuilderMode =
+//     data?.mode === "builder" ||
+//     data?.isBuilder === true ||
+//     // fallback: builder usually has callbacks
+//     (typeof data?.onNameChange === "function" && data?.mode !== "view");
+
+//   const persistAllowedNextCategories = React.useCallback(
+//     (next: string[]) => {
+//       setAllowedNextCategories(next);
+//       if (data?.readOnly) return;
+
+//       // ✅ your specific callback
+//       data?.onAllowedNextCategoriesChange?.(next);
+
+//       // ✅ fallback updater (if your builder uses it)
+//       data?.onChange?.({ allowedNextCategories: next });
+//     },
+//     [data]
+//   );
 
 //   return (
 //     <div
@@ -197,7 +301,7 @@
 //               <input
 //                 value={localName}
 //                 onChange={(e) => setLocalName(e.target.value)}
-//                 onBlur={save}
+//                 onBlur={saveName}
 //                 onKeyDown={(e) => {
 //                   if (e.key === "Enter")
 //                     (e.target as HTMLInputElement).blur();
@@ -218,6 +322,110 @@
 //               />
 //             )}
 //           </div>
+
+//           {/* ✅ SHOW ONLY IN BUILDER MODE (hide in view/preview) */}
+//           {isBuilderMode && (
+//             <div
+//               className="rounded-2xl border border-slate-200 bg-white/70 backdrop-blur-sm overflow-hidden"
+//               onClick={(e) => e.stopPropagation()}
+//               onMouseDown={(e) => e.stopPropagation()}
+//             >
+//               {/* Header (click to toggle) */}
+//               <button
+//                 type="button"
+//                 className="w-full flex items-center justify-between px-3 py-2.5 hover:bg-slate-50 transition"
+//                 onClick={() => setRestrictOpen((s) => !s)}
+//               >
+//                 <div className="flex flex-col items-start">
+//                   <div className="text-xs font-semibold text-slate-700">
+//                     Restrict next stages to specific categories
+//                   </div>
+
+//                   <div className="text-[11px] text-slate-500 mt-0.5">
+//                     {allowedNextCategories.length === 0
+//                       ? "No restrictions – all categories are allowed"
+//                       : `Only ${allowedNextCategories.length} categor${allowedNextCategories.length === 1 ? "y" : "ies"
+//                       } allowed`}
+//                   </div>
+//                 </div>
+
+//                 <div className="flex items-center gap-2">
+//                   <span className="text-[10px] font-semibold px-2 py-1 rounded-full bg-slate-100 text-slate-700 border border-slate-200">
+//                     {allowedNextCategories.length}
+//                   </span>
+//                   {restrictOpen ? (
+//                     <ChevronUp className="w-4 h-4 text-slate-600" />
+//                   ) : (
+//                     <ChevronDown className="w-4 h-4 text-slate-600" />
+//                   )}
+//                 </div>
+//               </button>
+
+//               {/* Body */}
+//               {restrictOpen && (
+//                 <div className="px-3 pb-3">
+//                   <div className="flex flex-wrap gap-2 nodrag nopan">
+//                     {CATEGORY_OPTIONS.map((opt) => {
+//                       const checked = allowedNextCategories.includes(opt.value);
+//                       const disabled = !!data?.readOnly;
+
+//                       return (
+//                         <button
+//                           key={opt.value}
+//                           type="button"
+//                           disabled={disabled}
+//                           onClick={() => {
+//                             if (disabled) return;
+
+//                             const current = allowedNextCategories ?? [];
+//                             const next = checked
+//                               ? current.filter((v) => v !== opt.value)
+//                               : [...current, opt.value];
+
+//                             persistAllowedNextCategories(next);
+//                           }}
+//                           className={`
+//                             px-3 py-1.5 rounded-full border text-xs transition-all
+//                             ${checked
+//                               ? "bg-gray-900 text-white border-gray-900"
+//                               : "bg-gray-50 text-gray-600 border-gray-200 hover:border-gray-300"
+//                             }
+//                             ${disabled
+//                               ? "opacity-60 cursor-not-allowed hover:border-gray-200"
+//                               : ""
+//                             }
+//                           `}
+//                         >
+//                           {opt.label}
+//                         </button>
+//                       );
+//                     })}
+
+//                     {(allowedNextCategories.length || 0) > 0 && (
+//                       <button
+//                         type="button"
+//                         disabled={!!data?.readOnly}
+//                         onClick={() => {
+//                           if (data?.readOnly) return;
+//                           persistAllowedNextCategories([]);
+//                         }}
+//                         className={`
+//                           px-3 py-1.5 rounded-full border border-gray-200 text-xs
+//                           text-gray-600 hover:text-gray-900 hover:border-gray-300 bg-white
+//                           ${data?.readOnly
+//                             ? "opacity-60 cursor-not-allowed hover:border-gray-200 hover:text-gray-600"
+//                             : ""
+//                           }
+//                         `}
+//                       >
+//                         Clear all
+//                       </button>
+//                     )}
+//                   </div>
+//                 </div>
+//               )}
+//             </div>
+//           )}
 //         </div>
 //       </NodeCard>
 
@@ -236,19 +444,12 @@
 // }
 
 
-
+// D:\Raghav\MasterDataManagement\frontend\src\lib\workflow\builder\nodes\StageNode.tsx
 "use client";
 
 import * as React from "react";
 import { Handle, Position, type NodeProps } from "reactflow";
-import {
-  GitBranch,
-  Zap,
-  Lock,
-  Unlock,
-  ChevronDown,
-  ChevronUp,
-} from "lucide-react";
+import { GitBranch, Zap, Lock, Unlock, ChevronDown, ChevronUp } from "lucide-react";
 import NodeCard from "./NodeCard";
 
 /* ---------------------------------- Types --------------------------------- */
@@ -260,24 +461,15 @@ type StageNodeData = {
   isFinal?: boolean;
   isInitial?: boolean;
 
-  // ✅ this is the field you want to configure
   allowedNextCategories?: string[];
 
-  // ✅ mode flag (IMPORTANT)
-  // builder: show config UI
-  // view: hide config UI
   mode?: "builder" | "view";
-
-  // optional flags if you already use something else
   isBuilder?: boolean;
 
   readOnly?: boolean;
 
-  // callbacks your builder might provide
   onNameChange?: (name: string) => void;
   onAllowedNextCategoriesChange?: (next: string[]) => void;
-
-  // generic fallback updater (if your builder uses it)
   onChange?: (nextData: any) => void;
 };
 
@@ -316,17 +508,9 @@ function badgeClass(category?: string) {
   }
 }
 
-function getHandleStyle(
-  position: Position,
-  isHovered: boolean,
-  isConnectable = true
-) {
-  const base =
-    "!border-2 !border-white !w-4 !h-4 transition-all duration-300 shadow-lg";
-
-  const hover =
-    isHovered && isConnectable ? "!w-5 !h-5 !shadow-xl scale-110" : "";
-
+function getHandleStyle(position: Position, isHovered: boolean, isConnectable = true) {
+  const base = "!border-2 !border-white !w-4 !h-4 transition-all duration-300 shadow-lg";
+  const hover = isHovered && isConnectable ? "!w-5 !h-5 !shadow-xl scale-110" : "";
   const disabled = !isConnectable
     ? "opacity-60 !bg-gradient-to-br from-slate-400 to-slate-500"
     : "";
@@ -344,6 +528,28 @@ function getHandleStyle(
       return base;
   }
 }
+
+/**
+ * ✅ FIX:
+ * - Your 8 handles are fine (source+target on all 4 sides)
+ * - But you MUST anchor them to the exact center of each side.
+ * - Earlier code only set left/top/right/bottom, so the handle stayed at default top position,
+ *   causing ReactFlow to "snap" to wrong side (usually right).
+ */
+const anchorStyle = (pos: Position): React.CSSProperties => {
+  switch (pos) {
+    case Position.Left:
+      return { left: -8, top: "50%", transform: "translateY(-50%)" };
+    case Position.Right:
+      return { right: -8, top: "50%", transform: "translateY(-50%)" };
+    case Position.Top:
+      return { top: -8, left: "50%", transform: "translateX(-50%)" };
+    case Position.Bottom:
+      return { bottom: -8, left: "50%", transform: "translateX(-50%)" };
+    default:
+      return {};
+  }
+};
 
 const HANDLE_POSITIONS = [
   { position: Position.Left, type: "target" as const, id: "left-target" },
@@ -364,13 +570,10 @@ export default function StageNode(props: NodeProps<StageNodeData>) {
   const [localName, setLocalName] = React.useState<string>(data?.name || "");
   const [hovered, setHovered] = React.useState(false);
 
-  const [allowedNextCategories, setAllowedNextCategories] = React.useState<
-    string[]
-  >(() =>
-    Array.isArray(data?.allowedNextCategories) ? data.allowedNextCategories : []
+  const [allowedNextCategories, setAllowedNextCategories] = React.useState<string[]>(
+    () => (Array.isArray(data?.allowedNextCategories) ? data.allowedNextCategories : [])
   );
 
-  // ✅ Collapsible
   const [restrictOpen, setRestrictOpen] = React.useState(false);
 
   React.useEffect(() => {
@@ -383,7 +586,6 @@ export default function StageNode(props: NodeProps<StageNodeData>) {
     );
   }, [data?.allowedNextCategories]);
 
-  // optional: if selection exists, auto open
   React.useEffect(() => {
     if ((allowedNextCategories?.length || 0) > 0) setRestrictOpen(true);
   }, [allowedNextCategories?.length]);
@@ -393,27 +595,12 @@ export default function StageNode(props: NodeProps<StageNodeData>) {
   const isInitial = !!data?.isInitial;
 
   const saveName = React.useCallback(() => {
-    if (!data?.readOnly) {
-      data?.onNameChange?.(localName);
-    }
+    if (!data?.readOnly) data?.onNameChange?.(localName);
   }, [data, localName]);
 
-  /**
-   * ✅ IMPORTANT RULE YOU ASKED:
-   * - Builder (bnate time): UI show
-   * - View/Preview (dekhte time): UI hide
-   *
-   * Set node data like:
-   *  builder:  data.mode = "builder"
-   *  view:     data.mode = "view"
-   *
-   * NOTE: publish ke time allowedNextCategories data me save rahega,
-   * UI hide rahega, but restrictions engine me apply ho sakti hai.
-   */
   const isBuilderMode =
     data?.mode === "builder" ||
     data?.isBuilder === true ||
-    // fallback: builder usually has callbacks
     (typeof data?.onNameChange === "function" && data?.mode !== "view");
 
   const persistAllowedNextCategories = React.useCallback(
@@ -421,10 +608,7 @@ export default function StageNode(props: NodeProps<StageNodeData>) {
       setAllowedNextCategories(next);
       if (data?.readOnly) return;
 
-      // ✅ your specific callback
       data?.onAllowedNextCategoriesChange?.(next);
-
-      // ✅ fallback updater (if your builder uses it)
       data?.onChange?.({ allowedNextCategories: next });
     },
     [data]
@@ -452,8 +636,7 @@ export default function StageNode(props: NodeProps<StageNodeData>) {
         <div
           className="absolute -inset-3 rounded-2xl pointer-events-none"
           style={{
-            background: `conic-gradient(from 0deg, transparent, ${(data?.color ||
-              "#6366f1")}20, transparent)`,
+            background: `conic-gradient(from 0deg, transparent, ${(data?.color || "#6366f1")}20, transparent)`,
             animation: "rotate 3s linear infinite",
             WebkitMask:
               "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
@@ -464,7 +647,7 @@ export default function StageNode(props: NodeProps<StageNodeData>) {
         />
       )}
 
-      {/* Handles */}
+      {/* ✅ Handles (8 handles, properly centered on each side) */}
       {HANDLE_POSITIONS.map((h) => {
         const isSource = h.type === "source";
         const isConnectable = !(isSource && isFinal);
@@ -477,12 +660,7 @@ export default function StageNode(props: NodeProps<StageNodeData>) {
             position={h.position}
             isConnectable={isConnectable}
             className={getHandleStyle(h.position, hovered, isConnectable)}
-            style={{
-              ...(h.position === Position.Left && { left: -8 }),
-              ...(h.position === Position.Top && { top: -8 }),
-              ...(h.position === Position.Right && { right: -8 }),
-              ...(h.position === Position.Bottom && { bottom: -8 }),
-            }}
+            style={anchorStyle(h.position)}
           />
         );
       })}
@@ -541,8 +719,7 @@ export default function StageNode(props: NodeProps<StageNodeData>) {
                 onChange={(e) => setLocalName(e.target.value)}
                 onBlur={saveName}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter")
-                    (e.target as HTMLInputElement).blur();
+                  if (e.key === "Enter") (e.target as HTMLInputElement).blur();
                 }}
                 onClick={(e) => e.stopPropagation()}
                 onMouseDown={(e) => e.stopPropagation()}
@@ -568,7 +745,6 @@ export default function StageNode(props: NodeProps<StageNodeData>) {
               onClick={(e) => e.stopPropagation()}
               onMouseDown={(e) => e.stopPropagation()}
             >
-              {/* Header (click to toggle) */}
               <button
                 type="button"
                 className="w-full flex items-center justify-between px-3 py-2.5 hover:bg-slate-50 transition"
@@ -582,8 +758,9 @@ export default function StageNode(props: NodeProps<StageNodeData>) {
                   <div className="text-[11px] text-slate-500 mt-0.5">
                     {allowedNextCategories.length === 0
                       ? "No restrictions – all categories are allowed"
-                      : `Only ${allowedNextCategories.length} categor${allowedNextCategories.length === 1 ? "y" : "ies"
-                      } allowed`}
+                      : `Only ${allowedNextCategories.length} categor${
+                          allowedNextCategories.length === 1 ? "y" : "ies"
+                        } allowed`}
                   </div>
                 </div>
 
@@ -599,7 +776,6 @@ export default function StageNode(props: NodeProps<StageNodeData>) {
                 </div>
               </button>
 
-              {/* Body */}
               {restrictOpen && (
                 <div className="px-3 pb-3">
                   <div className="flex flex-wrap gap-2 nodrag nopan">
@@ -624,14 +800,12 @@ export default function StageNode(props: NodeProps<StageNodeData>) {
                           }}
                           className={`
                             px-3 py-1.5 rounded-full border text-xs transition-all
-                            ${checked
-                              ? "bg-gray-900 text-white border-gray-900"
-                              : "bg-gray-50 text-gray-600 border-gray-200 hover:border-gray-300"
+                            ${
+                              checked
+                                ? "bg-gray-900 text-white border-gray-900"
+                                : "bg-gray-50 text-gray-600 border-gray-200 hover:border-gray-300"
                             }
-                            ${disabled
-                              ? "opacity-60 cursor-not-allowed hover:border-gray-200"
-                              : ""
-                            }
+                            ${disabled ? "opacity-60 cursor-not-allowed hover:border-gray-200" : ""}
                           `}
                         >
                           {opt.label}
@@ -650,9 +824,10 @@ export default function StageNode(props: NodeProps<StageNodeData>) {
                         className={`
                           px-3 py-1.5 rounded-full border border-gray-200 text-xs
                           text-gray-600 hover:text-gray-900 hover:border-gray-300 bg-white
-                          ${data?.readOnly
-                            ? "opacity-60 cursor-not-allowed hover:border-gray-200 hover:text-gray-600"
-                            : ""
+                          ${
+                            data?.readOnly
+                              ? "opacity-60 cursor-not-allowed hover:border-gray-200 hover:text-gray-600"
+                              : ""
                           }
                         `}
                       >

@@ -1056,27 +1056,42 @@ export default function WorkflowCanvas({
   }, [stagesForRender, transitionsForRender, activeTransition, setEdges]);
 
   const onConnect = useCallback(
-    (c: Connection) => {
-      if (isReadOnly || !c.source || !c.target || !c.sourceHandle) return;
-      if (c.source === "workflow") return;
+  (c: Connection) => {
+    if (isReadOnly) return;
+    if (!c.source || !c.target) return;
+    if (c.source === "workflow") return;
 
-      setEdges((eds) =>
-        addEdge(
-          { ...c, id: `temp-${Date.now()}`, type: "flow", data: { live: true, layout: "horizontal", parallelIndex: 1 } },
-          eds
-        )
-      );
+    // ✅ Strict mode me targetHandle must exist (user ne handle pe drop kiya)
+    if (!c.sourceHandle || !c.targetHandle) return;
 
-      let targetHandle = "left-target";
-      if (c.sourceHandle.includes("top")) targetHandle = "top-target";
-      else if (c.sourceHandle.includes("right")) targetHandle = "right-target";
-      else if (c.sourceHandle.includes("bottom")) targetHandle = "bottom-target";
-      else if (c.sourceHandle.includes("left")) targetHandle = "left-target";
+    // Optional: ensure correct directions (source handle must be *-source and target handle must be *-target)
+    if (!String(c.sourceHandle).endsWith("-source")) return;
+    if (!String(c.targetHandle).endsWith("-target")) return;
 
-      createTransitionAndOpen(String(c.source), String(c.target), c.sourceHandle, targetHandle);
-    },
-    [isReadOnly, createTransitionAndOpen, setEdges]
-  );
+    // temp edge for instant UI
+    setEdges((eds) =>
+      addEdge(
+        {
+          ...c,
+          id: `temp-${Date.now()}`,
+          type: "flow",
+          data: { live: true, layout: "horizontal", parallelIndex: 1 },
+        },
+        eds
+      )
+    );
+
+    // ✅ Save EXACT handles user used
+    createTransitionAndOpen(
+      String(c.source),
+      String(c.target),
+      c.sourceHandle,
+      c.targetHandle
+    );
+  },
+  [isReadOnly, createTransitionAndOpen, setEdges]
+);
+
 
   const onEdgeClick = useCallback(
     (e: any, edge: Edge) => {

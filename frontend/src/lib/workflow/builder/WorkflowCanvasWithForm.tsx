@@ -10,10 +10,7 @@ import {
   Network,
   Layers,
   GitBranch,
-  Shield,
   Users,
-  Download,
-  Share2,
   Bell,
   CheckCircle,
   AlertCircle,
@@ -37,7 +34,6 @@ export default function WorkflowCanvasWithForm({
   const transitions = form.watch("transitions") || [];
   const workflowName = form.watch("name") || "Unnamed Workflow";
 
-  // ✅ SAVE + BACK
   const handleSave = async () => {
     setIsSaving(true);
     setSaveStatus("idle");
@@ -59,7 +55,6 @@ export default function WorkflowCanvasWithForm({
 
       setSaveStatus("success");
 
-      // ✅ Save successful → go back
       if (typeof onBack === "function") {
         onBack();
       }
@@ -74,15 +69,13 @@ export default function WorkflowCanvasWithForm({
   const workflowStats = {
     totalStages: stages.length,
     totalTransitions: transitions.length,
-    initialStages: stages.filter((s: any) => s.isInitial).length,
-    finalStages: stages.filter((s: any) => s.isFinal).length,
     activeConnections: transitions.filter((t: any) => t.fromStageId && t.toStageId).length,
   };
 
   return (
     <div className="h-screen flex flex-col bg-linear-to-b from-slate-50/50 to-white">
       {/* ================= NAVBAR ================= */}
-      <div className="h-20 border-b bg-white/95 backdrop-blur supports-backdrop-filter:bg-white/60 px-6 flex items-center justify-between shadow-sm">
+      <div className="h-15 border-b bg-white/95 backdrop-blur supports-backdrop-filter:bg-white/60 px-6 flex items-center justify-between shadow-sm">
         {/* Left */}
         <div className="flex items-center gap-4">
           <Button
@@ -103,53 +96,51 @@ export default function WorkflowCanvasWithForm({
             <div className="flex flex-col">
               <h1 className="font-bold text-lg text-slate-900 tracking-tight">{workflowName}</h1>
 
+              {/* ✅ Removed: "• stages • transitions" line */}
               <div className="flex items-center gap-2 text-xs text-slate-500">
                 <span>Workflow Builder</span>
-                <span className="text-slate-300">•</span>
-                <span className="flex items-center gap-1">
-                  <Layers className="h-3 w-3" />
-                  {workflowStats.totalStages} stages
-                </span>
-                <span className="text-slate-300">•</span>
-                <span className="flex items-center gap-1">
-                  <GitBranch className="h-3 w-3" />
-                  {workflowStats.totalTransitions} transitions
-                </span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Center Stats */}
-        <div className="hidden lg:flex items-center gap-6">
-          <div className="flex flex-col items-center">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-sm font-semibold text-slate-700">{workflowStats.initialStages}</span>
-            </div>
-            <span className="text-xs text-slate-500">Initial</span>
-          </div>
+        {/* ✅ Moved UP: Stats + Tips (from old stats bar) */}
+        <div className="hidden lg:flex items-center gap-3">
+          <Badge variant="secondary" className="gap-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100">
+            <Layers className="h-3 w-3" />
+            {workflowStats.totalStages} Stages
+          </Badge>
 
-          <div className="flex flex-col items-center">
-            <div className="flex items-center gap-2">
-              <Shield className="h-3 w-3 text-amber-500" />
-              <span className="text-sm font-semibold text-slate-700">{workflowStats.activeConnections}</span>
-            </div>
-            <span className="text-xs text-slate-500">Active</span>
-          </div>
+          <Badge variant="secondary" className="gap-1.5 bg-green-50 text-green-700 hover:bg-green-100">
+            <GitBranch className="h-3 w-3" />
+            {workflowStats.totalTransitions} Transitions
+          </Badge>
 
-          <div className="flex flex-col items-center">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-slate-500" />
-              <span className="text-sm font-semibold text-slate-700">{workflowStats.finalStages}</span>
+          <Badge variant="secondary" className="gap-1.5 bg-violet-50 text-violet-700 hover:bg-violet-100">
+            <Users className="h-3 w-3" />
+            {roleList.length} Roles
+          </Badge>
+
+          <Badge variant="secondary" className="gap-1.5 bg-amber-50 text-amber-700 hover:bg-amber-100">
+            <Bell className="h-3 w-3" />
+            {userList.length} Users
+          </Badge>
+
+          <div className="flex items-center gap-2 text-sm text-slate-500 ml-2">
+            <div className="flex items-center gap-1">
+              {/* <div className="w-2 h-2 rounded-full bg-blue-500" />
+              <span>Click stage to edit</span> */}
             </div>
-            <span className="text-xs text-slate-500">Final</span>
+            <span className="text-slate-300">•</span>
+            <div className="flex items-center gap-1">
+              {/* <div className="w-2 h-2 rounded-full bg-green-500" />
+              <span>Drag to connect</span> */}
+            </div>
           </div>
         </div>
 
         {/* Right */}
         <div className="flex items-center gap-2">
-          {/* Save status */}
           {saveStatus === "success" && (
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm font-medium mr-2 animate-in slide-in-from-right-2">
               <CheckCircle className="h-4 w-4" />
@@ -164,7 +155,6 @@ export default function WorkflowCanvasWithForm({
             </div>
           )}
 
-          {/* ✅ ONLY Save button remains */}
           <Button
             variant="default"
             size="sm"
@@ -192,44 +182,7 @@ export default function WorkflowCanvasWithForm({
         </div>
       </div>
 
-      {/* ================= STATS BAR ================= */}
-      <div className="bg-linear-to-r from-white to-slate-50 border-b border-slate-100 px-6 py-2">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Badge variant="secondary" className="gap-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100">
-              <Layers className="h-3 w-3" />
-              {workflowStats.totalStages} Stages
-            </Badge>
-
-            <Badge variant="secondary" className="gap-1.5 bg-green-50 text-green-700 hover:bg-green-100">
-              <GitBranch className="h-3 w-3" />
-              {workflowStats.totalTransitions} Transitions
-            </Badge>
-
-            <Badge variant="secondary" className="gap-1.5 bg-violet-50 text-violet-700 hover:bg-violet-100">
-              <Users className="h-3 w-3" />
-              {roleList.length} Roles
-            </Badge>
-
-            <Badge variant="secondary" className="gap-1.5 bg-amber-50 text-amber-700 hover:bg-amber-100">
-              <Bell className="h-3 w-3" />
-              {userList.length} Users
-            </Badge>
-          </div>
-
-          <div className="flex items-center gap-2 text-sm text-slate-500">
-            <div className="flex items-center gap-1">
-              <div className="w-2 h-2 rounded-full bg-blue-500" />
-              <span>Click stage to edit</span>
-            </div>
-            <span className="text-slate-300">•</span>
-            <div className="flex items-center gap-1">
-              <div className="w-2 h-2 rounded-full bg-green-500" />
-              <span>Drag to connect</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* ✅ Removed: old STATS BAR section completely */}
 
       {/* ================= CANVAS ================= */}
       <div className="flex-1 relative overflow-hidden">
@@ -242,9 +195,6 @@ export default function WorkflowCanvasWithForm({
           userList={userList}
         />
       </div>
-
-      {/* ================= FLOATING ACTIONS (bottom-left) ================= */}
-      
     </div>
   );
 }

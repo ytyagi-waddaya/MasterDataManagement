@@ -123,7 +123,7 @@ export default function NodeCard({
 
             {/* Buttons */}
             <div className="flex items-center gap-1">
-              <button
+              {/* <button
                 onClick={() => setIsExpanded(!isExpanded)}
                 className="p-1.5 rounded-lg hover:bg-slate-100/80 transition-colors"
                 title={isExpanded ? "Collapse" : "Expand"}
@@ -133,7 +133,7 @@ export default function NodeCard({
                 ) : (
                   <ChevronDown className="h-4 w-4 text-slate-500" />
                 )}
-              </button>
+              </button> */}
 
               {!data?.readOnly && (
                 <button
