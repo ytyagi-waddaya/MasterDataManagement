@@ -80,9 +80,9 @@ export default function WorkflowCanvasWithForm({
   };
 
   return (
-    <div className="h-screen flex flex-col bg-gradient-to-b from-slate-50/50 to-white">
+    <div className="h-screen flex flex-col bg-linear-to-b from-slate-50/50 to-white">
       {/* ================= NAVBAR ================= */}
-      <div className="h-20 border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 px-6 flex items-center justify-between shadow-sm">
+      <div className="h-20 border-b bg-white/95 backdrop-blur supports-backdrop-filter:bg-white/60 px-6 flex items-center justify-between shadow-sm">
         {/* Left */}
         <div className="flex items-center gap-4">
           <Button
@@ -96,7 +96,7 @@ export default function WorkflowCanvasWithForm({
           </Button>
 
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-gradient-to-br from-indigo-100 to-violet-100 border border-indigo-200/50">
+            <div className="p-2 rounded-xl bg-linear-to-br from-indigo-100 to-violet-100 border border-indigo-200/50">
               <Network className="h-5 w-5 text-indigo-600" />
             </div>
 
@@ -172,7 +172,7 @@ export default function WorkflowCanvasWithForm({
             disabled={isSaving}
             className={`
               gap-2 px-4
-              ${isSaving ? "bg-blue-500 hover:bg-blue-600" : "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"}
+              ${isSaving ? "bg-blue-500 hover:bg-blue-600" : "bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"}
               shadow-lg hover:shadow-xl transition-all duration-200
               disabled:opacity-70 disabled:cursor-not-allowed
             `}
@@ -193,7 +193,7 @@ export default function WorkflowCanvasWithForm({
       </div>
 
       {/* ================= STATS BAR ================= */}
-      <div className="bg-gradient-to-r from-white to-slate-50 border-b border-slate-100 px-6 py-2">
+      <div className="bg-linear-to-r from-white to-slate-50 border-b border-slate-100 px-6 py-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Badge variant="secondary" className="gap-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100">

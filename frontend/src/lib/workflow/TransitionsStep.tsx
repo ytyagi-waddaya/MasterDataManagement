@@ -1707,6 +1707,17 @@ import {
 import { MultiSelect } from "./multiselect";
 import { useEffect } from "react";
 
+type Stage = {
+  tempId: string;
+  name: string;
+  isFinal: boolean;
+};
+
+type NormalizedStage = {
+  id: string;
+  name: string;
+};
+
 /* ======================================================
    TRANSITION TYPE CONFIGURATION
 ====================================================== */
@@ -1892,9 +1903,20 @@ function TransitionCard({
   setValue,
   remove,
   normalizedStages,
+  stages,
   roleList,
   userList,
-}: any) {
+}: {
+  index: number;
+  control: any;
+  register: any;
+  setValue: any;
+  remove: (index: number) => void;
+  normalizedStages: NormalizedStage[];
+  stages: Stage[];
+  roleList: any[];
+  userList: any[];
+}) {
   const transitionType = useWatch({
     control,
     name: `transitions.${index}.transitionType`,
@@ -1926,13 +1948,11 @@ function TransitionCard({
 
   // ✅ SEND_BACK now included (no UI change)
   const showTriggerStrategy =
-    transitionType === "NORMAL" ||
-    transitionType === "REVIEW" ||
-    transitionType === "SEND_BACK";
+    transitionType === "NORMAL" || transitionType === "SEND_BACK";
 
   const fromStage = normalizedStages.find((s: any) => s.id === fromStageId);
   const toStage = normalizedStages.find((s: any) => s.id === toStageId);
- 
+
   /* ======================================================
      ENFORCE BACKEND RULES
   ====================================================== */
@@ -1987,37 +2007,24 @@ function TransitionCard({
     }
   }, [transitionType, approvalConfig, index, setValue]);
 
-  // 7. ALWAYS keep levels array valid
-  // useEffect(() => {
-  //   if (approvalConfig?.mode === "PARALLEL") {
-  //     setValue(`transitions.${index}.approvalConfig.levels`, []);
-  //   }
-
-  //   if (approvalConfig?.mode === "SEQUENTIAL" && !approvalConfig.levels) {
-  //     setValue(`transitions.${index}.approvalConfig.levels`, []);
-  //   }
-  // }, [approvalConfig?.mode, index, setValue]);
-  // 7. ALWAYS keep levels array valid (backend requires >= 1)
-  // useEffect(() => {
-  //   if (!approvalConfig) return;
-
-  //   const levels = approvalConfig.levels;
-
-  //   // For BOTH PARALLEL and SEQUENTIAL:
-  //   // ensure at least one level exists
-  //   if (!levels || levels.length === 0) {
-  //     setValue(`transitions.${index}.approvalConfig.levels`, [
-  //       { order: 1, roleIds: [], userIds: [] },
-  //     ]);
-  //   }
-  // }, [approvalConfig?.mode, index, setValue]);
-
- useEffect(() => {
+  useEffect(() => {
     if (transitionType !== "APPROVAL") {
       setValue(`transitions.${index}.approvalStrategy`, undefined);
       setValue(`transitions.${index}.approvalConfig`, undefined);
     }
   }, [transitionType, index, setValue]);
+
+  useEffect(() => {
+    if (transitionType === "SEND_BACK" && fromStageId && toStageId) {
+      const fromIndex = normalizedStages.findIndex((s) => s.id === fromStageId);
+      const toIndex = normalizedStages.findIndex((s) => s.id === toStageId);
+
+      if (toIndex >= fromIndex) {
+        setValue(`transitions.${index}.toStageId`, "");
+      }
+    }
+  }, [transitionType, fromStageId, toStageId]);
+
   useEffect(() => {
     if (!approvalConfig) return;
 
@@ -2047,10 +2054,7 @@ function TransitionCard({
     );
 
     if (hasInvalid) {
-      setValue(
-        `transitions.${index}.approvalConfig.levels`,
-        normalizedLevels
-      );
+      setValue(`transitions.${index}.approvalConfig.levels`, normalizedLevels);
     }
   }, [approvalConfig, index, setValue]);
   return (
@@ -2112,12 +2116,25 @@ function TransitionCard({
                   <SelectTrigger className="border-gray-300">
                     <SelectValue placeholder="Select source stage" />
                   </SelectTrigger>
+
                   <SelectContent>
-                    {normalizedStages.map((s: any) => (
-                      <SelectItem key={s.id} value={s.id}>
-                        {s.name}
-                      </SelectItem>
-                    ))}
+                    {normalizedStages
+                      .filter((s: NormalizedStage) => {
+                        const stage = stages.find(
+                          (st: Stage) => st.tempId === s.id
+                        );
+
+                        // allow all non-final stages
+                        if (!stage?.isFinal) return true;
+
+                        // allow final stage ONLY for SEND_BACK
+                        return transitionType === "SEND_BACK";
+                      })
+                      .map((s: NormalizedStage) => (
+                        <SelectItem key={s.id} value={s.id}>
+                          {s.name}
+                        </SelectItem>
+                      ))}
                   </SelectContent>
                 </Select>
               )}
@@ -2171,9 +2188,10 @@ function TransitionCard({
                     onClick={() => field.onChange(type.value)}
                     className={`
                       flex flex-col items-center gap-2 p-3 rounded-lg border transition-all
-                      ${field.value === type.value
-                        ? "border-gray-900 bg-gray-900 text-white"
-                        : "border-gray-200 bg-white text-gray-700 hover:border-gray-300"
+                      ${
+                        field.value === type.value
+                          ? "border-gray-900 bg-gray-900 text-white"
+                          : "border-gray-200 bg-white text-gray-700 hover:border-gray-300"
                       }
                     `}
                   >
@@ -2465,6 +2483,7 @@ export function TransitionsStep({
             setValue={setValue}
             remove={transitionArray.remove}
             normalizedStages={normalizedStages}
+            stages={stages}
             roleList={roleList}
             userList={userList}
           />

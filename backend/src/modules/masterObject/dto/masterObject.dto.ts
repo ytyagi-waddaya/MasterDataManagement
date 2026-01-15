@@ -124,6 +124,14 @@ export const fieldConfigSchema = z
 
         placeholder: z.string().optional(),
         helpText: z.string().optional(),
+        options: z
+          .array(
+            z.object({
+              label: z.string(),
+              value: z.string(),
+            })
+          )
+          .optional(),
 
         layout: z
           .object({
@@ -265,9 +273,6 @@ export const updateMasterObjectSchema = z
   .strict();
 
 export type UpdateMasterObjectInput = z.infer<typeof updateMasterObjectSchema>;
-
-
-
 
 export const WIDGET_TO_FIELD_TYPE: Record<string, FieldType> = {
   TEXT: FieldType.TEXT,

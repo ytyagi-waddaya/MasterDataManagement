@@ -70,6 +70,14 @@ export const canonicalFieldConfigSchema = z
         ]),
         placeholder: z.string().optional(),
         helpText: z.string().optional(),
+        options: z
+          .array(
+            z.object({
+              label: z.string(),
+              value: z.string(),
+            })
+          )
+          .optional(),
       })
       .strict()
       .optional(),
@@ -109,9 +117,7 @@ export const canonicalFieldConfigSchema = z
   })
   .strict();
 
-export type CanonicalFieldConfig = z.infer<
-  typeof canonicalFieldConfigSchema
->;
+export type CanonicalFieldConfig = z.infer<typeof canonicalFieldConfigSchema>;
 
 /* ======================================================
    EDITOR TREE (LAYOUT DSL – FRONTEND ONLY)
@@ -227,6 +233,4 @@ export const updateMasterObjectSchema = z
   })
   .strict();
 
-export type UpdateMasterObjectInput = z.infer<
-  typeof updateMasterObjectSchema
->;
+export type UpdateMasterObjectInput = z.infer<typeof updateMasterObjectSchema>;
