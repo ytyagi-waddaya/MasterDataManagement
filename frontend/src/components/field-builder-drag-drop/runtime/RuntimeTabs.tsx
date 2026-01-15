@@ -97,7 +97,7 @@ export function RuntimeTabs({
   return (
     <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
       {/* Tabs header */}
-      <div className="flex gap-1 overflow-x-auto px-4 pt-3 bg-gray-50 dark:bg-gray-800/30">
+      <div className="flex gap-1 overflow-x-auto px-4 pt-2 bg-gray-50 dark:bg-gray-800/30">
         {node.slots.map((slot) => {
           const active = slot.id === activeId;
           return (

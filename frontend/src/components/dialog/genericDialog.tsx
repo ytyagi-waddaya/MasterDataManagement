@@ -19,6 +19,8 @@ interface GenericDialogProps {
   title: string;
   description?: string;
   children: (props: { close: () => void }) => React.ReactNode;
+  showFooter?: boolean; // ✅ toggle footer
+  footer?: React.ReactNode;
   confirmText?: string;
   cancelText?: string;
   onConfirm?: () => void;
@@ -34,6 +36,8 @@ export const GenericDialog: React.FC<GenericDialogProps> = ({
   title,
   description,
   children,
+  showFooter = true,
+  footer,
   confirmText = "Confirm",
   cancelText = "Cancel",
   onConfirm,
@@ -64,24 +68,33 @@ export const GenericDialog: React.FC<GenericDialogProps> = ({
       <DialogContent className={contentClass}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
-          {description && (
-            <DialogDescription>{description}</DialogDescription>
-          )}
+          {description && <DialogDescription>{description}</DialogDescription>}
         </DialogHeader>
 
         <div className={scrollable ? "flex-1 overflow-y-auto my-4" : "my-4"}>
           {children({ close: () => onOpenChange(false) })}
         </div>
 
-        <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            {cancelText}
-          </Button>
+        {showFooter && (
+          <>
+            {footer ? (
+              footer
+            ) : (
+              <DialogFooter>
+                <Button
+                  variant="outline"
+                  onClick={() => onOpenChange(false)}
+                >
+                  {cancelText}
+                </Button>
 
-          <Button onClick={onConfirm} disabled={confirmDisabled}>
-            {confirmText}
-          </Button>
-        </DialogFooter>
+                <Button onClick={onConfirm} disabled={confirmDisabled}>
+                  {confirmText}
+                </Button>
+              </DialogFooter>
+            )}
+          </>
+        )}
       </DialogContent>
     </Dialog>
   );

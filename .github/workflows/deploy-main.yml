@@ -137,11 +137,62 @@ jobs:
 #           mkdir -p ~/.kube
 #           echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
 
-#       # 🚀 Deploy to Kubernetes
-#       - name: Deploy to cluster
+#       # 🔐 Sync secrets from GitHub → Kubernetes
+#       - name: Sync backend secrets to Kubernetes
+#         run: |
+#           kubectl -n mdm-prod delete secret backend-env --ignore-not-found
+
+#           kubectl -n mdm-prod create secret generic backend-env \
+#             --from-literal=PORT=${{ secrets.PORT }} \
+#             --from-literal=NODE_ENV=${{ secrets.NODE_ENV }} \
+#             --from-literal=POSTGRES_USER=${{ secrets.POSTGRES_USER }} \
+#             --from-literal=POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \
+#             --from-literal=POSTGRES_DB=${{ secrets.POSTGRES_DB }} \
+#             --from-literal=POSTGRES_PORT=${{ secrets.POSTGRES_PORT }} \
+#             --from-literal=POSTGRES_HOST=${{ secrets.POSTGRES_HOST }} \
+#             --from-literal=REDIS_URL=${{ secrets.REDIS_URL }} \
+#             --from-literal=USE_REDIS=${{ secrets.USE_REDIS }} \
+#             --from-literal=LOG_LEVEL=${{ secrets.LOG_LEVEL }} \
+#             --from-literal=DATABASE_URL=${{ secrets.DATABASE_URL }} \
+#             --from-literal=SUPER_ROLES=${{ secrets.SUPER_ROLES }} \
+#             --from-literal=FRONTEND_ORIGIN=${{ secrets.FRONTEND_ORIGIN }} \
+#             --from-literal=JWT_SECRET=${{ secrets.JWT_SECRET }} \
+#             --from-literal=AZURE_TENANT_ID=${{ secrets.AZURE_TENANT_ID }} \
+#             --from-literal=AZURE_CLIENT_ID=${{ secrets.AZURE_CLIENT_ID }} \
+#             --from-literal=AZURE_CLIENT_SECRET=${{ secrets.AZURE_CLIENT_SECRET }} \
+#             --from-literal=SENDER_EMAIL=${{ secrets.SENDER_EMAIL }} \
+#             --from-literal=REDIS_HOST=${{ secrets.REDIS_HOST }} \
+#             --from-literal=REDIS_PORT=${{ secrets.REDIS_PORT }} \
+#             --from-literal=REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }} \
+#             --from-literal=REDIS_TLS=${{ secrets.REDIS_TLS }} \
+#             --from-literal=RATE_LIMIT_GLOBAL_POINTS=${{ secrets.RATE_LIMIT_GLOBAL_POINTS }} \
+#             --from-literal=RATE_LIMIT_GLOBAL_DURATION=${{ secrets.RATE_LIMIT_GLOBAL_DURATION }} \
+#             --from-literal=RATE_LIMIT_GLOBAL_BLOCK_DURATION=${{ secrets.RATE_LIMIT_GLOBAL_BLOCK_DURATION }} \
+#             --from-literal=RATE_LIMIT_LOGIN_POINTS=${{ secrets.RATE_LIMIT_LOGIN_POINTS }} \
+#             --from-literal=RATE_LIMIT_LOGIN_DURATION=${{ secrets.RATE_LIMIT_LOGIN_DURATION }} \
+#             --from-literal=RATE_LIMIT_LOGIN_BLOCK_DURATION=${{ secrets.RATE_LIMIT_LOGIN_BLOCK_DURATION }} \
+#             --from-literal=STREAM_KEY=${{ secrets.STREAM_KEY }} \
+#             --from-literal=STREAM_DGROUP=${{ secrets.STREAM_DGROUP }} \
+#             --from-literal=STREAM_DLG=${{ secrets.STREAM_DLG }} \
+#             --from-literal=WORKFLOW_STREAM=${{ secrets.WORKFLOW_STREAM }} \
+#             --from-literal=NOTIFICATION_STREAM=${{ secrets.NOTIFICATION_STREAM }} \
+#             --from-literal=MAX_RETRY=${{ secrets.MAX_RETRY }} \
+#             --from-literal=CONSUMER_NAME=${{ secrets.CONSUMER_NAME }} \
+#             --from-literal=SYSTEM_USER_EMAIL=${{ secrets.SYSTEM_USER_EMAIL }} \
+#             --from-literal=SYSTEM_USER_NAME=${{ secrets.SYSTEM_USER_NAME }} \
+#             --from-literal=SYSTEM_USER_PASSWORD=${{ secrets.SYSTEM_USER_PASSWORD }} \
+#             --from-literal=SEED_RESOURCES=${{ secrets.SEED_RESOURCES }} \
+#             --from-literal=JWT_ACCESS_EXPIRES_IN=${{ secrets.JWT_ACCESS_EXPIRES_IN }} \
+#             --from-literal=JWT_REFRESH_EXPIRES_IN_DAYS=${{ secrets.JWT_REFRESH_EXPIRES_IN_DAYS }} \
+#             --from-literal=SUPER_ROLE_NAME=${{ secrets.SUPER_ROLE_NAME }} \
+#             --from-literal=FAIL_OPEN_ON_REDIS_ERROR=${{ secrets.FAIL_OPEN_ON_REDIS_ERROR }} \
+#             --from-literal=USER_ROLES_TTL_SEC=${{ secrets.USER_ROLES_TTL_SEC }} \
+#             --from-literal=PERMISSION_LOOKUP_TTL_SEC=${{ secrets.PERMISSION_LOOKUP_TTL_SEC }}
+
+#       # 🚀 Deploy manifests (NO secrets here)
+#       - name: Deploy to Kubernetes
 #         run: |
 #           kubectl apply -f k8s/namespace.yml
-#           kubectl apply -f k8s/secrets/
 #           kubectl apply -f k8s/volumes/
 #           kubectl apply -f k8s/deployments/
 #           kubectl apply -f k8s/services/

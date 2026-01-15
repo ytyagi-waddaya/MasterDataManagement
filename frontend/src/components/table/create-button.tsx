@@ -74,15 +74,19 @@ export function CreateButton<T extends Record<string, any>>({
   disabled = false,
   onOpenReset,
   size = "md",
+  showFooter = true, // ✅ NEW
+  footer,
 }: {
   triggerText: string;
   title: string;
   children: (props: { close: () => void }) => React.ReactNode;
-  onSubmit?: (close: () => void) => void;   // ✅ OPTIONAL
+  onSubmit?: (close: () => void) => void; // ✅ OPTIONAL
   confirmDisabled?: boolean;
   disabled?: boolean;
   onOpenReset?: () => void;
   size?: DialogSize;
+  showFooter?: boolean; // ✅ NEW
+  footer?: React.ReactNode; // ✅ NEW
 }) {
   const [open, setOpen] = useState(false);
 
@@ -100,6 +104,8 @@ export function CreateButton<T extends Record<string, any>>({
       open={open}
       onOpenChange={handleOpenChange}
       size={size}
+      showFooter={showFooter} // ✅ NEW
+      footer={footer}
       trigger={
         <Button className="flex items-center gap-2" disabled={disabled}>
           <Plus className="w-4 h-4" />

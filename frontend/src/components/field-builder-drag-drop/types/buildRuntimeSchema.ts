@@ -1,12 +1,9 @@
-
 import {
   FormSection,
   EditorNode,
   FieldNode,
 } from "../contracts/editor.contract";
-import {
-  type FieldValidationRule,
-} from "../contracts/field-config.contract";
+import { type FieldValidationRule } from "../contracts/field-config.contract";
 import { RuntimeField } from "../contracts/runtime.contract";
 import {
   mapDataType,
@@ -49,14 +46,11 @@ function collectFieldNodes(nodes: EditorNode[]): FieldNode[] {
   return result;
 }
 
-
 /* ======================================================
    BUILD RUNTIME SCHEMA (EDITOR → RUNTIME)
 ====================================================== */
 
-export function buildRuntimeSchema(
-  sections?: FormSection[]
-): RuntimeField[] {
+export function buildRuntimeSchema(sections?: FormSection[]): RuntimeField[] {
   if (!Array.isArray(sections)) return [];
 
   const fieldNodes = sections.flatMap((section) =>
@@ -66,34 +60,57 @@ export function buildRuntimeSchema(
   return fieldNodes.map(({ id, field }) => {
     const rules: FieldValidationRule[] = [];
 
-    if (field.validation?.min !== undefined) {
-      rules.push({
-        type: "MIN",
-        params: { value: field.validation.min, appliesTo: "value" },
-        message: "Too small",
-      });
-    }
-
-    if (field.validation?.max !== undefined) {
-      rules.push({
-        type: "MAX",
-        params: { value: field.validation.max, appliesTo: "value" },
-        message: "Too large",
-      });
-    }
-
-    if (field.validation?.regex) {
-      rules.push({
-        type: "REGEX",
-        params: { pattern: field.validation.regex },
-        message: "Invalid format",
-      });
-    }
-
+    /* ---------- REQUIRED ---------- */
     if (field.required) {
       rules.push({
         type: "REQUIRED",
-        message: "Required",
+        message: field.validation?.errorMessage || "This field is required",
+      });
+    }
+
+    /* ---------- MIN ---------- */
+    if (field.validation?.min !== undefined) {
+      rules.push({
+        type: "MIN",
+        params: {
+          value: field.validation.min,
+          appliesTo:
+            field.type === "text" || field.type === "textarea"
+              ? "length"
+              : "value",
+        },
+        message:
+          field.validation?.errorMessage || `Minimum ${field.validation.min}`,
+      });
+    }
+
+    /* ---------- MAX ---------- */
+    if (field.validation?.max !== undefined) {
+      rules.push({
+        type: "MAX",
+        params: {
+          value: field.validation.max,
+          appliesTo:
+            field.type === "text" || field.type === "textarea"
+              ? "length"
+              : "value",
+        },
+        message:
+          field.validation?.errorMessage || `Maximum ${field.validation.max}`,
+      });
+    }
+
+    /* ---------- REGEX ---------- */
+    if (field.validation?.regex) {
+      rules.push({
+        type: "REGEX",
+        params: {
+          pattern: field.validation.regex,
+        },
+        message:
+          field.validation?.patternMessage ||
+          field.validation?.errorMessage ||
+          "Invalid format",
       });
     }
 
@@ -101,8 +118,9 @@ export function buildRuntimeSchema(
       id, // runtime-only id (not persisted)
       config: {
         meta: {
-          key: field.key,           // 🔑 canonical identity
+          key: field.key, // 🔑 canonical identity
           label: field.label,
+          description: field.description,
           category: field.category ?? "INPUT",
           deprecated: field.deprecated ?? false,
         },
@@ -115,6 +133,9 @@ export function buildRuntimeSchema(
           widget: mapWidget(field.type),
           layout: mapLayoutSpan(field.layout),
           format: field.format,
+          placeholder: field.placeholder,
+          helpText: field.description,
+          options: field.options,
         },
 
         validation: rules.length ? { rules } : undefined,
@@ -127,5 +148,3 @@ export function buildRuntimeSchema(
     };
   });
 }
-
-

@@ -208,6 +208,8 @@ export default function ResourceRecordsPage() {
                     disabled={!publishedSchema}
                     confirmDisabled={true} // ⛔ disable confirm button
                     size="lg"
+
+                    showFooter={false}
                   >
                     {({ close }) => (
                       <FormRuntimePreview
