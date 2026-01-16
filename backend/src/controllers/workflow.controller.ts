@@ -9,7 +9,7 @@ import workflowRuntimeService from "../services/workflowRuntime.service.js";
 import { workflowVisualizerService } from "../dto/workflowVisualizer.service.js";
 
 const workflowController = {
-    createWorkflow: async (req: Request, res: Response) => {
+  createWorkflow: async (req: Request, res: Response) => {
     const data = req.body;
 
     const workflow = await workflowService.createWorkflow(data, {
@@ -702,17 +702,19 @@ const workflowController = {
   /* -------------------------------------------------------------------------- */
 
   start: async (req: Request, res: Response) => {
-    const { workflowId } = req.params;
+    // const { workflowId } = req.params;
     const { resourceId, resourceType } = req.body;
 
-    if (!workflowId) throw new BadRequestException("workflowId is required");
+    console.log("RECORD iD", resourceId);
+    
+    // if (!workflowId) throw new BadRequestException("workflowId is required");
 
     if (!resourceId || !resourceType)
       throw new BadRequestException("resourceId and resourceType are required");
 
     const instance = await workflowRuntimeService.startInstance(
-      workflowId,
-      { resourceId, resourceType },
+      resourceType,
+      resourceId,
       {
         actorId: req.user!.id,
         ipAddress: req.ip ?? null,
@@ -776,15 +778,16 @@ const workflowController = {
     });
   },
 
-    getVisualizer: async (req: Request, res: Response) => {
+  getVisualizer: async (req: Request, res: Response) => {
     const { workflowId } = req.params;
 
     if (!workflowId) {
       throw new BadRequestException("workflowId is required");
     }
 
-    const visualizer =
-      await workflowVisualizerService.getWorkflowVisualizer(workflowId);
+    const visualizer = await workflowVisualizerService.getWorkflowVisualizer(
+      workflowId
+    );
 
     return sendResponse({
       res,
@@ -794,7 +797,23 @@ const workflowController = {
       data: visualizer,
     });
   },
+  getRecordWorkflowHistory: async (req: Request, res: Response) => {
+    const { recordId } = req.params;
 
+    if (!recordId) {
+      throw new BadRequestException("recordId is required");
+    }
+
+    const history = await workflowService.getHistoryForRecord(recordId);
+
+    sendResponse({
+      res,
+      statusCode: HTTPSTATUS.OK,
+      success: true,
+      message: "Workflow history fetched",
+      data: history,
+    });
+  },
 };
 
 export default workflowController;

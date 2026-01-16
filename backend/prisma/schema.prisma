@@ -1341,6 +1341,7 @@ enum HistoryAction {
   SENT_BACK
   REVIEWED
   AUTO_TRANSITION
+  REOPENED
 }
 
 enum ApprovalStrategy {

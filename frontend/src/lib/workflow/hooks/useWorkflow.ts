@@ -24,6 +24,7 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { useMemo } from "react";
 import { toast } from "sonner";
 import { queryClient } from "@/lib/api/queryClient";
+import { HistoryItem } from "../timeline/workflow-timeline";
 
 // workflow.query.ts
 export interface WorkflowFilters {
@@ -714,17 +715,15 @@ export const useWorkflowActions = (instanceId: string) => {
     enabled: !!instanceId,
     queryFn: async () => {
       const res = await apiClient.get(
-        
         `/workflow/instance/${instanceId}/actions`
       );
-       console.log("Instance Id:", instanceId);
+      console.log("Instance Id:", instanceId);
       console.log("ACTIONS use:", res);
-     
+
       return res.data.data; // backend returns { data: actions }
     },
   });
 };
-
 
 export interface WorkflowInstanceActionInput {
   transitionId: string;
@@ -732,10 +731,39 @@ export interface WorkflowInstanceActionInput {
   comment?: string;
 }
 
+// export const useWorkflowInstanceAction = (instanceId: string) => {
+//   const qc = useQueryClient();
+
+//   return useMutation({
+//     mutationFn: async (payload: WorkflowInstanceActionInput) => {
+//       const res = await apiClient.post(
+//         `/workflow/instance/${instanceId}/transition`,
+//         payload
+//       );
+//       return res.data;
+//     },
+
+//     onSuccess: () => {
+//       toast.success("Action performed successfully");
+
+//       qc.invalidateQueries({ queryKey: ["workflow-actions", instanceId] });
+//       qc.invalidateQueries({ queryKey: ["workflow-instance", instanceId] });
+//       qc.invalidateQueries({ queryKey: ["records"] });
+//     },
+
+//     onError: (err: any) => {
+//       toast.error(
+//         err.response?.data?.message || "Failed to perform workflow action"
+//       );
+//     },
+//   });
+// };
 export const useWorkflowInstanceAction = (instanceId: string) => {
   const qc = useQueryClient();
 
   return useMutation({
+    retry: false, // 🔒 IMPORTANT: prevent double execution
+
     mutationFn: async (payload: WorkflowInstanceActionInput) => {
       const res = await apiClient.post(
         `/workflow/instance/${instanceId}/transition`,
@@ -744,26 +772,42 @@ export const useWorkflowInstanceAction = (instanceId: string) => {
       return res.data;
     },
 
-    onSuccess: () => {
-      toast.success("Action performed successfully");
+    onSuccess: (data: any) => {
+      // Treat already-processed as success
+      if (
+        data?.status === "ALREADY_MOVED" ||
+        data?.status === "ALREADY_PROCESSED"
+      ) {
+        toast.success("Already processed");
+      } else {
+        toast.success("Action performed successfully");
+      }
 
+      // 🔄 Always refresh runtime state
       qc.invalidateQueries({ queryKey: ["workflow-actions", instanceId] });
       qc.invalidateQueries({ queryKey: ["workflow-instance", instanceId] });
       qc.invalidateQueries({ queryKey: ["records"] });
     },
 
     onError: (err: any) => {
-      toast.error(
-        err.response?.data?.message || "Failed to perform workflow action"
-      );
+      const msg = err.response?.data?.message;
+
+      // If backend says already moved, treat as success
+      if (msg?.includes("Transition not allowed") || msg?.includes("already")) {
+        qc.invalidateQueries({ queryKey: ["workflow-actions", instanceId] });
+        qc.invalidateQueries({ queryKey: ["workflow-instance", instanceId] });
+        return;
+      }
+
+      toast.error(msg || "Failed to perform workflow action");
     },
   });
 };
 
 type StartWorkflowPayload = {
-  workflowId:string;
-  resourceId:string;
-  resourceType:string;
+  // workflowId: string;
+  resourceId: string;
+  resourceType: string;
 };
 
 export const useWorkflowInstance = () => {
@@ -771,11 +815,11 @@ export const useWorkflowInstance = () => {
 
   return useMutation({
     mutationFn: async ({
-      workflowId,
+      // workflowId,
       resourceId,
       resourceType,
     }: StartWorkflowPayload) => {
-      const res = await apiClient.post(`/workflow/${workflowId}/instance`, {
+      const res = await apiClient.post(`/workflow/instance`, {
         resourceType,
         resourceId,
       });
@@ -793,6 +837,22 @@ export const useWorkflowInstance = () => {
 
     onError: (err: any) => {
       toast.error(err.response?.data?.message || "Failed to start workflow");
+    },
+  });
+};
+
+
+export const useWorkflowHistory = (recordId?: string) => {
+  return useQuery<HistoryItem[]>({
+    queryKey: ["workflow-history", recordId],
+    enabled: !!recordId,
+
+    queryFn: async () => {
+      const res = await apiClient.get(
+        `/workflow/${recordId}/history`
+      );
+
+      return res.data?.data.history ?? [];
     },
   });
 };

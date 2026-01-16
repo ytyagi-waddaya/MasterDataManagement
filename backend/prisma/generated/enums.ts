@@ -288,7 +288,8 @@ export const HistoryAction = {
   REJECTED: 'REJECTED',
   SENT_BACK: 'SENT_BACK',
   REVIEWED: 'REVIEWED',
-  AUTO_TRANSITION: 'AUTO_TRANSITION'
+  AUTO_TRANSITION: 'AUTO_TRANSITION',
+  REOPENED: 'REOPENED'
 } as const
 
 export type HistoryAction = (typeof HistoryAction)[keyof typeof HistoryAction]

@@ -1517,8 +1517,8 @@ const TRANSITION_TYPES = [
   },
   {
     value: "SEND_BACK",
-    label: "Send Back",
-    description: "Return to previous",
+    label: "Send Back / Reopen",
+    description: "Send back or reopen a completed item",
     icon: Send,
     color: "text-amber-600 bg-amber-50 border-amber-200",
     bgColor: "bg-amber-50",
@@ -1830,8 +1830,7 @@ export function TransitionRow({
   const isAuto = transitionType === "AUTO";
 
   const showTriggerStrategy =
-    transitionType === "NORMAL" ||
-    transitionType === "SEND_BACK";
+    transitionType === "NORMAL" || transitionType === "SEND_BACK";
 
   const showTriggerPermissions =
     showTriggerStrategy && (triggerStrategy ?? "ANY_ALLOWED") === "ANY_ALLOWED";
@@ -1875,11 +1874,14 @@ export function TransitionRow({
   useEffect(() => {
     if (transitionType === "APPROVAL") return;
 
-if (transitionType !== "APPROVAL") {
-  setValue(`transitions.${index}.approvalConfig`, undefined, { shouldDirty: true });
-  setValue(`transitions.${index}.approvalStrategy`, undefined, { shouldDirty: true });
-}
-
+    if (transitionType !== "APPROVAL") {
+      setValue(`transitions.${index}.approvalConfig`, undefined, {
+        shouldDirty: true,
+      });
+      setValue(`transitions.${index}.approvalStrategy`, undefined, {
+        shouldDirty: true,
+      });
+    }
 
     const curStrategy =
       control?._formValues?.transitions?.[index]?.approvalStrategy;
@@ -2023,29 +2025,29 @@ if (transitionType !== "APPROVAL") {
   }, [requiresApproval, approvalLevels, index, setValue]);
 
   useEffect(() => {
-  if (transitionType === "REVIEW" && fromStage) {
-    setValue(`transitions.${index}.toStageId`, fromStage, { shouldDirty: true });
-  }
-}, [transitionType, fromStage, index, setValue]);
+    if (transitionType === "REVIEW" && fromStage) {
+      setValue(`transitions.${index}.toStageId`, fromStage, {
+        shouldDirty: true,
+      });
+    }
+  }, [transitionType, fromStage, index, setValue]);
 
-useEffect(() => {
-  if (transitionType !== "SEND_BACK") return;
-  if (!fromStage || !toStage) return;
+  useEffect(() => {
+    if (transitionType !== "SEND_BACK") return;
+    if (!fromStage || !toStage) return;
 
-  const fromIndex = normalizedStages.findIndex(
-    (s: any) => String(s.id) === String(fromStage)
-  );
-  const toIndex = normalizedStages.findIndex(
-    (s: any) => String(s.id) === String(toStage)
-  );
+    const fromIndex = normalizedStages.findIndex(
+      (s: any) => String(s.id) === String(fromStage)
+    );
+    const toIndex = normalizedStages.findIndex(
+      (s: any) => String(s.id) === String(toStage)
+    );
 
-  // SEND_BACK must go to an earlier stage
-  if (toIndex >= fromIndex) {
-    setValue(`transitions.${index}.toStageId`, "", { shouldDirty: true });
-  }
-}, [transitionType, fromStage, toStage, index, setValue, normalizedStages]);
-
-
+    // SEND_BACK must go to an earlier stage
+    if (toIndex >= fromIndex) {
+      setValue(`transitions.${index}.toStageId`, "", { shouldDirty: true });
+    }
+  }, [transitionType, fromStage, toStage, index, setValue, normalizedStages]);
 
   useEffect(() => {
     if (!allowedRoleIds.length) return;

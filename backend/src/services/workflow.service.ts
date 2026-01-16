@@ -494,7 +494,11 @@ const WorkflowService = {
   //     return workflow;
   //   });
   // },
-  saveWorkflowGraph: async (workflowId: string, data:CreateFullWorkflowInput, meta?: ActorMeta) => {
+  saveWorkflowGraph: async (
+    workflowId: string,
+    data: CreateFullWorkflowInput,
+    meta?: ActorMeta
+  ) => {
     const actorId = meta?.actorId;
     if (!actorId) throw new BadRequestException("Actor ID is required");
 
@@ -530,7 +534,7 @@ const WorkflowService = {
             color: s.color ?? null,
             metadata: s.metadata ?? Prisma.JsonNull,
             position: s.position ?? Prisma.JsonNull,
-             allowedNextCategories: s.allowedNextCategories ?? [],
+            allowedNextCategories: s.allowedNextCategories ?? [],
           },
         });
 
@@ -2108,6 +2112,54 @@ const WorkflowService = {
     ]);
 
     return { data, total, page: Math.floor(skip / take) + 1, pageSize: take };
+  },
+
+  getHistoryForRecord: async (recordId: string) => {
+    // 1️⃣ find latest workflow instance for this record
+    const instance = await prisma.workflowInstance.findFirst({
+      where: {
+        resourceType: "MASTER_RECORD",
+        resourceId: recordId,
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    if (!instance) {
+      throw new NotFoundException("No workflow instance found for this record");
+    }
+
+    // 2️⃣ fetch history
+    const history = await prisma.workflowHistory.findMany({
+      where: {
+        workflowInstanceId: instance.id,
+      },
+      orderBy: { createdAt: "asc" },
+      include: {
+        fromStage: { select: { id: true, name: true, code: true } },
+        toStage: { select: { id: true, name: true, code: true } },
+        performedBy: { select: { id: true, name: true, email: true } },
+        workflowTransition: {
+          select: { id: true, label: true, transitionType: true },
+        },
+      },
+    });
+
+    return {
+      instanceId: instance.id,
+      workflowId: instance.workflowId,
+      status: instance.status,
+      history: history.map((h) => ({
+        id: h.id,
+        actionType: h.actionType,
+        label: h.actionLabel,
+        fromStage: h.fromStage,
+        toStage: h.toStage,
+        performedBy: h.performedBy,
+        notes: h.notes,
+        createdAt: h.createdAt,
+        transition: h.workflowTransition,
+      })),
+    };
   },
 
   // approveInstance: async (

@@ -132,7 +132,7 @@ router.delete(
 /* -------------------------------------------------------------------------- */
 
 router.post(
-  "/:workflowId/instance",
+  "/instance",
   requireAuth,
   asyncHandler(workflowController.start)
 );
@@ -153,6 +153,12 @@ router.get(
   "/:workflowId/visualizer",
   requireAuth,
   asyncHandler(workflowController.getVisualizer)
+);
+
+router.get(
+  "/:recordId/history",
+  requireAuth,
+  asyncHandler(workflowController.getRecordWorkflowHistory)
 );
 
 
