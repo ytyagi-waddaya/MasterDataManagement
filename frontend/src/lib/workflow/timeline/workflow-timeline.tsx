@@ -124,10 +124,6 @@ export function WorkflowTimeline({ history, className }: WorkflowTimelineProps) 
 
   return (
     <div className={className}>
-      <div className="mb-6">
-        <h3 className="text-lg font-semibold text-gray-900">Workflow History</h3>
-        <p className="text-sm text-gray-500 mt-1">Track all actions and transitions</p>
-      </div>
 
       <Timeline>
         {sortedHistory.map((item, index) => {
