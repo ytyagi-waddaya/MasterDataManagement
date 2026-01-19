@@ -1706,6 +1706,8 @@ import {
 } from "lucide-react";
 import { MultiSelect } from "./multiselect";
 import { useEffect } from "react";
+import { useTransitionRules } from "./useTransitionRules";
+import { filterDestinationStages } from "./transitionFilters";
 
 type Stage = {
   tempId: string;
@@ -1713,7 +1715,7 @@ type Stage = {
   isFinal: boolean;
 };
 
-type NormalizedStage = {
+export type NormalizedStage = {
   id: string;
   name: string;
 };
@@ -1753,6 +1755,7 @@ const TRANSITION_TYPES = [
   //   color: "bg-green-100 text-green-600",
   // },
 ];
+
 
 const TRIGGER_STRATEGIES = [
   { value: "ANY_ALLOWED", label: "Anyone allowed" },
@@ -2015,15 +2018,14 @@ function TransitionCard({
   }, [transitionType, index, setValue]);
 
   useEffect(() => {
-    if (transitionType === "SEND_BACK" && fromStageId && toStageId) {
-      const fromIndex = normalizedStages.findIndex((s) => s.id === fromStageId);
-      const toIndex = normalizedStages.findIndex((s) => s.id === toStageId);
+    if (transitionType !== "SEND_BACK") return;
+    if (!fromStageId || !toStageId) return;
 
-      if (toIndex >= fromIndex) {
-        setValue(`transitions.${index}.toStageId`, "");
-      }
+    // SEND_BACK → only rule: cannot go to same stage
+    if (String(fromStageId) === String(toStageId)) {
+      setValue(`transitions.${index}.toStageId`, "");
     }
-  }, [transitionType, fromStageId, toStageId]);
+  }, [transitionType, fromStageId, toStageId, index, setValue]);
 
   useEffect(() => {
     if (!approvalConfig) return;
@@ -2057,6 +2059,18 @@ function TransitionCard({
       setValue(`transitions.${index}.approvalConfig.levels`, normalizedLevels);
     }
   }, [approvalConfig, index, setValue]);
+
+  useTransitionRules({
+    index,
+    transitionType,
+    triggerStrategy,
+    fromStageId,
+    toStageId,
+    approvalConfig,
+    normalizedStages,
+    setValue,
+  });
+
   return (
     <div className="border border-gray-200 rounded-xl p-5 space-y-6 bg-white">
       {/* HEADER */}
@@ -2155,9 +2169,60 @@ function TransitionCard({
                   <SelectTrigger className="border-gray-300">
                     <SelectValue placeholder="Select target stage" />
                   </SelectTrigger>
-                  <SelectContent>
+                  {/* <SelectContent>
                     {normalizedStages.map((s: any) => (
                       <SelectItem key={s.id} value={s.id}>
+                        {s.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent> */}
+                  {/* <SelectContent>
+                    {normalizedStages
+                      .filter((s: NormalizedStage) => {
+                        const fromId = fromStageId;
+
+                        // must have a source stage first
+                        if (!fromId) return true;
+
+                        // never allow same stage as destination
+                        if (s.id === fromId) return false;
+
+                        // SEND_BACK → allow ANY other stage
+                        if (transitionType === "SEND_BACK") {
+                          return true;
+                        }
+
+                        // REVIEW → only same stage (self loop)
+                        if (transitionType === "REVIEW") {
+                          return s.id === fromId;
+                        }
+
+                        // AUTO → no manual destination
+                        if (transitionType === "AUTO") {
+                          return false;
+                        }
+
+                        // NORMAL / APPROVAL → forward only
+                        const fromStage = normalizedStages.find(
+                          (st) => st.id === fromId
+                        );
+                        if (!fromStage) return true;
+
+                        return (fromStage as any).order < (s as any).order;
+                      })
+                      .map((s: NormalizedStage) => (
+                        <SelectItem key={s.id} value={s.id}>
+                          {s.name}
+                        </SelectItem>
+                      ))}
+                  </SelectContent> */}
+                  <SelectContent>
+                    {filterDestinationStages({
+                      stages: normalizedStages,
+                      fromStageId,
+                      transitionType,
+                    }).map((s) => (
+                      <SelectItem key={s.id} value={String(s.id)}>
                         {s.name}
                       </SelectItem>
                     ))}

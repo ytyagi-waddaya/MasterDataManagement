@@ -74,6 +74,7 @@ export const fieldConfigSchema = z
       .object({
         key: z.string().min(1),
         label: z.string().min(1),
+        description: z.string().optional(), 
         category: z.enum([
           "INPUT",
           "SYSTEM",

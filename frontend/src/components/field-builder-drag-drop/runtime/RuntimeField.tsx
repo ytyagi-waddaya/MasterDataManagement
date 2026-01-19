@@ -651,7 +651,7 @@ function MultiSelect({
             : "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 cursor-pointer"
           }
         `}
-        onClick={() => !readOnly && document.getElementById("multi-select")?.click()}
+        // onClick={() => !readOnly && document.getElementById("multi-select")?.click()}
       >
         {selectedOptions.length > 0 ? (
           selectedOptions.map((option) => (
@@ -688,7 +688,6 @@ function MultiSelect({
           >
             <div className="relative">
               <input
-                id="multi-select"
                 type="checkbox"
                 disabled={readOnly}
                 checked={value.includes(option.value)}

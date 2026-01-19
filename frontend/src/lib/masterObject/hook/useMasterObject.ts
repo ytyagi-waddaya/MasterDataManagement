@@ -141,6 +141,8 @@ export function useUpdateMasterObject() {
       masterObjectId: string;
       payload: UpdateMasterObjectInput;
     }) => {
+      console.log("SCHEMA PAYLOAD:", payload);
+      
       /* =====================================================
          🚨 FRONTEND CONTRACT GUARD (MANDATORY)
       ===================================================== */

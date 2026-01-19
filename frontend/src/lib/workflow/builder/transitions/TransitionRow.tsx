@@ -1489,6 +1489,8 @@ import {
 } from "lucide-react";
 import { MultiSelect } from "../../multiselect";
 import { cn } from "@/lib/utils";
+import { useTransitionRules } from "../../useTransitionRules";
+import { filterDestinationStages } from "../../transitionFilters";
 
 const TRIGGER_STRATEGIES = [
   { value: "ANY_ALLOWED", label: "Anyone allowed" },
@@ -2105,6 +2107,17 @@ export function TransitionRow({
     return rows;
   }, []);
 
+  useTransitionRules({
+    index,
+    transitionType,
+    triggerStrategy,
+    fromStageId: fromStage,
+    toStageId: toStage,
+    approvalConfig,
+    normalizedStages,
+    setValue,
+  });
+
   return (
     <div className="p-6 space-y-6">
       {/* Header */}
@@ -2241,8 +2254,19 @@ export function TransitionRow({
                       <SelectTrigger className="rounded-md h-9 text-sm">
                         <SelectValue placeholder="Select destination" />
                       </SelectTrigger>
-                      <SelectContent>
+                      {/* <SelectContent>
                         {normalizedStages.map((s: any) => (
+                          <SelectItem key={s.id} value={String(s.id)}>
+                            {s.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent> */}
+                      <SelectContent>
+                        {filterDestinationStages({
+                          stages: normalizedStages,
+                          fromStageId: fromStage,
+                          transitionType,
+                        }).map((s) => (
                           <SelectItem key={s.id} value={String(s.id)}>
                             {s.name}
                           </SelectItem>

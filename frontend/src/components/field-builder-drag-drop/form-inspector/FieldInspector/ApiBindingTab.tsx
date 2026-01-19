@@ -519,27 +519,95 @@ export function ApiBindingTab({
   /* ----------------------------------------
      UPDATE HANDLER
   ---------------------------------------- */
+
+  // function updateApiSource(
+  //   patch: Partial<NonNullable<EditorField["integration"]>["apiSource"]>
+  // ) {
+  //   const nextApiSource: NonNullable<EditorField["integration"]>["apiSource"] =
+  //     {
+  //       sourceType: "INTERNAL",
+  //       method: "GET",
+  //       url: "",
+  //       labelField: "",
+  //       valueField: "",
+  //       ...apiSource,
+  //       ...patch,
+  //     };
+
+  //   // 👇 TEMP editor options (for preview only)
+  //   let previewOptions: { label: string; value: string }[] = [];
+
+  //   if (resourceKey === "USER") {
+  //     previewOptions = users.map((u: any) => ({
+  //       label: u.label,
+  //       value: u.value,
+  //     }));
+  //   }
+
+  //   if (resourceKey === "ROLE") {
+  //     previewOptions = roles.map((r: any) => ({
+  //       label: r.label,
+  //       value: r.value,
+  //     }));
+  //   }
+
+  //   onChange({
+  //     ...node,
+  //     field: {
+  //       ...node.field,
+  //       integration: {
+  //         apiSource: nextApiSource,
+  //       },
+  //       options: previewOptions, // 🔥 THIS is the key
+  //     },
+  //   });
+  // }
+
   function updateApiSource(
-    patch: Partial<NonNullable<EditorField["integration"]>["apiSource"]>
-  ) {
-    onChange({
-      ...node,
-      field: {
-        ...node.field,
-        integration: {
-          apiSource: {
-            sourceType: "INTERNAL",
-            method: "GET",
-            url: "",
-            labelField: "",
-            valueField: "",
-            ...apiSource,
-            ...patch,
-          },
-        },
-      },
-    });
+  patch: Partial<NonNullable<EditorField["integration"]>["apiSource"]>
+) {
+  const nextApiSource: NonNullable<EditorField["integration"]>["apiSource"] = {
+    sourceType: "INTERNAL",
+    method: "GET",
+    url: "",
+    labelField: "",
+    valueField: "",
+    ...apiSource,
+    ...patch,
+  };
+
+  console.log("[ApiBinding] nextApiSource:", nextApiSource);
+
+  let previewOptions: { label: string; value: string }[] = [];
+
+  if (resourceKey === "USER") {
+    previewOptions = users.map((u: any) => ({
+      label: u.label,
+      value: u.value,
+    }));
   }
+
+  if (resourceKey === "ROLE") {
+    previewOptions = roles.map((r: any) => ({
+      label: r.label,
+      value: r.value,
+    }));
+  }
+
+  console.log("[ApiBinding] previewOptions:", previewOptions);
+
+  onChange({
+    ...node,
+    field: {
+      ...node.field,
+      integration: {
+        apiSource: nextApiSource,
+      },
+      options: previewOptions,
+    },
+  });
+}
+
 
   /* ----------------------------------------
      UI
@@ -560,7 +628,8 @@ export function ApiBindingTab({
           Dynamic Data Source
         </div>
         <p className="text-xs text-gray-500 dark:text-gray-400">
-          Options for this field will be loaded dynamically from the selected source at runtime.
+          Options for this field will be loaded dynamically from the selected
+          source at runtime.
         </p>
       </div>
 
@@ -696,9 +765,14 @@ export function ApiBindingTab({
           <Info className="h-4 w-4 text-blue-500" />
           <div className="text-xs text-gray-600 dark:text-gray-400">
             <span className="font-medium">
-              {isUser ? "Users" : isRole ? "Roles" : visibleResources.find((r: any) => r.value === resourceKey)?.label}
-            </span>
-            {" "}source selected • {fields.length} fields available
+              {isUser
+                ? "Users"
+                : isRole
+                ? "Roles"
+                : visibleResources.find((r: any) => r.value === resourceKey)
+                    ?.label}
+            </span>{" "}
+            source selected • {fields.length} fields available
           </div>
         </div>
       )}

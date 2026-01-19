@@ -84,7 +84,7 @@ export const transitionSchema = z
     triggerStrategy: TriggerStrategyEnum.default("ANY_ALLOWED"),
 
     approvalStrategy: ApprovalStrategyEnum.optional(),
-    approvalConfig: approvalConfigSchema.optional(),
+    approvalConfig: approvalConfigSchema.optional().nullable(),
 
     autoTrigger: z.boolean().default(false),
     condition: zJson.optional(),
@@ -174,9 +174,18 @@ export const transitionSchema = z
     }
 
     /* ---------- TRIGGER STRATEGY SAFETY ---------- */
+    // if (
+    //   (t.triggerStrategy === "ANY_ALLOWED" ||
+    //     t.triggerStrategy === "ALL_ALLOWED") &&
+    //   !t.allowedRoleIds.length &&
+    //   !t.allowedUserIds.length
+    // ) {
+    //   ctx.addIssue(`${t.triggerStrategy} requires at least one role or user`);
+    // }
     if (
       (t.triggerStrategy === "ANY_ALLOWED" ||
         t.triggerStrategy === "ALL_ALLOWED") &&
+      t.transitionType !== "APPROVAL" && // approval uses approvers instead
       !t.allowedRoleIds.length &&
       !t.allowedUserIds.length
     ) {

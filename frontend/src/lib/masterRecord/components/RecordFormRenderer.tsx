@@ -55,10 +55,11 @@ export function RecordFormRenderer({ record }: { record: any }) {
           <div className="space-y-6">
               <FormRuntimePreview
                 sections={publishedSchema.layout.sections ?? []}
+                        fieldDefinitions={publishedSchema?.fieldDefinitions ?? []}
                 initialValues={record.data}
                 readOnly
                 hideDebug
-              />
+              /> 
           </div>
         ) : (
           <div className="text-center py-12">

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { EditorNode } from "../../contracts/editor.contract";
 import { EditorFieldType } from "../../contracts/fieldPalette.contract";
 import {
@@ -65,6 +66,17 @@ export function GeneralTab({
   };
 
   const FieldIcon = fieldIcons[fieldType] || Type;
+  const [optionsText, setOptionsText] = useState("");
+
+  useEffect(() => {
+    setOptionsText(
+      f.options
+        ?.map((o) =>
+          o.label === o.value ? o.label : `${o.label} | ${o.value}`
+        )
+        .join("\n") ?? ""
+    );
+  }, [node.id]);
 
   return (
     <div className="space-y-4">
@@ -82,16 +94,29 @@ export function GeneralTab({
       </div>
 
       {/* Description */}
+      {/* System Description */}
       <div>
         <label className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">
-          Description
+          Description (System)
         </label>
         <textarea
           value={f.description ?? ""}
           onChange={(e) => update({ description: e.target.value })}
-          placeholder="Help text for users"
-          className="w-full text-sm px-3 py-2 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 min-h-[60px]"
-          rows={2}
+          placeholder="What this field represents in the system"
+          className="w-full text-sm px-3 py-2 rounded border ..."
+        />
+      </div>
+
+      {/* Help Text */}
+      <div>
+        <label className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">
+          Help Text (User)
+        </label>
+        <textarea
+          value={f.helpText ?? ""}
+          onChange={(e) => update({ helpText: e.target.value })}
+          placeholder="Guidance shown to users"
+          className="w-full text-sm px-3 py-2 rounded border ..."
         />
       </div>
 
@@ -162,34 +187,6 @@ export function GeneralTab({
         </div>
       )}
 
-      {/* Options */}
-      {/* {["select", "multi_select", "radio"].includes(fieldType) && (
-        <div>
-          <label className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">
-            Options
-          </label>
-          <textarea
-            value={f.options?.map((o) => o.label).join("\n") ?? ""}
-            onChange={(e) =>
-              update({
-                options: e.target.value
-                  .split("\n")
-                  .filter((o) => o.trim())
-                  .map((o) => ({
-                    label: o.trim(),
-                    value: o.trim(),
-                  })),
-              })
-            }
-            placeholder="Option 1\nOption 2\nOption 3"
-            className="w-full text-sm px-3 py-2 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 min-h-20"
-            rows={3}
-          />
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-            Enter each option on a new line
-          </p>
-        </div>
-      )} */}
       {["select", "multi_select", "radio"].includes(fieldType) && (
         <div>
           <label className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">
@@ -197,26 +194,16 @@ export function GeneralTab({
           </label>
 
           <textarea
-            value={
-              f.options
-                ?.map((o) =>
-                  o.label === o.value ? o.label : `${o.label} | ${o.value}`
-                )
-                .join("\n") ?? ""
-            }
-            onChange={(e) =>
+            value={optionsText}
+            onChange={(e) => setOptionsText(e.target.value)}
+            onBlur={() =>
               update({
-                options: e.target.value
+                options: optionsText
                   .split("\n")
-                  .map((line) => line.trim())
-                  .filter(Boolean)
+                  .filter((l) => l.trim())
                   .map((line) => {
                     const [label, value] = line.split("|").map((s) => s.trim());
-
-                    return {
-                      label,
-                      value: value ?? label, // fallback
-                    };
+                    return { label, value: value ?? label };
                   }),
               })
             }

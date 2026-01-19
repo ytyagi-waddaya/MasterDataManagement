@@ -214,6 +214,7 @@ export default function ResourceRecordsPage() {
                     {({ close }) => (
                       <FormRuntimePreview
                         sections={publishedSchema?.layout.sections ?? []}
+                        fieldDefinitions={publishedSchema?.fieldDefinitions ?? []}
                         hideDebug
                         onSubmit={(values) => {
                           handleSubmit(values, close); // ✅ form submits directly

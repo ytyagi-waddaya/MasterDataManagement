@@ -501,9 +501,21 @@ const WorkflowService = {
   ) => {
     const actorId = meta?.actorId;
     if (!actorId) throw new BadRequestException("Actor ID is required");
+    const normalized = {
+      ...data,
+      transitions: data.transitions.map((t: any) => ({
+        ...t,
+        approvalConfig: t.approvalConfig ?? undefined,
+        approvalStrategy: t.approvalStrategy ?? undefined,
+        allowedRoleIds: t.allowedRoleIds ?? [],
+        allowedUserIds: t.allowedUserIds ?? [],
+      })),
+    };
+
+    const validated = createFullWorkflowSchema.parse(normalized);
 
     // 🔒 Zod is the source of truth
-    const validated = createFullWorkflowSchema.parse(data);
+    // const validated = createFullWorkflowSchema.parse(data);
 
     const workflow = await prisma.workflowDefinition.findUnique({
       where: { id: workflowId },
@@ -562,7 +574,11 @@ const WorkflowService = {
             autoTrigger: t.autoTrigger,
             condition: t.condition ?? Prisma.JsonNull,
             metadata: t.metadata ?? Prisma.JsonNull,
-            approvalConfig: t.approvalConfig ?? Prisma.JsonNull,
+            approvalConfig:
+              t.transitionType === "APPROVAL"
+                ? (t.approvalConfig as Prisma.InputJsonValue)
+                : Prisma.JsonNull,
+
             allowedRoles: {
               create: t.allowedRoleIds.map((roleId) => ({ roleId })),
             },
@@ -691,7 +707,21 @@ const WorkflowService = {
 
     if (!workflow) throw new NotFoundException("Workflow not found");
 
-    return workflow;
+    // return workflow;
+      return {
+    ...workflow,
+    transitions: workflow.transitions.map((t) => ({
+      ...t,
+
+      // ✅ flatten permissions
+      allowedRoleIds: t.allowedRoles?.map((r) => r.roleId) ?? [],
+      allowedUserIds: t.allowedUsers?.map((u) => u.userId) ?? [],
+
+      // ❌ hide join tables from frontend
+      allowedRoles: undefined,
+      allowedUsers: undefined,
+    })),
+  };
   },
 
   updateWorkflow: async (

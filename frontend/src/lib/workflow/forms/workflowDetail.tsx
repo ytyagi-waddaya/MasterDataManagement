@@ -258,7 +258,7 @@ export default function WorkflowDetailPage({
                 <Button
                   variant="ghost"
                   size="sm"
-                   onClick={() => router.push("/workflow")}
+                  onClick={() => router.push("/workflow")}
                   className="h-8 w-8 p-0"
                 >
                   <ArrowLeft className="h-4 w-4" />
@@ -298,7 +298,7 @@ export default function WorkflowDetailPage({
               {/* ///////// */}
               {/* Action Buttons */}
               <div className="flex items-center gap-2">
-                {isPublished &&(
+                {isPublished && (
                   <Button
                     variant="ghost"
                     size="sm"
@@ -350,6 +350,10 @@ export default function WorkflowDetailPage({
           onBack={() => router.back()}
         />
       </div>
+
+      {/* <pre className="bg-gray-900 text-green-400 p-4 rounded-md text-sm overflow-auto">
+        {JSON.stringify(workflowData, null, 2)}
+      </pre> */}
 
       {/* Preview Modal */}
       <WorkflowPreviewFullScreen

@@ -234,3 +234,4 @@ export const updateMasterObjectSchema = z
   .strict();
 
 export type UpdateMasterObjectInput = z.infer<typeof updateMasterObjectSchema>;
+ 

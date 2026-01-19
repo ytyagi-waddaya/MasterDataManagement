@@ -85,6 +85,8 @@ const WorkflowRepository = {
           include: {
             fromStage: true,
             toStage: true,
+            allowedRoles: true,
+            allowedUsers: true,
           },
         },
 
@@ -220,84 +222,78 @@ const WorkflowRepository = {
   //   return tx.workflowTransition.create({ data });
   // },
   createTransition: async (
-  data: {
-    label?: string;
-    fromStageId: string;
-    toStageId: string;
-    workflowId: string;
-    allowedRoleIds?: string[];
-    allowedUserIds?: string[];
-    requiresApproval?: boolean;
-    autoTrigger?: boolean;
-    condition?: any;
-    metadata?: any;
-  },
-  tx: Prisma.TransactionClient | typeof prisma = prisma
-) => {
-  const {
-    allowedRoleIds = [],
-    allowedUserIds = [],
-    ...rest
-  } = data;
-
-  return tx.workflowTransition.create({
     data: {
-      ...rest,
-
-      allowedRoles: {
-        create: allowedRoleIds.map(roleId => ({
-          roleId,
-        })),
-      },
-
-      allowedUsers: {
-        create: allowedUserIds.map(userId => ({
-          userId,
-        })),
-      },
+      label?: string;
+      fromStageId: string;
+      toStageId: string;
+      workflowId: string;
+      allowedRoleIds?: string[];
+      allowedUserIds?: string[];
+      requiresApproval?: boolean;
+      autoTrigger?: boolean;
+      condition?: any;
+      metadata?: any;
     },
-  });
-},
+    tx: Prisma.TransactionClient | typeof prisma = prisma
+  ) => {
+    const { allowedRoleIds = [], allowedUserIds = [], ...rest } = data;
 
+    return tx.workflowTransition.create({
+      data: {
+        ...rest,
 
-// repositories/workflow.repository.ts
+        allowedRoles: {
+          create: allowedRoleIds.map((roleId) => ({
+            roleId,
+          })),
+        },
 
-// export const createTransition = async (
-//   data: {
-//     label?: string;
-//     fromStageId: string;
-//     toStageId: string;
-//     workflowId: string;
-//     allowedRoleIds?: string[];
-//     allowedUserIds?: string[];
-//     transitionType?: TransitionType;
-//     approvalConfig?: any;
-//     reviewOnly?: boolean;
-//     autoTrigger?: boolean;
-//     condition?: any;
-//     metadata?: any;
-//   },
-//   tx: any
-// ) => {
-//   const {
-//     allowedRoleIds = [],
-//     allowedUserIds = [],
-//     ...rest
-//   } = data;
+        allowedUsers: {
+          create: allowedUserIds.map((userId) => ({
+            userId,
+          })),
+        },
+      },
+    });
+  },
 
-//   return tx.workflowTransition.create({
-//     data: {
-//       ...rest,
-//       allowedRoles: {
-//         create: allowedRoleIds.map((roleId) => ({ roleId })),
-//       },
-//       allowedUsers: {
-//         create: allowedUserIds.map((userId) => ({ userId })),
-//       },
-//     },
-//   });
-// };
+  // repositories/workflow.repository.ts
 
+  // export const createTransition = async (
+  //   data: {
+  //     label?: string;
+  //     fromStageId: string;
+  //     toStageId: string;
+  //     workflowId: string;
+  //     allowedRoleIds?: string[];
+  //     allowedUserIds?: string[];
+  //     transitionType?: TransitionType;
+  //     approvalConfig?: any;
+  //     reviewOnly?: boolean;
+  //     autoTrigger?: boolean;
+  //     condition?: any;
+  //     metadata?: any;
+  //   },
+  //   tx: any
+  // ) => {
+  //   const {
+  //     allowedRoleIds = [],
+  //     allowedUserIds = [],
+  //     ...rest
+  //   } = data;
+
+  //   return tx.workflowTransition.create({
+  //     data: {
+  //       ...rest,
+  //       allowedRoles: {
+  //         create: allowedRoleIds.map((roleId) => ({ roleId })),
+  //       },
+  //       allowedUsers: {
+  //         create: allowedUserIds.map((userId) => ({ userId })),
+  //       },
+  //     },
+  //   });
+  // };
 
   findById: async (
     id: string,

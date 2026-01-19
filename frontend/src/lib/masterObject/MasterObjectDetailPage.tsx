@@ -330,8 +330,13 @@ export default function MasterObjectDetailPage({
         {/* ================= FORM ================= */}
         <div>
           {activeSchema ? (
+            // <FormRuntimePreview
+            //   sections={activeSchema.layout?.sections ?? []}
+            //   onSubmit={handleSubmit}
+            // />
             <FormRuntimePreview
               sections={activeSchema.layout?.sections ?? []}
+              fieldDefinitions={activeSchema.fieldDefinitions ?? []} // ✅ ADD THIS
               onSubmit={handleSubmit}
             />
           ) : (
@@ -370,6 +375,9 @@ export default function MasterObjectDetailPage({
           schema={activeSchema}
         />
       )}
+      <pre className="bg-gray-900 text-green-400 p-4 rounded-md text-sm overflow-auto">
+        {JSON.stringify(data, null, 2)}
+      </pre>
     </div>
   );
 }

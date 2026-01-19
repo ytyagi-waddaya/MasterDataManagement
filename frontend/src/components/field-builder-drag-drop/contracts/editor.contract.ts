@@ -50,7 +50,8 @@ export interface EditorField {
 
   placeholder?: string;
   defaultValue?: string;
-  description?: string;
+  description?: string; // system meaning
+  helpText?: string; // user guidance
 
   integration?: FieldIntegration;
 }

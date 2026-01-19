@@ -1,4 +1,3 @@
-
 // "use client";
 
 // import {
@@ -274,6 +273,7 @@
 //     </>
 //   );
 // }
+
 "use client";
 
 import {
@@ -303,6 +303,7 @@ import { EditorToolbar } from "./EditorToolbar";
 import { SaveSchemaDialog } from "./SaveSchemaDialog";
 import { PaletteItem } from "./contracts/fieldPalette.contract";
 import { normalizeEditorSchema } from "./normalizeSchema";
+import { FieldDefinition } from "./contracts/field-definition.contract";
 
 /* ======================================================
    HELPERS
@@ -335,6 +336,7 @@ type FormBuilderProps = {
     layout: {
       sections: FormSection[];
     };
+    fieldDefinitions: FieldDefinition[]; // ✅ ADD THIS
   } | null;
   isPublished?: boolean;
 };
@@ -373,13 +375,11 @@ export function FormBuilder({
   useEffect(() => {
     console.log("[FB] hydrate raw initialSchema:", initialSchema);
 
-    const sections =
-      initialSchema?.layout?.sections ??
-      (initialSchema as any)?.sections ??
-      null;
+    const sections = initialSchema?.layout?.sections ?? null;
+    const fieldDefinitions = (initialSchema as any)?.fieldDefinitions ?? [];
 
     if (Array.isArray(sections) && sections.length > 0) {
-      const normalized = normalizeEditorSchema(sections);
+      const normalized = normalizeEditorSchema(sections, fieldDefinitions);
       console.log("[FB] normalized sections:", normalized);
       reset(normalized);
     } else {
@@ -531,7 +531,10 @@ export function FormBuilder({
         </DndContext>
       ) : (
         <div className="flex-1 overflow-hidden hover:overflow-auto scrollbar-hide">
-          <FormRuntimePreview sections={sections} />
+          <FormRuntimePreview
+            sections={sections}
+            fieldDefinitions={initialSchema?.fieldDefinitions ?? []}
+          />
         </div>
       )}
 
@@ -544,6 +547,7 @@ export function FormBuilder({
           schema={{
             version: initialSchema?.version ?? 1,
             layout: { sections },
+            fieldDefinitions: initialSchema?.fieldDefinitions ?? [],
           }}
         />
       )}

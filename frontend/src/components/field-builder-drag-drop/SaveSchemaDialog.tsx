@@ -16,6 +16,7 @@ import {
 } from "@/lib/masterObject/hook";
 import { buildRuntimeSchema } from "./types/buildRuntimeSchema";
 import { buildBackendSchema } from "./types/buildBackendSchema";
+import { FieldDefinition } from "./contracts/field-definition.contract";
 
 type SaveSchemaDialogProps = {
   open: boolean;
@@ -26,6 +27,7 @@ type SaveSchemaDialogProps = {
     layout: {
       sections: any[];
     };
+     fieldDefinitions?: FieldDefinition[]; 
   };
 };
 
@@ -45,21 +47,25 @@ export function SaveSchemaDialog({
   ===================================================== */
 
   const payload = useMemo(() => {
-    if (!schema?.layout?.sections?.length) return null;
+  if (!schema?.layout?.sections?.length) return null;
 
-    const runtimeFields = buildRuntimeSchema(schema.layout.sections);
-    const fieldConfig = buildBackendSchema(runtimeFields);
+  const runtimeFields = buildRuntimeSchema(
+    schema.layout.sections,
+    schema.fieldDefinitions ?? [] // ✅ now exists
+  );
 
-    return {
-      schema: {
-        version: schema.version,
-        layout: {
-          sections: schema.layout.sections,
-        },
+  const fieldConfig = buildBackendSchema(runtimeFields);
+
+  return {
+    schema: {
+      version: schema.version,
+      layout: {
+        sections: schema.layout.sections,
       },
-      fieldConfig,
-    };
-  }, [schema]);
+    },
+    fieldConfig,
+  };
+}, [schema]);
 
   function handleSave(publish: boolean) {
     if (!payload) {
