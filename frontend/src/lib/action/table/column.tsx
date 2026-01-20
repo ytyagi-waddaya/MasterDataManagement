@@ -38,6 +38,7 @@ import { Action } from "./actionTable";
 import { EditActionForm } from "../form/edit-action";
 import { FormDialog } from "@/components/dialog/edit-dialog";
 import { UpdateActionInput } from "../schema/action-schema";
+import IfAllowed from "@/store/auth/IfAllowed";
 
 export const actionColumns: ColumnDef<Action>[] = [
   {
@@ -131,27 +132,37 @@ export const actionColumns: ColumnDef<Action>[] = [
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align="end">
+              <IfAllowed action="READ" resource="ACTION" >
               <DropdownMenuItem onClick={handleView}>
                 <Eye className="mr-2 w-4 h-4" /> View
               </DropdownMenuItem>
+              </IfAllowed>
 
               {isActive ? (
                 <>
+                  <IfAllowed action="UPDATE" resource="ACTION" >
                   <DropdownMenuItem onClick={handleEdit}>
                     <Edit className="mr-2 w-4 h-4" /> Edit
                   </DropdownMenuItem>
+                  </IfAllowed>
+                  <IfAllowed action="ARCHIVE" resource="ACTION" >
                   <DropdownMenuItem onClick={() => setOpenArchive(true)}>
                     <Archive className="mr-2 w-4 h-4" /> Archive
                   </DropdownMenuItem>
+                  </IfAllowed>
                 </>
               ) : (
                 <>
+                  <IfAllowed action="RESTORE" resource="ACTION" >
                   <DropdownMenuItem onClick={() => setOpenRestore(true)}>
                     <RotateCcw className="mr-2 w-4 h-4" /> Restore
                   </DropdownMenuItem>
+                  </IfAllowed>
+                  <IfAllowed action="DELETE" resource="ACTION" >
                   <DropdownMenuItem onClick={() => setOpenDelete(true)}>
                     <Trash2 className="mr-2 w-4 h-4" /> Delete
                   </DropdownMenuItem>
+                  </IfAllowed>
                 </>
               )}
             </DropdownMenuContent>

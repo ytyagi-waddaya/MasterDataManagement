@@ -117,6 +117,7 @@ export default function ModulesTable() {
       search={search}
       filters={tableFilters}
       createButton={
+        <IfAllowed action="CREATE" resource="MODULE">
         <CreateButton
           triggerText="Add Module"
           title="Create New Module"
@@ -133,6 +134,7 @@ export default function ModulesTable() {
             />
           )}
         </CreateButton>
+        </IfAllowed>
       }
       onBulkArchive={(ids) => useBulkArchiveModules().mutate(ids)}
       onBulkRestore={(ids) => useBulkRestoreModules().mutate(ids)}

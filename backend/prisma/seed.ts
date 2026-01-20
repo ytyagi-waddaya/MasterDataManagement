@@ -71,13 +71,34 @@ async function main() {
    * 1️⃣ SEED DEFAULT ACTIONS
    * --------------------------------------------------------- */
   const defaultActions = [
-    { name: "Create", description: "Grants the ability to create records." },
-    { name: "Read", description: "Allows viewing records." },
-    { name: "Update", description: "Allows editing records." },
-    { name: "Delete", description: "Allows deleting records." },
-    { name: "Approve", description: "Allows approval actions." },
-    { name: "Reject", description: "Allows rejection actions." },
-  ];
+  // CRUD
+  { name: "Create", description: "Allows creating records." },
+  { name: "Read", description: "Allows viewing records." },
+  { name: "Update", description: "Allows editing records." },
+  { name: "Delete", description: "Allows deleting records." },
+
+  // Lifecycle
+  { name: "Archive", description: "Allows archiving records." },
+  { name: "Restore", description: "Allows restoring archived records." },
+
+  // Approval Flow
+  { name: "Approve", description: "Allows approval actions." },
+  { name: "Reject", description: "Allows rejection actions." },
+
+  // Collaboration
+  { name: "Assign", description: "Allows assigning records to users." },
+  { name: "Comment", description: "Allows commenting on records." },
+  { name: "Attach", description: "Allows attaching files to records." },
+
+  // Data Ops
+  { name: "Export", description: "Allows exporting data." },
+  { name: "Import", description: "Allows importing data." },
+
+  // Bulk Ops
+  { name: "Bulk Update", description: "Allows bulk update operations." },
+  { name: "Bulk Delete", description: "Allows bulk delete operations." },
+];
+
 
   const actionRows = [];
   for (const action of defaultActions) {
@@ -259,8 +280,9 @@ async function main() {
 
   for (const res of resourceRows) {
     for (const act of actionRows) {
-      const permKey = generateKey(`${res.key}_${act.key}`);
-      const permName = `${res.name}_${act.name}`;
+      const permKey = `${act.key}__${res.key}`;
+      const permName = `${act.key}__${res.key}`;
+
 
       const perm = await prisma.permission.upsert({
         where: { key: permKey },

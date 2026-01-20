@@ -38,6 +38,7 @@ import { Permission } from "./permissionTable";
 import { EditPermissionForm } from "../form/edit-permission";
 import { FormDialog } from "@/components/dialog/edit-dialog";
 import { UpdatePermissionInput } from "../schema/permission-schema";
+import { IfAllowed } from "@/store/auth";
 
 export const permissionColumns: ColumnDef<Permission>[] = [
   {
@@ -153,27 +154,37 @@ export const permissionColumns: ColumnDef<Permission>[] = [
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align="end">
+              <IfAllowed action="READ" resource="PERMISSION" >
               <DropdownMenuItem onClick={handleView}>
                 <Eye className="mr-2 w-4 h-4" /> View
               </DropdownMenuItem>
+              </IfAllowed>
 
               {isActive ? (
                 <>
+                  <IfAllowed action="UPDATE" resource="PERMISSION" >
                   <DropdownMenuItem onClick={handleEdit}>
                     <Edit className="mr-2 w-4 h-4" /> Edit
                   </DropdownMenuItem>
+                  </IfAllowed>
+                  <IfAllowed action="ARCHIVE" resource="PERMISSION" >
                   <DropdownMenuItem onClick={() => setOpenArchive(true)}>
                     <Archive className="mr-2 w-4 h-4" /> Archive
                   </DropdownMenuItem>
+                  </IfAllowed>
                 </>
               ) : (
                 <>
+                  <IfAllowed action="RESTORE" resource="PERMISSION" >
                   <DropdownMenuItem onClick={() => setOpenRestore(true)}>
                     <RotateCcw className="mr-2 w-4 h-4" /> Restore
                   </DropdownMenuItem>
+                  </IfAllowed>
+                  <IfAllowed action="DELETE" resource="PERMISSION" >    
                   <DropdownMenuItem onClick={() => setOpenDelete(true)}>
                     <Trash2 className="mr-2 w-4 h-4" /> Delete
                   </DropdownMenuItem>
+                  </IfAllowed>
                 </>
               )}
             </DropdownMenuContent>

@@ -38,6 +38,7 @@ import { Module } from "./moduleTable";
 import { FormDialog } from "@/components/dialog/edit-dialog";
 import { UpdateModuleInput } from "../schema/module-schema";
 import { EditModuleForm } from "../form/edit-module";
+import { IfAllowed } from "@/store/auth";
 
 export const moduleColumns: ColumnDef<Module>[] = [
   {
@@ -137,27 +138,37 @@ export const moduleColumns: ColumnDef<Module>[] = [
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align="end">
+              <IfAllowed action="READ" resource="MODULE" >
               <DropdownMenuItem onClick={handleView}>
                 <Eye className="mr-2 w-4 h-4" /> View
               </DropdownMenuItem>
+              </IfAllowed>
 
               {isActive ? (
                 <>
+                  <IfAllowed action="UPDATE" resource="MODULE" >
                   <DropdownMenuItem onClick={handleEdit}>
                     <Edit className="mr-2 w-4 h-4" /> Edit
                   </DropdownMenuItem>
+                  </IfAllowed>
+                  <IfAllowed action="ARCHIVE" resource="MODULE" >
                   <DropdownMenuItem onClick={() => setOpenArchive(true)}>
                     <Archive className="mr-2 w-4 h-4" /> Archive
                   </DropdownMenuItem>
+                  </IfAllowed>
                 </>
               ) : (
                 <>
+                  <IfAllowed action="RESTORE" resource="MODULE" >
                   <DropdownMenuItem onClick={() => setOpenRestore(true)}>
                     <RotateCcw className="mr-2 w-4 h-4" /> Restore
                   </DropdownMenuItem>
+                  </IfAllowed>
+                  <IfAllowed action="DELETE" resource="MODULE" >
                   <DropdownMenuItem onClick={() => setOpenDelete(true)}>
                     <Trash2 className="mr-2 w-4 h-4" /> Delete
                   </DropdownMenuItem>
+                  </IfAllowed>
                 </>
               )}
             </DropdownMenuContent>

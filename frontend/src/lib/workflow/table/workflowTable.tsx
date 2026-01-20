@@ -20,6 +20,7 @@ import { useResourceList } from "@/lib/resource/hook";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { WorkflowForm } from "../forms/create-workflow";
+import IfAllowed from "@/store/auth/IfAllowed";
 
 export default function WorkflowsTable() {
   const dispatch = useDispatch();
@@ -111,6 +112,8 @@ export default function WorkflowsTable() {
       search={search}
       filters={tableFilters}
       createButton={
+      <IfAllowed action="CREATE" resource="WORKFLOW" >
+        
         <CreateButton
           triggerText="Add Workflow"
           title="Create Workflow"
@@ -129,6 +132,7 @@ export default function WorkflowsTable() {
             />
           )}
         </CreateButton>
+        </IfAllowed>
       }
     />
   );

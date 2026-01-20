@@ -32,6 +32,7 @@ import { CreateButton } from "@/components/table/create-button";
 import { RoleForm } from "../form/create-role";
 import { createRoleSchema } from "../schema/role-schema";
 import { useZodForm } from "@/hooks/useZodForm";
+import IfAllowed from "@/store/auth/IfAllowed";
 
 export default function RolesTable() {
   const dispatch = useDispatch();
@@ -107,6 +108,7 @@ export default function RolesTable() {
       search={search}
       filters={tableFilters}
       createButton={
+        <IfAllowed action="CREATE" resource="ROLE" >
         <CreateButton
           triggerText="Add Role"
           title="Create New Role"
@@ -123,6 +125,7 @@ export default function RolesTable() {
             />
           )}
         </CreateButton>
+        </IfAllowed>
       }
       onBulkArchive={(ids) => useBulkArchiveRoles().mutate(ids)}
       onBulkRestore={(ids) => useBulkRestoreRoles().mutate(ids)}

@@ -40,6 +40,7 @@ import {
   useDeleteRole,
   useUpdateRole,
 } from "../hooks/index";
+import { IfAllowed } from "@/store/auth";
 
 export const roleColumns: ColumnDef<Role>[] = [
   {
@@ -175,27 +176,38 @@ export const roleColumns: ColumnDef<Role>[] = [
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align="end">
+              <IfAllowed action="READ" resource="ROLE" >
               <DropdownMenuItem onClick={handleView}>
                 <Eye className="mr-2 w-4 h-4" /> View
               </DropdownMenuItem>
+              </IfAllowed>
 
               {isActive ? (
                 <>
+                  <IfAllowed action="UPDATE" resource="ROLE" >
                   <DropdownMenuItem onClick={handleEdit}>
                     <Edit className="mr-2 w-4 h-4" /> Edit
                   </DropdownMenuItem>
+                  </IfAllowed>
+
+                  <IfAllowed action="ARCHIVE" resource="ROLE" >
                   <DropdownMenuItem onClick={() => setOpenArchive(true)}>
                     <Archive className="mr-2 w-4 h-4" /> Archive
                   </DropdownMenuItem>
+                  </IfAllowed>
                 </>
               ) : (
                 <>
+                  <IfAllowed action="RESTORE" resource="ROLE" >
                   <DropdownMenuItem onClick={() => setOpenRestore(true)}>
                     <RotateCcw className="mr-2 w-4 h-4" /> Restore
                   </DropdownMenuItem>
+                  </IfAllowed>
+                  <IfAllowed action="DELETE" resource="ROLE" >
                   <DropdownMenuItem onClick={() => setOpenDelete(true)}>
                     <Trash2 className="mr-2 w-4 h-4" /> Delete
                   </DropdownMenuItem>
+                  </IfAllowed>
                 </>
               )}
             </DropdownMenuContent>

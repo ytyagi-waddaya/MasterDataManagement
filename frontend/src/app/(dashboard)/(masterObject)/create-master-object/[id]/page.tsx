@@ -31,9 +31,9 @@ export default function CreateMasterObjectPage() {
       <FormBuilder
         masterObjectId={masterObjectId}
         initialSchema={{
-          version: data.activeSchema.version,
-          layout: data.activeSchema.layout,
-          fieldDefinitions: data.activeSchema.fieldDefinitions, // 🔥 REQUIRED
+          version: data.activeSchema?.version ?? 1,
+          layout: data.activeSchema?.layout ?? [],
+          fieldDefinitions: data.activeSchema?.fieldDefinitions ?? [],
         }}
         isPublished={data.isRunnable}
       />

@@ -70,6 +70,7 @@ import { permissionColumns } from "./column";
 import { useModuleList } from "@/lib/module/hook/useModule";
 import { useResourceList } from "@/lib/resource/hook";
 import { useActionList } from "@/lib/action/hooks";
+import IfAllowed from "@/store/auth/IfAllowed";
 
 export default function PermissionsTable() {
   const dispatch = useDispatch();
@@ -151,6 +152,7 @@ export default function PermissionsTable() {
       search={search}
       filters={tableFilters}
       createButton={
+        <IfAllowed action="CREATE" resource="PERMISSION" >
         <CreateButton
           triggerText="Generate Permissions"
           title="Generate All Permissions"
@@ -169,6 +171,7 @@ export default function PermissionsTable() {
             </div>
           )}
         </CreateButton>
+        </IfAllowed>
       }
       onBulkArchive={(ids) => useBulkArchivePermissions().mutate(ids)}
       onBulkRestore={(ids) => useBulkRestorePermissions().mutate(ids)}

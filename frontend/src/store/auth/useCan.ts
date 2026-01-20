@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
-import { selectPermissions, selectUser } from "./selectors";
+import { selectPermissions, selectRoles, selectUser } from "./selectors";
 import { checkABAC } from "./checkABAC";
 import {
   chooseMostPermissive,
@@ -11,11 +11,15 @@ import {
 export default function useCan() {
   const perms = useSelector(selectPermissions);
   const user = useSelector(selectUser);
+  const role = useSelector(selectRoles);
+  
 
   return useMemo(() => {
     /* ---------------------------
        Helpers
     ---------------------------- */
+      const isAdmin = role.some((r) => r.key === "ADMIN");
+
     const safeKey = (v?: string | null): string =>
       (v ?? "").toString().trim().toUpperCase();
 
@@ -34,7 +38,9 @@ export default function useCan() {
       actionKey?: string,
       resourceKey?: string,
       context?: any
+
     ): boolean {
+      if (isAdmin) return true;
       const a = safeKey(actionKey); // e.g. READ
       const r = normalizeResourceKey(resourceKey); // MATERIAL_REQUEST
 
@@ -56,6 +62,7 @@ export default function useCan() {
        RBAC: Permission Key Check
     ---------------------------- */
     function canByPermissionKey(permissionKey?: string, context?: any): boolean {
+      if (isAdmin) return true;
       if (!permissionKey) return false;
 
       const key = safeKey(permissionKey);

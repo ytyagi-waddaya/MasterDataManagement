@@ -31,6 +31,7 @@ import { actionColumns } from "./column";
 import { ActionForm } from "../form/create-action";
 import { createActionSchema } from "../schema/action-schema";
 import { useZodForm } from "@/hooks/useZodForm";
+import IfAllowed from "@/store/auth/IfAllowed";
 
 export default function ActionsTable() {
   const dispatch = useDispatch();
@@ -108,22 +109,24 @@ export default function ActionsTable() {
       search={search}
       filters={tableFilters}
       createButton={
-        <CreateButton
-          triggerText="Add Action"
-          title="Create New Action"
-          onSubmit={handleSubmit}
-          onOpenReset={reset}
-        >
-          {({ close }) => (
-            <ActionForm
-              form={form}
-              errors={errors}
-              touched={touched}
-              setValue={setValue}
-              onBlur={onBlur}
-            />
-          )}
-        </CreateButton>
+        <IfAllowed action="CREATE" resource="ACTION" >
+          <CreateButton
+            triggerText="Add Action"
+            title="Create New Action"
+            onSubmit={handleSubmit}
+            onOpenReset={reset}
+          >
+            {({ close }) => (
+              <ActionForm
+                form={form}
+                errors={errors}
+                touched={touched}
+                setValue={setValue}
+                onBlur={onBlur}
+              />
+            )}
+          </CreateButton>
+        </IfAllowed>
       }
       onBulkArchive={(ids) => useBulkArchiveActions().mutate(ids)}
       onBulkRestore={(ids) => useBulkRestoreActions().mutate(ids)}

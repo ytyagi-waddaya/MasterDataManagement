@@ -39,6 +39,7 @@ import { ResourceForm } from "../form/create-resource";
 import { createResourceSchema } from "../schema/resource-schema";
 import { useZodForm } from "@/hooks/useZodForm";
 import { useModuleList } from "@/lib/module/hook/useModule";
+import IfAllowed from "@/store/auth/IfAllowed";
 
 export default function ResourcesTable() {
   const dispatch = useDispatch();
@@ -126,6 +127,7 @@ export default function ResourcesTable() {
       search={search}
       filters={tableFilters}
       createButton={
+        <IfAllowed action="CREATE" resource="RESOURCE" >
         <CreateButton
           triggerText="Add Resource"
           title="Create New Resource"
@@ -143,6 +145,7 @@ export default function ResourcesTable() {
             />
           )}
         </CreateButton>
+        </IfAllowed>
       }
       onBulkArchive={(ids) => useBulkArchiveResources().mutate(ids)}
       onBulkRestore={(ids) => useBulkRestoreResources().mutate(ids)}

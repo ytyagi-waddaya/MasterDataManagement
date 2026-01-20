@@ -227,7 +227,7 @@ export const userColumns: ColumnDef<User>[] = [
                     </DropdownMenuItem>
                   </IfAllowed>
                   <IfAllowed
-                    action="DELETE"
+                    action="ARCHIVE"
                     resource="USER"
                   >
                     <DropdownMenuItem onClick={() => setOpenArchive(true)}>
@@ -238,7 +238,7 @@ export const userColumns: ColumnDef<User>[] = [
               ) : (
                 <>
                   <IfAllowed
-                    action="UPDATE"
+                    action="RESTORE"
                     resource="USER"
                   >
                     <DropdownMenuItem onClick={() => setOpenRestore(true)}>

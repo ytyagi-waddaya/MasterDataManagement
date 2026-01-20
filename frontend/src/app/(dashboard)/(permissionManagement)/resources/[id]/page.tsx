@@ -25,6 +25,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import IfAllowed from "@/store/auth/IfAllowed";
 
 /* --------------------------------------------------
    Generate Dynamic Table Columns
@@ -197,6 +198,7 @@ export default function ResourceRecordsPage() {
           },
         ]}
         createButton={
+          <IfAllowed action="CREATE" resource={resourceData.key} >
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -234,6 +236,7 @@ export default function ResourceRecordsPage() {
               )}
             </Tooltip>
           </TooltipProvider>
+          </IfAllowed>
         }
       />
     </div>
