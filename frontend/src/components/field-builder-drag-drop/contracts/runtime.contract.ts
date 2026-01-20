@@ -11,4 +11,14 @@ export interface RuntimeField {
   id:string;
   config: FieldConfig;
   state: RuntimeFieldState;
+  
+  editorValidation?: {
+    required?: boolean;
+    min?: number;
+    max?: number;
+    regex?: string;
+    patternMessage?: string;
+    errorMessage?: string;
+  };
+
 }

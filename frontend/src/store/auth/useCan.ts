@@ -12,13 +12,12 @@ export default function useCan() {
   const perms = useSelector(selectPermissions);
   const user = useSelector(selectUser);
   const role = useSelector(selectRoles);
-  
-
   return useMemo(() => {
+    const isAdmin = role.some((r) => r.key === "ADMIN");
+
     /* ---------------------------
        Helpers
     ---------------------------- */
-      const isAdmin = role.some((r) => r.key === "ADMIN");
 
     const safeKey = (v?: string | null): string =>
       (v ?? "").toString().trim().toUpperCase();
@@ -61,7 +60,10 @@ export default function useCan() {
     /* ---------------------------
        RBAC: Permission Key Check
     ---------------------------- */
-    function canByPermissionKey(permissionKey?: string, context?: any): boolean {
+    function canByPermissionKey(
+      permissionKey?: string,
+      context?: any
+    ): boolean {
       if (isAdmin) return true;
       if (!permissionKey) return false;
 

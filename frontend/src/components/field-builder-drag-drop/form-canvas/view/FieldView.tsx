@@ -538,7 +538,7 @@ console.log("FIELD TYPE:", node.field.type);
       </div>
 
       {/* ================= METADATA ================= */}
-      {(node.field.placeholder || node.field.defaultValue) && (
+      {(node.field.placeholder || node.field.default) && (
         <div className="mt-2 pt-2 border-t border-gray-100 dark:border-gray-800">
           <div className="flex flex-wrap gap-1.5">
             {node.field.placeholder && (
@@ -547,10 +547,10 @@ console.log("FIELD TYPE:", node.field.type);
                 {node.field.placeholder}
               </div>
             )}
-            {node.field.defaultValue && (
+            {node.field.default && (
               <div className="text-xs text-gray-500 dark:text-gray-400">
                 <span className="font-medium">Default:</span>{" "}
-                {node.field.defaultValue}
+                {node.field.default}
               </div>
             )}
           </div>

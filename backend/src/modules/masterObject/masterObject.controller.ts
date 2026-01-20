@@ -42,7 +42,7 @@ const masterObjectController = {
     if (!masterObjectId)
       throw new BadRequestException("MasterObject ID is required");
     const data = req.body;
-    console.log("MASTEROBJECT PAYLOAD:", data);
+    console.log("MASTEROBJECT PAYLOAD:", JSON.stringify(data, null, 2));
 
     const masterObject = await masterObjectService.updateMasterObject(
       { masterObjectId },

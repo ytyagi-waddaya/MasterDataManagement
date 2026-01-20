@@ -74,10 +74,7 @@ export function normalizeEditorSchema(
   sections: any[],
   fieldDefinitions: FieldDefinition[]
 ): FormSection[] {
-  const defMap = Object.fromEntries(
-    fieldDefinitions.map((d) => [d.key, d])
-  );
-
+  const defMap = Object.fromEntries(fieldDefinitions.map((d) => [d.key, d]));
   return sections.map((section) => ({
     id: section.id,
     title: section.title ?? "Section",
@@ -101,25 +98,24 @@ function normalizeNodes(
           : def?.category ?? "INPUT";
 
       /* ---------- validation extraction ---------- */
-      const rules: FieldValidationRule[] =
-        def?.config?.validation?.rules ?? [];
+      const rules: FieldValidationRule[] = def?.config?.validation?.rules ?? [];
 
       let min: number | undefined;
       let max: number | undefined;
       let regex: string | undefined;
       let errorMessage: string | undefined;
+      let patternMessage: string | undefined;
 
       for (const r of rules) {
         if (r.type === "MIN") min = r.params.value;
         if (r.type === "MAX") max = r.params.value;
         if (r.type === "REGEX") regex = r.params.pattern;
         if (!errorMessage) errorMessage = r.message;
+        if (!patternMessage) patternMessage = r.message;
       }
 
       const editorValidation =
-        rules.length > 0
-          ? { min, max, regex, errorMessage }
-          : undefined;
+        rules.length > 0 ? { min, max, regex, errorMessage, patternMessage } : undefined;
 
       const fieldNode: FieldNode = {
         id: node.id,
@@ -130,8 +126,7 @@ function normalizeNodes(
 
           label: def?.label ?? node.field.label,
           category: editorCategory,
-          type:
-            mapFieldTypeToEditor(def?.fieldType) ?? node.field.type,
+          type: mapFieldTypeToEditor(def?.fieldType) ?? node.field.type,
 
           layout: {
             span: node.field.layout?.span ?? 12,
@@ -143,10 +138,13 @@ function normalizeNodes(
           helpText: def?.config?.ui?.helpText,
           placeholder: def?.config?.ui?.placeholder,
           options: def?.config?.ui?.options,
-
+          description: def?.config?.meta?.description,
+          default:
+            def?.config?.data?.default != null
+              ? String(def.config.data.default)
+              : undefined,
           validation: editorValidation,
           integration: node.field.integration,
-
         },
       };
 
@@ -178,10 +176,7 @@ function normalizeNodes(
    FIELD TYPE MAPPER (BACKEND → EDITOR)
 ====================================================== */
 
-
-export function mapFieldTypeToEditor(
-  fieldType?: string
-): EditorFieldType {
+export function mapFieldTypeToEditor(fieldType?: string): EditorFieldType {
   switch (fieldType) {
     case "TEXT":
       return "text";

@@ -111,8 +111,15 @@ export function RoleManager({
     <div className="space-y-6">
       {/* Header + Search */}
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-semibold">Manage {userName} Roles</h3>
-
+        {/* <h3 className="text-lg font-semibold">Manage {userName} Roles</h3> */}
+                <div className="mb-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    Manage Roles
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    Assign or remove roles for {userName}
+                  </p>
+                </div>
         <Input
           placeholder="Search roles..."
           className="w-60"

@@ -5,7 +5,7 @@ import useCan from "./useCan";
 type Props =
   | {
       action: string;
-      resource: string;
+      resource: string; 
       context?: any;
       children: React.ReactNode;
       fallback?: React.ReactNode;

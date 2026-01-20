@@ -32,17 +32,20 @@ import {
   useRestoreRecord,
 } from "@/lib/masterRecord/hooks";
 import { useStartInstance } from "@/lib/workflow/hooks";
+import { IfAllowed } from "@/store/auth";
 
 export function RecordActions({
   record,
   workflowId,
   router,
-  resourceId
+  resourceId,
+  resourceKey
 }: {
   record: any;
-  workflowId?: string;
   router: any;
-  resourceId:string
+  resourceId: string;
+ resourceKey: string;
+  workflowId?: string;
 }) {
   const [openArchive, setOpenArchive] = useState(false);
   const [openRestore, setOpenRestore] = useState(false);
@@ -54,6 +57,7 @@ export function RecordActions({
   const deleteMutation = useDeleteRecord();
 
   const hasWorkflow = Boolean(workflowId);
+
 
   // ✅ CORRECT: hook accepts ONLY workflowId
   const startInstanceMutation = hasWorkflow
@@ -92,9 +96,11 @@ export function RecordActions({
         </DropdownMenuTrigger>
 
         <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={handleView}>
-            <Eye className="mr-2 h-4 w-4" /> View
-          </DropdownMenuItem>
+          <IfAllowed action="READ" resource={resourceKey}>
+            <DropdownMenuItem onClick={handleView}>
+              <Eye className="mr-2 h-4 w-4" /> View
+            </DropdownMenuItem>
+          </IfAllowed>
 
           {/* Send for Approval */}
           <DropdownMenuItem
@@ -102,26 +108,34 @@ export function RecordActions({
             onClick={() => setOpenSendApproval(true)}
           >
             <Send className="mr-2 h-4 w-4" />
-            Send for Approval
+            Start workflow
           </DropdownMenuItem>
 
-          <DropdownMenuItem onClick={() => alert("Edit form coming soon")}>
-            <Edit className="mr-2 h-4 w-4" /> Edit
-          </DropdownMenuItem>
+          <IfAllowed action="UPDATE" resource={resourceKey}>
+            <DropdownMenuItem onClick={() => alert("Edit form coming soon")}>
+              <Edit className="mr-2 h-4 w-4" /> Edit
+            </DropdownMenuItem>
+          </IfAllowed>
 
           {isActive ? (
-            <DropdownMenuItem onClick={() => setOpenArchive(true)}>
-              <Archive className="mr-2 h-4 w-4" /> Archive
-            </DropdownMenuItem>
+            <IfAllowed action="ARCHIVE" resource={resourceKey}>
+              <DropdownMenuItem onClick={() => setOpenArchive(true)}>
+                <Archive className="mr-2 h-4 w-4" /> Archive
+              </DropdownMenuItem>
+            </IfAllowed>
           ) : (
             <>
-              <DropdownMenuItem onClick={() => setOpenRestore(true)}>
-                <RotateCcw className="mr-2 h-4 w-4" /> Restore
-              </DropdownMenuItem>
+              <IfAllowed action="RESTORE" resource={resourceKey}>
+                <DropdownMenuItem onClick={() => setOpenRestore(true)}>
+                  <RotateCcw className="mr-2 h-4 w-4" /> Restore
+                </DropdownMenuItem>
+              </IfAllowed>
 
-              <DropdownMenuItem onClick={() => setOpenDelete(true)}>
-                <Trash2 className="mr-2 h-4 w-4" /> Delete
-              </DropdownMenuItem>
+              <IfAllowed action="DELTE" resource={resourceKey}>
+                <DropdownMenuItem onClick={() => setOpenDelete(true)}>
+                  <Trash2 className="mr-2 h-4 w-4" /> Delete
+                </DropdownMenuItem>
+              </IfAllowed>
             </>
           )}
         </DropdownMenuContent>

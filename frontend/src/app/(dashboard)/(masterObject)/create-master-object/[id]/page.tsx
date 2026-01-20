@@ -19,6 +19,7 @@ export default function CreateMasterObjectPage() {
     (s: any) => s.status === "PUBLISHED"
   );
 
+  
   const activeSchema = draftSchema ?? publishedSchema ?? null;
 
   return (

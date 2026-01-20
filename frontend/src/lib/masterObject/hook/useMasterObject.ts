@@ -118,6 +118,8 @@ export function useMasterObjectForRuntime(masterObjectId: string) {
         publishedSchema ??
         masterObject.schemas?.[0] ??
         null;
+        console.log("LATEST SCHEMA:",latestSchema);
+        
 
       return {
         ...masterObject,

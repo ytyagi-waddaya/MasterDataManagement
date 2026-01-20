@@ -205,7 +205,7 @@ export const userColumns: ColumnDef<User>[] = [
                 <EllipsisVertical className="w-4 h-4" />
               </Button>
             </DropdownMenuTrigger>
-
+ 
             <DropdownMenuContent align="end">
               <IfAllowed
                 action="READ"

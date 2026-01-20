@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { FormSection, EditorNode } from "../contracts/editor.contract";
-import { buildRuntimeSchema } from "../types/buildRuntimeSchema";
+import { buildRuntimeSchema, buildRuntimeSchemaFromCanonical } from "../types/buildRuntimeSchema";
 import { validateForm } from "../validation/validateForm";
 import { RuntimeField } from "../contracts/runtime.contract";
 
@@ -13,6 +13,7 @@ import { RuntimeRepeater } from "./RuntimeRepeater";
 import { Send, Code, Eye, Info } from "lucide-react";
 import { validateField } from "./validateField";
 import { FieldDefinition } from "../contracts/field-definition.contract";
+import { FieldConfig } from "../contracts/field-config.contract";
 
 /* ======================================================
    FORM RUNTIME PREVIEW (PUBLISHED / END-USER UI)
@@ -21,16 +22,17 @@ import { FieldDefinition } from "../contracts/field-definition.contract";
 type FormRuntimePreviewProps = {
   sections: FormSection[];
   fieldDefinitions: FieldDefinition[];
+  fieldConfig?: FieldConfig[];
   readOnly?: boolean;
   hideDebug?: boolean;
   onSubmit?: (values: Record<string, any>) => void;
   initialValues?: Record<string, any>;
 };
 
-
 export function FormRuntimePreview({
   sections,
   fieldDefinitions,
+  fieldConfig,
   readOnly = false,
   hideDebug = false,
   onSubmit,
@@ -54,10 +56,28 @@ export function FormRuntimePreview({
   }
 
   /* ---------- Build runtime field schema ---------- */
-const runtimeFields = useMemo(
-  () => buildRuntimeSchema(sections, fieldDefinitions),
-  [sections, fieldDefinitions]
-);
+  // const runtimeFields = useMemo(
+  //   () => buildRuntimeSchema(sections, fieldDefinitions),
+  //   [sections, fieldDefinitions]
+  // );
+
+//   const runtimeFields = useMemo(
+//   () => buildRuntimeSchema(sections),
+//   [sections]
+// );
+
+
+const runtimeFields = useMemo(() => {
+  // ✅ ALWAYS prefer canonical fieldDefinitions
+  if (fieldDefinitions?.length) {
+    return buildRuntimeSchemaFromCanonical(sections, fieldDefinitions);
+  }
+
+  // fallback (editor live only)
+  return buildRuntimeSchema(sections);
+}, [sections, fieldDefinitions]);
+
+
 
   const runtimeFieldMap = useMemo(() => {
     if (!Array.isArray(runtimeFields)) return {};
@@ -73,7 +93,7 @@ const runtimeFields = useMemo(
   function handleChange(field: RuntimeField, value: any) {
     const errors = validateField(field, value);
     const key = field.config.meta.key;
-
+    // field.state.errors = errors;
     setValues((prev) => ({
       ...prev,
       [key]: value,

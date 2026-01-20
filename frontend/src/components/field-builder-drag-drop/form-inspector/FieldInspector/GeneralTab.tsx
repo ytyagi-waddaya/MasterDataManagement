@@ -179,8 +179,8 @@ export function GeneralTab({
             Default Value
           </label>
           <input
-            value={f.defaultValue ?? ""}
-            onChange={(e) => update({ defaultValue: e.target.value })}
+            value={f.default ?? ""}
+            onChange={(e) => update({ default: e.target.value })}
             placeholder="Default value"
             className="w-full text-sm px-3 py-2 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900"
           />

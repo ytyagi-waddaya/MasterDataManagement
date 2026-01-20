@@ -199,7 +199,7 @@
 //       items: module.resources.map((resource:any) => ({
 //         title: resource.name,
 //         icon: Folder,
-//         url: `/resources/${resource.id}`, 
+//         url: `/resources/${resource.id}`,
 //       })),
 //     })) ?? [];
 
@@ -359,7 +359,6 @@
 //   })) ?? [],
 // };
 
-
 //   // FINAL MENU
 //   const finalMenu = [...staticMenu, dynamicModulesMenu]
 
@@ -398,10 +397,6 @@
 
 // ///////////////////////////////////////////////////////////
 
-
-
-
-
 // "use client";
 
 // import {
@@ -438,14 +433,12 @@
 //   const { data: modules } = useModuleswithresources();
 //   const can = useCan();
 
-
 //   const sidebarUser = {
 //     id:user?.id ?? "",
 //     name: user?.name ?? "User",
 //     email: user?.email ?? "user@example.com",
 //     avatar: user?.attributes?.avatarUrl ?? "https://ui.shadcn.com/avatars/01.png",
 //   };
-
 
 // /* -----------------------------
 //     STATIC MENU (RBAC Based)
@@ -455,7 +448,6 @@
 // const isAdmin = role?.some((r: any) => r.key === "ADMIN") ?? false;
 
 // console.log("ISADMIN:", isAdmin);
-
 
 // const canAccessStatic = (permissionKey: string) => {
 //   if (isAdmin) return true; // admin sees everything
@@ -487,7 +479,6 @@
 //       return canAccessStatic(item.permissionKey) ? item : null;
 //     })
 //     .filter(Boolean);
-
 
 // const staticMenu = [
 //   {
@@ -560,7 +551,6 @@
 //   },
 // ].filter((section) => section.items.length > 0);
 
-
 //   /* -----------------------------
 //       DYNAMIC MODULES (RBAC Filtered)
 //   ------------------------------ */
@@ -610,8 +600,6 @@
 //       .filter(Boolean) ?? [],
 // };
 
-
-
 //   const finalMenu = [...staticMenu, dynamicModulesMenu];
 
 //   return (
@@ -645,9 +633,6 @@
 //   );
 // }
 
-
-
-
 "use client";
 
 import {
@@ -677,6 +662,7 @@ import { useSelector } from "react-redux";
 import { selectRoles, selectUser } from "@/store/auth";
 import { useModuleswithresources } from "@/lib/module/hook";
 import useCan from "@/store/auth/useCan";
+import LogoImage from "./LogoImage";
 
 export function AppSidebar(props: any) {
   const user = useSelector(selectUser);
@@ -692,8 +678,7 @@ export function AppSidebar(props: any) {
     name: user?.name ?? "User",
     email: user?.email ?? "user@example.com",
     avatar:
-      user?.attributes?.avatarUrl ??
-      "https://ui.shadcn.com/avatars/01.png",
+      user?.attributes?.avatarUrl ?? "https://ui.shadcn.com/avatars/01.png",
   };
 
   /* -----------------------------
@@ -706,6 +691,7 @@ export function AppSidebar(props: any) {
     if (!permissionKey) return false;
     return can.canByPermissionKey(permissionKey);
   };
+
 
   const filterMenu = (items: any[]) =>
     items
@@ -742,9 +728,7 @@ export function AppSidebar(props: any) {
         {
           title: "User Management",
           icon: UserCog,
-          items: [
-            { title: "User", url: "/user", permissionKey: "READ__USER" },
-          ],
+          items: [{ title: "User", url: "/user", permissionKey: "READ__USER" }],
         },
         {
           title: "Role Management",
@@ -819,9 +803,7 @@ export function AppSidebar(props: any) {
           const resources =
             module.resources
               ?.filter((r: any) => {
-                const key = normalizeKey(
-                  r.key ?? r.code ?? r.slug ?? r.name
-                );
+                const key = normalizeKey(r.key ?? r.code ?? r.slug ?? r.name);
                 return can.canByActionResource("READ", key);
               })
               .map((r: any) => ({
@@ -855,12 +837,14 @@ export function AppSidebar(props: any) {
             {/* 🔥 NO <a href> HERE */}
             <SidebarMenuButton size="lg">
               <div className="flex items-center gap-2">
-                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                  <LayoutDashboard className="size-4" />
+                <div className="text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+                  <LogoImage />
                 </div>
                 <div className="grid text-sm">
-                  <span className="font-medium truncate">Acme Inc</span>
-                  <span className="text-xs truncate">Enterprise</span>
+                  <span className="text-xl font-semibold tracking-wider bg-linear-to-r from-blue-500 via-indigo-500 to-purple-600 bg-clip-text text-transparent">
+                    WADDAYA
+                  </span>
+                  {/* <span className="text-xs truncate">Enterprise</span> */}
                 </div>
               </div>
             </SidebarMenuButton>
@@ -870,10 +854,7 @@ export function AppSidebar(props: any) {
 
       {/* ---------- CONTENT ---------- */}
       <SidebarContent>
-        <NavMain
-          key={modules?.length ?? 0}
-          items={finalMenu}
-        />
+        <NavMain key={modules?.length ?? 0} items={finalMenu} />
       </SidebarContent>
 
       {/* ---------- FOOTER ---------- */}

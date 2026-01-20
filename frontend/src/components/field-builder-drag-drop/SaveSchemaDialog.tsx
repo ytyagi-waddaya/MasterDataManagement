@@ -51,7 +51,7 @@ export function SaveSchemaDialog({
 
   const runtimeFields = buildRuntimeSchema(
     schema.layout.sections,
-    schema.fieldDefinitions ?? [] // ✅ now exists
+    // schema.fieldDefinitions ?? [] // ✅ now exists
   );
 
   const fieldConfig = buildBackendSchema(runtimeFields);

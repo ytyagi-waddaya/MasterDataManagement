@@ -14,7 +14,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>
+      <SidebarInset className="h-screen overflow-hidden flex flex-col">
         <header className="flex h-14 shrink-0 items-center gap-2 justify-between">
           <div className="flex items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
@@ -29,7 +29,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </header>
 
-        <div className="flex flex-1 flex-col gap-4 p-2 pt-0 scrollbar-hide ">
+        <div className="flex-1 p-2 pt-0 overflow-auto scrollbar-hide">
           {/* <AuthGate> */}
 
           {children}

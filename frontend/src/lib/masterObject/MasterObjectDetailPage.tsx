@@ -207,6 +207,8 @@ export default function MasterObjectDetailPage({
 
   const { name, activeSchema, isRunnable } = data;
 
+  console.log("ACTIVE SCHEMA:", data);
+  
   /* ================= SUBMIT RECORD ================= */
   function handleSubmit(values: Record<string, any>) {
     submitRecord.mutate(

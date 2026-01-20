@@ -25,12 +25,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import IfAllowed from "@/store/auth/IfAllowed";
+import { IfAllowed } from "@/store/auth";
 
 /* --------------------------------------------------
    Generate Dynamic Table Columns
 -------------------------------------------------- */
-function generateColumns(fields: any[], resourceId:string): ColumnDef<any>[] {
+function generateColumns(fields: any[], resourceId:string, resourceKey:string): ColumnDef<any>[] {
   return [
     {
       id: "select",
@@ -72,8 +72,7 @@ function generateColumns(fields: any[], resourceId:string): ColumnDef<any>[] {
           row.original?.masterObject?.resources?.[0]?.workflows?.[0]?.id ??
           null;
         const router = useRouter();
-
-        return <RecordActions record={row.original} workflowId={wfId} router={router} resourceId={resourceId}/>;
+        return <RecordActions record={row.original}  router={router} resourceId={resourceId} resourceKey={resourceKey} workflowId={wfId}/>;
       },
     },
   ];
@@ -94,7 +93,7 @@ export default function ResourceRecordsPage() {
   /* ---------------- Fetch resource ---------------- */
   const { data: resourceData, isLoading: loadingResource } =
     useResource(resourceId);
-
+    
   const masterObject = resourceData?.masterObject ?? null;
 
   /* ---------------- Fetch runtime schema ---------------- */
@@ -136,7 +135,8 @@ export default function ResourceRecordsPage() {
     }
   }, [data?.total, dispatch]);
 
-  const columns = useMemo(() => generateColumns(listFields, resourceId), [listFields]);
+  const key = resourceData?.key 
+  const columns = useMemo(() => generateColumns(listFields, resourceId, key), [listFields]);
 
   /* ---------------- Create record ---------------- */
   const createRecord = useCreateRecord();
@@ -159,21 +159,6 @@ export default function ResourceRecordsPage() {
   if (loadingResource) return <div>Loading resource...</div>;
   if (!masterObject) return <div>No master object found.</div>;
 
-  // /** 🚫 NO PUBLISHED SCHEMA → NO FORM */
-  // if (!publishedSchema) {
-  //   return (
-  //     <div className="p-6">
-  //       <h2 className="text-2xl font-semibold mb-4">
-  //         {resourceData?.name} Records
-  //       </h2>
-
-  //       <div className="rounded-md border border-yellow-200 bg-yellow-50 p-4 text-sm text-yellow-800">
-  //         This form is not available yet.
-  //         It will appear once the schema is published.
-  //       </div>
-  //     </div>
-  //   );
-  // }
 
   /* ---------------- Render ---------------- */
   return (
@@ -198,7 +183,7 @@ export default function ResourceRecordsPage() {
           },
         ]}
         createButton={
-          <IfAllowed action="CREATE" resource={resourceData.key} >
+          <IfAllowed action="CREATE" resource={key} >
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>

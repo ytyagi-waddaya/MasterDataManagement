@@ -53,6 +53,32 @@ export interface FieldData {
 
 /* ================= UI ================= */
 
+// export interface FieldUI {
+//   widget:
+//     | "TEXT"
+//     | "TEXTAREA"
+//     | "NUMBER"
+//     | "CURRENCY"
+//     | "SELECT"
+//     | "RADIO"
+//     | "CHECKBOX"
+//     | "DATE"
+//     | "DATETIME";
+
+//   placeholder?: string;
+//   helpText?: string;
+
+//   layout?: {
+//     width?: "full" | "half" | "third" | "quarter" | "two-third";
+//     order?: number;
+//     section?: string;
+//   };
+
+//   format?: {
+//     style?: "currency" | "percent" | "decimal";
+//     currency?: string;
+//   };
+// }
 export interface FieldUI {
   widget:
     | "TEXT"
@@ -67,6 +93,7 @@ export interface FieldUI {
 
   placeholder?: string;
   helpText?: string;
+  options?: { label: string; value: string }[]; // ✅ add this
 
   layout?: {
     width?: "full" | "half" | "third" | "quarter" | "two-third";
@@ -79,6 +106,7 @@ export interface FieldUI {
     currency?: string;
   };
 }
+
 
 /* ================= VALIDATION ================= */
 

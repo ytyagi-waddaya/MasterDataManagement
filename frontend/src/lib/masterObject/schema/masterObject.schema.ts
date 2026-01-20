@@ -78,6 +78,23 @@ export const canonicalFieldConfigSchema = z
             })
           )
           .optional(),
+
+        layout: z
+          .object({
+            width: z
+              .enum(["full", "half", "third", "quarter", "two-third"])
+              .optional(),
+            order: z.number().optional(),
+            section: z.string().optional(),
+          })
+          .optional(),
+
+        format: z
+          .object({
+            style: z.enum(["currency", "percent", "decimal"]).optional(),
+            currency: z.string().optional(),
+          })
+          .optional(),
       })
       .strict()
       .optional(),
@@ -156,7 +173,16 @@ export const editorNodeSchema: z.ZodType<any> = z.lazy(() =>
           span: z.number(),
         }),
         format: z.any().optional(),
-        validation: z.any().optional(),
+        validation: z
+          .object({
+            min: z.number().optional(),
+            max: z.number().optional(),
+            regex: z.string().optional(),
+            patternMessage: z.string().optional(),
+            errorMessage: z.string().optional(),
+          })
+          .optional(),
+
         visibility: z.any().optional(),
         permissions: z.any().optional(),
         behavior: z.any().optional(),
@@ -234,4 +260,3 @@ export const updateMasterObjectSchema = z
   .strict();
 
 export type UpdateMasterObjectInput = z.infer<typeof updateMasterObjectSchema>;
- 
