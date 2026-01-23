@@ -712,7 +712,7 @@ export function AppSidebar(props: any) {
   ------------------------------ */
   const staticMenu = [
     {
-      title: "Home",
+      title: "Dashboard",
       items: filterMenu([
         {
           title: "Dashboard",
@@ -723,37 +723,37 @@ export function AppSidebar(props: any) {
       ]),
     },
     {
-      title: "Access Control",
+      title: "User & Security",
       items: filterMenu([
         {
-          title: "User Management",
+          title: "User Administration",
           icon: UserCog,
           items: [{ title: "User", url: "/user", permissionKey: "READ__USER" }],
         },
         {
-          title: "Role Management",
+          title: "Role Administration",
           icon: IdCardLanyard,
           items: [
             { title: "Role", url: "/roles", permissionKey: "READ__ROLE" },
           ],
         },
         {
-          title: "Permission Management",
+          title: "Authorization Engine",
           icon: Key,
           items: [
-            { title: "Module", url: "/modules", permissionKey: "READ__MODULE" },
+            { title: "Modules", url: "/modules", permissionKey: "READ__MODULE" },
             {
-              title: "Resource",
+              title: "Resources",
               url: "/resources",
               permissionKey: "READ__RESOURCE",
             },
             {
-              title: "Action",
+              title: "Actions",
               url: "/actions",
               permissionKey: "READ__ACTION",
             },
             {
-              title: "Permission",
+              title: "Permissions",
               url: "/permissions",
               permissionKey: "READ__PERMISSION",
             },
@@ -762,10 +762,10 @@ export function AppSidebar(props: any) {
       ]),
     },
     {
-      title: "Automation",
+      title: "Process Management",
       items: filterMenu([
         {
-          title: "Workflow",
+          title: "Workflows",
           url: "/workflow",
           icon: Workflow,
           permissionKey: "READ__WORKFLOW",
@@ -773,10 +773,10 @@ export function AppSidebar(props: any) {
       ]),
     },
     {
-      title: "Data Modeling",
+      title: "Data Dictionary",
       items: filterMenu([
         {
-          title: "MasterObject",
+          title: "Resources Schemas",
           url: "/master-object",
           icon: Database,
           permissionKey: "READ__MASTER_OBJECT",
@@ -796,7 +796,7 @@ export function AppSidebar(props: any) {
       .toUpperCase() ?? "";
 
   const dynamicModulesMenu = {
-    title: "Modules",
+    title: "Business Modules",
     items:
       modules
         ?.map((module: any) => {

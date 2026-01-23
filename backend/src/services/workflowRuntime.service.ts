@@ -1319,16 +1319,35 @@ class WorkflowRuntimeService {
       /* ======================================================
          APPROVAL
       ====================================================== */
+      // if (transition.transitionType === TransitionType.APPROVAL) {
+      //   result = await this.resolveApprovalTx(
+      //     tx,
+      //     instance,
+      //     transition,
+      //     input.action === "APPROVE",
+      //     meta
+      //   );
+      //   return;
+      // }
       if (transition.transitionType === TransitionType.APPROVAL) {
-        result = await this.resolveApprovalTx(
+        const approvalResult = await this.resolveApprovalTx(
           tx,
           instance,
           transition,
           input.action === "APPROVE",
-          meta
+          meta,
+          input.comment
         );
+
+        // 🔥 CRITICAL FIX
+        if (approvalResult?.status === "APPROVED") {
+          nextStageId = transition.toStageId;
+        }
+
+        result = approvalResult;
         return;
       }
+
 
       /* ======================================================
          SEND BACK / REOPEN
@@ -1552,7 +1571,8 @@ class WorkflowRuntimeService {
     instance: any,
     transition: any,
     approved: boolean,
-    meta: ActorMeta
+    meta: ActorMeta,
+    comment?: string 
   ) {
     const actorId = meta.actorId!;
     const config = transition.approvalConfig;
@@ -1641,6 +1661,7 @@ class WorkflowRuntimeService {
           workflowTransitionId: transition.id,
           actionType: HistoryAction.APPROVED,
           performedById: actorId,
+          notes: comment ?? null,
         },
       });
 

@@ -14,7 +14,7 @@ import {
   useMasterObjectForRuntime,
   useUpdateMasterObject,
 } from "@/lib/masterObject/hook";
-import { buildRuntimeSchema } from "./types/buildRuntimeSchema";
+import { buildRuntimeSchema, buildRuntimeSchemaFromCanonical, } from "./types/buildRuntimeSchema";
 import { buildBackendSchema } from "./types/buildBackendSchema";
 import { FieldDefinition } from "./contracts/field-definition.contract";
 
@@ -27,7 +27,7 @@ type SaveSchemaDialogProps = {
     layout: {
       sections: any[];
     };
-     fieldDefinitions?: FieldDefinition[]; 
+    fieldDefinitions?: FieldDefinition[];
   };
 };
 
@@ -47,25 +47,31 @@ export function SaveSchemaDialog({
   ===================================================== */
 
   const payload = useMemo(() => {
-  if (!schema?.layout?.sections?.length) return null;
+    if (!schema?.layout?.sections?.length) return null;
 
-  const runtimeFields = buildRuntimeSchema(
-    schema.layout.sections,
-    // schema.fieldDefinitions ?? [] // ✅ now exists
-  );
+    // const runtimeFields = buildRuntimeSchema(
+    //   schema.layout.sections,
+    //   // schema.fieldDefinitions ?? [] // ✅ now exists
+    // );
+    const runtimeFields = schema.fieldDefinitions?.length
+      ? buildRuntimeSchemaFromCanonical(
+        schema.layout.sections,
+        schema.fieldDefinitions
+      )
+      : buildRuntimeSchema(schema.layout.sections);
 
-  const fieldConfig = buildBackendSchema(runtimeFields);
+    const fieldConfig = buildBackendSchema(runtimeFields);
 
-  return {
-    schema: {
-      version: schema.version,
-      layout: {
-        sections: schema.layout.sections,
+    return {
+      schema: {
+        version: schema.version,
+        layout: {
+          sections: schema.layout.sections,
+        },
       },
-    },
-    fieldConfig,
-  };
-}, [schema]);
+      fieldConfig,
+    };
+  }, [schema]);
 
   function handleSave(publish: boolean) {
     if (!payload) {
@@ -119,7 +125,7 @@ export function SaveSchemaDialog({
 
             {showJson && (
               <pre className="text-xs p-3 overflow-auto max-h-[300px] bg-black text-green-400 rounded-b">
-{JSON.stringify(payload, null, 2)}
+                {JSON.stringify(payload, null, 2)}
               </pre>
             )}
           </div>

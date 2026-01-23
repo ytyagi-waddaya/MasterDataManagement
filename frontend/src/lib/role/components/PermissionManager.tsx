@@ -569,9 +569,6 @@ export default function PermissionManager({
     isLoading,
     isError,
   } = useRolePermissions(roleId);
-console.log(
-  groupedPermissions["Role"]?.map(p => p.action.key)
-);
 
   // --- Local UI state: map permissionId -> PermissionState
   const [states, setStates] = useState<Map<string, PermissionState>>(new Map());

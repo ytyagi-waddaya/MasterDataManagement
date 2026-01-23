@@ -208,7 +208,7 @@ export default function MasterObjectDetailPage({
   const { name, activeSchema, isRunnable } = data;
 
   console.log("ACTIVE SCHEMA:", data);
-  
+
   /* ================= SUBMIT RECORD ================= */
   function handleSubmit(values: Record<string, any>) {
     submitRecord.mutate(
@@ -311,6 +311,25 @@ export default function MasterObjectDetailPage({
 
                 <button
                   onClick={() =>
+                    router.push(
+                      `/create-master-object/${params.id}?mode=edit`
+                    )
+                  }
+                  className="
+    flex items-center gap-2 px-3 py-2 text-sm rounded-lg border
+    border-gray-300 dark:border-gray-700
+    hover:border-gray-400 dark:hover:border-gray-600
+    hover:bg-gray-50 dark:hover:bg-gray-800/50
+    transition-colors
+  "
+                >
+                  <Plus className="h-3.5 w-3.5" />
+                  <span>Edit Fields</span>
+                </button>
+
+
+                {/* <button
+                  onClick={() =>
                     router.push(`/create-master-object/${params.id}`)
                   }
                   className="
@@ -323,7 +342,7 @@ export default function MasterObjectDetailPage({
                 >
                   <Plus className="h-3.5 w-3.5" />
                   <span>Edit Fields</span>
-                </button>
+                </button> */}
               </>
             )}
           </div>

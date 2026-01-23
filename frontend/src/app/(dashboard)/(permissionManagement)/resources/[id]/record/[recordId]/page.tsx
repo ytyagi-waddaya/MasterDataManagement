@@ -275,7 +275,7 @@ export default function RecordDetailsPage() {
         </div>
 
         {/* Main content grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
           {/* Left Column: Form & Details */}
           <div className="lg:col-span-3 space-y-2">
             {/* Action Bar Card */}
@@ -296,7 +296,7 @@ export default function RecordDetailsPage() {
           </div>
 
           {/* Right Column: Workflow Timeline */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-2">
             <div className="sticky top-4">
               <div className="bg-white rounded-lg border border-gray-200">
                 <div className="p-5">
