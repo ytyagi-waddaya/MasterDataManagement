@@ -233,7 +233,7 @@ async function start() {
     server = socket.server;
     socketServerShutdown = socket.shutdown;
 
-    server.listen(PORT, async () => {
+    server.listen(PORT,"0.0.0.0", async () => {
       logger.info(`[api] HTTP server listening on ${PORT}`);
 
       // ensure redis stream group (only if redis enabled)
