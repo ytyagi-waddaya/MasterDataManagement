@@ -35,8 +35,8 @@ jobs:
       - name: Build frontend
         run: |
           docker build \
-            --build-arg NEXT_PUBLIC_API_URL=https://${{ secrets.PROD_HOST }}/api \
-            --build-arg NEXT_PUBLIC_SOCKET_URL=https://${{ secrets.PROD_HOST }} \
+            --build-arg NEXT_PUBLIC_API_URL=https://${{ secrets.PROD_HOST }}:${{ secrets.PROD_PORT }}/api \
+            --build-arg NEXT_PUBLIC_SOCKET_URL=https://${{ secrets.PROD_HOST }}:${{ secrets.PROD_PORT }} \
             -t $FRONTEND_IMAGE:$TAG \
             ./frontend
 
