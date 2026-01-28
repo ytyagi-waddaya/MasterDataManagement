@@ -28,6 +28,7 @@
 "use client";
 
 import { ConditionNode } from "../contracts/condition.contract";
+import { ConditionFieldRef } from "./condition-field-ref";
 import { FieldMeta } from "./condition.types";
 import { ConditionGroupView } from "./ConditionGroupView";
 import { ConditionPreview } from "./ConditionPreview";
@@ -40,7 +41,7 @@ export function ConditionBuilder({
 }: {
   value: ConditionNode;
   onChange: (v: ConditionNode) => void;
-  fields: readonly FieldMeta[];
+  fields: readonly ConditionFieldRef[];
 }) {
   return (
     <div className="space-y-4">

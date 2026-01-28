@@ -40,10 +40,12 @@ export type FieldDefinitionMinAggregateOutputType = {
   schemaId: string | null
   key: string | null
   label: string | null
+  status: $Enums.FieldStatus | null
   category: $Enums.FieldCategory | null
   dataType: $Enums.FieldDataType | null
   fieldType: $Enums.FieldType | null
   order: number | null
+  publishedAt: Date | null
   isRequired: boolean | null
   isSystem: boolean | null
   isActive: boolean | null
@@ -59,10 +61,12 @@ export type FieldDefinitionMaxAggregateOutputType = {
   schemaId: string | null
   key: string | null
   label: string | null
+  status: $Enums.FieldStatus | null
   category: $Enums.FieldCategory | null
   dataType: $Enums.FieldDataType | null
   fieldType: $Enums.FieldType | null
   order: number | null
+  publishedAt: Date | null
   isRequired: boolean | null
   isSystem: boolean | null
   isActive: boolean | null
@@ -78,11 +82,13 @@ export type FieldDefinitionCountAggregateOutputType = {
   schemaId: number
   key: number
   label: number
+  status: number
   category: number
   dataType: number
   fieldType: number
   config: number
   order: number
+  publishedAt: number
   isRequired: number
   isSystem: number
   isActive: number
@@ -108,10 +114,12 @@ export type FieldDefinitionMinAggregateInputType = {
   schemaId?: true
   key?: true
   label?: true
+  status?: true
   category?: true
   dataType?: true
   fieldType?: true
   order?: true
+  publishedAt?: true
   isRequired?: true
   isSystem?: true
   isActive?: true
@@ -127,10 +135,12 @@ export type FieldDefinitionMaxAggregateInputType = {
   schemaId?: true
   key?: true
   label?: true
+  status?: true
   category?: true
   dataType?: true
   fieldType?: true
   order?: true
+  publishedAt?: true
   isRequired?: true
   isSystem?: true
   isActive?: true
@@ -146,11 +156,13 @@ export type FieldDefinitionCountAggregateInputType = {
   schemaId?: true
   key?: true
   label?: true
+  status?: true
   category?: true
   dataType?: true
   fieldType?: true
   config?: true
   order?: true
+  publishedAt?: true
   isRequired?: true
   isSystem?: true
   isActive?: true
@@ -253,11 +265,13 @@ export type FieldDefinitionGroupByOutputType = {
   schemaId: string
   key: string
   label: string
+  status: $Enums.FieldStatus
   category: $Enums.FieldCategory
   dataType: $Enums.FieldDataType
   fieldType: $Enums.FieldType
   config: runtime.JsonValue
   order: number
+  publishedAt: Date | null
   isRequired: boolean
   isSystem: boolean
   isActive: boolean
@@ -296,11 +310,13 @@ export type FieldDefinitionWhereInput = {
   schemaId?: Prisma.StringFilter<"FieldDefinition"> | string
   key?: Prisma.StringFilter<"FieldDefinition"> | string
   label?: Prisma.StringFilter<"FieldDefinition"> | string
+  status?: Prisma.EnumFieldStatusFilter<"FieldDefinition"> | $Enums.FieldStatus
   category?: Prisma.EnumFieldCategoryFilter<"FieldDefinition"> | $Enums.FieldCategory
   dataType?: Prisma.EnumFieldDataTypeFilter<"FieldDefinition"> | $Enums.FieldDataType
   fieldType?: Prisma.EnumFieldTypeFilter<"FieldDefinition"> | $Enums.FieldType
   config?: Prisma.JsonFilter<"FieldDefinition">
   order?: Prisma.IntFilter<"FieldDefinition"> | number
+  publishedAt?: Prisma.DateTimeNullableFilter<"FieldDefinition"> | Date | string | null
   isRequired?: Prisma.BoolFilter<"FieldDefinition"> | boolean
   isSystem?: Prisma.BoolFilter<"FieldDefinition"> | boolean
   isActive?: Prisma.BoolFilter<"FieldDefinition"> | boolean
@@ -323,11 +339,13 @@ export type FieldDefinitionOrderByWithRelationInput = {
   schemaId?: Prisma.SortOrder
   key?: Prisma.SortOrder
   label?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   category?: Prisma.SortOrder
   dataType?: Prisma.SortOrder
   fieldType?: Prisma.SortOrder
   config?: Prisma.SortOrder
   order?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   isRequired?: Prisma.SortOrder
   isSystem?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -354,11 +372,13 @@ export type FieldDefinitionWhereUniqueInput = Prisma.AtLeast<{
   schemaId?: Prisma.StringFilter<"FieldDefinition"> | string
   key?: Prisma.StringFilter<"FieldDefinition"> | string
   label?: Prisma.StringFilter<"FieldDefinition"> | string
+  status?: Prisma.EnumFieldStatusFilter<"FieldDefinition"> | $Enums.FieldStatus
   category?: Prisma.EnumFieldCategoryFilter<"FieldDefinition"> | $Enums.FieldCategory
   dataType?: Prisma.EnumFieldDataTypeFilter<"FieldDefinition"> | $Enums.FieldDataType
   fieldType?: Prisma.EnumFieldTypeFilter<"FieldDefinition"> | $Enums.FieldType
   config?: Prisma.JsonFilter<"FieldDefinition">
   order?: Prisma.IntFilter<"FieldDefinition"> | number
+  publishedAt?: Prisma.DateTimeNullableFilter<"FieldDefinition"> | Date | string | null
   isRequired?: Prisma.BoolFilter<"FieldDefinition"> | boolean
   isSystem?: Prisma.BoolFilter<"FieldDefinition"> | boolean
   isActive?: Prisma.BoolFilter<"FieldDefinition"> | boolean
@@ -381,11 +401,13 @@ export type FieldDefinitionOrderByWithAggregationInput = {
   schemaId?: Prisma.SortOrder
   key?: Prisma.SortOrder
   label?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   category?: Prisma.SortOrder
   dataType?: Prisma.SortOrder
   fieldType?: Prisma.SortOrder
   config?: Prisma.SortOrder
   order?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   isRequired?: Prisma.SortOrder
   isSystem?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -409,11 +431,13 @@ export type FieldDefinitionScalarWhereWithAggregatesInput = {
   schemaId?: Prisma.StringWithAggregatesFilter<"FieldDefinition"> | string
   key?: Prisma.StringWithAggregatesFilter<"FieldDefinition"> | string
   label?: Prisma.StringWithAggregatesFilter<"FieldDefinition"> | string
+  status?: Prisma.EnumFieldStatusWithAggregatesFilter<"FieldDefinition"> | $Enums.FieldStatus
   category?: Prisma.EnumFieldCategoryWithAggregatesFilter<"FieldDefinition"> | $Enums.FieldCategory
   dataType?: Prisma.EnumFieldDataTypeWithAggregatesFilter<"FieldDefinition"> | $Enums.FieldDataType
   fieldType?: Prisma.EnumFieldTypeWithAggregatesFilter<"FieldDefinition"> | $Enums.FieldType
   config?: Prisma.JsonWithAggregatesFilter<"FieldDefinition">
   order?: Prisma.IntWithAggregatesFilter<"FieldDefinition"> | number
+  publishedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"FieldDefinition"> | Date | string | null
   isRequired?: Prisma.BoolWithAggregatesFilter<"FieldDefinition"> | boolean
   isSystem?: Prisma.BoolWithAggregatesFilter<"FieldDefinition"> | boolean
   isActive?: Prisma.BoolWithAggregatesFilter<"FieldDefinition"> | boolean
@@ -427,11 +451,13 @@ export type FieldDefinitionCreateInput = {
   id?: string
   key: string
   label: string
+  status?: $Enums.FieldStatus
   category: $Enums.FieldCategory
   dataType: $Enums.FieldDataType
   fieldType: $Enums.FieldType
   config: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order: number
+  publishedAt?: Date | string | null
   isRequired?: boolean
   isSystem?: boolean
   isActive?: boolean
@@ -454,11 +480,13 @@ export type FieldDefinitionUncheckedCreateInput = {
   schemaId: string
   key: string
   label: string
+  status?: $Enums.FieldStatus
   category: $Enums.FieldCategory
   dataType: $Enums.FieldDataType
   fieldType: $Enums.FieldType
   config: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order: number
+  publishedAt?: Date | string | null
   isRequired?: boolean
   isSystem?: boolean
   isActive?: boolean
@@ -477,11 +505,13 @@ export type FieldDefinitionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFieldStatusFieldUpdateOperationsInput | $Enums.FieldStatus
   category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory
   dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType
   fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -504,11 +534,13 @@ export type FieldDefinitionUncheckedUpdateInput = {
   schemaId?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFieldStatusFieldUpdateOperationsInput | $Enums.FieldStatus
   category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory
   dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType
   fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -529,11 +561,13 @@ export type FieldDefinitionCreateManyInput = {
   schemaId: string
   key: string
   label: string
+  status?: $Enums.FieldStatus
   category: $Enums.FieldCategory
   dataType: $Enums.FieldDataType
   fieldType: $Enums.FieldType
   config: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order: number
+  publishedAt?: Date | string | null
   isRequired?: boolean
   isSystem?: boolean
   isActive?: boolean
@@ -547,11 +581,13 @@ export type FieldDefinitionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFieldStatusFieldUpdateOperationsInput | $Enums.FieldStatus
   category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory
   dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType
   fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -567,11 +603,13 @@ export type FieldDefinitionUncheckedUpdateManyInput = {
   schemaId?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFieldStatusFieldUpdateOperationsInput | $Enums.FieldStatus
   category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory
   dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType
   fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -602,11 +640,13 @@ export type FieldDefinitionCountOrderByAggregateInput = {
   schemaId?: Prisma.SortOrder
   key?: Prisma.SortOrder
   label?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   category?: Prisma.SortOrder
   dataType?: Prisma.SortOrder
   fieldType?: Prisma.SortOrder
   config?: Prisma.SortOrder
   order?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
   isSystem?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -626,10 +666,12 @@ export type FieldDefinitionMaxOrderByAggregateInput = {
   schemaId?: Prisma.SortOrder
   key?: Prisma.SortOrder
   label?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   category?: Prisma.SortOrder
   dataType?: Prisma.SortOrder
   fieldType?: Prisma.SortOrder
   order?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
   isSystem?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -645,10 +687,12 @@ export type FieldDefinitionMinOrderByAggregateInput = {
   schemaId?: Prisma.SortOrder
   key?: Prisma.SortOrder
   label?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   category?: Prisma.SortOrder
   dataType?: Prisma.SortOrder
   fieldType?: Prisma.SortOrder
   order?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
   isSystem?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -751,6 +795,10 @@ export type FieldDefinitionUncheckedUpdateManyWithoutSchemaNestedInput = {
   deleteMany?: Prisma.FieldDefinitionScalarWhereInput | Prisma.FieldDefinitionScalarWhereInput[]
 }
 
+export type EnumFieldStatusFieldUpdateOperationsInput = {
+  set?: $Enums.FieldStatus
+}
+
 export type EnumFieldCategoryFieldUpdateOperationsInput = {
   set?: $Enums.FieldCategory
 }
@@ -837,11 +885,13 @@ export type FieldDefinitionCreateWithoutMasterObjectInput = {
   id?: string
   key: string
   label: string
+  status?: $Enums.FieldStatus
   category: $Enums.FieldCategory
   dataType: $Enums.FieldDataType
   fieldType: $Enums.FieldType
   config: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order: number
+  publishedAt?: Date | string | null
   isRequired?: boolean
   isSystem?: boolean
   isActive?: boolean
@@ -862,11 +912,13 @@ export type FieldDefinitionUncheckedCreateWithoutMasterObjectInput = {
   schemaId: string
   key: string
   label: string
+  status?: $Enums.FieldStatus
   category: $Enums.FieldCategory
   dataType: $Enums.FieldDataType
   fieldType: $Enums.FieldType
   config: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order: number
+  publishedAt?: Date | string | null
   isRequired?: boolean
   isSystem?: boolean
   isActive?: boolean
@@ -916,11 +968,13 @@ export type FieldDefinitionScalarWhereInput = {
   schemaId?: Prisma.StringFilter<"FieldDefinition"> | string
   key?: Prisma.StringFilter<"FieldDefinition"> | string
   label?: Prisma.StringFilter<"FieldDefinition"> | string
+  status?: Prisma.EnumFieldStatusFilter<"FieldDefinition"> | $Enums.FieldStatus
   category?: Prisma.EnumFieldCategoryFilter<"FieldDefinition"> | $Enums.FieldCategory
   dataType?: Prisma.EnumFieldDataTypeFilter<"FieldDefinition"> | $Enums.FieldDataType
   fieldType?: Prisma.EnumFieldTypeFilter<"FieldDefinition"> | $Enums.FieldType
   config?: Prisma.JsonFilter<"FieldDefinition">
   order?: Prisma.IntFilter<"FieldDefinition"> | number
+  publishedAt?: Prisma.DateTimeNullableFilter<"FieldDefinition"> | Date | string | null
   isRequired?: Prisma.BoolFilter<"FieldDefinition"> | boolean
   isSystem?: Prisma.BoolFilter<"FieldDefinition"> | boolean
   isActive?: Prisma.BoolFilter<"FieldDefinition"> | boolean
@@ -934,11 +988,13 @@ export type FieldDefinitionCreateWithoutSchemaInput = {
   id?: string
   key: string
   label: string
+  status?: $Enums.FieldStatus
   category: $Enums.FieldCategory
   dataType: $Enums.FieldDataType
   fieldType: $Enums.FieldType
   config: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order: number
+  publishedAt?: Date | string | null
   isRequired?: boolean
   isSystem?: boolean
   isActive?: boolean
@@ -959,11 +1015,13 @@ export type FieldDefinitionUncheckedCreateWithoutSchemaInput = {
   masterObjectId: string
   key: string
   label: string
+  status?: $Enums.FieldStatus
   category: $Enums.FieldCategory
   dataType: $Enums.FieldDataType
   fieldType: $Enums.FieldType
   config: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order: number
+  publishedAt?: Date | string | null
   isRequired?: boolean
   isSystem?: boolean
   isActive?: boolean
@@ -1008,11 +1066,13 @@ export type FieldDefinitionCreateWithoutFieldPermissionsInput = {
   id?: string
   key: string
   label: string
+  status?: $Enums.FieldStatus
   category: $Enums.FieldCategory
   dataType: $Enums.FieldDataType
   fieldType: $Enums.FieldType
   config: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order: number
+  publishedAt?: Date | string | null
   isRequired?: boolean
   isSystem?: boolean
   isActive?: boolean
@@ -1034,11 +1094,13 @@ export type FieldDefinitionUncheckedCreateWithoutFieldPermissionsInput = {
   schemaId: string
   key: string
   label: string
+  status?: $Enums.FieldStatus
   category: $Enums.FieldCategory
   dataType: $Enums.FieldDataType
   fieldType: $Enums.FieldType
   config: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order: number
+  publishedAt?: Date | string | null
   isRequired?: boolean
   isSystem?: boolean
   isActive?: boolean
@@ -1072,11 +1134,13 @@ export type FieldDefinitionUpdateWithoutFieldPermissionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFieldStatusFieldUpdateOperationsInput | $Enums.FieldStatus
   category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory
   dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType
   fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1098,11 +1162,13 @@ export type FieldDefinitionUncheckedUpdateWithoutFieldPermissionsInput = {
   schemaId?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFieldStatusFieldUpdateOperationsInput | $Enums.FieldStatus
   category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory
   dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType
   fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1120,11 +1186,13 @@ export type FieldDefinitionCreateWithoutFieldValidationRulesInput = {
   id?: string
   key: string
   label: string
+  status?: $Enums.FieldStatus
   category: $Enums.FieldCategory
   dataType: $Enums.FieldDataType
   fieldType: $Enums.FieldType
   config: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order: number
+  publishedAt?: Date | string | null
   isRequired?: boolean
   isSystem?: boolean
   isActive?: boolean
@@ -1146,11 +1214,13 @@ export type FieldDefinitionUncheckedCreateWithoutFieldValidationRulesInput = {
   schemaId: string
   key: string
   label: string
+  status?: $Enums.FieldStatus
   category: $Enums.FieldCategory
   dataType: $Enums.FieldDataType
   fieldType: $Enums.FieldType
   config: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order: number
+  publishedAt?: Date | string | null
   isRequired?: boolean
   isSystem?: boolean
   isActive?: boolean
@@ -1184,11 +1254,13 @@ export type FieldDefinitionUpdateWithoutFieldValidationRulesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFieldStatusFieldUpdateOperationsInput | $Enums.FieldStatus
   category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory
   dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType
   fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1210,11 +1282,13 @@ export type FieldDefinitionUncheckedUpdateWithoutFieldValidationRulesInput = {
   schemaId?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFieldStatusFieldUpdateOperationsInput | $Enums.FieldStatus
   category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory
   dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType
   fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1232,11 +1306,13 @@ export type FieldDefinitionCreateWithoutFieldFormulaInput = {
   id?: string
   key: string
   label: string
+  status?: $Enums.FieldStatus
   category: $Enums.FieldCategory
   dataType: $Enums.FieldDataType
   fieldType: $Enums.FieldType
   config: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order: number
+  publishedAt?: Date | string | null
   isRequired?: boolean
   isSystem?: boolean
   isActive?: boolean
@@ -1258,11 +1334,13 @@ export type FieldDefinitionUncheckedCreateWithoutFieldFormulaInput = {
   schemaId: string
   key: string
   label: string
+  status?: $Enums.FieldStatus
   category: $Enums.FieldCategory
   dataType: $Enums.FieldDataType
   fieldType: $Enums.FieldType
   config: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order: number
+  publishedAt?: Date | string | null
   isRequired?: boolean
   isSystem?: boolean
   isActive?: boolean
@@ -1296,11 +1374,13 @@ export type FieldDefinitionUpdateWithoutFieldFormulaInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFieldStatusFieldUpdateOperationsInput | $Enums.FieldStatus
   category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory
   dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType
   fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1322,11 +1402,13 @@ export type FieldDefinitionUncheckedUpdateWithoutFieldFormulaInput = {
   schemaId?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFieldStatusFieldUpdateOperationsInput | $Enums.FieldStatus
   category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory
   dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType
   fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1344,11 +1426,13 @@ export type FieldDefinitionCreateWithoutFieldReferenceInput = {
   id?: string
   key: string
   label: string
+  status?: $Enums.FieldStatus
   category: $Enums.FieldCategory
   dataType: $Enums.FieldDataType
   fieldType: $Enums.FieldType
   config: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order: number
+  publishedAt?: Date | string | null
   isRequired?: boolean
   isSystem?: boolean
   isActive?: boolean
@@ -1370,11 +1454,13 @@ export type FieldDefinitionUncheckedCreateWithoutFieldReferenceInput = {
   schemaId: string
   key: string
   label: string
+  status?: $Enums.FieldStatus
   category: $Enums.FieldCategory
   dataType: $Enums.FieldDataType
   fieldType: $Enums.FieldType
   config: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order: number
+  publishedAt?: Date | string | null
   isRequired?: boolean
   isSystem?: boolean
   isActive?: boolean
@@ -1408,11 +1494,13 @@ export type FieldDefinitionUpdateWithoutFieldReferenceInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFieldStatusFieldUpdateOperationsInput | $Enums.FieldStatus
   category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory
   dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType
   fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1434,11 +1522,13 @@ export type FieldDefinitionUncheckedUpdateWithoutFieldReferenceInput = {
   schemaId?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFieldStatusFieldUpdateOperationsInput | $Enums.FieldStatus
   category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory
   dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType
   fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1456,11 +1546,13 @@ export type FieldDefinitionCreateWithoutFieldConditionBindingsInput = {
   id?: string
   key: string
   label: string
+  status?: $Enums.FieldStatus
   category: $Enums.FieldCategory
   dataType: $Enums.FieldDataType
   fieldType: $Enums.FieldType
   config: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order: number
+  publishedAt?: Date | string | null
   isRequired?: boolean
   isSystem?: boolean
   isActive?: boolean
@@ -1482,11 +1574,13 @@ export type FieldDefinitionUncheckedCreateWithoutFieldConditionBindingsInput = {
   schemaId: string
   key: string
   label: string
+  status?: $Enums.FieldStatus
   category: $Enums.FieldCategory
   dataType: $Enums.FieldDataType
   fieldType: $Enums.FieldType
   config: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order: number
+  publishedAt?: Date | string | null
   isRequired?: boolean
   isSystem?: boolean
   isActive?: boolean
@@ -1520,11 +1614,13 @@ export type FieldDefinitionUpdateWithoutFieldConditionBindingsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFieldStatusFieldUpdateOperationsInput | $Enums.FieldStatus
   category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory
   dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType
   fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1546,11 +1642,13 @@ export type FieldDefinitionUncheckedUpdateWithoutFieldConditionBindingsInput = {
   schemaId?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFieldStatusFieldUpdateOperationsInput | $Enums.FieldStatus
   category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory
   dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType
   fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1569,11 +1667,13 @@ export type FieldDefinitionCreateManyMasterObjectInput = {
   schemaId: string
   key: string
   label: string
+  status?: $Enums.FieldStatus
   category: $Enums.FieldCategory
   dataType: $Enums.FieldDataType
   fieldType: $Enums.FieldType
   config: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order: number
+  publishedAt?: Date | string | null
   isRequired?: boolean
   isSystem?: boolean
   isActive?: boolean
@@ -1587,11 +1687,13 @@ export type FieldDefinitionUpdateWithoutMasterObjectInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFieldStatusFieldUpdateOperationsInput | $Enums.FieldStatus
   category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory
   dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType
   fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1612,11 +1714,13 @@ export type FieldDefinitionUncheckedUpdateWithoutMasterObjectInput = {
   schemaId?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFieldStatusFieldUpdateOperationsInput | $Enums.FieldStatus
   category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory
   dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType
   fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1636,11 +1740,13 @@ export type FieldDefinitionUncheckedUpdateManyWithoutMasterObjectInput = {
   schemaId?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFieldStatusFieldUpdateOperationsInput | $Enums.FieldStatus
   category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory
   dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType
   fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1655,11 +1761,13 @@ export type FieldDefinitionCreateManySchemaInput = {
   masterObjectId: string
   key: string
   label: string
+  status?: $Enums.FieldStatus
   category: $Enums.FieldCategory
   dataType: $Enums.FieldDataType
   fieldType: $Enums.FieldType
   config: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order: number
+  publishedAt?: Date | string | null
   isRequired?: boolean
   isSystem?: boolean
   isActive?: boolean
@@ -1673,11 +1781,13 @@ export type FieldDefinitionUpdateWithoutSchemaInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFieldStatusFieldUpdateOperationsInput | $Enums.FieldStatus
   category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory
   dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType
   fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1698,11 +1808,13 @@ export type FieldDefinitionUncheckedUpdateWithoutSchemaInput = {
   masterObjectId?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFieldStatusFieldUpdateOperationsInput | $Enums.FieldStatus
   category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory
   dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType
   fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1722,11 +1834,13 @@ export type FieldDefinitionUncheckedUpdateManyWithoutSchemaInput = {
   masterObjectId?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFieldStatusFieldUpdateOperationsInput | $Enums.FieldStatus
   category?: Prisma.EnumFieldCategoryFieldUpdateOperationsInput | $Enums.FieldCategory
   dataType?: Prisma.EnumFieldDataTypeFieldUpdateOperationsInput | $Enums.FieldDataType
   fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType
   config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1791,11 +1905,13 @@ export type FieldDefinitionSelect<ExtArgs extends runtime.Types.Extensions.Inter
   schemaId?: boolean
   key?: boolean
   label?: boolean
+  status?: boolean
   category?: boolean
   dataType?: boolean
   fieldType?: boolean
   config?: boolean
   order?: boolean
+  publishedAt?: boolean
   isRequired?: boolean
   isSystem?: boolean
   isActive?: boolean
@@ -1819,11 +1935,13 @@ export type FieldDefinitionSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   schemaId?: boolean
   key?: boolean
   label?: boolean
+  status?: boolean
   category?: boolean
   dataType?: boolean
   fieldType?: boolean
   config?: boolean
   order?: boolean
+  publishedAt?: boolean
   isRequired?: boolean
   isSystem?: boolean
   isActive?: boolean
@@ -1841,11 +1959,13 @@ export type FieldDefinitionSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   schemaId?: boolean
   key?: boolean
   label?: boolean
+  status?: boolean
   category?: boolean
   dataType?: boolean
   fieldType?: boolean
   config?: boolean
   order?: boolean
+  publishedAt?: boolean
   isRequired?: boolean
   isSystem?: boolean
   isActive?: boolean
@@ -1863,11 +1983,13 @@ export type FieldDefinitionSelectScalar = {
   schemaId?: boolean
   key?: boolean
   label?: boolean
+  status?: boolean
   category?: boolean
   dataType?: boolean
   fieldType?: boolean
   config?: boolean
   order?: boolean
+  publishedAt?: boolean
   isRequired?: boolean
   isSystem?: boolean
   isActive?: boolean
@@ -1877,7 +1999,7 @@ export type FieldDefinitionSelectScalar = {
   deletedAt?: boolean
 }
 
-export type FieldDefinitionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "masterObjectId" | "schemaId" | "key" | "label" | "category" | "dataType" | "fieldType" | "config" | "order" | "isRequired" | "isSystem" | "isActive" | "isLocked" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["fieldDefinition"]>
+export type FieldDefinitionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "masterObjectId" | "schemaId" | "key" | "label" | "status" | "category" | "dataType" | "fieldType" | "config" | "order" | "publishedAt" | "isRequired" | "isSystem" | "isActive" | "isLocked" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["fieldDefinition"]>
 export type FieldDefinitionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   masterObject?: boolean | Prisma.MasterObjectDefaultArgs<ExtArgs>
   schema?: boolean | Prisma.MasterObjectSchemaDefaultArgs<ExtArgs>
@@ -1914,11 +2036,13 @@ export type $FieldDefinitionPayload<ExtArgs extends runtime.Types.Extensions.Int
     schemaId: string
     key: string
     label: string
+    status: $Enums.FieldStatus
     category: $Enums.FieldCategory
     dataType: $Enums.FieldDataType
     fieldType: $Enums.FieldType
     config: runtime.JsonValue
     order: number
+    publishedAt: Date | null
     isRequired: boolean
     isSystem: boolean
     isActive: boolean
@@ -2361,11 +2485,13 @@ export interface FieldDefinitionFieldRefs {
   readonly schemaId: Prisma.FieldRef<"FieldDefinition", 'String'>
   readonly key: Prisma.FieldRef<"FieldDefinition", 'String'>
   readonly label: Prisma.FieldRef<"FieldDefinition", 'String'>
+  readonly status: Prisma.FieldRef<"FieldDefinition", 'FieldStatus'>
   readonly category: Prisma.FieldRef<"FieldDefinition", 'FieldCategory'>
   readonly dataType: Prisma.FieldRef<"FieldDefinition", 'FieldDataType'>
   readonly fieldType: Prisma.FieldRef<"FieldDefinition", 'FieldType'>
   readonly config: Prisma.FieldRef<"FieldDefinition", 'Json'>
   readonly order: Prisma.FieldRef<"FieldDefinition", 'Int'>
+  readonly publishedAt: Prisma.FieldRef<"FieldDefinition", 'DateTime'>
   readonly isRequired: Prisma.FieldRef<"FieldDefinition", 'Boolean'>
   readonly isSystem: Prisma.FieldRef<"FieldDefinition", 'Boolean'>
   readonly isActive: Prisma.FieldRef<"FieldDefinition", 'Boolean'>

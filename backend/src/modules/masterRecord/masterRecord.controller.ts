@@ -12,6 +12,7 @@ import { prisma } from "../../lib/prisma.js";
 const masterRecordController = {
   createMasterRecord: async (req: Request, res: Response) => {
     const { masterObjectId, data } = req.body;
+    console.log("RECORD DATA:", req.body);
 
     const record = await masterRecordService.createRecord(
       masterObjectId,
@@ -21,7 +22,7 @@ const masterRecordController = {
         ipAddress: req.ip,
         userAgent: req.get("user-agent") ?? null,
         performedBy: PerformedByType.USER,
-      }
+      },
     );
 
     sendResponse({
@@ -48,8 +49,6 @@ const masterRecordController = {
     // if (!masterObjectId) {
     //   return res.status(400).json({ message: "masterObjectId is required" });
     // }
-
-
   },
 
   getMasterRecord: async (req: Request, res: Response) => {

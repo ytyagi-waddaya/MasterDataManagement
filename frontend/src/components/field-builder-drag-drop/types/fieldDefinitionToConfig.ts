@@ -5,9 +5,7 @@ import { FieldConfig } from "../contracts/field-config.contract";
    FieldDefinition → FieldConfig
    (Canonical → Runtime)
 ====================================================== */
-export function fieldDefinitionToConfig(
-  def: FieldDefinition
-): FieldConfig {
+export function fieldDefinitionToConfig(def: FieldDefinition): FieldConfig {
   return {
     meta: {
       key: def.key,
@@ -42,9 +40,7 @@ export function fieldDefinitionToConfig(
 
     behavior: def.config?.behavior,
 
-    visibility: def.config?.visibility ?? {
-      defaultVisible: true,
-    },
+    visibility: def.config?.visibility,
 
     permissions: def.config?.permissions,
 

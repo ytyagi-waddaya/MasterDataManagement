@@ -68,13 +68,31 @@ export type masterObjectId = z.infer<typeof masterObjectIdSchema>;
 export type masterObjectFilterInput = z.infer<typeof masterObjectFilterSchema>;
 export type SortColumn = (typeof allowedSortColumns)[number];
 
+const visibilityRuleSchema: z.ZodType<any> = z.lazy(() =>
+  z.object({
+    type: z.literal("group"),
+    logic: z.enum(["AND", "OR"]),
+    conditions: z.array(
+      z.union([
+        z.object({
+          field: z.string(),
+          operator: z.string(),
+          value: z.unknown(),
+        }),
+        visibilityRuleSchema,
+      ]),
+    ),
+  }),
+);
+
 export const fieldConfigSchema = z
   .object({
+    configVersion: z.number().default(1),
     meta: z
       .object({
         key: z.string().min(1),
         label: z.string().min(1),
-        description: z.string().optional(), 
+        description: z.string().optional(),
         category: z.enum([
           "INPUT",
           "SYSTEM",
@@ -82,6 +100,7 @@ export const fieldConfigSchema = z
           "REFERENCE",
           "STRUCTURE",
           "PRESENTATION",
+          "DEPRECATED",
         ]),
         system: z.boolean().optional(),
         locked: z.boolean().optional(),
@@ -113,6 +132,7 @@ export const fieldConfigSchema = z
         widget: z.enum([
           "TEXT",
           "TEXTAREA",
+          "RICH_TEXT",
           "NUMBER",
           "CURRENCY",
           "SELECT",
@@ -130,10 +150,10 @@ export const fieldConfigSchema = z
             z.object({
               label: z.string(),
               value: z.string(),
-            })
+            }),
           )
           .optional(),
-
+        multiple: z.boolean().optional(),
         layout: z
           .object({
             width: z
@@ -153,7 +173,6 @@ export const fieldConfigSchema = z
           .strict()
           .optional(),
       })
-      .strict()
       .optional(),
 
     validation: z
@@ -164,26 +183,103 @@ export const fieldConfigSchema = z
               .object({
                 type: z.enum([
                   "REQUIRED",
+                  "REQUIRED_IF",
                   "MIN",
                   "MAX",
                   "REGEX",
                   "BETWEEN",
                   "EMAIL",
+                  "RANGE",
+                  "LENGTH",
                   "CUSTOM",
                 ]),
-                params: z.any().optional(),
+                params: z
+                  .record(
+                    z.string(),
+                    z.union([z.string(), z.number(), z.boolean()]),
+                  )
+                  .optional(),
+
                 message: z.string(),
-                severity: z.enum(["ERROR", "WARN"]).optional(),
+                severity: z.enum(["ERROR", "WARNING"]).optional(),
               })
-              .strict()
+              .strict(),
           )
+          .optional(),
+      })
+      .optional(),
+
+    visibility: visibilityRuleSchema.optional(),
+
+    permissions: z
+      .object({
+        read: z
+          .object({
+            roles: z.array(z.string()).optional(),
+            users: z.array(z.string()).optional(),
+            conditions: z
+              .array(
+                z.object({
+                  field: z.string(),
+                  equals: z.any(),
+                }),
+              )
+              .optional(),
+          })
+          .strict()
+          .optional(),
+
+        write: z
+          .object({
+            roles: z.array(z.string()).optional(),
+            users: z.array(z.string()).optional(),
+            conditions: z
+              .array(
+                z.object({
+                  field: z.string(),
+                  equals: z.any(),
+                }),
+              )
+              .optional(),
+          })
+          .strict()
+          .optional(),
+
+        delete: z
+          .object({
+            roles: z.array(z.string()).optional(),
+            users: z.array(z.string()).optional(),
+            conditions: z
+              .array(
+                z.object({
+                  field: z.string(),
+                  equals: z.any(),
+                }),
+              )
+              .optional(),
+          })
+          .strict()
+          .optional(),
+
+        create: z
+          .object({
+            roles: z.array(z.string()).optional(),
+            users: z.array(z.string()).optional(),
+            conditions: z
+              .array(
+                z.object({
+                  field: z.string(),
+                  equals: z.any(),
+                }),
+              )
+              .optional(),
+          })
+          .strict()
           .optional(),
       })
       .strict()
       .optional(),
 
-    visibility: z.any().optional(),
-    permissions: z.any().optional(),
     behavior: z
       .object({
         readOnly: z.boolean().optional(),
@@ -198,67 +294,224 @@ export const fieldConfigSchema = z
       })
       .strict()
       .optional(),
+    calculation: z
+      .object({
+        operator: z.enum(["ADD", "SUBTRACT", "MULTIPLY", "DIVIDE"]),
+        operands: z.array(z.string()),
+      })
+      .optional(),
 
-    integration: z.any().optional(),
+    integration: z
+  .object({
+    dataSource: z
+      .object({
+        type: z.enum(["STATIC", "DEPENDENT"]),
+        dependsOn: z.string().optional(),
+        map: z.record(
+          z.string(),
+          z.array(
+            z.object({
+              label: z.string(),
+              value: z.string(),
+            })
+          )
+        ).optional(),
+        resetOnChange: z.boolean().optional(),
+      })
+      .optional(),
+
+    reference: z
+      .object({
+        resource: z.string(),
+        valueField: z.string().optional(),
+        labelField: z.string().optional(),
+        searchable: z.boolean().optional(),
+        multiple: z.boolean().optional(),
+      })
+      .optional(),
+
+    apiSource: z
+      .object({
+        url: z.string().url(),
+        method: z.enum(["GET", "POST"]),
+        valueField: z.string(),
+        labelField: z.string(),
+        dependsOn: z.array(z.string()).optional(),
+        params: z.record(
+          z.string(),
+          z.union([z.string(), z.number(), z.boolean()])
+        ).optional(),
+        cache: z.boolean().optional(),
+      })
+      .optional(),
+
+    file: z
+      .object({
+        maxSizeMB: z.number().positive(),
+        allowedTypes: z.array(z.string()).min(1),
+        storage: z.enum(["S3", "LOCAL"]),
+        multiple: z.boolean().optional(),
+      })
+      .optional(),
+  })
+  .strict()
+  .optional(),
+
   })
   .strict();
 
-const editorNodeSchema: z.ZodType<any> = z.lazy(() =>
+// const editorNodeSchema: z.ZodType<any> = z.lazy(() =>
+//   z.union([
+//     z
+//       .object({
+//         id: z.string(),
+//         kind: z.literal("FIELD"),
+//         field: z
+//           .object({
+//             key: z.string(),
+//             layout: z
+//               .object({
+//                 span: z.number(),
+//               })
+//               .strict(),
+//           })
+//           .strict(),
+//       })
+//       .strict(),
+
+//     z.object({
+//       id: z.string(),
+//       kind: z.literal("LAYOUT"),
+//       type: z.enum(["columns", "tabs", "accordion"]),
+//       slots: z.array(
+//         z.object({
+//           id: z.string(),
+//           title: z.string().optional(),
+//           config: z.any().optional(),
+//           children: z.array(editorNodeSchema),
+//         }),
+//       ),
+//       config: z.any().optional(),
+//     }),
+
+//         z
+//       .object({
+//         id: z.string(),
+//         kind: z.literal("LAYOUT"),
+//         type: z.literal("repeater"),
+//         config: z
+//           .object({
+//             minItems: z.number().optional(),
+//             maxItems: z.number().optional(),
+//             addLabel: z.string().optional(),
+//             itemLabel: z.string().optional(),
+//           })
+//           .optional(),
+//         children: z.array(editorNodeSchema),
+//       })
+//       .strict(),
+
+//     z.object({
+//       id: z.string(),
+//       kind: z.literal("LAYOUT"),
+//       type: z.enum(["heading", "divider", "spacer"]),
+//       config: z.any().optional(),
+//     }),
+//   ]),
+// );
+
+export const editorNodeSchema: z.ZodType<any> = z.lazy(() =>
   z.union([
-    z.object({
-      id: z.string(),
-      kind: z.literal("FIELD"),
-      field: z.object({
-        key: z.string(),
-        label: z.string(),
-        layout: z.object({
-          span: z.number(),
+    /* ---------- FIELD ---------- */
+    z
+      .looseObject({
+        id: z.string(),
+        kind: z.literal("FIELD"),
+        field: z.object({
+          key: z.string(),
+          layout: z.object({
+            span: z.number().optional(),
+          }).optional(),
         }),
-      }),
-    }),
+      })
+      ,
 
-    z.object({
-      id: z.string(),
-      kind: z.literal("LAYOUT"),
-      type: z.enum(["columns", "tabs", "accordion", "repeater"]),
-      slots: z.array(
-        z.object({
-          id: z.string(),
-          title: z.string().optional(),
-          config: z.any().optional(),
-          children: z.array(editorNodeSchema),
-        })
-      ),
-      config: z.any().optional(),
-    }),
+    /* ---------- CONTAINER LAYOUT ---------- */
+    z
+      .looseObject({
+        id: z.string(),
+        kind: z.literal("LAYOUT"),
+        type: z.enum(["columns", "tabs", "accordion"]),
+        slots: z.array(
+          z
+            .looseObject({
+              id: z.string(),
+              title: z.string().optional(),
+              config: z.any().optional(),
+              children: z.array(editorNodeSchema),
+            })
+            ,
+        ),
+        config: z.any().optional(),
+      })
+      ,
 
-    z.object({
-      id: z.string(),
-      kind: z.literal("LAYOUT"),
-      type: z.enum(["heading", "divider", "spacer"]),
-      config: z.any().optional(),
-    }),
-  ])
+    /* ---------- REPEATER ---------- */
+    z
+      .looseObject({
+        id: z.string(),
+        kind: z.literal("LAYOUT"),
+        type: z.literal("repeater"),
+        config: z
+          .object({
+            minItems: z.number().optional(),
+            maxItems: z.number().optional(),
+            addLabel: z.string().optional(),
+            itemLabel: z.string().optional(),
+          })
+          .optional(),
+        children: z.array(editorNodeSchema),
+      })
+    ,
+
+    /* ---------- STATIC ---------- */
+    z
+      .looseObject({
+        id: z.string(),
+        kind: z.literal("LAYOUT"),
+        type: z.enum(["heading", "divider", "spacer"]),
+        config: z
+          .object({
+            text: z.string().optional(),
+            level: z.number().optional(),
+            size: z.enum(["xs", "sm", "md", "lg"]).optional(),
+          })
+          .optional(),
+      })
+      ,
+  ]),
 );
 
-const formSectionSchema = z.object({
+// export const editorNodeSchema = z.any();
+
+const formSectionSchema = z.looseObject({
   id: z.string(),
   title: z.string(),
   collapsed: z.boolean().optional(),
   nodes: z.array(editorNodeSchema),
-});
+}) ;
 
 export const persistedFormSchemaSchema = z
-  .object({
+  .looseObject({
     version: z.number(),
     layout: z.object({
       sections: z.array(formSectionSchema),
     }),
   })
-  .strict();
+  
 
 export const updateMasterObjectSchema = z
-  .object({
+  .looseObject({
     name: nameSchema.optional(),
     isActive: z.boolean().optional(),
 
@@ -267,13 +520,23 @@ export const updateMasterObjectSchema = z
 
     // Canonical compiled fields
     fieldConfig: z.array(fieldConfigSchema).optional(),
-
-    // Lifecycle
     publish: z.boolean().optional(),
   })
-  .strict();
+  
+
+// export const publishSchemaSchema = z
+//   .looseObject({
+//     schema: persistedFormSchemaSchema,
+//     fieldConfig: z.array(fieldConfigSchema).min(1),
+//   })
+//   .strict();
+export const publishSchemaSchema = z.object({
+  draftSchemaId: z.uuid(),
+});
+
 
 export type UpdateMasterObjectInput = z.infer<typeof updateMasterObjectSchema>;
+export type PublishMasterObject = z.infer<typeof publishSchemaSchema>;
 
 export const WIDGET_TO_FIELD_TYPE: Record<string, FieldType> = {
   TEXT: FieldType.TEXT,

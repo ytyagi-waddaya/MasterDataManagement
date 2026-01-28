@@ -59,7 +59,8 @@ export const AuditAction = {
   IMPORT: 'IMPORT',
   TOKEN_REFRESH: 'TOKEN_REFRESH',
   ARCHIVE: 'ARCHIVE',
-  GRANT: 'GRANT'
+  GRANT: 'GRANT',
+  PUBLISH: 'PUBLISH'
 } as const
 
 export type AuditAction = (typeof AuditAction)[keyof typeof AuditAction]
@@ -131,6 +132,16 @@ export const SchemaStatus = {
 export type SchemaStatus = (typeof SchemaStatus)[keyof typeof SchemaStatus]
 
 
+export const FieldStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  HIDDEN: 'HIDDEN',
+  DEPRECATED: 'DEPRECATED'
+} as const
+
+export type FieldStatus = (typeof FieldStatus)[keyof typeof FieldStatus]
+
+
 export const FieldCategory = {
   INPUT: 'INPUT',
   REFERENCE: 'REFERENCE',
@@ -150,8 +161,7 @@ export const FieldDataType = {
   BOOLEAN: 'BOOLEAN',
   DATE: 'DATE',
   DATETIME: 'DATETIME',
-  JSON: 'JSON',
-  ARRAY: 'ARRAY'
+  JSON: 'JSON'
 } as const
 
 export type FieldDataType = (typeof FieldDataType)[keyof typeof FieldDataType]

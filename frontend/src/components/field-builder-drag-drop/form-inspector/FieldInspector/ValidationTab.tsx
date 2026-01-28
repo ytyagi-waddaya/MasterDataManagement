@@ -1,33 +1,3 @@
-// import { EditorNode } from "../../contracts/editor.contract";
-
-// export function ValidationTab({
-//   node,
-//   onChange,
-// }: {
-//   node: Extract<EditorNode, { kind: "FIELD" }>;
-//   onChange: (node: EditorNode) => void;
-// }) {
-//   return (
-//     <div className="text-sm">
-//       <label className="flex gap-2">
-//         <input
-//           type="checkbox"
-//           checked={node.field.required ?? false}
-//           onChange={(e) =>
-//             onChange({
-//               ...node,
-//               field: {
-//                 ...node.field,
-//                 required: e.target.checked,
-//               },
-//             })
-//           }
-//         />
-//         Required
-//       </label>
-//     </div>
-//   );
-// }
 import { EditorNode } from "../../contracts/editor.contract";
 import { EditorFieldType } from "../../contracts/fieldPalette.contract";
 import {
@@ -69,14 +39,39 @@ export function ValidationTab({
   }
 
   function updateValidation(patch: Partial<ValidationExt>) {
+    const next = { ...validation, ...patch };
+
+    const hasAny =
+      next.min !== undefined ||
+      next.max !== undefined ||
+      next.regex !== undefined ||
+      next.patternMessage !== undefined ||
+      next.errorMessage !== undefined;
+
     update({
-      validation: { ...validation, ...patch },
+      validation: hasAny ? next : undefined,
     });
   }
 
-  const isTextBased = ["text", "textarea", "email", "phone", "url", "password"].includes(fieldType);
-  const isNumberBased = ["number", "currency", "percentage"].includes(fieldType);
-  const canHavePattern = ["text", "textarea", "email", "phone", "url", "password"].includes(fieldType);
+  const isTextBased = [
+    "text",
+    "textarea",
+    "email",
+    "phone",
+    "url",
+    "password",
+  ].includes(fieldType);
+  const isNumberBased = ["number", "currency", "percentage"].includes(
+    fieldType,
+  );
+  const canHavePattern = [
+    "text",
+    "textarea",
+    "email",
+    "phone",
+    "url",
+    "password",
+  ].includes(fieldType);
 
   return (
     <div className="space-y-4">

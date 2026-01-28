@@ -52,13 +52,14 @@ import { evaluateCondition } from "./evaluateCondition";
 import { conditionToSummary } from "./conditionSummary";
 import { Eye, EyeOff, CheckCircle, XCircle, Code } from "lucide-react";
 import { FieldMeta } from "./condition.types";
+import { ConditionFieldRef } from "./condition-field-ref";
 
 export function ConditionPreview({
   condition,
   fields,
 }: {
   condition: ConditionNode;
-  fields: readonly FieldMeta[];
+  fields: readonly ConditionFieldRef[];
 }) {
   const sampleValues = Object.fromEntries(
     fields.map((f) => [f.key, getSampleValue(f.type)])

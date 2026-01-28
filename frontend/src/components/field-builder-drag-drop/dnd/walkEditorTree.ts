@@ -1,5 +1,5 @@
 import { EditorNode } from "../contracts/editor.contract";
-import { isSlotLayoutNode } from "../types/layout.guards";
+import { isSlotLayoutNode } from "../editor-utils/layout.guards";
 
 /* ======================================================
    WALK EDITOR TREE (POST-ORDER, SLOT SAFE)

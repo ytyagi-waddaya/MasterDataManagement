@@ -1,9 +1,4 @@
 import { RuntimeField } from "../contracts/runtime.contract";
-import { evaluateConditionNode } from "../runtime/conditions/evaluateCondition";
-
-/* ======================================================
-   FIELD VALIDATION
-====================================================== */
 
 export function validateRuntimeField(
   field: RuntimeField,
@@ -14,12 +9,6 @@ export function validateRuntimeField(
   const rules = field.config.validation?.rules ?? [];
 
   for (const rule of rules) {
-    /* ---------- Conditional validation ---------- */
-    if (rule.when) {
-      const applies = evaluateConditionNode(rule.when, allValues);
-      if (!applies) continue;
-    }
-
     switch (rule.type) {
       case "REQUIRED": {
         if (
@@ -34,42 +23,27 @@ export function validateRuntimeField(
       }
 
       case "MIN": {
-        if (value === undefined || value === null) break;
-
-        if (rule.params.appliesTo === "length") {
-          if (typeof value === "string" || Array.isArray(value)) {
-            if (value.length < rule.params.value) {
-              errors.push(rule.message);
-            }
-          }
-        } else if (typeof value === "number") {
-          if (value < rule.params.value) {
-            errors.push(rule.message);
-          }
+        if (typeof value === "number" && rule.params && "min" in rule.params) {
+          if (value < rule.params.min) errors.push(rule.message);
         }
         break;
       }
 
       case "MAX": {
-        if (value === undefined || value === null) break;
-
-        if (rule.params.appliesTo === "length") {
-          if (typeof value === "string" || Array.isArray(value)) {
-            if (value.length > rule.params.value) {
-              errors.push(rule.message);
-            }
-          }
-        } else if (typeof value === "number") {
-          if (value > rule.params.value) {
-            errors.push(rule.message);
-          }
+        if (typeof value === "number" && rule.params && "max" in rule.params) {
+          if (value > rule.params.max) errors.push(rule.message);
         }
         break;
       }
 
-      case "BETWEEN": {
-        if (typeof value === "number") {
-          if (value < rule.params.min || value > rule.params.max) {
+      case "LENGTH": {
+        if (
+          (typeof value === "string" || Array.isArray(value)) &&
+          rule.params &&
+          "min" in rule.params &&
+          "max" in rule.params
+        ) {
+          if (value.length < rule.params.min || value.length > rule.params.max) {
             errors.push(rule.message);
           }
         }
@@ -77,11 +51,9 @@ export function validateRuntimeField(
       }
 
       case "REGEX": {
-        if (typeof value === "string") {
-          const regex = new RegExp(rule.params.pattern);
-          if (!regex.test(value)) {
-            errors.push(rule.message);
-          }
+        if (typeof value === "string" && rule.params && "regex" in rule.params) {
+          const regex = new RegExp(rule.params.regex);
+          if (!regex.test(value)) errors.push(rule.message);
         }
         break;
       }
@@ -97,7 +69,7 @@ export function validateRuntimeField(
       }
 
       case "CUSTOM": {
-        // Reserved for server / plugin based validators
+        // server/plugin handled
         break;
       }
     }

@@ -208,6 +208,7 @@
 import { useState, useRef, useMemo, useEffect } from "react";
 import { Plus, X, ChevronUp, ChevronDown } from "lucide-react";
 import { FieldMeta } from "../condition-builder/condition.types";
+import { ConditionFieldRef } from "../condition-builder/condition-field-ref";
 
 const OPERATORS = [
   { label: "AND", value: " && " },
@@ -228,7 +229,7 @@ export function ExpressionEditor({
 }: {
   value: string;
   onChange: (v: string) => void;
-  fields: readonly FieldMeta[];
+  fields: readonly ConditionFieldRef[];
 }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 

@@ -7,7 +7,7 @@ import {
 import crypto from "crypto";
 import { BadRequestException } from "../utils/appError.js";
 import { WIDGET_TO_FIELD_TYPE } from "../modules/masterObject/dto/masterObject.dto.js";
-
+import stringify from "json-stable-stringify";
 /* ======================================================
    TYPES
 ===================================================== */
@@ -28,64 +28,10 @@ type SchemaField = {
    FIELD CONFIG → FIELD DEFINITIONS
 ===================================================== */
 
-// export function extractFieldsFromSchema(schema: FieldConfig[]): SchemaField[] {
-//   const keys = new Set<string>();
-
-//   return schema.map((field) => {
-//     if (!field?.meta?.key) {
-//       throw new BadRequestException("Field meta.key is required");
-//     }
-
-//     if (keys.has(field.meta.key)) {
-//       throw new BadRequestException(`Duplicate field key "${field.meta.key}"`);
-//     }
-//     keys.add(field.meta.key);
-
-//     if (!field?.data?.type) {
-//       throw new BadRequestException(
-//         `Field "${field.meta.key}" is missing data.type`
-//       );
-//     }
-
-//     const widget = field.ui?.widget ?? "TEXT";
-//     if (!(widget in FieldType)) {
-//       throw new BadRequestException(
-//         `Invalid widget "${widget}" for field "${field.meta.key}"`
-//       );
-//     }
-
-//     return {
-//       key: field.meta.key,
-//       label: field.meta.label,
-//       fieldType: widget as FieldType,
-//       dataType: field.data.type as FieldDataType,
-//       category: field.meta.category as FieldCategory,
-//       required: Boolean(field.validation?.required),
-
-//       // 🔑 STORE FULL UI CONFIG
-//       config: {
-//         ui: {
-//           ...field.ui,
-//           layout: {
-//             width: field.ui?.layout?.width ?? "full",
-//             order: field.ui?.layout?.order ?? 0,
-//             section: field.ui?.layout?.section ?? "default",
-//           },
-//         },
-//         validation: field.validation,
-//         visibility: field.visibility,
-//         permissions: field.permissions,
-//         behavior: field.behavior,
-//         integration: field.integration,
-//       },
-//     };
-//   });
-// }
-
 export function extractFieldsFromSchema(schema: FieldConfig[]): SchemaField[] {
   if (!Array.isArray(schema)) {
     throw new BadRequestException(
-      "fieldConfig must be an array of field definitions"
+      "fieldConfig must be an array of field definitions",
     );
   }
 
@@ -103,7 +49,17 @@ export function extractFieldsFromSchema(schema: FieldConfig[]): SchemaField[] {
 
     if (!field?.data?.type) {
       throw new BadRequestException(
-        `Field "${field.meta.key}" is missing data.type`
+        `Field "${field.meta.key}" is missing data.type`,
+      );
+    }
+
+    if (
+      field.ui?.widget === "FILE" &&
+      field.integration?.file?.multiple &&
+      field.data.type !== "JSON"
+    ) {
+      throw new BadRequestException(
+        `Multiple file field "${field.meta.key}" must use JSON data type`,
       );
     }
 
@@ -112,7 +68,13 @@ export function extractFieldsFromSchema(schema: FieldConfig[]): SchemaField[] {
 
     if (!fieldType) {
       throw new BadRequestException(
-        `Unsupported widget "${widget}" for field "${field.meta.key}"`
+        `Unsupported widget "${widget}" for field "${field.meta.key}"`,
+      );
+    }
+
+    if (field.ui?.widget === "FILE" && !field.integration?.file) {
+      throw new BadRequestException(
+        `File field "${field.meta.key}" must define integration.file`,
       );
     }
 
@@ -123,7 +85,7 @@ export function extractFieldsFromSchema(schema: FieldConfig[]): SchemaField[] {
       dataType: field.data.type as FieldDataType,
       category: field.meta.category as FieldCategory,
       required: Boolean(
-        field.validation?.rules?.some((r: any) => r.type === "REQUIRED")
+        field.validation?.rules?.some((r: any) => r.type === "REQUIRED"),
       ),
 
       config: {
@@ -131,7 +93,16 @@ export function extractFieldsFromSchema(schema: FieldConfig[]): SchemaField[] {
         validation: field.validation,
         visibility: field.visibility,
         permissions: field.permissions,
-        behavior: field.behavior,
+        // behavior: field.behavior,
+        behavior: {
+          ...(field.behavior ?? {}),
+          formula: field.calculation
+            ? {
+                expression: buildExpression(field.calculation),
+                dependencies: field.calculation.operands,
+              }
+            : undefined,
+        },
         integration: field.integration,
       },
     };
@@ -148,12 +119,14 @@ export async function applyFieldDiff({
   previousSchemaId,
   newSchemaId,
   schemaJson,
+  publish,
 }: {
   tx: Prisma.TransactionClient;
   masterObjectId: string;
   previousSchemaId: string | null;
   newSchemaId: string;
   schemaJson: FieldConfig[];
+  publish?: boolean;
 }) {
   const incomingFields = extractFieldsFromSchema(schemaJson);
 
@@ -176,7 +149,7 @@ export async function applyFieldDiff({
         : Prisma.JsonNull;
 
     if (!previous) {
-      await tx.fieldDefinition.create({
+      const def = await tx.fieldDefinition.create({
         data: {
           masterObjectId,
           schemaId: newSchemaId,
@@ -191,6 +164,8 @@ export async function applyFieldDiff({
           order,
         },
       });
+
+      await syncFieldRules(tx, def.id, field.config);
       continue;
     }
 
@@ -198,19 +173,25 @@ export async function applyFieldDiff({
 
     if (previous.dataType !== field.dataType) {
       throw new BadRequestException(
-        `Cannot change data type of field "${field.key}"`
+        `Cannot change data type of field "${field.key}"`,
       );
     }
 
     if (previous.fieldType !== field.fieldType) {
       throw new BadRequestException(
-        `Cannot change UI widget of field "${field.key}"`
+        `Cannot change UI widget of field "${field.key}"`,
       );
     }
 
     if (previous.category !== field.category) {
       throw new BadRequestException(
-        `Cannot change category of field "${field.key}"`
+        `Cannot change category of field "${field.key}"`,
+      );
+    }
+
+    if (previous.isSystem && field.label !== previous.label) {
+      throw new BadRequestException(
+        `System field "${field.key}" label cannot be changed`,
       );
     }
 
@@ -218,18 +199,28 @@ export async function applyFieldDiff({
     const prevFormula = prevConfig.behavior?.formula;
     const nextFormula = field.config.behavior?.formula;
 
-    if (
-      prevFormula &&
-      JSON.stringify(prevFormula) !== JSON.stringify(nextFormula)
-    ) {
+    const prevExpr = prevFormula?.expression;
+    const nextExpr = nextFormula?.expression;
+
+    // if (prevExpr !== nextExpr) {
+    //   throw new BadRequestException(
+    //     `Cannot modify formula expression of field "${field.key}"`,
+    //   );
+    // }
+    const isBreakingChange =
+      prevExpr !== nextExpr &&
+      previousSchemaId !== null && // not first schema
+      publish === true; // publishing
+
+    if (isBreakingChange) {
       throw new BadRequestException(
-        `Cannot modify formula of calculated field "${field.key}"`
+        `Cannot modify formula expression of field "${field.key}" after publish`,
       );
     }
 
     /* -------- CARRY FORWARD -------- */
 
-    await tx.fieldDefinition.create({
+    const def = await tx.fieldDefinition.create({
       data: {
         masterObjectId,
         schemaId: newSchemaId,
@@ -241,17 +232,20 @@ export async function applyFieldDiff({
         config: normalizedConfig,
         isRequired: field.required,
         isSystem: previous.isSystem,
+        publishedAt: publish ? new Date() : null,
         isActive: true,
         order,
+        isLocked: false,
       },
     });
+    await syncFieldRules(tx, def.id, field.config);
   }
 
   /* -------- SOFT DELETE REMOVED FIELDS -------- */
 
   for (const oldField of previousFields) {
     if (!seenKeys.has(oldField.key)) {
-      await tx.fieldDefinition.create({
+      const def = await tx.fieldDefinition.create({
         data: {
           masterObjectId,
           schemaId: newSchemaId,
@@ -267,6 +261,30 @@ export async function applyFieldDiff({
           order: oldField.order,
         },
       });
+
+      // 👇 ADD THIS (cleanup old rules)
+      await Promise.all([
+        tx.fieldValidationRule.updateMany({
+          where: { fieldId: oldField.id },
+          data: { deletedAt: new Date() },
+        }),
+        tx.fieldPermission.updateMany({
+          where: { fieldId: oldField.id },
+          data: { deletedAt: new Date() },
+        }),
+        tx.fieldFormula.updateMany({
+          where: { fieldId: oldField.id },
+          data: { deletedAt: new Date() },
+        }),
+        tx.fieldReference.updateMany({
+          where: { fieldId: oldField.id },
+          data: { deletedAt: new Date() },
+        }),
+        tx.fieldConditionBinding.updateMany({
+          where: { fieldId: oldField.id },
+          data: { deletedAt: new Date() },
+        }),
+      ]);
     }
   }
 }
@@ -326,6 +344,7 @@ export async function publishSchemaWithDiff({
     previousSchemaId: previousSchema?.id ?? null,
     newSchemaId: newSchema.id,
     schemaJson: fieldConfigs,
+    publish,
   });
 
   return newSchema;
@@ -336,14 +355,13 @@ export async function publishSchemaWithDiff({
 ===================================================== */
 
 function hashSchema(schema: any): string {
-  return crypto
-    .createHash("sha256")
-    .update(JSON.stringify(schema))
-    .digest("hex");
+  const str = stringify(schema) ?? "";
+
+  return crypto.createHash("sha256").update(str).digest("hex");
 }
 
 function asJsonObject(
-  value: Prisma.JsonValue | null | undefined
+  value: Prisma.JsonValue | null | undefined,
 ): Record<string, any> {
   if (value && typeof value === "object" && !Array.isArray(value)) {
     return value as Record<string, any>;
@@ -351,117 +369,198 @@ function asJsonObject(
   return {};
 }
 
-// export async function publishSchemaWithDiff({
-//   tx,
-//   masterObjectId,
-//   fieldConfigs,
-//   layoutSchema,
-//   publish,
-//   createdById,
-// }: {
-//   tx: Prisma.TransactionClient;
-//   masterObjectId: string;
-//   fieldConfigs: FieldConfig[];
-//   layoutSchema: unknown;
-//   publish: boolean;
-//   createdById?: string | null;
-// }) {
-//   const previousSchema = await tx.masterObjectSchema.findFirst({
-//     where: { masterObjectId },
-//     orderBy: { version: "desc" },
-//   });
+export async function syncFieldRules(
+  tx: Prisma.TransactionClient,
+  fieldId: string,
+  config: any,
+) {
+  await Promise.all([
+    tx.fieldValidationRule.updateMany({
+      where: { fieldId },
+      data: { deletedAt: new Date() },
+    }),
+    tx.fieldPermission.updateMany({
+      where: { fieldId },
+      data: { deletedAt: new Date() },
+    }),
+    tx.fieldFormula.updateMany({
+      where: { fieldId },
+      data: { deletedAt: new Date() },
+    }),
+    tx.fieldReference.updateMany({
+      where: { fieldId },
+      data: { deletedAt: new Date() },
+    }),
+    tx.fieldConditionBinding.updateMany({
+      where: { fieldId },
+      data: { deletedAt: new Date() },
+    }),
+  ]);
 
-//   const checksum = hashSchema(schemaJson);
+  /* ========== VALIDATION RULES ========== */
+  if (config?.validation?.rules) {
+    for (const [i, r] of config.validation.rules.entries()) {
+      await tx.fieldValidationRule.create({
+        data: {
+          fieldId,
+          type: r.type,
+          rule: r.params ?? {},
+          errorMessage: r.message,
+          order: i,
+          severity: r.severity ?? "ERROR",
+        },
+      });
+    }
+  }
 
-//   if (previousSchema && previousSchema.checksum === checksum) {
-//     throw new BadRequestException("No schema changes detected");
-//   }
+  /* ========== FORMULA ========== */
+  if (config?.behavior?.formula) {
+    await tx.fieldFormula.create({
+      data: {
+        fieldId,
+        expression: config.behavior.formula.expression,
+        dependencies: config.behavior.formula.dependencies,
+      },
+    });
+  }
 
-//   if (publish) {
-//     await tx.masterObjectSchema.updateMany({
-//       where: { masterObjectId, status: "PUBLISHED" },
-//       data: { status: "ARCHIVED" },
-//     });
-//   }
+  if (config?.visibility?.rule?.type === "EXPRESSION") {
+    for (const dep of config.visibility.rule.expression.dependencies ?? []) {
+      await tx.fieldConditionBinding.create({
+        data: {
+          fieldId,
+          conditionKey: dep,
+        },
+      });
+    }
+  }
+  // const ref = config.integration.reference;
+  // /* ========== REFERENCE ========== */
+  // if (config?.integration?.reference) {
+  //   // const target = await tx.masterObject.findUnique({
+  //   //   where: { key: config.integration.reference.targetObject },
+  //   // });
+  //   const target = await tx.masterObject.findFirst({
+  //     where: {
+  //       OR: [{ id: ref.resource }, { key: ref.resource }],
+  //     },
+  //   });
+  //   if (!target) {
+  //     throw new BadRequestException(
+  //       `Invalid reference target object "${config.integration.reference.targetObject}"`,
+  //     );
+  //   }
+  //   // await tx.fieldReference.create({
+  //   //   data: {
+  //   //     fieldId,
+  //   //     targetObjectId: target.id,
+  //   //     displayFieldKey: config.integration.reference.displayField,
+  //   //     relationType: config.integration.reference.relation,
+  //   //     allowMultiple: config.integration.reference.allowMultiple ?? false,
+  //   //     onDeleteBehavior: config.integration.reference.onDelete ?? "RESTRICT",
+  //   //   },
+  //   // });
+  //   await tx.fieldReference.create({
+  //     data: {
+  //       fieldId,
+  //       targetObjectId: target.id,
+  //       displayFieldKey: config.integration.reference.labelField,
+  //       relationType: config.integration.reference.multiple
+  //         ? "ONE_TO_MANY"
+  //         : "ONE_TO_ONE",
+  //       allowMultiple: config.integration.reference.multiple ?? false,
+  //       onDeleteBehavior: "RESTRICT",
+  //     },
+  //   });
+  // }
+  /* ========== REFERENCE ========== */
+if (config?.integration?.reference) {
+  const ref = config.integration.reference;
 
-//   const newSchema = await tx.masterObjectSchema.create({
-//     data: {
-//       masterObjectId,
-//       version: (previousSchema?.version ?? 0) + 1,
-//       status: publish ? "PUBLISHED" : "DRAFT",
-//       layout: schemaJson,
-//       checksum,
-//       createdById: createdById ?? null,
-//       publishedAt: publish ? new Date() : null,
-//     },
-//   });
+  if (!ref.resource) {
+    throw new BadRequestException("Reference resource is required");
+  }
 
-//   await applyFieldDiff({
-//     tx,
-//     masterObjectId,
-//     previousSchemaId: previousSchema?.id ?? null,
-//     newSchemaId: newSchema.id,
-//     schemaJson,
-//   });
+  if (!ref.labelField || !ref.valueField) {
+    throw new BadRequestException(
+      "Reference must define labelField and valueField"
+    );
+  }
 
-//   return newSchema;
-// }
+  // 🔁 Resolve resource → masterObject
+  const resource = await tx.resource.findUnique({
+    where: { id: ref.resource },
+    select: { masterObjectId: true },
+  });
 
-// export function extractFieldsFromSchema(schema: FieldConfig[]): SchemaField[] {
-//   const fields: SchemaField[] = schema.map((field) => {
-//     if (!field?.meta?.key) {
-//       throw new BadRequestException("Field meta.key is required");
-//     }
+if (!resource?.masterObjectId) {
+  throw new BadRequestException(
+    `Resource "${ref.resource}" is not linked to a MasterObject`
+  );
+}
 
-//     if (!field?.data?.type) {
-//       throw new BadRequestException(
-//         `Field "${field.meta.key}" is missing data.type`
-//       );
-//     }
+  const targetObjectId = resource.masterObjectId;
 
-//     const widget = field.ui?.widget ?? "TEXT";
+await tx.fieldReference.create({
+  data: {
+    fieldId,
+    targetObjectId: resource.masterObjectId,
+    displayFieldKey: ref.labelField,
+    relationType: ref.multiple ? "ONE_TO_MANY" : "ONE_TO_ONE",
+    allowMultiple: ref.multiple ?? false,
+    onDeleteBehavior: "RESTRICT",
+  },
+});
+}
 
-//     if (!(widget in FieldType)) {
-//       throw new BadRequestException(
-//         `Invalid widget "${widget}" for field "${field.meta.key}"`
-//       );
-//     }
 
-//     if (
-//       field.meta.category === FieldCategory.CALCULATED &&
-//       !field.behavior?.formula
-//     ) {
-//       throw new BadRequestException(
-//         `Calculated field "${field.meta.key}" must have a formula`
-//       );
-//     }
+  /* ========== PERMISSIONS ========== */
+  const perms = config?.permissions;
+  for (const mode of ["read", "write"] as const) {
+    if (!perms?.[mode]) continue;
 
-//     return {
-//       key: field.meta.key,
-//       label: field.meta.label,
-//       fieldType: widget as FieldType,
-//       dataType: field.data.type as FieldDataType,
-//       category: field.meta.category as FieldCategory,
-//       config: {
-//         ui: field.ui,
-//         validation: field.validation,
-//         visibility: field.visibility,
-//         permissions: field.permissions,
-//         behavior: field.behavior,
-//         integration: field.integration,
-//       },
-//       required: Boolean(field.validation?.required),
-//     };
-//   });
+    // Role-based permissions
+    for (const roleId of perms[mode].roles ?? []) {
+      await tx.fieldPermission.create({
+        data: {
+          fieldId,
+          roleId,
+          canRead: mode === "read",
+          canWrite: mode === "write",
+          condition: perms[mode].conditions ?? undefined,
+        },
+      });
+    }
 
-//   /* --------- UNIQUE FIELD KEYS --------- */
-//   const keys = new Set<string>();
-//   for (const f of fields) {
-//     if (keys.has(f.key)) {
-//       throw new BadRequestException(`Duplicate field key "${f.key}"`);
-//     }
-//     keys.add(f.key);
-//   }
+    // User-based permissions  👈 ADD THIS
+    for (const userId of perms[mode].users ?? []) {
+      await tx.fieldPermission.create({
+        data: {
+          fieldId,
+          userId,
+          canRead: mode === "read",
+          canWrite: mode === "write",
+          condition: perms[mode].conditions ?? undefined,
+        },
+      });
+    }
+  }
+}
 
-//   return fields;
-// }
+type CalculationOperator = "ADD" | "SUBTRACT" | "MULTIPLY" | "DIVIDE";
+
+type Calculation = {
+  operator: CalculationOperator;
+  operands: string[];
+};
+
+function buildExpression(calc: Calculation): string {
+  const map: Record<CalculationOperator, string> = {
+    ADD: "+",
+    SUBTRACT: "-",
+    MULTIPLY: "*",
+    DIVIDE: "/",
+  };
+
+  return calc.operands.join(` ${map[calc.operator]} `);
+}

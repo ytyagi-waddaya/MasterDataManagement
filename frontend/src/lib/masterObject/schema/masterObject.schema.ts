@@ -1,5 +1,4 @@
 import { z } from "zod";
-
 /* ======================================================
    COMMON
 ====================================================== */
@@ -11,11 +10,29 @@ export const nameSchema = z
 
 /* ======================================================
    CANONICAL FIELD CONFIG (BACKEND TRUTH)
-   ❗ Used ONLY for API payloads (fieldConfig)
+   Used ONLY for API payloads (fieldConfig[])
 ====================================================== */
+const visibilityRuleSchema: z.ZodType<any> = z.lazy(() =>
+  z.object({
+    type: z.literal("group"),
+    logic: z.enum(["AND", "OR"]),
+    conditions: z.array(
+      z.union([
+        z.object({
+          field: z.string(),
+          operator: z.string(),
+          value: z.any(),
+        }),
+        visibilityRuleSchema,
+      ]),
+    ),
+  }),
+);
 
 export const canonicalFieldConfigSchema = z
   .object({
+    configVersion: z.number().default(1),
+
     /* ================= META ================= */
     meta: z
       .object({
@@ -28,6 +45,7 @@ export const canonicalFieldConfigSchema = z
           "REFERENCE",
           "STRUCTURE",
           "PRESENTATION",
+          "DEPRECATED",
         ]),
         system: z.boolean().optional(),
         locked: z.boolean().optional(),
@@ -67,17 +85,24 @@ export const canonicalFieldConfigSchema = z
           "DATE",
           "DATETIME",
           "FILE",
+          "RICH_TEXT",
         ]),
+
         placeholder: z.string().optional(),
         helpText: z.string().optional(),
+
         options: z
           .array(
-            z.object({
-              label: z.string(),
-              value: z.string(),
-            })
+            z
+              .object({
+                label: z.string(),
+                value: z.string(),
+              })
+              .strict(),
           )
           .optional(),
+
+        multiple: z.boolean().optional(),
 
         layout: z
           .object({
@@ -87,6 +112,7 @@ export const canonicalFieldConfigSchema = z
             order: z.number().optional(),
             section: z.string().optional(),
           })
+          .strict()
           .optional(),
 
         format: z
@@ -94,6 +120,7 @@ export const canonicalFieldConfigSchema = z
             style: z.enum(["currency", "percent", "decimal"]).optional(),
             currency: z.string().optional(),
           })
+          .strict()
           .optional(),
       })
       .strict()
@@ -108,33 +135,73 @@ export const canonicalFieldConfigSchema = z
               .object({
                 type: z.enum([
                   "REQUIRED",
+                  "REQUIRED_IF",
                   "MIN",
                   "MAX",
                   "REGEX",
                   "BETWEEN",
                   "EMAIL",
+                  "RANGE",
+                  "LENGTH",
                   "CUSTOM",
                 ]),
-                params: z.any().optional(),
+                params: z.any().optional(), // normalized before submit
                 message: z.string(),
-                severity: z.enum(["ERROR", "WARN"]).optional(),
+                severity: z.enum(["ERROR", "WARNING"]).optional(),
               })
-              .strict()
+              .strict(),
           )
           .optional(),
       })
       .strict()
       .optional(),
 
-    /* ================= OPTIONAL ================= */
-    visibility: z.any().optional(),
-    permissions: z.any().optional(),
-    behavior: z.any().optional(),
-    integration: z.any().optional(),
+    /* ================= PASS-THROUGH ================= */
+    // visibility: z.any().optional(), // backend contract
+    permissions: z.any().optional(), // backend contract
+    behavior: z.any().optional(), // backend contract
+    integration: z
+      .object({
+        dataSource: z
+          .object({
+            type: z.enum(["STATIC", "DEPENDENT"]),
+            dependsOn: z.string().optional(),
+            map: z
+              .record(
+                z.string(),
+                z.array(
+                  z.object({
+                    label: z.string(),
+                    value: z.string(),
+                  }),
+                ),
+              )
+              .optional(),
+            resetOnChange: z.boolean().optional(),
+          })
+          .optional(),
+        reference: z
+          .object({
+            resource: z.string(),
+            valueField: z.string().optional(),
+            labelField: z.string().optional(),
+            searchable: z.boolean().optional(),
+            multiple: z.boolean().optional(),
+          })
+          .optional(),
+      })
+      .strict()
+      .optional(),
+
+    visibility: visibilityRuleSchema.optional(),
+    calculation: z
+      .object({
+        operator: z.enum(["ADD", "SUBTRACT", "MULTIPLY", "DIVIDE"]),
+        operands: z.array(z.string()),
+      })
+      .optional(),
   })
   .strict();
-
-export type CanonicalFieldConfig = z.infer<typeof canonicalFieldConfigSchema>;
 
 /* ======================================================
    EDITOR TREE (LAYOUT DSL – FRONTEND ONLY)
@@ -143,76 +210,79 @@ export type CanonicalFieldConfig = z.infer<typeof canonicalFieldConfigSchema>;
 export const editorNodeSchema: z.ZodType<any> = z.lazy(() =>
   z.union([
     /* ---------- FIELD NODE ---------- */
-    z.object({
-      id: z.string(),
-      kind: z.literal("FIELD"),
-      field: z.object({
-        key: z.string(),
-        label: z.string(),
-        category: z.enum([
-          "INPUT",
-          "SYSTEM",
-          "CALCULATED",
-          "REFERENCE",
-          "STRUCTURE",
-          "PRESENTATION",
-        ]),
-        widget: z.enum([
-          "TEXT",
-          "TEXTAREA",
-          "NUMBER",
-          "CURRENCY",
-          "SELECT",
-          "RADIO",
-          "CHECKBOX",
-          "DATE",
-          "DATETIME",
-          "FILE",
-        ]),
-        layout: z.object({
-          span: z.number(),
-        }),
-        format: z.any().optional(),
-        validation: z
+    z
+      .object({
+        id: z.string(),
+        kind: z.literal("FIELD"),
+        field: z
           .object({
-            min: z.number().optional(),
-            max: z.number().optional(),
-            regex: z.string().optional(),
-            patternMessage: z.string().optional(),
-            errorMessage: z.string().optional(),
+            key: z.string(),
+            layout: z
+              .object({
+                span: z.number(),
+              })
+              .strict(),
           })
+          .strict(),
+      })
+      .strict(),
+
+    /* ---------- CONTAINER LAYOUT (columns/tabs/accordion) ---------- */
+    z
+      .object({
+        id: z.string(),
+        kind: z.literal("LAYOUT"),
+        type: z.enum(["columns", "tabs", "accordion"]),
+        slots: z.array(
+          z
+            .object({
+              id: z.string(),
+              title: z.string().optional(),
+              config: z.any().optional(),
+              children: z.array(editorNodeSchema),
+            })
+            .strict(),
+        ),
+        config: z.any().optional(),
+      })
+      .strict(),
+
+    /* ---------- REPEATER LAYOUT ---------- */
+    z
+      .object({
+        id: z.string(),
+        kind: z.literal("LAYOUT"),
+        type: z.literal("repeater"),
+        config: z
+          .object({
+            minItems: z.number().optional(),
+            maxItems: z.number().optional(),
+            addLabel: z.string().optional(),
+            itemLabel: z.string().optional(),
+          })
+          .strict()
           .optional(),
+        children: z.array(editorNodeSchema),
+      })
+      .strict(),
 
-        visibility: z.any().optional(),
-        permissions: z.any().optional(),
-        behavior: z.any().optional(),
-      }),
-    }),
-
-    /* ---------- LAYOUT WITH CHILDREN ---------- */
-    z.object({
-      id: z.string(),
-      kind: z.literal("LAYOUT"),
-      type: z.enum(["columns", "tabs", "accordion", "repeater"]),
-      slots: z.array(
-        z.object({
-          id: z.string(),
-          title: z.string().optional(),
-          config: z.any().optional(),
-          children: z.array(editorNodeSchema),
-        })
-      ),
-      config: z.any().optional(),
-    }),
-
-    /* ---------- LAYOUT WITHOUT CHILDREN ---------- */
-    z.object({
-      id: z.string(),
-      kind: z.literal("LAYOUT"),
-      type: z.enum(["heading", "divider", "spacer"]),
-      config: z.any().optional(),
-    }),
-  ])
+    /* ---------- STATIC LAYOUT ---------- */
+    z
+      .object({
+        id: z.string(),
+        kind: z.literal("LAYOUT"),
+        type: z.enum(["heading", "divider", "spacer"]),
+        config: z
+          .object({
+            text: z.string().optional(),
+            level: z.number().optional(),
+            size: z.enum(["xs", "sm", "md", "lg"]).optional(),
+          })
+          .strict()
+          .optional(),
+      })
+      .strict(),
+  ]),
 );
 
 /* ======================================================
@@ -243,6 +313,11 @@ export const persistedFormSchemaSchema = z
    UPDATE MASTER OBJECT (FINAL API PAYLOAD)
 ====================================================== */
 
+export const publishSchemaSchema = z.object({
+  draftSchemaId: z.uuid(),
+});
+
+
 export const updateMasterObjectSchema = z
   .object({
     name: nameSchema.optional(),
@@ -260,3 +335,6 @@ export const updateMasterObjectSchema = z
   .strict();
 
 export type UpdateMasterObjectInput = z.infer<typeof updateMasterObjectSchema>;
+export type PersistedFormSchema = z.infer<typeof persistedFormSchemaSchema>;
+export type CanonicalFieldConfig = z.infer<typeof canonicalFieldConfigSchema>;
+export type publishSchema = z.infer<typeof publishSchemaSchema>;

@@ -96,7 +96,6 @@ export function useResourceList() {
           label: m.name,
           value: m.id,
         })) ?? [];
-      console.log("RESOURCES:", res);
 
       return resources;
     },
@@ -259,7 +258,7 @@ export function useBulkArchiveResources() {
     },
     onError: (err: any) => {
       toast.error(
-        err.response?.data?.message || "Failed to archived Resources"
+        err.response?.data?.message || "Failed to archived Resources",
       );
     },
   });
@@ -301,6 +300,140 @@ export function useBulkDeleteResources() {
     },
     onError: (err: any) => {
       toast.error(err.response?.data?.message || "Failed to delete Resources");
+    },
+  });
+}
+
+// export function useReferenceData(fieldId?: string, parentValue?: string) {
+//   return useQuery({
+//     queryKey: ["reference-data", fieldId, parentValue],
+//     enabled: !!fieldId,
+//     queryFn: async () => {
+//       console.log("Field Id:", fieldId);
+
+//       const res = await apiClient.get(`/resource/by-field/${fieldId}`, {
+//         params: parentValue ? { parentValue } : undefined,
+//       });
+// console.log("Field Id:", res);
+//       const records =
+//         res.data.data?.map((r: any) => ({
+//           label: r.data?.name ?? r.code, // adjust display logic
+//           value: r.id,
+//           raw: r,
+//         })) ?? [];
+
+//       return records;
+//     },
+//   });
+// }
+
+export function useReferenceData(fieldId?: string, parentValue?: string) {
+  return useQuery({
+    queryKey: ["reference-data", fieldId, parentValue],
+    enabled: !!fieldId,
+    queryFn: async () => {
+      const res = await apiClient.get(`/resource/by-field/${fieldId}`, {
+        params: parentValue ? { parentValue } : undefined,
+      });
+
+      const values: string[] = res.data?.data ?? [];
+
+      return values.map((v) => ({
+        label: v,
+        value: v,
+      }));
+    },
+  });
+}
+
+export function useReferenceSearch(fieldId?: string, query?: string) {
+  return useQuery({
+    queryKey: ["reference-search", fieldId, query],
+    enabled: !!fieldId && !!query && query.length > 0,
+    queryFn: async () => {
+      const res = await apiClient.get(`/resource/${fieldId}/search`, {
+        params: { q: query },
+      });
+
+      const options =
+        res.data.data?.map((r: any) => ({
+          label: r.stringValue,
+          value: r.recordId,
+        })) ?? [];
+
+      return options;
+    },
+  });
+}
+
+export function useValidateReference() {
+  return useMutation({
+    mutationFn: async (payload: { fieldId: string; value: string }) => {
+      const res = await apiClient.post(
+        `/resource/${payload.fieldId}/validate`,
+        { value: payload.value },
+      );
+
+      return res.data.data as boolean;
+    },
+  });
+}
+
+export function useReference(
+  fieldId?: string,
+  options?: {
+    parentValue?: string;
+    search?: string;
+  },
+) {
+  return useQuery({
+    queryKey: ["reference", fieldId, options],
+    enabled: !!fieldId,
+    queryFn: async () => {
+      const url = options?.search
+        ? `/resource/${fieldId}/search`
+        : `/resource/${fieldId}`;
+
+      const params = options?.search
+        ? { q: options.search }
+        : options?.parentValue
+          ? { parentValue: options.parentValue }
+          : undefined;
+
+      const res = await apiClient.get(url, { params });
+      return res.data.data ?? [];
+    },
+  });
+}
+
+
+
+export function useResourceSchema(resource?: string) {
+  return useQuery({
+    queryKey: ["resource-schema", resource],
+    enabled: !!resource,
+    queryFn: async () => {
+      const res = await apiClient.get(`/resource/${resource}/schema`);
+      const payload = res.data?.data;
+
+      const schema = payload.schema;
+      const sections = schema.layout.sections ?? [];
+      const fieldDefinitions = schema.fieldDefinitions ?? [];
+
+      // 🔥 FLATTEN fields in layout order
+      const fields = sections
+        .flatMap((section: any) => section.nodes ?? [])
+        .filter((node: any) => node.kind === "FIELD")
+        .map((node: any) =>
+          fieldDefinitions.find((f: any) => f.key === node.field.key),
+        )
+        .filter(Boolean); // remove undefined
+
+      return {
+        schema,
+        sections,
+        fields, // 👈 flattened + ordered
+      };
     },
   });
 }

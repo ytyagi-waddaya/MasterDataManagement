@@ -9,6 +9,7 @@ import { ActorMeta } from "../../types/action.types.js";
 import { createAuditLog } from "../../utils/auditLog.js";
 import {
   BadRequestException,
+  ForbiddenException,
   NotFoundException,
 } from "../../utils/appError.js";
 
@@ -20,6 +21,7 @@ import {
   MasterRecordFilterInput,
   masterRecordFilterSchema,
 } from "./dto/masterRecord.dto.js";
+import { evaluateFormula } from "../../runTimeEngine/formulaEngine.js";
 
 const masterRecordService = {
   // createRecord: async (
@@ -142,69 +144,233 @@ const masterRecordService = {
   //   });
   // },
 
-  createRecord: async (masterObjectId: string, data: any, meta?: ActorMeta) => {
+  // createRecord: async (masterObjectId: string, data: any, meta?: ActorMeta) => {
+  //   const userId = meta?.actorId;
+  //   if (!userId) throw new BadRequestException("UserId is required");
+
+  //   // 1️⃣ Fetch published schema
+  //   const schema = await prisma.masterObjectSchema.findFirst({
+  //     where: {
+  //       masterObjectId,
+  //       status: SchemaStatus.PUBLISHED,
+  //     },
+  //     orderBy: { version: "desc" },
+  //   });
+
+  //   if (!schema) {
+  //     throw new BadRequestException(
+  //       "No published schema found for this MasterObject",
+  //     );
+  //   }
+
+  //   // 2️⃣ Fetch MasterObject (prefix required)
+  //   const masterObject = await prisma.masterObject.findUnique({
+  //     where: { id: masterObjectId },
+  //     select: { codePrefix: true },
+  //   });
+
+  //   if (!masterObject?.codePrefix) {
+  //     throw new BadRequestException(
+  //       "Code prefix not configured for this MasterObject",
+  //     );
+  //   }
+
+  //   // 3️⃣ TRANSACTION (CRITICAL)
+  //   return prisma.$transaction(async (tx) => {
+  //     // 🔒 Lock counter row
+  //     const counter = await tx.masterObjectCounter.upsert({
+  //       where: { masterObjectId },
+  //       update: { lastNumber: { increment: 1 } },
+  //       create: {
+  //         masterObjectId,
+  //         lastNumber: 1,
+  //       },
+  //     });
+
+  //     const nextNumber = counter.lastNumber;
+
+  //     // 🧠 Generate code → ITEM-000123
+  //     const code = `${masterObject.codePrefix}-${String(nextNumber).padStart(
+  //       6,
+  //       "0",
+  //     )}`;
+
+  //     const perm = await permissionService.canCreate({
+  //       userId,
+  //       masterObjectId,
+  //     });
+
+  //     if (!perm) {
+  //       throw new ForbiddenException("No create permission");
+  //     }
+  //     // 4️⃣ Create record
+  //     const record = await tx.masterRecord.create({
+  //       data: {
+  //         code,
+  //         masterObject: { connect: { id: masterObjectId } },
+  //         schema: { connect: { id: schema.id } },
+  //         data,
+  //         createdBy: { connect: { id: userId } },
+  //       },
+  //     });
+
+  //     // 5️⃣ Audit log
+  //     await tx.auditLog.create({
+  //       data: {
+  //         userId,
+  //         entity: AuditEntity.MASTER_RECORD,
+  //         action: AuditAction.CREATE,
+  //         comment: `Record created (${code})`,
+  //         after: record,
+  //         ipAddress: meta?.ipAddress ?? null,
+  //         userAgent: meta?.userAgent ?? null,
+  //         performedBy: meta?.performedBy ?? PerformedByType.USER,
+  //       },
+  //     });
+
+  //     return record;
+  //   });
+  // },
+
+  createRecord: async (
+    masterObjectId: string,
+    inputData: any,
+    meta?: ActorMeta,
+  ) => {
     const userId = meta?.actorId;
     if (!userId) throw new BadRequestException("UserId is required");
 
-    // 1️⃣ Fetch published schema
+    /* =====================================================
+     1️⃣ FETCH PUBLISHED SCHEMA
+  ===================================================== */
     const schema = await prisma.masterObjectSchema.findFirst({
-      where: {
-        masterObjectId,
-        status: SchemaStatus.PUBLISHED,
-      },
+      where: { masterObjectId, status: SchemaStatus.PUBLISHED },
       orderBy: { version: "desc" },
     });
 
     if (!schema) {
-      throw new BadRequestException(
-        "No published schema found for this MasterObject"
-      );
+      throw new BadRequestException("No published schema found");
     }
 
-    // 2️⃣ Fetch MasterObject (prefix required)
+    /* =====================================================
+     2️⃣ FETCH FIELD DEFINITIONS
+  ===================================================== */
+    const fields = await prisma.fieldDefinition.findMany({
+      where: {
+        schemaId: schema.id,
+        isActive: true,
+      },
+    });
+
+    if (fields.length === 0) {
+      throw new BadRequestException("Schema has no fields");
+    }
+
+    const fieldMap = new Map(fields.map((f) => [f.key, f]));
+
+    /* =====================================================
+     3️⃣ PERMISSION CHECK
+  ===================================================== */
+    const perm = await permissionService.canCreate({
+      userId,
+      masterObjectId,
+    });
+
+    if (!perm) {
+      throw new ForbiddenException("No create permission");
+    }
+
+    /* =====================================================
+     4️⃣ VALIDATE + BUILD FINAL DATA
+  ===================================================== */
+    const finalData: Record<string, any> = {};
+
+    // Reject unknown fields
+    for (const key of Object.keys(inputData)) {
+      if (!fieldMap.has(key)) {
+        throw new BadRequestException(`Unknown field: ${key}`);
+      }
+    }
+
+    for (const field of fields) {
+      const config = field.config as any;
+      const value = inputData[field.key];
+
+      // Required
+      if (field.isRequired && (value === undefined || value === null)) {
+        throw new BadRequestException(`Field "${field.key}" is required`);
+      }
+
+      // Default
+      if (value === undefined && config?.data?.default !== undefined) {
+        finalData[field.key] = config.data.default;
+        continue;
+      }
+
+      // Readonly
+      if (config?.behavior?.readOnly && value !== undefined) {
+        throw new BadRequestException(`Field "${field.key}" is read-only`);
+      }
+
+      // Formula (ignore client value)
+      if (config?.behavior?.formula) {
+        continue;
+      }
+
+      if (value !== undefined) {
+        finalData[field.key] = value;
+      }
+    }
+
+    /* =====================================================
+     5️⃣ COMPUTE FORMULAS
+  ===================================================== */
+    for (const field of fields) {
+      const config = field.config as any;
+      if (config?.behavior?.formula) {
+        finalData[field.key] = evaluateFormula(
+          config.behavior.formula.expression,
+          finalData,
+        );
+      }
+    }
+
+    /* =====================================================
+     6️⃣ FETCH MASTER OBJECT (PREFIX)
+  ===================================================== */
     const masterObject = await prisma.masterObject.findUnique({
       where: { id: masterObjectId },
       select: { codePrefix: true },
     });
 
     if (!masterObject?.codePrefix) {
-      throw new BadRequestException(
-        "Code prefix not configured for this MasterObject"
-      );
+      throw new BadRequestException("Code prefix not configured");
     }
 
-    // 3️⃣ TRANSACTION (CRITICAL)
+    /* =====================================================
+     7️⃣ TRANSACTION (CRITICAL)
+  ===================================================== */
     return prisma.$transaction(async (tx) => {
-      // 🔒 Lock counter row
       const counter = await tx.masterObjectCounter.upsert({
         where: { masterObjectId },
         update: { lastNumber: { increment: 1 } },
-        create: {
-          masterObjectId,
-          lastNumber: 1,
-        },
+        create: { masterObjectId, lastNumber: 1 },
       });
 
-      const nextNumber = counter.lastNumber;
+      const code = `${masterObject.codePrefix}-${String(
+        counter.lastNumber,
+      ).padStart(6, "0")}`;
 
-      // 🧠 Generate code → ITEM-000123
-      const code = `${masterObject.codePrefix}-${String(nextNumber).padStart(
-        6,
-        "0"
-      )}`;
-
-      // 4️⃣ Create record
       const record = await tx.masterRecord.create({
         data: {
           code,
-          masterObject: { connect: { id: masterObjectId } },
-          schema: { connect: { id: schema.id } },
-          data,
-          createdBy: { connect: { id: userId } },
+          masterObjectId,
+          schemaId: schema.id,
+          data: finalData,
+          createdById: userId,
         },
       });
 
-      // 5️⃣ Audit log
       await tx.auditLog.create({
         data: {
           userId,
@@ -243,7 +409,7 @@ const masterRecordService = {
     // 🔥 fetch workflow instance generically
     const workflowInstance = await getWorkflowInstanceForResource(
       "MASTER_RECORD",
-      record.id
+      record.id,
     );
 
     return {
@@ -381,3 +547,17 @@ export default masterRecordService;
 //     throw err;
 //   }
 // },
+
+// services/permission.service.ts
+export const permissionService = {
+  async canCreate({
+    userId,
+    masterObjectId,
+  }: {
+    userId: string;
+    masterObjectId: string;
+  }): Promise<boolean> {
+    // TODO: replace with real logic (roles, rules, schema permissions)
+    return true;
+  },
+};

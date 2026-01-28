@@ -49,22 +49,68 @@ export interface EditorField {
   };
 
   placeholder?: string;
-  default?: string;
+  default?: string | number | boolean | null | object;
   description?: string; // system meaning
   helpText?: string; // user guidance
 
   integration?: FieldIntegration;
 }
 
+export interface EditorFieldDefinition {
+  id: string;
+  key: FieldKey;
+
+  label: string;
+  type: EditorFieldType;
+  category?: "INPUT" | "SYSTEM" | "CALCULATED" | "REFERENCE" | "STRUCTURE" | "PRESENTATION" | "DEPRECATED";
+
+  layout: {
+    span: LayoutSpan;
+  };
+
+  required?: boolean;
+  deprecated?: boolean;
+  readOnly?: boolean;
+
+  validation?: {
+    min?: number;
+    max?: number;
+    regex?: string;
+    patternMessage?: string;
+    errorMessage?: string;
+  };
+
+  options?: { label: string; value: string }[];
+  format?: {
+    style: "currency" | "percent" | "decimal";
+    currency?: string;
+  };
+
+  visibility?: {
+    defaultVisible?: boolean;
+    rule?: VisibilityRule;
+  };
+
+  placeholder?: string;
+  default?: string | number | boolean | null | object;
+  description?: string;
+  helpText?: string;
+
+  integration?: FieldIntegration;
+}
+
+
+
 /* ================= NODES ================= */
 
 export interface FieldNode {
   id: string;
   kind: "FIELD";
-  field: EditorField;
+  field: EditorFieldDefinition;
 }
 
 /* ================= CONTAINER SLOT ================= */
+
 
 export interface ContainerSlot {
   id: string;
@@ -117,12 +163,11 @@ export interface AccordionLayoutNode extends BaseLayoutNode {
   slots: ContainerSlot[];
 }
 
-export interface RepeaterLayoutNode
-  extends BaseLayoutNode<{
-    label?: string;
-    minItems?: number;
-    maxItems?: number | null;
-  }> {
+export interface RepeaterLayoutNode extends BaseLayoutNode<{
+  label?: string;
+  minItems?: number;
+  maxItems?: number | null;
+}> {
   type: "repeater";
   slots: ContainerSlot[];
 }
@@ -133,12 +178,11 @@ export interface DividerLayoutNode extends BaseLayoutNode<{ text?: string }> {
   type: "divider";
 }
 
-export interface HeadingLayoutNode
-  extends BaseLayoutNode<{
-    text?: string;
-    level?: number;
-    description?: string;
-  }> {
+export interface HeadingLayoutNode extends BaseLayoutNode<{
+  text?: string;
+  level?: number;
+  description?: string;
+}> {
   type: "heading";
 }
 

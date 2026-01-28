@@ -3,13 +3,15 @@
 ====================================================== */
 
 export interface FieldConfig {
+  configVersion?: number;
   meta: FieldMeta;
   data: FieldData;
   ui?: FieldUI;
   validation?: FieldValidation;
-  visibility?: FieldVisibility;
+  visibility?: VisibilityGroup;
   permissions?: FieldPermissions;
   behavior?: FieldBehavior;
+  calculation?: FieldCalculation;
   integration?: FieldIntegration;
 }
 
@@ -21,7 +23,8 @@ export type FieldCategory =
   | "CALCULATED"
   | "REFERENCE"
   | "STRUCTURE"
-  | "PRESENTATION";
+  | "PRESENTATION"
+  | "DEPRECATED";
 
 export interface FieldMeta {
   key: string; // ❌ immutable
@@ -53,32 +56,6 @@ export interface FieldData {
 
 /* ================= UI ================= */
 
-// export interface FieldUI {
-//   widget:
-//     | "TEXT"
-//     | "TEXTAREA"
-//     | "NUMBER"
-//     | "CURRENCY"
-//     | "SELECT"
-//     | "RADIO"
-//     | "CHECKBOX"
-//     | "DATE"
-//     | "DATETIME";
-
-//   placeholder?: string;
-//   helpText?: string;
-
-//   layout?: {
-//     width?: "full" | "half" | "third" | "quarter" | "two-third";
-//     order?: number;
-//     section?: string;
-//   };
-
-//   format?: {
-//     style?: "currency" | "percent" | "decimal";
-//     currency?: string;
-//   };
-// }
 export interface FieldUI {
   widget:
     | "TEXT"
@@ -89,7 +66,9 @@ export interface FieldUI {
     | "RADIO"
     | "CHECKBOX"
     | "DATE"
-    | "DATETIME";
+    | "DATETIME"
+    | "FILE"
+    | "RICH_TEXT";
 
   placeholder?: string;
   helpText?: string;
@@ -107,23 +86,25 @@ export interface FieldUI {
   };
 }
 
-
 /* ================= VALIDATION ================= */
 
 export type ValidationRuleType =
   | "REQUIRED"
+  | "REQUIRED_IF"
   | "MIN"
   | "MAX"
   | "REGEX"
   | "BETWEEN"
+  | "RANGE"
+  | "LENGTH"
   | "EMAIL"
   | "CUSTOM";
 
 export interface FieldValidationRule {
   type: ValidationRuleType;
-  params?: Record<string, any>;
+  params?: ValidationParams;
   message: string;
-  severity?: "ERROR" | "WARN";
+  severity?: "ERROR" | "WARNING";
 }
 
 export interface FieldValidation {
@@ -132,21 +113,33 @@ export interface FieldValidation {
 
 /* ================= VISIBILITY ================= */
 
-export type VisibilityRule =
-  | {
-      type: "CONDITION";
-      condition: any;
-    }
-  | {
-      type: "EXPRESSION";
-      expression: {
-        expression: string;
-        dependencies?: string[];
-      };
-    };
+// export type VisibilityRule =
+//   | {
+//       type: "CONDITION";
+//       condition: any;
+//     }
+//   | {
+//       type: "EXPRESSION";
+//       expression: {
+//         expression: string;
+//         dependencies?: string[];
+//       };
+//     };
 
-export interface FieldVisibility {
-  rule?: VisibilityRule;
+// export interface FieldVisibility {
+//   rule?: VisibilityRule;
+// }
+
+export interface VisibilityCondition {
+  field: string;
+  operator: string;
+  value: unknown;
+}
+
+export interface VisibilityGroup {
+  type: "group";
+  logic: "AND" | "OR";
+  conditions: Array<VisibilityCondition | VisibilityGroup>;
 }
 
 export interface PermissionCondition {
@@ -163,6 +156,8 @@ export interface PermissionRule {
 export interface FieldPermissions {
   read?: PermissionRule;
   write?: PermissionRule;
+  create?: PermissionRule;
+  delete?: PermissionRule;
 }
 
 /* ================= BEHAVIOR ================= */
@@ -177,6 +172,13 @@ export interface FieldBehavior {
   };
 }
 
+/* ================= CALCULATION ================= */
+
+export interface FieldCalculation {
+  operator: "ADD" | "SUBTRACT" | "MULTIPLY" | "DIVIDE";
+  operands: string[];
+}
+
 /* ================= INTEGRATION ================= */
 
 export interface ReferenceConfig {
@@ -184,7 +186,7 @@ export interface ReferenceConfig {
   displayField: string;
   relation: "ONE_TO_ONE" | "ONE_TO_MANY";
   allowMultiple?: boolean;
-  onDelete?: "CASCADE" | "SET_NULL";
+  onDelete?: "RESTRICT" | "CASCADE" | "SET_NULL";
 }
 
 export interface ApiSourceConfig {
@@ -200,9 +202,35 @@ export interface ApiSourceConfig {
   cache?: boolean;
 }
 
+// export interface FieldIntegration {
+//   reference?: ReferenceConfig;
+//   apiSource?: ApiSourceConfig;
+//   file?: FileConfig;
+// }
+
 export interface FieldIntegration {
-  reference?: ReferenceConfig;
+  /** dropdowns / radio dependencies */
+  dataSource?: {
+    type: "STATIC" | "DEPENDENT";
+    dependsOn?: string;
+    map?: Record<string, { label: string; value: string }[]>;
+    resetOnChange?: boolean;
+  };
+
+  /** reference data (resource-based) */
+  reference?: {
+    resource: string;
+    valueField?: string;
+    labelField?: string;
+    searchable?: boolean;
+    multiple?: boolean;
+  };
+
+  /** API-backed options */
   apiSource?: ApiSourceConfig;
+
+  /** file upload config */
+  file?: FileConfig;
 }
 
 /* ================= IMMUTABILITY ================= */
@@ -211,5 +239,21 @@ export const IMMUTABLE_AFTER_PUBLISH = [
   "meta.key",
   "meta.category",
   "data.type",
-  "behavior.formula",
+  "behavior.formula.expression",
 ] as const;
+
+export interface FileConfig {
+  maxSizeMB: number;
+  allowedTypes: string[];
+  storage?: "S3" | "LOCAL";
+  multiple?: boolean;
+}
+
+type ValidationParams =
+  | { min: number }
+  | { max: number }
+  | { regex: string }
+  | { field: string; equals: any } // REQUIRED_IF
+  | { from: number; to: number } // RANGE
+  | { min: number; max: number } // LENGTH
+  | { customFn: string };

@@ -1,7 +1,7 @@
 import { FormSection } from "../../contracts/editor.contract";
 import { extractField } from "../extractField";
 import { walkEditorTree } from "../../dnd/walkEditorTree";
-import { isSlotLayoutNode } from "../../types/layout.guards";
+import { isSlotLayoutNode } from "../../editor-utils/layout.guards";
 
 export function moveFieldToSlot(
   sections: FormSection[],

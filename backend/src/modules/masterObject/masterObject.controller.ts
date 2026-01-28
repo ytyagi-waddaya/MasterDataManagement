@@ -42,7 +42,7 @@ const masterObjectController = {
     if (!masterObjectId)
       throw new BadRequestException("MasterObject ID is required");
     const data = req.body;
-    console.log("MASTEROBJECT PAYLOAD:", JSON.stringify(data, null, 2));
+    console.log("FORM DATA:\n", JSON.stringify(data, null, 2));
 
     const masterObject = await masterObjectService.updateMasterObject(
       { masterObjectId },
@@ -52,7 +52,7 @@ const masterObjectController = {
         performedBy: PerformedByType.USER,
         userAgent: req.get("user-agent") ?? null,
         ipAddress: req.ip,
-      }
+      },
     );
 
     sendResponse({
@@ -61,6 +61,32 @@ const masterObjectController = {
       success: true,
       message: "MasterObject updated successfully",
       data: { masterObject },
+    });
+  },
+
+  publishMasterObject: async (req: Request, res: Response) => {
+    const masterObjectId = req.params?.masterObjectId;
+    if (!masterObjectId) {
+      throw new BadRequestException("MasterObject ID is required");
+    }
+
+    const publishedSchema = await masterObjectService.publishSchema(
+      { masterObjectId },
+      req.body,
+      {
+        actorId: req.user?.id ?? null,
+        performedBy: PerformedByType.USER,
+        userAgent: req.get("user-agent") ?? null,
+        ipAddress: req.ip,
+      },
+    );
+
+    sendResponse({
+      res,
+      statusCode: HTTPSTATUS.CREATED,
+      success: true,
+      message: "Schema published successfully",
+      data: { schema: publishedSchema },
     });
   },
 
@@ -76,7 +102,7 @@ const masterObjectController = {
         ipAddress: req.ip,
         userAgent: req.get("user-agent") ?? null,
         performedBy: PerformedByType.USER,
-      }
+      },
     );
 
     sendResponse({
@@ -100,7 +126,7 @@ const masterObjectController = {
         ipAddress: req.ip,
         userAgent: req.get("user-agent") ?? null,
         performedBy: PerformedByType.USER,
-      }
+      },
     );
 
     sendResponse({
@@ -123,7 +149,7 @@ const masterObjectController = {
         performedBy: PerformedByType.USER,
         userAgent: req.get("user-agent") ?? null,
         ipAddress: req.ip,
-      }
+      },
     );
 
     sendResponse({
@@ -134,29 +160,29 @@ const masterObjectController = {
       data: { result },
     });
   },
+
   duplicateSchema: async (req: Request, res: Response) => {
-  const masterObjectId = req.params.masterObjectId;
- if (!masterObjectId)
+    const masterObjectId = req.params.masterObjectId;
+    if (!masterObjectId)
       throw new BadRequestException("MasterObject ID is required");
-  const schema = await masterObjectService.duplicateSchema(
-    { masterObjectId },
-    {
-      actorId: req.user?.id ?? null,
-      performedBy: PerformedByType.USER,
-      userAgent: req.get("user-agent") ?? null,
-      ipAddress: req.ip,
-    }
-  );
+    const schema = await masterObjectService.duplicateSchema(
+      { masterObjectId },
+      {
+        actorId: req.user?.id ?? null,
+        performedBy: PerformedByType.USER,
+        userAgent: req.get("user-agent") ?? null,
+        ipAddress: req.ip,
+      },
+    );
 
-  sendResponse({
-    res,
-    statusCode: HTTPSTATUS.CREATED,
-    success: true,
-    message: "Schema duplicated successfully",
-    data: { schema },
-  });
-},
-
+    sendResponse({
+      res,
+      statusCode: HTTPSTATUS.CREATED,
+      success: true,
+      message: "Schema duplicated successfully",
+      data: { schema },
+    });
+  },
 };
 
 export default masterObjectController;

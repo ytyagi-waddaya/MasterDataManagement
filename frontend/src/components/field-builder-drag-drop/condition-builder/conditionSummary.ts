@@ -3,6 +3,7 @@ import {
   ConditionGroup,
   ConditionLeaf,
 } from "../contracts/condition.contract";
+import { ConditionFieldRef } from "./condition-field-ref";
 import { FieldMeta } from "./condition.types";
 
 /* --------------------------------------------------
@@ -22,7 +23,7 @@ const OPERATOR_LABEL: Record<string, string> = {
 
 function fieldLabel(
   fieldKey: string,
-  fields: readonly FieldMeta[]
+  fields: readonly ConditionFieldRef[]
 ) {
   return (
     fields.find((f) => f.key === fieldKey)?.label ??
@@ -30,12 +31,13 @@ function fieldLabel(
   );
 }
 
+
 /* --------------------------------------------------
    MAIN
 -------------------------------------------------- */
 export function conditionToSummary(
   node: ConditionNode,
-  fields: readonly FieldMeta[]
+  fields: readonly ConditionFieldRef[]
 ): string {
   if (node.kind === "RULE") {
     const field = fieldLabel(node.field, fields);

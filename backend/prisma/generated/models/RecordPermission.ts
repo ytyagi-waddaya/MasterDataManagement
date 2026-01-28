@@ -29,6 +29,7 @@ export type RecordPermissionMinAggregateOutputType = {
   masterObjectId: string | null
   roleId: string | null
   userId: string | null
+  canCreate: boolean | null
   canRead: boolean | null
   canWrite: boolean | null
   canDelete: boolean | null
@@ -41,6 +42,7 @@ export type RecordPermissionMaxAggregateOutputType = {
   masterObjectId: string | null
   roleId: string | null
   userId: string | null
+  canCreate: boolean | null
   canRead: boolean | null
   canWrite: boolean | null
   canDelete: boolean | null
@@ -53,6 +55,7 @@ export type RecordPermissionCountAggregateOutputType = {
   masterObjectId: number
   roleId: number
   userId: number
+  canCreate: number
   canRead: number
   canWrite: number
   canDelete: number
@@ -68,6 +71,7 @@ export type RecordPermissionMinAggregateInputType = {
   masterObjectId?: true
   roleId?: true
   userId?: true
+  canCreate?: true
   canRead?: true
   canWrite?: true
   canDelete?: true
@@ -80,6 +84,7 @@ export type RecordPermissionMaxAggregateInputType = {
   masterObjectId?: true
   roleId?: true
   userId?: true
+  canCreate?: true
   canRead?: true
   canWrite?: true
   canDelete?: true
@@ -92,6 +97,7 @@ export type RecordPermissionCountAggregateInputType = {
   masterObjectId?: true
   roleId?: true
   userId?: true
+  canCreate?: true
   canRead?: true
   canWrite?: true
   canDelete?: true
@@ -178,6 +184,7 @@ export type RecordPermissionGroupByOutputType = {
   masterObjectId: string
   roleId: string | null
   userId: string | null
+  canCreate: boolean
   canRead: boolean
   canWrite: boolean
   canDelete: boolean
@@ -212,6 +219,7 @@ export type RecordPermissionWhereInput = {
   masterObjectId?: Prisma.StringFilter<"RecordPermission"> | string
   roleId?: Prisma.StringNullableFilter<"RecordPermission"> | string | null
   userId?: Prisma.StringNullableFilter<"RecordPermission"> | string | null
+  canCreate?: Prisma.BoolFilter<"RecordPermission"> | boolean
   canRead?: Prisma.BoolFilter<"RecordPermission"> | boolean
   canWrite?: Prisma.BoolFilter<"RecordPermission"> | boolean
   canDelete?: Prisma.BoolFilter<"RecordPermission"> | boolean
@@ -228,6 +236,7 @@ export type RecordPermissionOrderByWithRelationInput = {
   masterObjectId?: Prisma.SortOrder
   roleId?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrderInput | Prisma.SortOrder
+  canCreate?: Prisma.SortOrder
   canRead?: Prisma.SortOrder
   canWrite?: Prisma.SortOrder
   canDelete?: Prisma.SortOrder
@@ -248,6 +257,7 @@ export type RecordPermissionWhereUniqueInput = Prisma.AtLeast<{
   masterObjectId?: Prisma.StringFilter<"RecordPermission"> | string
   roleId?: Prisma.StringNullableFilter<"RecordPermission"> | string | null
   userId?: Prisma.StringNullableFilter<"RecordPermission"> | string | null
+  canCreate?: Prisma.BoolFilter<"RecordPermission"> | boolean
   canRead?: Prisma.BoolFilter<"RecordPermission"> | boolean
   canWrite?: Prisma.BoolFilter<"RecordPermission"> | boolean
   canDelete?: Prisma.BoolFilter<"RecordPermission"> | boolean
@@ -264,6 +274,7 @@ export type RecordPermissionOrderByWithAggregationInput = {
   masterObjectId?: Prisma.SortOrder
   roleId?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrderInput | Prisma.SortOrder
+  canCreate?: Prisma.SortOrder
   canRead?: Prisma.SortOrder
   canWrite?: Prisma.SortOrder
   canDelete?: Prisma.SortOrder
@@ -283,6 +294,7 @@ export type RecordPermissionScalarWhereWithAggregatesInput = {
   masterObjectId?: Prisma.StringWithAggregatesFilter<"RecordPermission"> | string
   roleId?: Prisma.StringNullableWithAggregatesFilter<"RecordPermission"> | string | null
   userId?: Prisma.StringNullableWithAggregatesFilter<"RecordPermission"> | string | null
+  canCreate?: Prisma.BoolWithAggregatesFilter<"RecordPermission"> | boolean
   canRead?: Prisma.BoolWithAggregatesFilter<"RecordPermission"> | boolean
   canWrite?: Prisma.BoolWithAggregatesFilter<"RecordPermission"> | boolean
   canDelete?: Prisma.BoolWithAggregatesFilter<"RecordPermission"> | boolean
@@ -293,6 +305,7 @@ export type RecordPermissionScalarWhereWithAggregatesInput = {
 
 export type RecordPermissionCreateInput = {
   id?: string
+  canCreate?: boolean
   canRead: boolean
   canWrite: boolean
   canDelete: boolean
@@ -309,6 +322,7 @@ export type RecordPermissionUncheckedCreateInput = {
   masterObjectId: string
   roleId?: string | null
   userId?: string | null
+  canCreate?: boolean
   canRead: boolean
   canWrite: boolean
   canDelete: boolean
@@ -319,6 +333,7 @@ export type RecordPermissionUncheckedCreateInput = {
 
 export type RecordPermissionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  canCreate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canRead?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canWrite?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -335,6 +350,7 @@ export type RecordPermissionUncheckedUpdateInput = {
   masterObjectId?: Prisma.StringFieldUpdateOperationsInput | string
   roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canCreate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canRead?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canWrite?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -348,6 +364,7 @@ export type RecordPermissionCreateManyInput = {
   masterObjectId: string
   roleId?: string | null
   userId?: string | null
+  canCreate?: boolean
   canRead: boolean
   canWrite: boolean
   canDelete: boolean
@@ -358,6 +375,7 @@ export type RecordPermissionCreateManyInput = {
 
 export type RecordPermissionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  canCreate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canRead?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canWrite?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -371,6 +389,7 @@ export type RecordPermissionUncheckedUpdateManyInput = {
   masterObjectId?: Prisma.StringFieldUpdateOperationsInput | string
   roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canCreate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canRead?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canWrite?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -400,6 +419,7 @@ export type RecordPermissionCountOrderByAggregateInput = {
   masterObjectId?: Prisma.SortOrder
   roleId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  canCreate?: Prisma.SortOrder
   canRead?: Prisma.SortOrder
   canWrite?: Prisma.SortOrder
   canDelete?: Prisma.SortOrder
@@ -413,6 +433,7 @@ export type RecordPermissionMaxOrderByAggregateInput = {
   masterObjectId?: Prisma.SortOrder
   roleId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  canCreate?: Prisma.SortOrder
   canRead?: Prisma.SortOrder
   canWrite?: Prisma.SortOrder
   canDelete?: Prisma.SortOrder
@@ -425,6 +446,7 @@ export type RecordPermissionMinOrderByAggregateInput = {
   masterObjectId?: Prisma.SortOrder
   roleId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  canCreate?: Prisma.SortOrder
   canRead?: Prisma.SortOrder
   canWrite?: Prisma.SortOrder
   canDelete?: Prisma.SortOrder
@@ -560,6 +582,7 @@ export type RecordPermissionUncheckedUpdateManyWithoutMasterObjectNestedInput = 
 
 export type RecordPermissionCreateWithoutUserInput = {
   id?: string
+  canCreate?: boolean
   canRead: boolean
   canWrite: boolean
   canDelete: boolean
@@ -574,6 +597,7 @@ export type RecordPermissionUncheckedCreateWithoutUserInput = {
   id?: string
   masterObjectId: string
   roleId?: string | null
+  canCreate?: boolean
   canRead: boolean
   canWrite: boolean
   canDelete: boolean
@@ -616,6 +640,7 @@ export type RecordPermissionScalarWhereInput = {
   masterObjectId?: Prisma.StringFilter<"RecordPermission"> | string
   roleId?: Prisma.StringNullableFilter<"RecordPermission"> | string | null
   userId?: Prisma.StringNullableFilter<"RecordPermission"> | string | null
+  canCreate?: Prisma.BoolFilter<"RecordPermission"> | boolean
   canRead?: Prisma.BoolFilter<"RecordPermission"> | boolean
   canWrite?: Prisma.BoolFilter<"RecordPermission"> | boolean
   canDelete?: Prisma.BoolFilter<"RecordPermission"> | boolean
@@ -626,6 +651,7 @@ export type RecordPermissionScalarWhereInput = {
 
 export type RecordPermissionCreateWithoutRoleInput = {
   id?: string
+  canCreate?: boolean
   canRead: boolean
   canWrite: boolean
   canDelete: boolean
@@ -640,6 +666,7 @@ export type RecordPermissionUncheckedCreateWithoutRoleInput = {
   id?: string
   masterObjectId: string
   userId?: string | null
+  canCreate?: boolean
   canRead: boolean
   canWrite: boolean
   canDelete: boolean
@@ -676,6 +703,7 @@ export type RecordPermissionUpdateManyWithWhereWithoutRoleInput = {
 
 export type RecordPermissionCreateWithoutMasterObjectInput = {
   id?: string
+  canCreate?: boolean
   canRead: boolean
   canWrite: boolean
   canDelete: boolean
@@ -690,6 +718,7 @@ export type RecordPermissionUncheckedCreateWithoutMasterObjectInput = {
   id?: string
   roleId?: string | null
   userId?: string | null
+  canCreate?: boolean
   canRead: boolean
   canWrite: boolean
   canDelete: boolean
@@ -728,6 +757,7 @@ export type RecordPermissionCreateManyUserInput = {
   id?: string
   masterObjectId: string
   roleId?: string | null
+  canCreate?: boolean
   canRead: boolean
   canWrite: boolean
   canDelete: boolean
@@ -738,6 +768,7 @@ export type RecordPermissionCreateManyUserInput = {
 
 export type RecordPermissionUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  canCreate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canRead?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canWrite?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -752,6 +783,7 @@ export type RecordPermissionUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   masterObjectId?: Prisma.StringFieldUpdateOperationsInput | string
   roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canCreate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canRead?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canWrite?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -764,6 +796,7 @@ export type RecordPermissionUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   masterObjectId?: Prisma.StringFieldUpdateOperationsInput | string
   roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canCreate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canRead?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canWrite?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -776,6 +809,7 @@ export type RecordPermissionCreateManyRoleInput = {
   id?: string
   masterObjectId: string
   userId?: string | null
+  canCreate?: boolean
   canRead: boolean
   canWrite: boolean
   canDelete: boolean
@@ -786,6 +820,7 @@ export type RecordPermissionCreateManyRoleInput = {
 
 export type RecordPermissionUpdateWithoutRoleInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  canCreate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canRead?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canWrite?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -800,6 +835,7 @@ export type RecordPermissionUncheckedUpdateWithoutRoleInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   masterObjectId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canCreate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canRead?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canWrite?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -812,6 +848,7 @@ export type RecordPermissionUncheckedUpdateManyWithoutRoleInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   masterObjectId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canCreate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canRead?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canWrite?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -824,6 +861,7 @@ export type RecordPermissionCreateManyMasterObjectInput = {
   id?: string
   roleId?: string | null
   userId?: string | null
+  canCreate?: boolean
   canRead: boolean
   canWrite: boolean
   canDelete: boolean
@@ -834,6 +872,7 @@ export type RecordPermissionCreateManyMasterObjectInput = {
 
 export type RecordPermissionUpdateWithoutMasterObjectInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  canCreate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canRead?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canWrite?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -848,6 +887,7 @@ export type RecordPermissionUncheckedUpdateWithoutMasterObjectInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canCreate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canRead?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canWrite?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -860,6 +900,7 @@ export type RecordPermissionUncheckedUpdateManyWithoutMasterObjectInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canCreate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canRead?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canWrite?: Prisma.BoolFieldUpdateOperationsInput | boolean
   canDelete?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -875,6 +916,7 @@ export type RecordPermissionSelect<ExtArgs extends runtime.Types.Extensions.Inte
   masterObjectId?: boolean
   roleId?: boolean
   userId?: boolean
+  canCreate?: boolean
   canRead?: boolean
   canWrite?: boolean
   canDelete?: boolean
@@ -891,6 +933,7 @@ export type RecordPermissionSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   masterObjectId?: boolean
   roleId?: boolean
   userId?: boolean
+  canCreate?: boolean
   canRead?: boolean
   canWrite?: boolean
   canDelete?: boolean
@@ -907,6 +950,7 @@ export type RecordPermissionSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   masterObjectId?: boolean
   roleId?: boolean
   userId?: boolean
+  canCreate?: boolean
   canRead?: boolean
   canWrite?: boolean
   canDelete?: boolean
@@ -923,6 +967,7 @@ export type RecordPermissionSelectScalar = {
   masterObjectId?: boolean
   roleId?: boolean
   userId?: boolean
+  canCreate?: boolean
   canRead?: boolean
   canWrite?: boolean
   canDelete?: boolean
@@ -931,7 +976,7 @@ export type RecordPermissionSelectScalar = {
   deletedAt?: boolean
 }
 
-export type RecordPermissionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "masterObjectId" | "roleId" | "userId" | "canRead" | "canWrite" | "canDelete" | "condition" | "createdAt" | "deletedAt", ExtArgs["result"]["recordPermission"]>
+export type RecordPermissionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "masterObjectId" | "roleId" | "userId" | "canCreate" | "canRead" | "canWrite" | "canDelete" | "condition" | "createdAt" | "deletedAt", ExtArgs["result"]["recordPermission"]>
 export type RecordPermissionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   masterObject?: boolean | Prisma.MasterObjectDefaultArgs<ExtArgs>
   role?: boolean | Prisma.RecordPermission$roleArgs<ExtArgs>
@@ -960,6 +1005,7 @@ export type $RecordPermissionPayload<ExtArgs extends runtime.Types.Extensions.In
     masterObjectId: string
     roleId: string | null
     userId: string | null
+    canCreate: boolean
     canRead: boolean
     canWrite: boolean
     canDelete: boolean
@@ -1396,6 +1442,7 @@ export interface RecordPermissionFieldRefs {
   readonly masterObjectId: Prisma.FieldRef<"RecordPermission", 'String'>
   readonly roleId: Prisma.FieldRef<"RecordPermission", 'String'>
   readonly userId: Prisma.FieldRef<"RecordPermission", 'String'>
+  readonly canCreate: Prisma.FieldRef<"RecordPermission", 'Boolean'>
   readonly canRead: Prisma.FieldRef<"RecordPermission", 'Boolean'>
   readonly canWrite: Prisma.FieldRef<"RecordPermission", 'Boolean'>
   readonly canDelete: Prisma.FieldRef<"RecordPermission", 'Boolean'>

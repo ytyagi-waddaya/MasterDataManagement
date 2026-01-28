@@ -9,6 +9,7 @@ export interface RuntimeFieldState {
 
 export interface RuntimeField {
   id:string;
+  fieldKey: string;
   config: FieldConfig;
   state: RuntimeFieldState;
   

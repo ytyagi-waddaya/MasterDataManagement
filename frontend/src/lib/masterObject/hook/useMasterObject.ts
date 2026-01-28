@@ -3,10 +3,15 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import apiClient from "@/lib/api/apiClient";
 import { toast } from "sonner";
-import { UpdateMasterObjectInput } from "../schema/masterObject.schema";
+import {
+  CanonicalFieldConfig,
+  PersistedFormSchema,
+  UpdateMasterObjectInput,
+} from "../schema/masterObject.schema";
 import { serializeFiltersForApi } from "@/hooks/useServerDataTable";
 import { useMemo } from "react";
 import { useDebounce } from "@/hooks/useDebounce";
+import { FieldConfig } from "@/components/field-builder-drag-drop/contracts/field-config.contract";
 
 export interface MasterObjectFilters {
   status?: "active" | "inactive" | "all";
@@ -87,15 +92,17 @@ export function useMasterObjectForEditor(masterObjectId: string) {
     queryFn: async () => {
       const masterObject = await fetchMasterObject(masterObjectId);
 
-      const latestSchema =
-        masterObject.schemas
-          ?.slice()
-          .sort((a: any, b: any) => b.version - a.version)[0] ?? null;
+      const draftSchemas = masterObject.schemas?.filter(
+        (s: any) => s.status === "DRAFT",
+      );
+
+      const activeSchema =
+        getLatestSchema(draftSchemas) ?? getLatestSchema(masterObject.schemas);
 
       return {
         ...masterObject,
-        activeSchema: latestSchema,
-        hasSchema: Boolean(latestSchema),
+        activeSchema,
+        hasSchema: Boolean(activeSchema),
       };
     },
   });
@@ -110,27 +117,27 @@ export function useMasterObjectForRuntime(masterObjectId: string) {
     queryFn: async () => {
       const masterObject = await fetchMasterObject(masterObjectId);
 
-      const publishedSchema = masterObject.schemas.find(
-        (s: any) => s.status === "PUBLISHED"
+      const publishedSchemas = masterObject.schemas?.filter(
+        (s: any) => s.status === "PUBLISHED",
       );
 
-      const latestSchema =
+      const publishedSchema = getLatestSchema(publishedSchemas);
+
+      const activeSchema =
         publishedSchema ??
-        masterObject.schemas?.[0] ??
-        null;
-        console.log("LATEST SCHEMA:",latestSchema);
-        
+        getLatestSchema(
+          masterObject.schemas?.filter((s: any) => s.status === "DRAFT"),
+        );
 
       return {
         ...masterObject,
-        activeSchema: latestSchema, // ✅ draft OR published
-        isRunnable: Boolean(publishedSchema), // ✅ only published can submit
-        isDraft: latestSchema?.status === "DRAFT",
+        activeSchema,
+        isRunnable: Boolean(publishedSchema), // submit allowed
+        isDraft: activeSchema?.status === "DRAFT",
       };
     },
   });
 }
-
 
 export function useUpdateMasterObject() {
   const queryClient = useQueryClient();
@@ -144,27 +151,28 @@ export function useUpdateMasterObject() {
       payload: UpdateMasterObjectInput;
     }) => {
       console.log("SCHEMA PAYLOAD:", payload);
-      
+
       /* =====================================================
          🚨 FRONTEND CONTRACT GUARD (MANDATORY)
       ===================================================== */
       if (payload.schema && !payload.fieldConfig) {
         throw new Error(
-          "Invalid payload: fieldConfig is required when schema is provided"
+          "Invalid payload: fieldConfig is required when schema is provided",
         );
       }
 
       if (payload.publish && (!payload.schema || !payload.fieldConfig)) {
         throw new Error(
-          "Invalid payload: schema and fieldConfig are required when publishing"
+          "Invalid payload: schema and fieldConfig are required when publishing",
         );
       }
-
+      console.log("Master Payload:", payload);
       const res = await apiClient.put(
         `/master-object/${masterObjectId}`,
-        payload
+        payload,
       );
 
+      console.log("MasterID:", res);
       return res.data;
     },
 
@@ -174,7 +182,7 @@ export function useUpdateMasterObject() {
       toast.success(
         status === "PUBLISHED"
           ? "Schema published successfully"
-          : "Schema saved successfully"
+          : "Schema saved successfully",
       );
 
       queryClient.invalidateQueries({
@@ -186,7 +194,101 @@ export function useUpdateMasterObject() {
       toast.error(
         err?.message ||
           err?.response?.data?.message ||
-          "Failed to update Master Object"
+          "Failed to update Master Object",
+      );
+    },
+  });
+}
+
+// export function usePublishMasterObject() {
+//   const queryClient = useQueryClient();
+
+//   return useMutation({
+//     mutationFn: async ({
+//       masterObjectId,
+//       schema,
+//       fieldConfig,
+//     }: {
+//       masterObjectId: string;
+//       schema: PersistedFormSchema;
+//       fieldConfig: FieldConfig[];
+//     }) => {
+//       /* =====================================================
+//          🚨 FRONTEND CONTRACT GUARD (MANDATORY)
+//       ===================================================== */
+//       if (!schema) {
+//         throw new Error("schema is required to publish");
+//       }
+
+//       if (!fieldConfig?.length) {
+//         throw new Error("fieldConfig is required to publish");
+//       }
+
+//       const res = await apiClient.post(
+//         `/master-object/${masterObjectId}/publish`,
+//         {
+//           schema,
+//           fieldConfig,
+//         }
+//       );
+
+//       return res.data;
+//     },
+
+//     onSuccess: (data) => {
+//       toast.success("Schema published successfully");
+
+//       queryClient.invalidateQueries({
+//         queryKey: ["masterObject", data?.id],
+//       });
+//     },
+
+//     onError: (err: any) => {
+//       toast.error(
+//         err?.message ||
+//           err?.response?.data?.message ||
+//           "Failed to publish Master Object"
+//       );
+//     },
+//   });
+// }
+
+export function usePublishMasterObject() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      masterObjectId,
+      draftSchemaId,
+    }: {
+      masterObjectId: string;
+      draftSchemaId: string;
+    }) => {
+      if (!draftSchemaId) {
+        throw new Error("draftSchemaId is required to publish");
+      }
+
+      const res = await apiClient.post(
+        `/master-object/${masterObjectId}/publish`,
+        { draftSchemaId },
+      );
+
+      return res.data;
+    },
+
+    onSuccess: (_data, variables) => {
+      toast.success("Schema published successfully");
+
+      queryClient.invalidateQueries({
+        queryKey: ["masterObject", variables.masterObjectId],
+      });
+    },
+
+    onError: (err: any) => {
+      toast.error(
+        err?.response?.data?.message ||
+          err?.message ||
+          "Failed to publish schema",
       );
     },
   });
@@ -203,7 +305,7 @@ export function useSubmitMasterObjectRecord() {
     }) => {
       const res = await apiClient.post(
         `/master-object/${masterObjectId}`,
-        values
+        values,
       );
       return res.data;
     },
@@ -226,7 +328,7 @@ export function useDeleteMasterObject() {
 
     onError: (err: any) => {
       toast.error(
-        err.response?.data?.message || "Failed to delete Master Object"
+        err.response?.data?.message || "Failed to delete Master Object",
       );
     },
   });
@@ -238,7 +340,7 @@ export function useArchiveMasterObject() {
   return useMutation({
     mutationFn: async (masterObjectId: string) => {
       const res = await apiClient.delete(
-        `/master-object/${masterObjectId}/archive`
+        `/master-object/${masterObjectId}/archive`,
       );
       return res.data;
     },
@@ -250,7 +352,7 @@ export function useArchiveMasterObject() {
 
     onError: (err: any) => {
       toast.error(
-        err.response?.data?.message || "Failed to archive Master Object"
+        err.response?.data?.message || "Failed to archive Master Object",
       );
     },
   });
@@ -262,7 +364,7 @@ export function useRestoreMasterObject() {
   return useMutation({
     mutationFn: async (masterObjectId: string) => {
       const res = await apiClient.delete(
-        `/master-object/${masterObjectId}/restore`
+        `/master-object/${masterObjectId}/restore`,
       );
       return res.data;
     },
@@ -274,7 +376,7 @@ export function useRestoreMasterObject() {
 
     onError: (err: any) => {
       toast.error(
-        err.response?.data?.message || "Failed to restore Master Object"
+        err.response?.data?.message || "Failed to restore Master Object",
       );
     },
   });
@@ -305,18 +407,17 @@ export function useCreateMasterObject() {
 
     onError: (err: any) => {
       toast.error(
-        err.response?.data?.message || "Failed to update Master Object"
+        err.response?.data?.message || "Failed to update Master Object",
       );
     },
   });
 }
 
-
 export function useDuplicateMasterObject() {
   return useMutation({
     mutationFn: async (masterObjectId: string) => {
       const res = await apiClient.post(
-        `/master-object/${masterObjectId}/duplicate`
+        `/master-object/${masterObjectId}/duplicate`,
       );
       return res.data.data;
     },
@@ -326,10 +427,11 @@ export function useDuplicateMasterObject() {
 async function fetchMasterObject(masterObjectId: string) {
   const res = await apiClient.get(`/master-object/${masterObjectId}`);
   console.log("MASTERDATA:", res);
-
   return res.data.data.masterObject;
 }
 
+function getLatestSchema(schemas: any[]) {
+  if (!schemas?.length) return null;
 
-
-
+  return schemas.slice().sort((a, b) => b.version - a.version)[0];
+}

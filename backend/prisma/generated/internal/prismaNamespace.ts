@@ -4023,11 +4023,13 @@ export const FieldDefinitionScalarFieldEnum = {
   schemaId: 'schemaId',
   key: 'key',
   label: 'label',
+  status: 'status',
   category: 'category',
   dataType: 'dataType',
   fieldType: 'fieldType',
   config: 'config',
   order: 'order',
+  publishedAt: 'publishedAt',
   isRequired: 'isRequired',
   isSystem: 'isSystem',
   isActive: 'isActive',
@@ -4193,6 +4195,7 @@ export const RecordPermissionScalarFieldEnum = {
   masterObjectId: 'masterObjectId',
   roleId: 'roleId',
   userId: 'userId',
+  canCreate: 'canCreate',
   canRead: 'canRead',
   canWrite: 'canWrite',
   canDelete: 'canDelete',
@@ -4699,6 +4702,20 @@ export type EnumSchemaStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
  * Reference to a field of type 'SchemaStatus[]'
  */
 export type ListEnumSchemaStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SchemaStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'FieldStatus'
+ */
+export type EnumFieldStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FieldStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'FieldStatus[]'
+ */
+export type ListEnumFieldStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FieldStatus[]'>
     
 
 

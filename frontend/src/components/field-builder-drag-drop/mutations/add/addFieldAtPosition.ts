@@ -1,6 +1,6 @@
 import { FormSection } from "../../contracts/editor.contract";
 import { PaletteItem } from "../../contracts/fieldPalette.contract";
-import { createEditorNodeFromPalette } from "../../types/createEditorNodeFromPalette";
+import { createEditorNodeFromPalette } from "../../editor-utils/createEditorNodeFromPalette";
 
 export function addFieldAtPosition(
   sections: FormSection[],

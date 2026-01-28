@@ -411,7 +411,6 @@
 //   };
 // }
 
-
 import {
   FormSection,
   EditorNode,
@@ -425,7 +424,11 @@ import {
 } from "../contracts/field-config.contract";
 import { FieldDefinition } from "../contracts/field-definition.contract";
 import { RuntimeField } from "../contracts/runtime.contract";
-import { mapDataType, mapLayoutSpan, mapWidget } from "../mappers/field-mappers";
+import {
+  mapDataType,
+  mapLayoutSpan,
+  mapWidget,
+} from "../mappers/field-mappers";
 import { fieldDefinitionToConfig } from "./fieldDefinitionToConfig";
 
 /* ======================================================
@@ -459,159 +462,14 @@ function collectFieldNodes(nodes: EditorNode[]): FieldNode[] {
   return result;
 }
 
-/* ======================================================
-   BUILD RUNTIME SCHEMA (EDITOR → RUNTIME)
-====================================================== */
-// export function buildRuntimeSchema(
-//   sections: FormSection[]
-// ): RuntimeField[] {
-//   const fieldNodes = sections.flatMap((s) =>
-//     collectFieldNodes(s.nodes ?? [])
-//   );
-
-//   return fieldNodes.map(buildRuntimeField);
-// }
-/* ======================================================
-   BUILD RUNTIME SCHEMA (EDITOR → RUNTIME)
-   ✅ frontend only
-====================================================== */
-
-export function buildRuntimeSchema(
-  sections: FormSection[]
-): RuntimeField[] {
-  const fieldNodes = sections.flatMap((s) =>
-    collectFieldNodes(s.nodes ?? [])
-  );
+export function buildRuntimeSchema(sections: FormSection[]): RuntimeField[] {
+  const fieldNodes = sections.flatMap((s) => collectFieldNodes(s.nodes ?? []));
 
   return fieldNodes.map(buildRuntimeField);
 }
 
-// function buildRuntimeField(
-//   node: Extract<EditorNode, { kind: "FIELD" }>
-// ): RuntimeField {
-//   const f = node.field;
-
-//   const widget = mapWidget(f.type);
-//   const rules = buildValidationRules(f, widget);
-
-//   const config: FieldConfig = {
-//     meta: {
-//       key: f.key,
-//       label: f.label,
-//       description: f.description,
-//       category: f.category ?? "INPUT",
-//       deprecated: f.deprecated ?? false,
-//     },
-
-//     data: {
-//       type: mapDataType(f.type),
-//       default: f.defaultValue,
-//       nullable: !f.required,
-//     },
-
-//     ui: {
-//       widget,
-//       placeholder: f.placeholder,
-//       helpText: f.helpText,
-//       options: f.options,
-//       format: f.format,
-//       layout: mapLayoutSpan(f.layout),
-//     },
-
-//     validation: rules.length ? { rules } : undefined,
-
-//     visibility: f.visibility,
-//     integration: f.integration,
-
-//     behavior: {
-//       readOnly: f.readOnly,
-//     },
-//   };
-
-//   return {
-//     id: f.id,
-//     config,
-
-//     state: {
-//       value: f.defaultValue,
-//       visible: f.visibility?.defaultVisible ?? true,
-//       readOnly: !!f.readOnly,
-//       errors: [],
-//     },
-//   };
-// }
-
-
-/* ======================================================
-   SINGLE FIELD BUILDER
-====================================================== */
-// function buildRuntimeField(
-//   node: Extract<EditorNode, { kind: "FIELD" }>
-// ): RuntimeField {
-//   const f = node.field;
-
-//   const widget = mapWidget(f.type);
-//   const rules = buildValidationRules(f, widget);
-
-//   const config: FieldConfig = {
-//     meta: {
-//       key: f.key,
-//       label: f.label,
-//       description: f.description,
-//       category: f.category ?? "INPUT",
-//       deprecated: f.deprecated ?? false,
-//     },
-
-//     data: {
-//       type: mapDataType(f.type),
-//       default: f.defaultValue,
-//       nullable: !f.required,
-//     },
-
-//     ui: {
-//       widget,
-//       placeholder: f.placeholder,
-//       helpText: f.helpText,
-//       options: f.options,
-//       format: f.format,
-//       layout: mapLayoutSpan(f.layout),
-//     },
-
-//     validation: rules.length ? { rules } : undefined,
-
-//     visibility: f.visibility,
-//     integration: f.integration,
-
-//     behavior: {
-//       readOnly: f.readOnly,
-//     },
-//   };
-
-//   return {
-//     id: f.id,
-//     config,
-
-//     state: {
-//       value: f.defaultValue,
-//       visible: f.visibility?.defaultVisible ?? true,
-//       readOnly: !!f.readOnly,
-//       errors: [],
-//     },
-
-//     // 🔥 keep editor validation for backend compiler
-//     editorValidation: {
-//       required: f.required,
-//       min: f.validation?.min,
-//       max: f.validation?.max,
-//       regex: f.validation?.regex,
-//       patternMessage: f.validation?.patternMessage,
-//       errorMessage: f.validation?.errorMessage,
-//     },
-//   };
-// }
-
 function buildRuntimeField(
-  node: Extract<EditorNode, { kind: "FIELD" }>
+  node: Extract<EditorNode, { kind: "FIELD" }>,
 ): RuntimeField {
   const f = node.field;
   const widget = mapWidget(f.type);
@@ -619,12 +477,15 @@ function buildRuntimeField(
 
   return {
     id: f.id,
+    fieldKey: f.key,
     config: {
       meta: {
         key: f.key,
         label: f.label,
         description: f.description,
         category: f.category ?? "INPUT",
+        system: false,
+        locked: false,
         deprecated: f.deprecated ?? false,
       },
       data: {
@@ -665,14 +526,54 @@ function buildRuntimeField(
   };
 }
 
-
 /* ======================================================
    VALIDATION RULE BUILDER
 ====================================================== */
-function buildValidationRules(
-  f: any,
-  widget: string
-): FieldValidationRule[] {
+// function buildValidationRules(f: any, widget: string): FieldValidationRule[] {
+//   const v = f.validation;
+//   const rules: FieldValidationRule[] = [];
+
+//   if (f.required) {
+//     rules.push({
+//       type: "REQUIRED",
+//       message: v?.errorMessage ?? "This field is required",
+//     });
+//   }
+
+//   if (v?.min !== undefined) {
+//     rules.push({
+//       type: "MIN",
+//       params: {
+//         value: v.min,
+//         appliesTo: isTextWidget(widget) ? "length" : "value",
+//       },
+//       message: v.errorMessage ?? `Minimum ${v.min}`,
+//     });
+//   }
+
+//   if (v?.max !== undefined) {
+//     rules.push({
+//       type: "MAX",
+//       params: {
+//         value: v.max,
+//         appliesTo: isTextWidget(widget) ? "length" : "value",
+//       },
+//       message: v.errorMessage ?? `Maximum ${v.max}`,
+//     });
+//   }
+
+//   if (v?.regex) {
+//     rules.push({
+//       type: "REGEX",
+//       params: { pattern: v.regex },
+//       message: v.patternMessage ?? "Invalid format",
+//     });
+//   }
+
+//   return rules;
+// }
+
+function buildValidationRules(f: any, widget: string): FieldValidationRule[] {
   const v = f.validation;
   const rules: FieldValidationRule[] = [];
 
@@ -685,22 +586,16 @@ function buildValidationRules(
 
   if (v?.min !== undefined) {
     rules.push({
-      type: "MIN",
-      params: {
-        value: v.min,
-        appliesTo: isTextWidget(widget) ? "length" : "value",
-      },
+      type: isTextWidget(widget) ? "LENGTH" : "MIN",
+      params: isTextWidget(widget) ? { min: v.min } : { min: v.min },
       message: v.errorMessage ?? `Minimum ${v.min}`,
     });
   }
 
   if (v?.max !== undefined) {
     rules.push({
-      type: "MAX",
-      params: {
-        value: v.max,
-        appliesTo: isTextWidget(widget) ? "length" : "value",
-      },
+      type: isTextWidget(widget) ? "LENGTH" : "MAX",
+      params: isTextWidget(widget) ? { max: v.max } : { max: v.max },
       message: v.errorMessage ?? `Maximum ${v.max}`,
     });
   }
@@ -708,7 +603,7 @@ function buildValidationRules(
   if (v?.regex) {
     rules.push({
       type: "REGEX",
-      params: { pattern: v.regex },
+      params: { regex: v.regex },
       message: v.patternMessage ?? "Invalid format",
     });
   }
@@ -725,18 +620,45 @@ function isTextWidget(widget: string) {
   );
 }
 
+// export function buildRuntimeSchemaFromCanonical(
+//   sections: FormSection[],
+//   fieldDefinitions: FieldDefinition[],
+// ): RuntimeField[] {
+//   const configMap = Object.fromEntries(
+//     fieldDefinitions.map((d) => [d.key, fieldDefinitionToConfig(d)]),
+//   );
+
+//   const nodes = sections.flatMap((s) => collectFieldNodes(s.nodes));
+
+//   const runtime: RuntimeField[] = [];
+
+//   for (const node of nodes) {
+//     const cfg = configMap[node.field.key];
+//     if (!cfg) continue;
+
+//     runtime.push({
+//       id: node.id,
+//       fieldKey: cfg.meta.key,
+//       config: cfg, // ✅ FULL FieldConfig (no mutation)
+//       state: {
+//         value: cfg.data.default,
+//         visible: true,
+//         readOnly: !!cfg.behavior?.readOnly,
+//         errors: [],
+//       },
+//     });
+//   }
+
+//   return runtime;
+// }
+
 export function buildRuntimeSchemaFromCanonical(
   sections: FormSection[],
-  fieldDefinitions: FieldDefinition[]
+  fieldDefinitions: FieldDefinition[],
 ): RuntimeField[] {
-
-const configMap = Object.fromEntries(
-  fieldDefinitions.map((d) => [
-    d.key,
-    fieldDefinitionToConfig(d),
-  ])
-);
-
+  const configMap = Object.fromEntries(
+    fieldDefinitions.map((d) => [d.key, fieldDefinitionToConfig(d)]),
+  );
 
   const nodes = sections.flatMap((s) => collectFieldNodes(s.nodes));
 
@@ -748,11 +670,20 @@ const configMap = Object.fromEntries(
 
     runtime.push({
       id: node.id,
-      config: cfg, // ✅ FULL FieldConfig (no mutation)
+      fieldKey: cfg.meta.key,
+
+      // ✅ canonical config only
+      config: cfg,
+
       state: {
-        value: cfg.data.default,
-        visible: cfg.visibility?.defaultVisible ?? true,
+        value: structuredClone(cfg.data.default ?? undefined),
+
+        // default visible only if no rule
+        visible: cfg.visibility?.rule ? false : true,
+
+        // behavior only (permissions later)
         readOnly: !!cfg.behavior?.readOnly,
+
         errors: [],
       },
     });

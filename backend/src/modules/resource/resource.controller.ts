@@ -96,7 +96,7 @@ const resourcesController = {
         ipAddress: req.ip,
         userAgent: req.get("user-agent") ?? null,
         performedBy: PerformedByType.USER,
-      }
+      },
     );
 
     sendResponse({
@@ -122,7 +122,7 @@ const resourcesController = {
         ipAddress: req.ip,
         userAgent: req.get("user-agent") ?? null,
         performedBy: PerformedByType.USER,
-      }
+      },
     );
 
     sendResponse({
@@ -148,7 +148,7 @@ const resourcesController = {
         ipAddress: req.ip,
         userAgent: req.get("user-agent") ?? null,
         performedBy: PerformedByType.USER,
-      }
+      },
     );
 
     sendResponse({
@@ -173,7 +173,7 @@ const resourcesController = {
         ipAddress: req.ip,
         userAgent: req.get("user-agent") ?? null,
         performedBy: PerformedByType.USER,
-      }
+      },
     );
 
     sendResponse({
@@ -195,7 +195,7 @@ const resourcesController = {
         ipAddress: req.ip,
         userAgent: req.get("user-agent") ?? null,
         performedBy: PerformedByType.USER,
-      }
+      },
     );
 
     sendResponse({
@@ -217,7 +217,7 @@ const resourcesController = {
         ipAddress: req.ip,
         userAgent: req.get("user-agent") ?? null,
         performedBy: PerformedByType.USER,
-      }
+      },
     );
 
     sendResponse({
@@ -239,7 +239,7 @@ const resourcesController = {
         ipAddress: req.ip,
         userAgent: req.get("user-agent") ?? null,
         performedBy: PerformedByType.USER,
-      }
+      },
     );
 
     sendResponse({
@@ -250,6 +250,82 @@ const resourcesController = {
       data: resources,
     });
   },
+
+  ///////////////////////////////////
+
+  getResourceSchema: async (req: Request, res: Response) => {
+    const id = assertString(req.params.id, "resource id");
+
+    const schema = await resourcesService.getResourceSchema(id);
+    // console.log("SCHEMA id:", id);
+    // console.log("SCHEMA:", JSON.stringify(schema, null, 2));
+
+
+    sendResponse({
+      res,
+      statusCode: HTTPSTATUS.OK,
+      success: true,
+      message: "Resource schema fetched successfully",
+      data: schema,
+    });
+  },
+
+  getReferenceData: async (req: Request, res: Response) => {
+    const id = assertString(req.params.fieldId, "field id");
+    console.log("DATA REF:", id);
+    const parentValue =
+      typeof req.query.parentValue === "string"
+        ? req.query.parentValue
+        : undefined;
+
+    const data = await resourcesService.getReferenceData(id, parentValue);
+    console.log("DATA REF:", data);
+
+    sendResponse({
+      res,
+      statusCode: HTTPSTATUS.OK,
+      success: true,
+      message: "Reference data fetched successfully",
+      data,
+    });
+  },
+
+  searchReference: async (req: Request, res: Response) => {
+    const id = assertString(req.params.id, "field id");
+    const q = assertString(req.query.q, "search query");
+
+    const data = await resourcesService.searchReference(id, q);
+
+    sendResponse({
+      res,
+      statusCode: HTTPSTATUS.OK,
+      success: true,
+      message: "Reference search successful",
+      data,
+    });
+  },
+
+  validateReference: async (req: Request, res: Response) => {
+    const id = assertString(req.params.id, "field id");
+    const value = assertString(req.body.value, "reference value");
+
+    const valid = await resourcesService.validateReference(id, value);
+
+    sendResponse({
+      res,
+      statusCode: HTTPSTATUS.OK,
+      success: true,
+      message: "Reference validation successful",
+      data: valid,
+    });
+  },
 };
 
 export default resourcesController;
+
+const assertString = (value: unknown, name: string): string => {
+  if (typeof value !== "string" || value.trim() === "") {
+    throw new Error(`${name} is required and must be a string`);
+  }
+  return value;
+};

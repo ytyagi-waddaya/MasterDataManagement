@@ -291,6 +291,8 @@ import { ValueInput } from "./ValueInput";
 
 import { X } from "lucide-react";
 import { FieldMeta } from "./condition.types";
+import { ConditionFieldRef } from "./condition-field-ref";
+import { mapEditorToFieldDataType } from "./editor-to-data-type.mapper";
 
 
 export function ConditionRuleRow({
@@ -302,12 +304,14 @@ export function ConditionRuleRow({
   rule: ConditionLeaf;
   onChange: (r: ConditionLeaf) => void;
   onDelete: () => void;
-  fields: readonly FieldMeta[];
+  fields: readonly ConditionFieldRef[];
 }) {
   const fieldMeta = fields.find((f) => f.key === rule.field);
-  const operators = fieldMeta
-    ? getOperatorsForFieldType(fieldMeta.type)
-    : [];
+const operators = fieldMeta
+  ? getOperatorsForFieldType(
+      mapEditorToFieldDataType(fieldMeta.type)
+    )
+  : [];
 
   const safeOperator =
     operators.find((op) => op.operator === rule.operator)?.operator ??

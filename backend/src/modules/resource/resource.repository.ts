@@ -111,9 +111,55 @@ const resourcesRepository = {
     });
   },
 
-findResourceWithActiveSchema:async(resourceKey: string) => {
+  findResourceWithActiveSchema: async (resourceKey: string) => {
+    return prisma.resource.findUnique({
+      where: { key: resourceKey },
+      include: {
+        masterObject: {
+          include: {
+            schemas: {
+              where: { status: "PUBLISHED" },
+              orderBy: { version: "desc" },
+              take: 1,
+              include: {
+                fieldDefinitions: {
+                  include: {
+                    fieldReference: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+  },
+
+  // //////////////////////////
+  // findResourceWithSchema: async (resourceId: string) => {
+  //   return prisma.resource.findUnique({
+  //     where: { id: resourceId },
+  //     include: {
+  //       masterObject: {
+  //         include: {
+  //           fieldDefinitions: {
+  //             where: { deletedAt: null },
+  //             orderBy: { createdAt: "asc" },
+  //           },
+  //           schemas: {
+  //             where: { status: "PUBLISHED" },
+  //             orderBy: { version: "desc" },
+  //             take: 1,
+  //           },
+  //         },
+  //       },
+  //     },
+  //   });
+  // },
+
+findResourceWithSchema: async (resourceId: string) => {
   return prisma.resource.findUnique({
-    where: { key: resourceKey },
+    where: { id: resourceId },
     include: {
       masterObject: {
         include: {
@@ -123,8 +169,18 @@ findResourceWithActiveSchema:async(resourceKey: string) => {
             take: 1,
             include: {
               fieldDefinitions: {
+                where: {
+                  isActive: true,
+                  deletedAt: null,
+                  
+                },
+                orderBy: { order: "asc" },
                 include: {
+                  fieldPermissions: true,
+                  fieldValidationRules: true,
+                  fieldFormula: true,
                   fieldReference: true,
+                  fieldConditionBindings: true,
                 },
               },
             },
@@ -134,8 +190,96 @@ findResourceWithActiveSchema:async(resourceKey: string) => {
     },
   });
 },
-}
+  // fetchReferenceRecords: async (fieldId: string, parentValue?: string) => {
+  //   const ref = await prisma.fieldReference.findUnique({
+  //     where: { fieldId },
+  //     include: { targetObject: true },
+  //   });
 
+  //   if (!ref) throw new Error("Reference config not found");
+
+  //   return prisma.masterRecord.findMany({
+  //     where: {
+  //       masterObjectId: ref.targetObjectId,
+  //       ...(parentValue && {
+  //         data: { path: ["parent"], equals: parentValue },
+  //       }),
+  //     },
+  //     take: 50,
+  //   });
+  // },
+fetchDistinctFieldValues: async (fieldKey: string) => {
+  const records = await prisma.masterRecord.findMany({
+    select: { data: true },
+    take: 1000,
+  });
+
+  const values = new Set<string>();
+
+  for (const r of records) {
+    if (
+      r.data &&
+      typeof r.data === "object" &&
+      !Array.isArray(r.data)
+    ) {
+      const obj = r.data as Prisma.JsonObject;
+      const val = obj[fieldKey];
+
+      if (val !== undefined && val !== null && val !== "") {
+        values.add(String(val));
+      }
+    }
+  }
+
+  return Array.from(values);
+},
+
+
+
+  searchReferenceRecords: async (fieldId: string, q: string) => {
+    const ref = await prisma.fieldReference.findUnique({
+      where: { fieldId },
+      select: { displayFieldKey: true },
+    });
+
+    if (!ref || !ref.displayFieldKey) {
+      throw new Error(
+        `Reference misconfigured: displayFieldKey missing for fieldId=${fieldId}`,
+      );
+    }
+
+    return prisma.recordFieldIndex.findMany({
+      where: {
+        fieldKey: ref.displayFieldKey, // ✅ guaranteed string
+        stringValue: {
+          contains: q,
+          mode: "insensitive",
+        },
+      },
+      take: 20,
+    });
+  },
+
+  existsReference: async (fieldId: string, value: string) => {
+    const ref = await prisma.fieldReference.findUnique({
+      where: { fieldId },
+      select: { displayFieldKey: true },
+    });
+
+    if (!ref || !ref.displayFieldKey) {
+      throw new Error(
+        `Reference misconfigured: displayFieldKey missing for fieldId=${fieldId}`,
+      );
+    }
+
+    return prisma.recordFieldIndex.findFirst({
+      where: {
+        fieldKey: ref.displayFieldKey, // ✅ guaranteed string
+        stringValue: value,
+      },
+    });
+  },
+};
 
 export default resourcesRepository;
 
@@ -184,3 +328,24 @@ const buildModuleWhere = (filters: ResourceFilterInput) => {
 
   return where;
 };
+
+type JsonObject = Prisma.JsonObject;
+
+function isPlainJsonObject(
+  value: Prisma.JsonValue | null | undefined,
+): value is JsonObject {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function asObject(value: Prisma.JsonValue | null | undefined): JsonObject {
+  return isPlainJsonObject(value) ? value : {};
+}
+
+function getJsonString(
+  obj: Prisma.JsonValue | null | undefined,
+  key: string,
+): string {
+  if (!isPlainJsonObject(obj)) return "";
+  const v = obj[key];
+  return v == null ? "" : String(v);
+}

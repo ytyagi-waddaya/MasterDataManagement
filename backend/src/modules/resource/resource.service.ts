@@ -343,12 +343,12 @@ const actionsService = {
      1️⃣ DUPLICATE RESOURCE NAME
   ===================================================== */
     const existing = await resourcesRepository.findByNameAndTenant(
-      validatedData.name
+      validatedData.name,
     );
 
     if (existing) {
       throw new BadRequestException(
-        `Resource "${validatedData.name}" already exists.`
+        `Resource "${validatedData.name}" already exists.`,
       );
     }
 
@@ -361,7 +361,7 @@ const actionsService = {
 
     if (prefixExists) {
       throw new BadRequestException(
-        `Code prefix "${codePrefix}" is already in use.`
+        `Code prefix "${codePrefix}" is already in use.`,
       );
     }
 
@@ -437,13 +437,13 @@ const actionsService = {
 
         if (target.includes("key")) {
           throw new BadRequestException(
-            `Resource key "${resourceKey}" already exists.`
+            `Resource key "${resourceKey}" already exists.`,
           );
         }
 
         if (target.includes("codePrefix")) {
           throw new BadRequestException(
-            `Code prefix "${codePrefix}" already exists.`
+            `Code prefix "${codePrefix}" already exists.`,
           );
         }
       }
@@ -470,7 +470,7 @@ const actionsService = {
   updateResourceById: async (
     id: ResourceId,
     data: UpdateResourceInput,
-    meta?: ActorMeta
+    meta?: ActorMeta,
   ) => {
     const parsedId = resourceIdSchema.parse(id);
     const validatedData = updateResourceSchema.parse(data);
@@ -485,7 +485,7 @@ const actionsService = {
     if (validatedData.name && validatedData.name !== existing.name) {
       const duplicate = await resourcesRepository.isDuplicateName(
         validatedData.name,
-        parsedId.resourceId
+        parsedId.resourceId,
       );
       if (duplicate)
         throw new BadRequestException("resource name already exists.");
@@ -629,21 +629,20 @@ const actionsService = {
   archiveResources: async (ids: ResourceIds, meta?: ActorMeta) => {
     const { resourceIds } = resourceIdsSchema.parse(ids);
 
-    const existingResponses = await resourcesRepository.findManyByIds(
-      resourceIds
-    );
+    const existingResponses =
+      await resourcesRepository.findManyByIds(resourceIds);
     const activeResponses = existingResponses.filter((r) => !r.deletedAt);
 
     if (activeResponses.length === 0) {
       throw new BadRequestException(
-        "No active resources found for the provided IDs."
+        "No active resources found for the provided IDs.",
       );
     }
 
     const nonSystemActive = activeResponses.filter((r) => !r.isSystem);
     if (nonSystemActive.length === 0) {
       throw new BadRequestException(
-        "All selected resources are system resources and cannot be archived."
+        "All selected resources are system resources and cannot be archived.",
       );
     }
 
@@ -659,7 +658,7 @@ const actionsService = {
             },
           });
           return updated;
-        })
+        }),
       );
 
       const timestamp = new Date();
@@ -677,8 +676,8 @@ const actionsService = {
               userAgent: meta?.userAgent ?? null,
               performedBy: meta?.performedBy ?? PerformedByType.USER,
             },
-          })
-        )
+          }),
+        ),
       );
       return {
         count: updatedRecords.length,
@@ -692,14 +691,13 @@ const actionsService = {
   restoreResources: async (ids: ResourceIds, meta?: ActorMeta) => {
     const { resourceIds } = resourceIdsSchema.parse(ids);
 
-    const existingResources = await resourcesRepository.findManyByIds(
-      resourceIds
-    );
+    const existingResources =
+      await resourcesRepository.findManyByIds(resourceIds);
 
     const inactiveResources = existingResources.filter((r) => r.deletedAt);
     if (inactiveResources.length === 0) {
       throw new BadRequestException(
-        "No archived resources found for the provided IDs."
+        "No archived resources found for the provided IDs.",
       );
     }
 
@@ -716,7 +714,7 @@ const actionsService = {
             },
           });
           return updated;
-        })
+        }),
       );
 
       await Promise.all(
@@ -733,8 +731,8 @@ const actionsService = {
               userAgent: meta?.userAgent ?? null,
               performedBy: meta?.performedBy ?? PerformedByType.USER,
             },
-          })
-        )
+          }),
+        ),
       );
 
       return {
@@ -749,9 +747,8 @@ const actionsService = {
   deleteResources: async (ids: ResourceIds, meta?: ActorMeta) => {
     const { resourceIds } = resourceIdsSchema.parse(ids);
 
-    const existingResources = await resourcesRepository.findManyByIds(
-      resourceIds
-    );
+    const existingResources =
+      await resourcesRepository.findManyByIds(resourceIds);
 
     if (existingResources.length === 0) {
       throw new BadRequestException("No resources found for the provided IDs.");
@@ -762,7 +759,7 @@ const actionsService = {
 
     if (deletable.length === 0) {
       throw new BadRequestException(
-        "All selected resources are system resources and cannot be deleted."
+        "All selected resources are system resources and cannot be deleted.",
       );
     }
 
@@ -772,7 +769,7 @@ const actionsService = {
         idsToDelete.map(async (id) => {
           const deleted = await tx.resource.delete({ where: { id } });
           return deleted;
-        })
+        }),
       );
 
       // audit logs
@@ -790,8 +787,8 @@ const actionsService = {
               userAgent: meta?.userAgent ?? null,
               performedBy: meta?.performedBy ?? PerformedByType.USER,
             },
-          })
-        )
+          }),
+        ),
       );
 
       return {
@@ -805,11 +802,10 @@ const actionsService = {
   },
 
   getResourceFields: async (
-    resourceKey: string
+    resourceKey: string,
   ): Promise<ResourceFieldsResponse> => {
-    const resource = await resourcesRepository.findResourceWithActiveSchema(
-      resourceKey
-    );
+    const resource =
+      await resourcesRepository.findResourceWithActiveSchema(resourceKey);
 
     if (!resource || !resource.masterObject) {
       throw new Error("Resource not found");
@@ -843,6 +839,39 @@ const actionsService = {
       fields,
     };
   },
+
+  /////////////////////
+
+getResourceSchema: async (resourceId: string) => {
+  const resource =
+    await resourcesRepository.findResourceWithSchema(resourceId);
+
+  if (!resource) throw new Error("Resource not found");
+
+  console.log("RESOURCE:", JSON.stringify(resource, null, 2));
+
+  const schema = resource.masterObject?.schemas[0]; // already filtered in query
+  if (!schema) throw new Error("Published schema not found");
+
+  return {
+    schema,
+    fieldDefinitions: schema.fieldDefinitions, // ✅ FIXED
+  };
+},
+
+
+  getReferenceData: async (fieldId: string, parentValue?: string) => {
+    return resourcesRepository.fetchDistinctFieldValues(fieldId);
+  },
+
+  searchReference: async (fieldId: string, query: string) => {
+    return resourcesRepository.searchReferenceRecords(fieldId, query);
+  },
+
+  validateReference: async (fieldId: string, value: string) => {
+    const exists = await resourcesRepository.existsReference(fieldId, value);
+    return !!exists;
+  },
 };
 
 /* ======================================================
@@ -852,7 +881,7 @@ const actionsService = {
 export default actionsService;
 
 function mapSchemaDataTypeToResourceType(
-  type: FieldDataType
+  type: FieldDataType,
 ): ResourceFieldType | null {
   switch (type) {
     case "STRING":
@@ -861,8 +890,6 @@ function mapSchemaDataTypeToResourceType(
     case "DATE":
     case "DATETIME":
       return type;
-
-    case "ARRAY":
     case "JSON":
     default:
       return null; // ❗ explicitly NOT exposable

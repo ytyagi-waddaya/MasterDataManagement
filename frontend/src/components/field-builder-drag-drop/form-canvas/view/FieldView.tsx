@@ -26,11 +26,10 @@
 //   );
 // }
 
-
 // "use client";
 
 // import { EditorNode } from "../../contracts/editor.contract";
-// import { 
+// import {
 //   Square, CheckSquare, Hash, ChevronDown, Database,
 //   Calendar, Clock, DollarSign, Percent, Image, File,
 //   Mail, Phone, Globe, Key, User, CheckCircle,
@@ -59,16 +58,16 @@
 //     phone: Phone,
 //     url: Globe,
 //     password: Key,
-    
+
 //     // Numbers
 //     number: Hash,
 //     currency: DollarSign,
 //     percentage: Percent,
-    
+
 //     // Boolean
 //     boolean: CheckSquare,
 //     consent: CheckCircle,
-    
+
 //     // Selection
 //     select: ChevronDown,
 //     multi_select: List,
@@ -76,27 +75,27 @@
 //     rating: Star,
 //     scale: ThumbsUp,
 //     matrix: Hash,
-    
+
 //     // Date / Time
 //     date: Calendar,
 //     datetime: Clock,
-    
+
 //     // Files / Media
 //     file: File,
 //     image: Image,
-    
+
 //     // References
 //     reference: Database,
 //     multi_reference: List,
 //     user: User,
 //     role: User,
 //     status: CheckCircle,
-    
+
 //     // Workflow / System
 //     approval: CheckCircle,
 //     checklist: List,
 //     captcha: CheckCircle,
-    
+
 //     // Advanced
 //     json: Database,
 //   };
@@ -126,7 +125,7 @@
 //             </p>
 //           )}
 //         </div>
-        
+
 //         {/* Field type badge */}
 //         <div className="text-xs text-gray-500 dark:text-gray-400 px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-800">
 //           {fieldType}
@@ -136,7 +135,7 @@
 //       {/* Input preview */}
 //       <div className="mt-2">
 //         {/* Text inputs */}
-//         {(fieldType === "text" || fieldType === "email" || fieldType === "phone" || 
+//         {(fieldType === "text" || fieldType === "email" || fieldType === "phone" ||
 //           fieldType === "url" || fieldType === "password") && (
 //           <div className="h-8 rounded border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-2 flex items-center">
 //             <span className="text-xs text-gray-400">
@@ -148,14 +147,14 @@
 //             </span>
 //           </div>
 //         )}
-        
+
 //         {/* Textarea */}
 //         {(fieldType === "textarea" || fieldType === "rich_text") && (
 //           <div className="min-h-16 rounded border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-2 py-1.5">
 //             <span className="text-xs text-gray-400">Multiline text...</span>
 //           </div>
 //         )}
-        
+
 //         {/* Number inputs */}
 //         {(fieldType === "number" || fieldType === "currency" || fieldType === "percentage") && (
 //           <div className="h-8 rounded border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-2 flex items-center">
@@ -166,7 +165,7 @@
 //             </span>
 //           </div>
 //         )}
-        
+
 //         {/* Select */}
 //         {(fieldType === "select" || fieldType === "multi_select") && (
 //           <div className="h-8 rounded border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-2 flex items-center justify-between">
@@ -174,7 +173,7 @@
 //             <ChevronDown className="h-3 w-3 text-gray-400" />
 //           </div>
 //         )}
-        
+
 //         {/* Boolean */}
 //         {fieldType === "boolean" && (
 //           <div className="flex items-center gap-2">
@@ -184,7 +183,7 @@
 //             <span className="text-xs text-gray-600 dark:text-gray-300">Yes/No</span>
 //           </div>
 //         )}
-        
+
 //         {/* Radio */}
 //         {fieldType === "radio" && (
 //           <div className="flex items-center gap-2">
@@ -194,7 +193,7 @@
 //             <span className="text-xs text-gray-600 dark:text-gray-300">Option</span>
 //           </div>
 //         )}
-        
+
 //         {/* Rating/Scale */}
 //         {(fieldType === "rating" || fieldType === "scale") && (
 //           <div className="flex items-center gap-1">
@@ -203,7 +202,7 @@
 //             ))}
 //           </div>
 //         )}
-        
+
 //         {/* Date */}
 //         {(fieldType === "date" || fieldType === "datetime") && (
 //           <div className="h-8 rounded border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-2 flex items-center justify-between">
@@ -211,7 +210,7 @@
 //             <Calendar className="h-3 w-3 text-gray-400" />
 //           </div>
 //         )}
-        
+
 //         {/* File/Image */}
 //         {(fieldType === "file" || fieldType === "image") && (
 //           <div className="h-16 rounded border border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center">
@@ -219,16 +218,16 @@
 //             <span className="text-xs text-gray-400">Upload {fieldType}</span>
 //           </div>
 //         )}
-        
+
 //         {/* Reference */}
-//         {(fieldType === "reference" || fieldType === "multi_reference" || 
+//         {(fieldType === "reference" || fieldType === "multi_reference" ||
 //           fieldType === "user" || fieldType === "role") && (
 //           <div className="h-8 rounded border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-2 flex items-center justify-between">
 //             <span className="text-xs text-gray-400">Select {fieldType}...</span>
 //             <Database className="h-3 w-3 text-gray-400" />
 //           </div>
 //         )}
-        
+
 //         {/* Workflow */}
 //         {(fieldType === "approval" || fieldType === "checklist" || fieldType === "captcha") && (
 //           <div className="flex items-center gap-2">
@@ -238,7 +237,7 @@
 //             </span>
 //           </div>
 //         )}
-        
+
 //         {/* JSON */}
 //         {fieldType === "json" && (
 //           <div className="h-8 rounded border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-2 flex items-center">
@@ -272,11 +271,28 @@
 
 import { EditorNode } from "../../contracts/editor.contract";
 import {
-  Square, CheckSquare, Hash, ChevronDown, Database,
-  Calendar, Clock, DollarSign, Percent, Image, File,
-  Mail, Phone, Globe, Key, User, CheckCircle,
-  Star, ThumbsUp, List, Upload,
-  Text
+  Square,
+  CheckSquare,
+  Hash,
+  ChevronDown,
+  Database,
+  Calendar,
+  Clock,
+  DollarSign,
+  Percent,
+  Image,
+  File,
+  Mail,
+  Phone,
+  Globe,
+  Key,
+  User,
+  CheckCircle,
+  Star,
+  ThumbsUp,
+  List,
+  Upload,
+  Text,
 } from "lucide-react";
 import { EditorFieldType } from "../../contracts/fieldPalette.contract";
 
@@ -293,31 +309,15 @@ const TEXT_INPUT_FIELDS: EditorFieldType[] = [
   "password",
 ];
 
-const MULTILINE_FIELDS: EditorFieldType[] = [
-  "textarea",
-  "rich_text",
-];
+const MULTILINE_FIELDS: EditorFieldType[] = ["textarea", "rich_text"];
 
-const NUMBER_FIELDS: EditorFieldType[] = [
-  "number",
-  "currency",
-  "percentage",
-];
+const NUMBER_FIELDS: EditorFieldType[] = ["number", "currency", "percentage"];
 
-const SELECT_FIELDS: EditorFieldType[] = [
-  "select",
-  "multi_select",
-];
+const SELECT_FIELDS: EditorFieldType[] = ["select", "multi_select"];
 
-const DATE_FIELDS: EditorFieldType[] = [
-  "date",
-  "datetime",
-];
+const DATE_FIELDS: EditorFieldType[] = ["date", "datetime"];
 
-const FILE_FIELDS: EditorFieldType[] = [
-  "file",
-  "image",
-];
+const FILE_FIELDS: EditorFieldType[] = ["file", "image"];
 
 const REFERENCE_FIELDS: EditorFieldType[] = [
   "reference",
@@ -326,11 +326,7 @@ const REFERENCE_FIELDS: EditorFieldType[] = [
   "role",
 ];
 
-const WORKFLOW_FIELDS: EditorFieldType[] = [
-  "approval",
-  "checklist",
-  "captcha",
-];
+const WORKFLOW_FIELDS: EditorFieldType[] = ["approval", "checklist", "captcha"];
 
 export function FieldView({
   node,
@@ -384,7 +380,7 @@ export function FieldView({
   };
 
   const FieldIcon = fieldIcons[fieldType] || Square;
-console.log("FIELD TYPE:", node.field.type);
+  console.log("FIELD TYPE:", node.field.type);
 
   return (
     <div className="p-3" style={{ gridColumn: `span ${span}` }}>
@@ -501,18 +497,14 @@ console.log("FIELD TYPE:", node.field.type);
         {FILE_FIELDS.includes(fieldType) && (
           <div className="h-16 rounded border border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center">
             <Upload className="h-4 w-4 text-gray-400 mr-2" />
-            <span className="text-xs text-gray-400">
-              Upload {fieldType}
-            </span>
+            <span className="text-xs text-gray-400">Upload {fieldType}</span>
           </div>
         )}
 
         {/* Reference */}
         {REFERENCE_FIELDS.includes(fieldType) && (
           <div className="h-8 rounded border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-2 flex items-center justify-between">
-            <span className="text-xs text-gray-400">
-              Select {fieldType}...
-            </span>
+            <span className="text-xs text-gray-400">Select {fieldType}...</span>
             <Database className="h-3 w-3 text-gray-400" />
           </div>
         )}
@@ -547,10 +539,12 @@ console.log("FIELD TYPE:", node.field.type);
                 {node.field.placeholder}
               </div>
             )}
-            {node.field.default && (
+            {node.field.default !== undefined && (
               <div className="text-xs text-gray-500 dark:text-gray-400">
                 <span className="font-medium">Default:</span>{" "}
-                {node.field.default}
+                {typeof node.field.default === "object"
+                  ? JSON.stringify(node.field.default)
+                  : String(node.field.default)}
               </div>
             )}
           </div>
@@ -559,5 +553,3 @@ console.log("FIELD TYPE:", node.field.type);
     </div>
   );
 }
-
-

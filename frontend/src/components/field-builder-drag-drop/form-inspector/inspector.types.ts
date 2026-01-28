@@ -1,7 +1,7 @@
 
 import { FieldMeta } from "../condition-builder/condition.types";
 import { mapEditorTypeToFieldDataType } from "../condition-builder/mapEditorTypeToConditionType";
-import { EditorNode, FormSection } from "../contracts/editor.contract";
+import { EditorFieldDefinition, EditorNode, FormSection } from "../contracts/editor.contract";
 
 export type InspectorTab = "GENERAL" | "VALIDATION" | "VISIBILITY" | "API";
 
@@ -19,27 +19,46 @@ export interface InspectorProps {
 
 
 /* helper */
-export function collectFields(sections: FormSection[]): FieldMeta[] {
-  const result: FieldMeta[] = [];
+// export function collectFields(sections: FormSection[]): FieldMeta[] {
+//   const result: FieldMeta[] = [];
 
-  const walk = (nodes: EditorNode[]) => {
+//   const walk = (nodes: EditorNode[]) => {
+//     for (const n of nodes) {
+//       console.log("Walking node:", n.kind);
+//       if (n.kind === "FIELD") {
+//         result.push({
+//           key: n.field.key,
+//           label: n.field.label,
+//           type:mapEditorTypeToFieldDataType(n.field.type),
+//         });
+//       }
+
+//       if (n.kind === "LAYOUT" && "slots" in n) {
+//         n.slots.forEach((s) => walk(s.children));
+//       }
+//     }
+//   };
+
+//   sections?.forEach((s) => walk(s.nodes));
+//   return result;
+// }
+
+
+export function collectFields(sections: FormSection[]): EditorFieldDefinition[] {
+  const fields: EditorFieldDefinition[] = [];
+
+  function walk(nodes: EditorNode[]) {
     for (const n of nodes) {
-      console.log("Walking node:", n.kind);
       if (n.kind === "FIELD") {
-        result.push({
-          key: n.field.key,
-          label: n.field.label,
-          type:mapEditorTypeToFieldDataType(n.field.type),
-        });
+        fields.push(n.field); // ✅ FULL DEFINITION
       }
 
       if (n.kind === "LAYOUT" && "slots" in n) {
         n.slots.forEach((s) => walk(s.children));
       }
     }
-  };
+  }
 
-  sections?.forEach((s) => walk(s.nodes));
-  return result;
+  sections.forEach((s) => walk(s.nodes));
+  return fields;
 }
-

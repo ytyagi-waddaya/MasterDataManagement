@@ -1,13 +1,11 @@
-import { ConditionNode } from "./condition.contract";
-import { Expression } from "./expression.contract";
-import { VisibilityRule } from "./visibility.contract";
-
 /* ======================================================
-   FIELD CONFIG – CANONICAL (PRODUCTION)
+   FIELD CONFIG – CANONICAL CONTRACT
 ====================================================== */
 
+import { ConditionNode, FieldKey } from "./condition.contract";
 
 export interface FieldConfig {
+  configVersion?: number;
   meta: FieldMeta;
   data: FieldData;
   ui?: FieldUI;
@@ -26,13 +24,14 @@ export type FieldCategory =
   | "CALCULATED"
   | "REFERENCE"
   | "STRUCTURE"
-  | "PRESENTATION";
+  | "PRESENTATION"
+  | "DEPRECATED";
 
 export interface FieldMeta {
-  key: string;
+  key: string; // ❌ immutable
   label: string;
   description?: string;
-  category: FieldCategory;
+  category: FieldCategory; // ❌ immutable
   system?: boolean;
   locked?: boolean;
   deprecated?: boolean;
@@ -49,8 +48,8 @@ export type FieldDataType =
   | "JSON";
 
 export interface FieldData {
-  type: FieldDataType;
-  default?: string | number | boolean | null | object;
+  type: FieldDataType; // ❌ immutable
+  default?: any;
   nullable?: boolean;
   precision?: number;
   scale?: number;
@@ -69,10 +68,12 @@ export interface FieldUI {
     | "CHECKBOX"
     | "DATE"
     | "DATETIME"
-    | "FILE";
+    | "FILE"
+    | "RICH_TEXT";
 
   placeholder?: string;
   helpText?: string;
+  options?: { label: string; value: string }[]; // ✅ add this
 
   layout?: {
     width?: "full" | "half" | "third" | "quarter" | "two-third";
@@ -84,82 +85,109 @@ export interface FieldUI {
     style?: "currency" | "percent" | "decimal";
     currency?: string;
   };
-  options?: { label: string; value: string }[];
 }
 
 /* ================= VALIDATION ================= */
 
-export type FieldValidationRule =
-  | { type: "REQUIRED"; message: string; when?: ConditionNode }
-  | {
-      type: "MIN" | "MAX";
-      params: { value: number; appliesTo?: "value" | "length" };
-      message: string;
-      when?: ConditionNode;
-    }
-  | {
-      type: "REGEX";
-      params: { pattern: string };
-      message: string;
-      when?: ConditionNode;
-    }
-  | { type: "EMAIL"; message: string; when?: ConditionNode }
-  | {
-      type: "BETWEEN";
-      params: { min: number; max: number };
-      message: string;
-      when?: ConditionNode;
-    }
-  | {
-      type: "CUSTOM";
-      handler: string;
-      message: string;
-      when?: ConditionNode;
-    };
+export type ValidationRuleType =
+  | "REQUIRED"
+  | "REQUIRED_IF"
+  | "MIN"
+  | "MAX"
+  | "REGEX"
+  | "BETWEEN"
+  | "RANGE"
+  | "LENGTH"
+  | "EMAIL"
+  | "CUSTOM";
+
+export interface FieldValidationRule {
+  type: ValidationRuleType;
+  params?: ValidationParams;
+  message: string;
+  severity?: "ERROR" | "WARNING";
+}
 
 export interface FieldValidation {
   rules?: FieldValidationRule[];
+}
+
+/* ================= VISIBILITY ================= */
+
+export type VisibilityRule =
+  | {
+      type: "CONDITION";
+      condition: ConditionNode;
+    }
+  | {
+      type: "EXPRESSION";
+      expression: {
+        expression: string;
+        dependencies?: string[];
+      };
+    };
+
+export interface FieldVisibility {
+  rule?: VisibilityRule;
+}
+
+export interface PermissionCondition {
+  field: FieldKey;
+  equals: any;
+}
+
+export interface PermissionRule {
+  roles?: string[];
+  users?: string[];
+  conditions?: PermissionCondition[];
+}
+
+export interface FieldPermissions {
+  read?: PermissionRule;
+  write?: PermissionRule;
+  create?: PermissionRule;
+  delete?: PermissionRule;
 }
 
 /* ================= BEHAVIOR ================= */
 
 export interface FieldBehavior {
   readOnly?: boolean;
-  formula?: Expression;
-  submitBehavior?: "REQUIRED" | "OPTIONAL";
-}
 
-
-/* ================= VISIBILITY ================= */
-
-export interface FieldVisibility {
-  /** Initial visibility before rules are evaluated */
-  defaultVisible?: boolean;
-
-  /** Runtime rule to compute visibility */
-  rule?: VisibilityRule;
-}
-
-
-/* ================= PERMISSIONS ================= */
-
-export interface FieldPermissions {
-  read?: Array<{ roles?: string[]; users?: string[] }>;
-  write?: Array<{ roles?: string[]; users?: string[] }>;
+  formula?: {
+    expression: string;
+    dependencies: string[];
+    mode?: "SYSTEM_RECALC" | "ON_CHANGE";
+  };
 }
 
 /* ================= INTEGRATION ================= */
 
+export interface ReferenceConfig {
+  targetObject: string;
+  displayField: string;
+  relation: "ONE_TO_ONE" | "ONE_TO_MANY";
+  allowMultiple?: boolean;
+  onDelete?: "CASCADE" | "SET_NULL";
+}
+
+export interface ApiSourceConfig {
+  url: string;
+  method: "GET" | "POST";
+
+  valueField: string;
+  labelField: string;
+
+  dependsOn?: string[];
+  params?: Record<string, string | number | boolean>;
+
+  cache?: boolean;
+}
+
 export interface FieldIntegration {
-  apiSource?: {
-    sourceType?: "INTERNAL" | "EXTERNAL";
-    url: string;
-    method: "GET" | "POST";
-    valueField: string;
-    labelField: string;
-    dependsOn?: Array<{ field: string; param: string }>;
-    params?: Record<string, any>;
-  };
+  reference?: ReferenceConfig;
+  apiSource?: ApiSourceConfig;
+  file?: FileConfig;
 }
 
 /* ================= IMMUTABILITY ================= */
@@ -168,7 +196,21 @@ export const IMMUTABLE_AFTER_PUBLISH = [
   "meta.key",
   "meta.category",
   "data.type",
-  "behavior.formula",
+  "behavior.formula.expression",
 ] as const;
 
+export interface FileConfig {
+  maxSizeMB: number;
+  allowedTypes: string[];
+  storage?: "S3" | "LOCAL";
+  multiple?: boolean;
+}
 
+type ValidationParams =
+  | { min: number }
+  | { max: number }
+  | { regex: string }
+  | { field: string; equals: any } // REQUIRED_IF
+  | { from: number; to: number } // RANGE
+  | { min: number; max: number } // LENGTH
+  | { customFn: string };

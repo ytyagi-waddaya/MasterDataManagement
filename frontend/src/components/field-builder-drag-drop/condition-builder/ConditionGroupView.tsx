@@ -283,6 +283,7 @@ import {
 import { ConditionRuleRow } from "./ConditionRuleRow";
 import { Plus, ChevronDown, ChevronRight, X, FolderPlus } from "lucide-react";
 import { FieldMeta } from "./condition.types";
+import { ConditionFieldRef } from "./condition-field-ref";
 
 
 export function ConditionGroupView({
@@ -295,7 +296,7 @@ export function ConditionGroupView({
   node: ConditionNode;
   onChange: (n: ConditionNode) => void;
   onDelete?: () => void;
-  fields: readonly FieldMeta[];
+  fields: readonly ConditionFieldRef[];
   depth?: number;
 }) {
   /* ================= RULE ================= */

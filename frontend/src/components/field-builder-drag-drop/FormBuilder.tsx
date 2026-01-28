@@ -100,10 +100,11 @@ export function FormBuilder({
 
     const sections = initialSchema?.layout?.sections ?? null;
     const fieldDefinitions = (initialSchema as any)?.fieldDefinitions ?? [];
-    
 
     if (Array.isArray(sections) && sections.length > 0) {
+      // const normalized = normalizeEditorSchema(sections);
       const normalized = normalizeEditorSchema(sections, fieldDefinitions);
+
       console.log("[FB] normalized sections:", normalized);
       reset(normalized);
     } else {
@@ -125,7 +126,7 @@ export function FormBuilder({
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: { distance: 5 },
-    })
+    }),
   );
 
   /* ======================================================
@@ -161,7 +162,7 @@ export function FormBuilder({
 
   const selectedSection =
     selection?.type === "SECTION"
-      ? sections.find((s) => s.id === selection.sectionId) ?? null
+      ? (sections.find((s) => s.id === selection.sectionId) ?? null)
       : null;
 
   /* ======================================================
@@ -192,7 +193,7 @@ export function FormBuilder({
             setActiveDragItem(null);
             if (!isPublished) {
               formDnDRouter(e, setSections, (id) =>
-                setSelection({ type: "NODE", nodeId: id })
+                setSelection({ type: "NODE", nodeId: id }),
               );
             }
           }}
@@ -224,7 +225,7 @@ export function FormBuilder({
                   }
                   onSectionChange={(section) =>
                     setSections((prev) =>
-                      prev.map((s) => (s.id === section.id ? section : s))
+                      prev.map((s) => (s.id === section.id ? section : s)),
                     )
                   }
                   onDelete={() => {
@@ -236,7 +237,7 @@ export function FormBuilder({
                   onDuplicate={() => {
                     if (selection?.type === "NODE") {
                       setSections((prev) =>
-                        duplicateNode(prev, selection.nodeId)
+                        duplicateNode(prev, selection.nodeId),
                       );
                     }
                   }}

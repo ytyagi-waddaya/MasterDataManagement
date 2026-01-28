@@ -4,6 +4,7 @@ import {
   ConditionNode,
   FieldKey,
 } from "../contracts/condition.contract";
+import { EditorFieldType } from "../contracts/fieldPalette.contract";
 import { FieldDataType } from "./condition-ui.schema";
 
 /* ======================================================
@@ -164,17 +165,25 @@ export function changeOperator(
 
 
 
-export function getSampleValue(type: FieldDataType) {
+export function getSampleValue(type: EditorFieldType) {
   switch (type) {
-    case "STRING":
-      return "example";
-    case "NUMBER":
+    case "number":
+    case "currency":
+    case "percentage":
       return 10;
-    case "BOOLEAN":
+
+    case "boolean":
       return true;
-    case "DATE":
-      return "2025-01-01";
+
+    case "date":
+    case "datetime":
+      return new Date().toISOString();
+
+    case "select":
+    case "radio":
+      return "option_1";
+
     default:
-      return null;
+      return "sample";
   }
 }

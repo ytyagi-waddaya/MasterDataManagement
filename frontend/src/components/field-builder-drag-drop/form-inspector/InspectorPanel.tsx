@@ -60,7 +60,6 @@
 //   return () => window.removeEventListener("keydown", handler);
 // }, [node, onDelete, onDuplicate]);
 
-
 //   /* ---------- EMPTY ---------- */
 //   if (!node && !section) {
 //     return (
@@ -227,7 +226,7 @@ export function InspectorPanel({
               {node.kind === "FIELD" ? "Field Settings" : "Layout Settings"}
             </h3>
           </div>
-          
+
           <div className="flex items-center gap-1">
             <button
               onClick={() => onDuplicate(node.id)}
@@ -252,10 +251,21 @@ export function InspectorPanel({
         {node.kind === "FIELD" ? (
           <div className="p-4">
             <InspectorTabs active={tab} onChange={setTab} />
-            
+
             <div className="mt-4">
-              {tab === "GENERAL" && (
+              {/* {tab === "GENERAL" && (
                 <GeneralTab node={node} onChange={onNodeChange} />
+              )} */}
+              {tab === "GENERAL" && node.kind === "FIELD" && (
+                <GeneralTab
+                  definition={node.field}
+                  onChange={(updatedDef) =>
+                    onNodeChange({
+                      ...node,
+                      field: updatedDef,
+                    })
+                  }
+                />
               )}
 
               {tab === "VALIDATION" && (

@@ -352,19 +352,20 @@ model FieldDefinition {
   key      String
   label    String
 
+  status    FieldStatus   @default(DRAFT)
   category  FieldCategory
   dataType  FieldDataType
   fieldType FieldType // text, select, table, reference, etc.
 
   // All dynamic config (options, visibility, layout, apiSource…)
-  config Json
-  order  Int
-
+  config      Json
+  order       Int
+  publishedAt DateTime?
   // Governance
-  isRequired Boolean @default(false)
-  isSystem   Boolean @default(false)
-  isActive   Boolean @default(true)
-  isLocked   Boolean @default(false)
+  isRequired  Boolean   @default(false)
+  isSystem    Boolean   @default(false)
+  isActive    Boolean   @default(true)
+  isLocked    Boolean   @default(false)
 
   fieldPermissions       FieldPermission[]
   fieldValidationRules   FieldValidationRule[]
@@ -623,9 +624,9 @@ model RecordPermission {
   roleId String?
   role   Role?   @relation(fields: [roleId], references: [id], onDelete: SetNull)
 
-  userId String?
-  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
-
+  userId    String?
+  user      User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+  canCreate Boolean @default(false)
   canRead   Boolean
   canWrite  Boolean
   canDelete Boolean
@@ -1170,6 +1171,7 @@ enum AuditAction {
   TOKEN_REFRESH
   ARCHIVE
   GRANT
+  PUBLISH
 }
 
 enum AuditEntity {
@@ -1221,6 +1223,13 @@ enum SchemaStatus {
   ARCHIVED
 }
 
+enum FieldStatus {
+  DRAFT
+  ACTIVE
+  HIDDEN
+  DEPRECATED
+}
+
 enum FieldCategory {
   INPUT
   REFERENCE
@@ -1238,7 +1247,6 @@ enum FieldDataType {
   DATE
   DATETIME
   JSON
-  ARRAY
 }
 
 enum FieldType {

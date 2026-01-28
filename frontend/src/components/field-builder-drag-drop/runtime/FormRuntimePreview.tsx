@@ -2,7 +2,10 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { FormSection, EditorNode } from "../contracts/editor.contract";
-import { buildRuntimeSchema, buildRuntimeSchemaFromCanonical } from "../types/buildRuntimeSchema";
+import {
+  buildRuntimeSchema,
+  buildRuntimeSchemaFromCanonical,
+} from "../types/buildRuntimeSchema";
 import { validateForm } from "../validation/validateForm";
 import { RuntimeField } from "../contracts/runtime.contract";
 
@@ -11,9 +14,10 @@ import { RuntimeTabs } from "./RuntimeTabs";
 import { RuntimeAccordion } from "./RuntimeAccordion";
 import { RuntimeRepeater } from "./RuntimeRepeater";
 import { Send, Code, Eye, Info } from "lucide-react";
-import { validateField } from "./validateField";
+
 import { FieldDefinition } from "../contracts/field-definition.contract";
 import { FieldConfig } from "../contracts/field-config.contract";
+import { validateRuntimeField } from "../validation/validateFieldValue";
 
 /* ======================================================
    FORM RUNTIME PREVIEW (PUBLISHED / END-USER UI)
@@ -61,23 +65,20 @@ export function FormRuntimePreview({
   //   [sections, fieldDefinitions]
   // );
 
-//   const runtimeFields = useMemo(
-//   () => buildRuntimeSchema(sections),
-//   [sections]
-// );
+  //   const runtimeFields = useMemo(
+  //   () => buildRuntimeSchema(sections),
+  //   [sections]
+  // );
 
+  const runtimeFields = useMemo(() => {
+    // ✅ ALWAYS prefer canonical fieldDefinitions
+    if (fieldDefinitions?.length) {
+      return buildRuntimeSchemaFromCanonical(sections, fieldDefinitions);
+    }
 
-const runtimeFields = useMemo(() => {
-  // ✅ ALWAYS prefer canonical fieldDefinitions
-  if (fieldDefinitions?.length) {
-    return buildRuntimeSchemaFromCanonical(sections, fieldDefinitions);
-  }
-
-  // fallback (editor live only)
-  return buildRuntimeSchema(sections);
-}, [sections, fieldDefinitions]);
-
-
+    // fallback (editor live only)
+    return buildRuntimeSchema(sections);
+  }, [sections, fieldDefinitions]);
 
   const runtimeFieldMap = useMemo(() => {
     if (!Array.isArray(runtimeFields)) return {};
@@ -85,31 +86,57 @@ const runtimeFields = useMemo(() => {
   }, [runtimeFields]);
 
   const [values, setValues] = useState<Record<string, any>>(
-    () => initialValues ?? {}
+    () => initialValues ?? {},
   );
+  // const [touched, setTouched] = useState<Record<string, boolean>>({});
+
 
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
 
-  function handleChange(field: RuntimeField, value: any) {
-    const errors = validateField(field, value);
-    const key = field.config.meta.key;
-    // field.state.errors = errors;
-    setValues((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
+  // function handleChange(field: RuntimeField, value: any) {
+  //   const errors = validateRuntimeField(field, value);
+  //   const key = field.config.meta.key;
+  //   // field.state.errors = errors;
+  //   setValues((prev) => ({
+  //     ...prev,
+  //     [key]: value,
+  //   }));
 
-    setFieldErrors((prev) => ({
-      ...prev,
-      [key]: errors,
-    }));
-  }
+  //   setFieldErrors((prev) => ({
+  //     ...prev,
+  //     [key]: errors,
+  //   }));
+  // }
+function handleChange(field: RuntimeField, value: any) {
+  const key = field.config.meta.key;
+
+  const errors = validateRuntimeField(field, value);
+
+  setValues((prev) => ({
+    ...prev,
+    [key]: value,
+  }));
+
+  setFieldErrors((prev) => {
+    const next = { ...prev };
+
+    if (errors.length === 0) {
+      delete next[key]; // ✅ CLEAR error when fixed
+    } else {
+      next[key] = errors;
+    }
+
+    return next;
+  });
+}
+
+
 
   useEffect(() => {
     if (!initialValues) return;
 
     setValues((prev) =>
-      shallowEqual(prev, initialValues) ? prev : initialValues
+      shallowEqual(prev, initialValues) ? prev : initialValues,
     );
   }, [initialValues]);
 
@@ -117,32 +144,88 @@ const runtimeFields = useMemo(() => {
   //   validateForm(runtimeFields, values);
   // }, [runtimeFields, values]);
 
+useEffect(() => {
+  if (!runtimeFields.length) return;
+
+  const nextErrors: Record<string, string[]> = {};
+
+  runtimeFields.forEach((field) => {
+    const key = field.config.meta.key;
+
+    // 🚫 skip hidden fields
+    if (field.state.visible === false) return;
+
+    // 🚫 skip untouched fields
+    // if (!touched[key]) return;
+
+    const value = values[key];
+    const errors = validateRuntimeField(field, value);
+
+    if (errors.length > 0) {
+      nextErrors[key] = errors;
+    }
+  });
+
+  setFieldErrors(nextErrors);
+}, [values, runtimeFields]);
+
+
+  // function handleSubmit(e: React.FormEvent) {
+  //   e.preventDefault();
+
+  //   let hasErrors = false;
+
+  //   const nextErrors: Record<string, string[]> = {};
+
+  //   runtimeFields.forEach((field) => {
+  //     const key = field.config.meta.key;
+  //     const value = values[key];
+  //     const errors = validateRuntimeField(field, value);
+
+  //     if (errors.length > 0) {
+  //       nextErrors[key] = errors;
+  //       hasErrors = true;
+  //     }
+  //   });
+
+  //   setFieldErrors(nextErrors);
+
+  //   // ❌ stop submit if errors
+  //   if (hasErrors) return;
+
+  //   // ✅ submit only if valid
+  //   onSubmit?.(values);
+  // }
+
   function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  e.preventDefault();
 
-    let hasErrors = false;
+  const nextErrors: Record<string, string[]> = {};
+  let hasErrors = false;
 
-    const nextErrors: Record<string, string[]> = {};
+  runtimeFields.forEach((field) => {
+    const key = field.config.meta.key;
 
-    runtimeFields.forEach((field) => {
-      const key = field.config.meta.key;
-      const value = values[key];
-      const errors = validateField(field, value);
+    if (field.state.visible === false) return;
 
-      if (errors.length > 0) {
-        nextErrors[key] = errors;
-        hasErrors = true;
-      }
-    });
+    const errors = validateRuntimeField(field, values[key]);
 
-    setFieldErrors(nextErrors);
+    if (errors.length > 0) {
+      nextErrors[key] = errors;
+      hasErrors = true;
+    }
+  });
 
-    // ❌ stop submit if errors
-    if (hasErrors) return;
+  // setTouched(
+  //   Object.fromEntries(runtimeFields.map(f => [f.config.meta.key, true]))
+  // );
 
-    // ✅ submit only if valid
-    onSubmit?.(values);
-  }
+  setFieldErrors(nextErrors);
+  if (hasErrors) return;
+
+  onSubmit?.(values);
+}
+
 
   return (
     <form onSubmit={handleSubmit} className="max-w-full mx-auto space-y-6">
@@ -167,8 +250,8 @@ const runtimeFields = useMemo(() => {
                 setValues,
                 readOnly,
                 handleChange,
-                fieldErrors
-              )
+                fieldErrors,
+              ),
             )}
           </div>
         </section>
@@ -244,7 +327,7 @@ function renderRuntimeNode(
   setValues: (v: Record<string, any>) => void,
   readOnly: boolean,
   handleChange: (field: RuntimeField, value: any) => void,
-  fieldErrors: Record<string, string[]>
+  fieldErrors: Record<string, string[]>,
 ): React.ReactNode {
   /* ================= FIELD ================= */
   if (node.kind === "FIELD") {
@@ -265,7 +348,7 @@ function renderRuntimeNode(
             <label className="text-sm font-medium text-gray-800 dark:text-gray-200">
               {runtime.config.meta.label}
               {runtime.config.validation?.rules?.some(
-                (r) => r.type === "REQUIRED"
+                (r) => r.type === "REQUIRED",
               ) && (
                 <span className="ml-1 text-red-500" title="Required">
                   *
@@ -336,8 +419,8 @@ function renderRuntimeNode(
                       setValues,
                       readOnly,
                       handleChange,
-                      fieldErrors
-                    )
+                      fieldErrors,
+                    ),
                   )}
                 </div>
               </div>
@@ -362,7 +445,7 @@ function renderRuntimeNode(
                 setValues,
                 readOnly,
                 handleChange,
-                fieldErrors
+                fieldErrors,
               )
             }
           />
@@ -385,7 +468,7 @@ function renderRuntimeNode(
                 setValues,
                 readOnly,
                 handleChange,
-                fieldErrors
+                fieldErrors,
               )
             }
           />
@@ -408,7 +491,7 @@ function renderRuntimeNode(
                 setValues,
                 readOnly,
                 handleChange,
-                fieldErrors
+                fieldErrors,
               )
             }
           />

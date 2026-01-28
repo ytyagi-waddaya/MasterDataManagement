@@ -1,8 +1,8 @@
 import { FormSection } from "../../contracts/editor.contract";
 import { PaletteItem } from "../../contracts/fieldPalette.contract";
 import { walkEditorTree } from "../../dnd/walkEditorTree";
-import { createEditorNodeFromPalette } from "../../types/createEditorNodeFromPalette";
-import { isSlotLayoutNode } from "../../types/layout.guards";
+import { createEditorNodeFromPalette } from "../../editor-utils/createEditorNodeFromPalette";
+import { isSlotLayoutNode } from "../../editor-utils/layout.guards";
 
 
 export function addFieldToContainerSlot(
