@@ -260,32 +260,29 @@ export const useFormBuilderStore = create<BuilderState>((set) => ({
   //         : f,
   //     ),
   //   })),
-  updateField: (key, patch) =>
-    set((s) => ({
-      fieldConfigs: s.fieldConfigs.map((f) => {
-        if (f.meta.key !== key) return f;
+updateField: (key, patch) =>
+  set((s) => ({
+    fieldConfigs: s.fieldConfigs.map((f) =>
+      f.meta.key === key
+        ? {
+            ...f,
+            ...patch,
+            meta: patch.meta ? { ...f.meta, ...patch.meta } : f.meta,
+            ui: patch.ui ? { ...f.ui, ...patch.ui } : f.ui,
+            validation: patch.validation
+              ? { ...f.validation, ...patch.validation }
+              : f.validation,
+            calculation: patch.calculation
+              ? { ...f.calculation, ...patch.calculation }
+              : f.calculation,
+            integration: patch.integration
+              ? { ...f.integration, ...patch.integration }
+              : f.integration,
+          }
+        : f,
+    ),
+  })),
 
-        // ✅ explicitly rebuild canonical shape
-        return {
-          configVersion: f.configVersion,
-          meta: f.meta,
-          data: f.data,
-          ui: patch.ui ? { ...f.ui, ...patch.ui } : f.ui,
-          validation: patch.validation
-            ? { ...f.validation, ...patch.validation }
-            : f.validation,
-          behavior: f.behavior,
-          permissions: f.permissions,
-          integration: patch.integration
-            ? { ...f.integration, ...patch.integration }
-            : f.integration,
-          visibility: f.visibility,
-          calculation: patch.calculation
-            ? { ...f.calculation, ...patch.calculation }
-            : f.calculation,
-        };
-      }),
-    })),
 
   removeField: (key) =>
     set((s) =>

@@ -12,10 +12,10 @@ export function MetaTab({ field }: any) {
         className="border p-2 w-full"
         value={field.meta.label}
         placeholder="Field label"
-        onChange={(e) =>
+        onChange={(e) =>{
           updateField(field.meta.key, {
             meta: { ...field.meta, label: e.target.value },
-          })
+          })}
         }
       />
 

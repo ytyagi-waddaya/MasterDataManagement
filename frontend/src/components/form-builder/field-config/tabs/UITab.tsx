@@ -2042,6 +2042,7 @@ export function UITab({ field }: any) {
         onChange={(e) => updateUI({ helpText: e.target.value })}
       />
 
+ 
       {/* ======================================================
          OPTIONS SOURCE
       ====================================================== */}
@@ -2153,6 +2154,27 @@ export function UITab({ field }: any) {
 
         </div>
       )}
+
+            {/* Layout width */}
+    <select
+        className="border p-2 w-full"
+        value={ui.layout?.width ?? ""}
+        onChange={(e) =>
+          updateUI({
+            layout: {
+              ...ui.layout,
+              width: e.target.value || undefined,
+            },
+          })
+        }
+      >
+        <option value="">Default width</option>
+        <option value="full">Full</option>
+        <option value="half">Half</option>
+        <option value="third">Third</option>
+        <option value="quarter">Quarter</option>
+        <option value="two-third">Two Third</option>
+      </select>
 
       {/* ======================================================
          DEPENDENT CONFIG
