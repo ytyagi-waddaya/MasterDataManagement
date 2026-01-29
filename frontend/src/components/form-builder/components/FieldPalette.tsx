@@ -829,8 +829,8 @@ export function FieldPalette({ collapsed }: FieldPaletteProps) {
       data: { type: "NUMBER" },
       ui: { widget: "NUMBER" },
       calculation: {
-        operator: "ADD",
-        operands: [],
+        expression: "",
+        dependencies: [],
       },
     });
 

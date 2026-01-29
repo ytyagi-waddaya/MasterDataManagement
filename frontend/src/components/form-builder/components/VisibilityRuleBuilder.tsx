@@ -197,7 +197,7 @@ import {
   VisibilityGroup,
   VisibilityNode,
 } from "../node.types";
-import { useFormBuilderStore } from "../state/useFormBuilderStore";
+import { useActiveFields, useFormBuilderStore } from "../state/useFormBuilderStore";
 
 /* ======================================================
    TYPES
@@ -251,7 +251,7 @@ function ConditionNode({
   onUpdate: (next?: VisibilityNode) => void;
   onRemove: () => void;
 }) {
-  const fields = useFormBuilderStore((s) => s.fieldConfigs);
+  const fields = useActiveFields()
 
   /* ---------- GROUP ---------- */
   if (node.type === "group") {

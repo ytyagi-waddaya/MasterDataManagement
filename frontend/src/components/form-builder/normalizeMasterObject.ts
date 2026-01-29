@@ -7,11 +7,82 @@ import {
    HELPERS
 ====================================================== */
 
+// function adaptFieldDefinition(field: any): CanonicalFieldConfig {
+//      const rawFormula = field.config?.behavior?.formula;
+//   return {
+//     configVersion: 1,
+
+//     meta: {
+//       key: field.key,
+//       label: field.label,
+//       category: field.category,
+//       system: field.isSystem,
+//       locked: field.isLocked,
+//       deprecated: !field.isActive,
+//     },
+
+//     data: {
+//       type: field.dataType,
+//       nullable: true,
+//     },
+
+//     ui: {
+//       widget: field.fieldType,
+//       ...(field.config?.ui ?? {}),
+//     },
+
+//     validation: field.fieldValidationRules?.length
+//       ? { rules: field.fieldValidationRules }
+//       : undefined,
+
+//       calculation:
+//       field.category === "CALCULATED" && rawFormula
+//         ? {
+//             operator: parseOperator(rawFormula.expression),
+//             operands: rawFormula.dependencies ?? [],
+//           }
+//         : undefined,
+//     permissions: field.fieldPermissions ?? undefined,
+//     visibility: field.fieldConditionBindings ?? undefined,
+//     integration: field.config?.integration ?? undefined,
+//   };
+// }
+export function normalizeRule(r: any) {
+  const RULE_MAP: Record<string, string> = {
+    required: "REQUIRED",
+    required_if: "REQUIRED_IF",
+    min: "MIN",
+    max: "MAX",
+    regex: "REGEX",
+    between: "BETWEEN",
+    email: "EMAIL",
+    range: "RANGE",
+    length: "LENGTH",
+    custom: "CUSTOM",
+
+    REQUIRED: "REQUIRED",
+    REQUIRED_IF: "REQUIRED_IF",
+    MIN: "MIN",
+    MAX: "MAX",
+    REGEX: "REGEX",
+    BETWEEN: "BETWEEN",
+    EMAIL: "EMAIL",
+    RANGE: "RANGE",
+    LENGTH: "LENGTH",
+    CUSTOM: "CUSTOM",
+  };
+
+  return {
+    type: RULE_MAP[r.type ?? r.rule] ?? "CUSTOM",
+    message: r.message ?? r.errorMessage ?? "",
+    params: r.params ?? {},
+  };
+}
 function adaptFieldDefinition(field: any): CanonicalFieldConfig {
-     const rawFormula = field.config?.behavior?.formula;
+  const rawFormula = field.config?.behavior?.formula;
+
   return {
     configVersion: 1,
-
     meta: {
       key: field.key,
       label: field.label,
@@ -32,18 +103,29 @@ function adaptFieldDefinition(field: any): CanonicalFieldConfig {
     },
 
     validation: field.fieldValidationRules?.length
-      ? { rules: field.fieldValidationRules }
+      ? {
+          rules: field.fieldValidationRules.map(normalizeRule),
+        }
       : undefined,
 
-      calculation:
+    calculation:
       field.category === "CALCULATED" && rawFormula
         ? {
-            operator: parseOperator(rawFormula.expression),
-            operands: rawFormula.dependencies ?? [],
+            expression: rawFormula.expression ?? "",
+            dependencies: Array.isArray(rawFormula.dependencies)
+              ? rawFormula.dependencies
+              : [],
           }
         : undefined,
-    permissions: field.fieldPermissions ?? undefined,
-    visibility: field.fieldConditionBindings ?? undefined,
+
+    permissions: field.fieldPermissions
+      ? normalizePermissions(field.fieldPermissions)
+      : undefined,
+
+    visibility: field.fieldConditionBindings
+      ? normalizeVisibility(field.fieldConditionBindings)
+      : undefined,
+
     integration: field.config?.integration ?? undefined,
   };
 }
@@ -61,7 +143,7 @@ function adaptSchema(schema: any): PersistedFormSchema {
 
 export function normalizeMasterObjectFromBackend(
   masterObject: any,
-  mode: "EDITOR" | "RUNTIME"
+  mode: "EDITOR" | "RUNTIME",
 ): {
   schema: PersistedFormSchema | null;
   fieldConfigs: CanonicalFieldConfig[];
@@ -81,8 +163,8 @@ export function normalizeMasterObjectFromBackend(
 
   const activeSchema =
     mode === "EDITOR"
-      ? draftSchema ?? publishedSchema
-      : publishedSchema ?? draftSchema;
+      ? (draftSchema ?? publishedSchema)
+      : (publishedSchema ?? draftSchema);
 
   if (!activeSchema) {
     return {
@@ -98,60 +180,46 @@ export function normalizeMasterObjectFromBackend(
     published: activeSchema.status === "PUBLISHED",
   };
 }
+// commonNormalizers.ts
 
-function parseOperator(expr: string) {
-  if (expr.includes(" * ")) return "MULTIPLY";
-  if (expr.includes(" + ")) return "ADD";
-  if (expr.includes(" - ")) return "SUBTRACT";
-  if (expr.includes(" / ")) return "DIVIDE";
-  return "ADD";
+export function normalizeVisibility(visibility: any) {
+  if (!visibility) return undefined;
+
+  if (Array.isArray(visibility)) {
+    if (visibility.length === 0) return undefined;
+
+    return {
+      type: "group",
+      logic: "AND",
+      conditions: visibility,
+    };
+  }
+
+  if (typeof visibility === "object") return visibility;
+
+  return undefined;
 }
 
-/**
- * Convert editor fieldConfigs → backend canonical fieldConfig
- * REQUIRED for publish
-//  */
-// export function normalizeFieldConfigForPublish(
-//   fieldConfigs: CanonicalFieldConfig[],
-// ): CanonicalFieldConfig[] {
-//   return fieldConfigs.map((f) => ({
-//     ...f,
+export function normalizePermissions(perms: any) {
+  if (!perms) return undefined;
 
-//     // ensure meta flags are explicit
-//     meta: {
-//       ...f.meta,
-//       system: Boolean(f.meta.system),
-//       locked: Boolean(f.meta.locked),
-//       deprecated: Boolean(f.meta.deprecated),
-//     },
+  if (Array.isArray(perms)) {
+    if (perms.length === 0) return undefined;
 
-//     // strip editor-only UI noise (keep backend-safe UI only)
-//     ui: f.ui
-//       ? {
-//           widget: f.ui.widget,
-//           placeholder: f.ui.placeholder,
-//           helpText: f.ui.helpText,
-//           options: f.ui.options,
-//           multiple: f.ui.multiple,
-//           layout: f.ui.layout,
-//           format: f.ui.format,
-//         }
-//       : undefined,
+    const obj: any = {};
+    for (const p of perms) {
+      obj[p.mode] = {
+        roles: p.roles,
+        users: p.users,
+        conditions: p.conditions,
+      };
+    }
+    return obj;
+  }
 
-//     // normalize integration contract
-//     integration: f.integration
-//       ? {
-//           dataSource: f.integration.dataSource,
-//           reference: f.integration.reference
-//             ? {
-//                 resource: f.integration.reference.resource,
-//                 valueField: f.integration.reference.valueField,
-//                 labelField: f.integration.reference.labelField,
-//                 searchable: f.integration.reference.searchable,
-//                 multiple: f.integration.reference.multiple,
-//               }
-//             : undefined,
-//         }
-//       : undefined,
-//   }));
-// }
+  if (typeof perms === "object") return perms;
+
+  return undefined;
+}
+
+

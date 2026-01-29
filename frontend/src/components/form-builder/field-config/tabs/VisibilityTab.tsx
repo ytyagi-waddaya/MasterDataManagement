@@ -24,11 +24,61 @@ type Props = FieldTargetProps | NodeTargetProps;
    COMPONENT
 ====================================================== */
 
+// export function VisibilityTab(props: Props) {
+//   const updateField = useFormBuilderStore((s) => s.updateField);
+//   const updateLayoutNode = useFormBuilderStore((s) => s.updateLayoutNode);
+//   const updatePresentationNode = useFormBuilderStore(
+//     (s) => s.updatePresentationNode,
+//   );
+//   const fieldConfigs = useFormBuilderStore((s) => s.fieldConfigs);
+//   const schema = useFormBuilderStore((s) => s.schema);
+
+//   /* ================= FIELD ================= */
+
+//   if (props.target === "FIELD") {
+//     const field = fieldConfigs.find((f) => f.meta.key === props.fieldKey);
+
+//     if (!field) {
+//       return <div className="p-4 text-red-500 text-sm">Field not found</div>;
+//     }
+
+//     <p className="text-xs text-gray-500 italic mb-2">
+//       {formatVisibilityRule(field.visibility, fieldConfigs)}
+//     </p>;
+
+//     return (
+//       <VisibilityRuleBuilder
+//         value={field.visibility}
+//         onChange={(rule) => updateField(props.fieldKey, { visibility: rule })}
+//       />
+//     );
+//   }
+
+//   /* ================= NODE ================= */
+
+//   const { nodePath } = props;
+
+//   return (
+//     <VisibilityRuleBuilder
+//       value={getNodeVisibility(schema, nodePath)}
+//       onChange={(rule) => {
+//         updateLayoutNode(nodePath, (n) => {
+//           n.visibility = rule;
+//         });
+
+//         updatePresentationNode(nodePath, (n) => {
+//           n.visibility = rule;
+//         });
+//       }}
+//     />
+//   );
+// }
+
 export function VisibilityTab(props: Props) {
   const updateField = useFormBuilderStore((s) => s.updateField);
   const updateLayoutNode = useFormBuilderStore((s) => s.updateLayoutNode);
   const updatePresentationNode = useFormBuilderStore(
-    (s) => s.updatePresentationNode,
+    (s) => s.updatePresentationNode
   );
   const fieldConfigs = useFormBuilderStore((s) => s.fieldConfigs);
   const schema = useFormBuilderStore((s) => s.schema);
@@ -42,15 +92,19 @@ export function VisibilityTab(props: Props) {
       return <div className="p-4 text-red-500 text-sm">Field not found</div>;
     }
 
-    <p className="text-xs text-gray-500 italic mb-2">
-      {formatVisibilityRule(field.visibility, fieldConfigs)}
-    </p>;
-
     return (
-      <VisibilityRuleBuilder
-        value={field.visibility}
-        onChange={(rule) => updateField(props.fieldKey, { visibility: rule })}
-      />
+      <div className="space-y-2">
+        <p className="text-xs text-gray-500 italic">
+          {formatVisibilityRule(field.visibility, fieldConfigs)}
+        </p>
+
+        <VisibilityRuleBuilder
+          value={field.visibility}
+          onChange={(rule) =>
+            updateField(props.fieldKey, { visibility: rule })
+          }
+        />
+      </div>
     );
   }
 
@@ -73,6 +127,7 @@ export function VisibilityTab(props: Props) {
     />
   );
 }
+
 
 /* ======================================================
    HELPERS

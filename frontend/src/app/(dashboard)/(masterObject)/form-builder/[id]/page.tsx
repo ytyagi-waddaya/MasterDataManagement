@@ -217,7 +217,7 @@ export default function FormBuilderPage() {
         schema,
         fieldConfigs,
       });
-console.log("PAYLOAD M:", payload);
+      console.log("PAYLOAD M:", payload);
 
       const res = await updateMasterObject.mutateAsync({
         masterObjectId,

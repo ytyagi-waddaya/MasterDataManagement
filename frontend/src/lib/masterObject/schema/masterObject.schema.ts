@@ -196,8 +196,8 @@ export const canonicalFieldConfigSchema = z
     visibility: visibilityRuleSchema.optional(),
     calculation: z
       .object({
-        operator: z.enum(["ADD", "SUBTRACT", "MULTIPLY", "DIVIDE"]),
-        operands: z.array(z.string()),
+        expression: z.string().min(1),
+        dependencies: z.array(z.string()).min(1),
       })
       .optional(),
   })
@@ -316,7 +316,6 @@ export const persistedFormSchemaSchema = z
 export const publishSchemaSchema = z.object({
   draftSchemaId: z.uuid(),
 });
-
 
 export const updateMasterObjectSchema = z
   .object({

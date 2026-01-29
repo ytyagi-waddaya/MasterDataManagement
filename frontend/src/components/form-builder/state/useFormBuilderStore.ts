@@ -261,33 +261,71 @@ export const useFormBuilderStore = create<BuilderState>((set) => ({
   //         : f,
   //     ),
   //   })),
-updateField: (key, patch) =>
-  set((s) => ({
-    fieldConfigs: s.fieldConfigs.map((f) =>
-      f.meta.key === key
-        ? {
-            ...f,
-            ...patch,
-            meta: patch.meta ? { ...f.meta, ...patch.meta } : f.meta,
-            ui: patch.ui ? { ...f.ui, ...patch.ui } : f.ui,
-            validation: patch.validation
-              ? { ...f.validation, ...patch.validation }
-              : f.validation,
-            calculation: patch.calculation
-              ? { ...f.calculation, ...patch.calculation }
-              : f.calculation,
-            integration: patch.integration
-              ? { ...f.integration, ...patch.integration }
-              : f.integration,
-          }
-        : f,
-    ),
-  })),
+  updateField: (key, patch) =>
+    set((s) => ({
+      fieldConfigs: s.fieldConfigs.map((f) =>
+        f.meta.key === key
+          ? {
+              ...f,
+              ...patch,
+              meta: patch.meta ? { ...f.meta, ...patch.meta } : f.meta,
+              ui: patch.ui ? { ...f.ui, ...patch.ui } : f.ui,
+              validation: patch.validation
+                ? { ...f.validation, ...patch.validation }
+                : f.validation,
+              calculation: patch.calculation
+                ? { ...f.calculation, ...patch.calculation }
+                : f.calculation,
+              integration: patch.integration
+                ? { ...f.integration, ...patch.integration }
+                : f.integration,
+            }
+          : f,
+      ),
+    })),
 
-
+  // removeField: (key) =>
+  //   set((s) =>
+  //     updateSchemaWithHistory(
+  //       {
+  //         ...s,
+  //         fieldConfigs: s.fieldConfigs.filter((f) => f.meta.key !== key),
+  //         formValues: Object.fromEntries(
+  //           Object.entries(s.formValues).filter(([k]) => k !== key),
+  //         ),
+  //         previewValues: Object.fromEntries(
+  //           Object.entries(s.previewValues).filter(([k]) => k !== key),
+  //         ),
+  //         submitErrors: Object.fromEntries(
+  //           Object.entries(s.submitErrors).filter(([k]) => k !== key),
+  //         ),
+  //         selectedFieldKey:
+  //           s.selectedFieldKey === key ? undefined : s.selectedFieldKey,
+  //       },
+  //       (schema) => {
+  //         schema.layout.sections.forEach((sec) => {
+  //           sec.nodes = sec.nodes.filter(
+  //             (n: any) => !(n.kind === "FIELD" && n.field.key === key),
+  //           );
+  //         });
+  //         return schema;
+  //       },
+  //     ),
+  //   ),
   removeField: (key) =>
-    set((s) =>
-      updateSchemaWithHistory(
+    set((s) => {
+      const refs = findReferences(s.fieldConfigs, key).filter(
+        (k) => k !== key, // ignore self
+      );
+
+      if (refs.length) {
+        alert(
+          `This field is used by: ${refs.join(", ")}.\nRemove references first.`,
+        );
+        return s; // ❌ cancel delete
+      }
+
+      return updateSchemaWithHistory(
         {
           ...s,
           fieldConfigs: s.fieldConfigs.filter((f) => f.meta.key !== key),
@@ -311,8 +349,8 @@ updateField: (key, patch) =>
           });
           return schema;
         },
-      ),
-    ),
+      );
+    }),
 
   /* ---------------- SECTION ---------------- */
 
@@ -699,6 +737,41 @@ updateField: (key, patch) =>
       }),
     ),
 
+  // setFieldValue: (key: string, value: any) =>
+  //   set((s) => {
+  //     const nextValues = {
+  //       ...s.formValues,
+  //       [key]: value,
+  //     };
+
+  //     let changed = true;
+
+  //     while (changed) {
+  //       changed = false;
+
+  //       s.fieldConfigs.forEach((f) => {
+  //         if (!f.calculation) return;
+
+  //         const depends = f.calculation.operands.some(
+  //           (dep) =>
+  //             dep === key ||
+  //             key.startsWith(`${dep}.`) ||
+  //             dep.startsWith(`${key}.`),
+  //         );
+
+  //         if (!depends) return;
+
+  //         const next = evaluateCalculation(f.calculation, nextValues);
+
+  //         if (nextValues[f.meta.key] !== next) {
+  //           nextValues[f.meta.key] = next;
+  //           changed = true;
+  //         }
+  //       });
+  //     }
+
+  //     return { formValues: nextValues };
+  //   }),
   setFieldValue: (key: string, value: any) =>
     set((s) => {
       const nextValues = {
@@ -714,7 +787,11 @@ updateField: (key, patch) =>
         s.fieldConfigs.forEach((f) => {
           if (!f.calculation) return;
 
-          const depends = f.calculation.operands.some(
+          const deps = f.calculation.dependencies.filter(
+            (d) => d in nextValues,
+          );
+
+          const depends = deps.some(
             (dep) =>
               dep === key ||
               key.startsWith(`${dep}.`) ||
@@ -723,7 +800,10 @@ updateField: (key, patch) =>
 
           if (!depends) return;
 
-          const next = evaluateCalculation(f.calculation, nextValues);
+          const next = evaluateCalculation(
+            f.calculation, // ✅ FIXED
+            nextValues,
+          );
 
           if (nextValues[f.meta.key] !== next) {
             nextValues[f.meta.key] = next;
@@ -780,3 +860,72 @@ updateField: (key, patch) =>
   setLastSavedDraft: (payload: DraftPayload) =>
     set({ lastSavedDraftPayload: payload }),
 }));
+
+function removeFieldReferences(
+  fields: CanonicalFieldConfig[],
+  deletedKey: string,
+): CanonicalFieldConfig[] {
+  return fields.map((f) => {
+    let changed = false;
+    const next = structuredClone(f);
+
+    // ---- calculation dependencies
+    if (next.calculation?.dependencies) {
+      const filtered = next.calculation.dependencies.filter(
+        (d) => d !== deletedKey,
+      );
+      if (filtered.length !== next.calculation.dependencies.length) {
+        next.calculation.dependencies = filtered;
+        changed = true;
+      }
+    }
+
+    // ---- dependent datasource
+    if (next.integration?.dataSource?.dependsOn === deletedKey) {
+      next.integration.dataSource.dependsOn = undefined;
+      next.integration.dataSource.map = {};
+      changed = true;
+    }
+
+    // ---- visibility rules (if you use them)
+    if (next.visibility?.rules) {
+      next.visibility.rules = next.visibility.rules.filter(
+        (r: any) => !JSON.stringify(r).includes(deletedKey),
+      );
+      changed = true;
+    }
+
+    // ---- reference fields
+    if (next.integration?.reference?.valueField === deletedKey) {
+      next.integration.reference.valueField = "";
+      changed = true;
+    }
+
+    if (next.integration?.reference?.labelField === deletedKey) {
+      next.integration.reference.labelField = "";
+      changed = true;
+    }
+
+    return changed ? next : f;
+  });
+}
+
+function findReferences(fields: CanonicalFieldConfig[], key: string): string[] {
+  return fields
+    .filter((f) => JSON.stringify(f).includes(`"${key}"`))
+    .map((f) => f.meta.key);
+}
+
+export function useActiveFields(): CanonicalFieldConfig[] {
+  return useFormBuilderStore((s) => {
+    const activeKeys = new Set(
+      s.schema.layout.sections.flatMap((sec) =>
+        sec.nodes
+          .filter((n: any) => n.kind === "FIELD")
+          .map((n: any) => n.field.key),
+      ),
+    );
+
+    return s.fieldConfigs.filter((f) => activeKeys.has(f.meta.key));
+  });
+}

@@ -78,6 +78,12 @@ export function extractFieldsFromSchema(schema: FieldConfig[]): SchemaField[] {
       );
     }
 
+    if (field.meta.category === "CALCULATED" && field.data.type !== "NUMBER") {
+      throw new BadRequestException(
+        `Calculated field "${field.meta.key}" must be NUMBER`,
+      );
+    }
+
     return {
       key: field.meta.key,
       label: field.meta.label,
@@ -94,15 +100,25 @@ export function extractFieldsFromSchema(schema: FieldConfig[]): SchemaField[] {
         visibility: field.visibility,
         permissions: field.permissions,
         // behavior: field.behavior,
+        // behavior: {
+        //   ...(field.behavior ?? {}),
+        //   formula: field.calculation
+        //     ? {
+        //         expression: buildExpression(field.calculation),
+        //         dependencies: field.calculation.operands,
+        //       }
+        //     : undefined,
+        // },
         behavior: {
           ...(field.behavior ?? {}),
           formula: field.calculation
             ? {
-                expression: buildExpression(field.calculation),
-                dependencies: field.calculation.operands,
+                expression: field.calculation.expression,
+                dependencies: field.calculation.dependencies,
               }
             : undefined,
         },
+
         integration: field.integration,
       },
     };
@@ -199,24 +215,26 @@ export async function applyFieldDiff({
     const prevFormula = prevConfig.behavior?.formula;
     const nextFormula = field.config.behavior?.formula;
 
-    const prevExpr = prevFormula?.expression;
-    const nextExpr = nextFormula?.expression;
+    // const prevExpr = prevFormula?.expression;
+    // const nextExpr = nextFormula?.expression;
+    const prevExpr = stringify(prevFormula);
+    const nextExpr = stringify(nextFormula);
 
     // if (prevExpr !== nextExpr) {
     //   throw new BadRequestException(
     //     `Cannot modify formula expression of field "${field.key}"`,
     //   );
     // }
-    const isBreakingChange =
-      prevExpr !== nextExpr &&
-      previousSchemaId !== null && // not first schema
-      publish === true; // publishing
+    // const isBreakingChange =
+    //   prevExpr !== nextExpr &&
+    //   previousSchemaId !== null && // not first schema
+    //   publish === true; // publishing
 
-    if (isBreakingChange) {
-      throw new BadRequestException(
-        `Cannot modify formula expression of field "${field.key}" after publish`,
-      );
-    }
+    // if (isBreakingChange) {
+    //   throw new BadRequestException(
+    //     `Cannot modify formula expression of field "${field.key}" after publish`,
+    //   );
+    // }
 
     /* -------- CARRY FORWARD -------- */
 
@@ -474,45 +492,44 @@ export async function syncFieldRules(
   //   });
   // }
   /* ========== REFERENCE ========== */
-if (config?.integration?.reference) {
-  const ref = config.integration.reference;
+  if (config?.integration?.reference) {
+    const ref = config.integration.reference;
 
-  if (!ref.resource) {
-    throw new BadRequestException("Reference resource is required");
+    if (!ref.resource) {
+      throw new BadRequestException("Reference resource is required");
+    }
+
+    if (!ref.labelField || !ref.valueField) {
+      throw new BadRequestException(
+        "Reference must define labelField and valueField",
+      );
+    }
+
+    // 🔁 Resolve resource → masterObject
+    const resource = await tx.resource.findUnique({
+      where: { id: ref.resource },
+      select: { masterObjectId: true },
+    });
+
+    if (!resource?.masterObjectId) {
+      throw new BadRequestException(
+        `Resource "${ref.resource}" is not linked to a MasterObject`,
+      );
+    }
+
+    const targetObjectId = resource.masterObjectId;
+
+    await tx.fieldReference.create({
+      data: {
+        fieldId,
+        targetObjectId: resource.masterObjectId,
+        displayFieldKey: ref.labelField,
+        relationType: ref.multiple ? "ONE_TO_MANY" : "ONE_TO_ONE",
+        allowMultiple: ref.multiple ?? false,
+        onDeleteBehavior: "RESTRICT",
+      },
+    });
   }
-
-  if (!ref.labelField || !ref.valueField) {
-    throw new BadRequestException(
-      "Reference must define labelField and valueField"
-    );
-  }
-
-  // 🔁 Resolve resource → masterObject
-  const resource = await tx.resource.findUnique({
-    where: { id: ref.resource },
-    select: { masterObjectId: true },
-  });
-
-if (!resource?.masterObjectId) {
-  throw new BadRequestException(
-    `Resource "${ref.resource}" is not linked to a MasterObject`
-  );
-}
-
-  const targetObjectId = resource.masterObjectId;
-
-await tx.fieldReference.create({
-  data: {
-    fieldId,
-    targetObjectId: resource.masterObjectId,
-    displayFieldKey: ref.labelField,
-    relationType: ref.multiple ? "ONE_TO_MANY" : "ONE_TO_ONE",
-    allowMultiple: ref.multiple ?? false,
-    onDeleteBehavior: "RESTRICT",
-  },
-});
-}
-
 
   /* ========== PERMISSIONS ========== */
   const perms = config?.permissions;
@@ -547,20 +564,21 @@ await tx.fieldReference.create({
   }
 }
 
-type CalculationOperator = "ADD" | "SUBTRACT" | "MULTIPLY" | "DIVIDE";
+// type CalculationOperator = "ADD" | "SUBTRACT" | "MULTIPLY" | "DIVIDE";
 
-type Calculation = {
-  operator: CalculationOperator;
-  operands: string[];
-};
+// type SimpleCalculation = {
+//   type: "SIMPLE";
+//   operator: CalculationOperator;
+//   operands: string[];
+// };
 
-function buildExpression(calc: Calculation): string {
-  const map: Record<CalculationOperator, string> = {
-    ADD: "+",
-    SUBTRACT: "-",
-    MULTIPLY: "*",
-    DIVIDE: "/",
-  };
+// function buildExpression(calc: SimpleCalculation): string {
+//   const map: Record<CalculationOperator, string> = {
+//     ADD: "+",
+//     SUBTRACT: "-",
+//     MULTIPLY: "*",
+//     DIVIDE: "/",
+//   };
 
-  return calc.operands.join(` ${map[calc.operator]} `);
-}
+//   return calc.operands.join(` ${map[calc.operator]} `);
+// }

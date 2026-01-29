@@ -165,18 +165,33 @@ export interface FieldPermissions {
 export interface FieldBehavior {
   readOnly?: boolean;
 
-  formula?: {
-    expression: string;
-    dependencies: string[];
-    mode?: "SYSTEM_RECALC" | "ON_CHANGE";
-  };
+  // formula?: {
+  //   expression: string;
+  //   dependencies: string[];
+  //   mode?: "SYSTEM_RECALC" | "ON_CHANGE";
+  // };
 }
 
 /* ================= CALCULATION ================= */
 
+// export interface FieldCalculation {
+//   operator: "ADD" | "SUBTRACT" | "MULTIPLY" | "DIVIDE";
+//   operands: string[];
+// }
+// export type FieldCalculation =
+//   | {
+//       type: "SIMPLE";
+//       operator: "ADD" | "SUBTRACT" | "MULTIPLY" | "DIVIDE";
+//       operands: string[];
+//     }
+//   | {
+//       type: "EXPRESSION";
+//       expression: string;
+//       dependencies: string[];
+//     };
 export interface FieldCalculation {
-  operator: "ADD" | "SUBTRACT" | "MULTIPLY" | "DIVIDE";
-  operands: string[];
+  expression: string;
+  dependencies: string[];
 }
 
 /* ================= INTEGRATION ================= */
@@ -239,7 +254,8 @@ export const IMMUTABLE_AFTER_PUBLISH = [
   "meta.key",
   "meta.category",
   "data.type",
-  "behavior.formula.expression",
+  "calculation.expression",
+  "calculation.dependencies",
 ] as const;
 
 export interface FileConfig {

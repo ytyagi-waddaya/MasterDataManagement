@@ -283,80 +283,80 @@ export const fieldConfigSchema = z
     behavior: z
       .object({
         readOnly: z.boolean().optional(),
-        formula: z
+      })
+      .strict()
+      .optional(),
+    // calculation: z
+    //   .object({
+    //     operator: z.enum(["ADD", "SUBTRACT", "MULTIPLY", "DIVIDE"]),
+    //     operands: z.array(z.string()),
+    //   })
+    //   .optional(),
+    calculation: z
+      .object({
+        expression: z.string().min(1),
+        dependencies: z.array(z.string()).min(1),
+      })
+      .optional(),
+    integration: z
+      .object({
+        dataSource: z
           .object({
-            expression: z.string().min(1),
-            dependencies: z.array(z.string()).min(1),
-            mode: z.enum(["SYSTEM_RECALC", "ON_CHANGE"]).optional(),
+            type: z.enum(["STATIC", "DEPENDENT"]),
+            dependsOn: z.string().optional(),
+            map: z
+              .record(
+                z.string(),
+                z.array(
+                  z.object({
+                    label: z.string(),
+                    value: z.string(),
+                  }),
+                ),
+              )
+              .optional(),
+            resetOnChange: z.boolean().optional(),
           })
-          .strict()
+          .optional(),
+
+        reference: z
+          .object({
+            resource: z.string(),
+            valueField: z.string().optional(),
+            labelField: z.string().optional(),
+            searchable: z.boolean().optional(),
+            multiple: z.boolean().optional(),
+          })
+          .optional(),
+
+        apiSource: z
+          .object({
+            url: z.string().url(),
+            method: z.enum(["GET", "POST"]),
+            valueField: z.string(),
+            labelField: z.string(),
+            dependsOn: z.array(z.string()).optional(),
+            params: z
+              .record(
+                z.string(),
+                z.union([z.string(), z.number(), z.boolean()]),
+              )
+              .optional(),
+            cache: z.boolean().optional(),
+          })
+          .optional(),
+
+        file: z
+          .object({
+            maxSizeMB: z.number().positive(),
+            allowedTypes: z.array(z.string()).min(1),
+            storage: z.enum(["S3", "LOCAL"]),
+            multiple: z.boolean().optional(),
+          })
           .optional(),
       })
       .strict()
       .optional(),
-    calculation: z
-      .object({
-        operator: z.enum(["ADD", "SUBTRACT", "MULTIPLY", "DIVIDE"]),
-        operands: z.array(z.string()),
-      })
-      .optional(),
-
-    integration: z
-  .object({
-    dataSource: z
-      .object({
-        type: z.enum(["STATIC", "DEPENDENT"]),
-        dependsOn: z.string().optional(),
-        map: z.record(
-          z.string(),
-          z.array(
-            z.object({
-              label: z.string(),
-              value: z.string(),
-            })
-          )
-        ).optional(),
-        resetOnChange: z.boolean().optional(),
-      })
-      .optional(),
-
-    reference: z
-      .object({
-        resource: z.string(),
-        valueField: z.string().optional(),
-        labelField: z.string().optional(),
-        searchable: z.boolean().optional(),
-        multiple: z.boolean().optional(),
-      })
-      .optional(),
-
-    apiSource: z
-      .object({
-        url: z.string().url(),
-        method: z.enum(["GET", "POST"]),
-        valueField: z.string(),
-        labelField: z.string(),
-        dependsOn: z.array(z.string()).optional(),
-        params: z.record(
-          z.string(),
-          z.union([z.string(), z.number(), z.boolean()])
-        ).optional(),
-        cache: z.boolean().optional(),
-      })
-      .optional(),
-
-    file: z
-      .object({
-        maxSizeMB: z.number().positive(),
-        allowedTypes: z.array(z.string()).min(1),
-        storage: z.enum(["S3", "LOCAL"]),
-        multiple: z.boolean().optional(),
-      })
-      .optional(),
-  })
-  .strict()
-  .optional(),
-
   })
   .strict();
 
@@ -423,72 +423,64 @@ export const fieldConfigSchema = z
 export const editorNodeSchema: z.ZodType<any> = z.lazy(() =>
   z.union([
     /* ---------- FIELD ---------- */
-    z
-      .looseObject({
-        id: z.string(),
-        kind: z.literal("FIELD"),
-        field: z.object({
-          key: z.string(),
-          layout: z.object({
+    z.looseObject({
+      id: z.string(),
+      kind: z.literal("FIELD"),
+      field: z.object({
+        key: z.string(),
+        layout: z
+          .object({
             span: z.number().optional(),
-          }).optional(),
-        }),
-      })
-      ,
+          })
+          .optional(),
+      }),
+    }),
 
     /* ---------- CONTAINER LAYOUT ---------- */
-    z
-      .looseObject({
-        id: z.string(),
-        kind: z.literal("LAYOUT"),
-        type: z.enum(["columns", "tabs", "accordion"]),
-        slots: z.array(
-          z
-            .looseObject({
-              id: z.string(),
-              title: z.string().optional(),
-              config: z.any().optional(),
-              children: z.array(editorNodeSchema),
-            })
-            ,
-        ),
-        config: z.any().optional(),
-      })
-      ,
+    z.looseObject({
+      id: z.string(),
+      kind: z.literal("LAYOUT"),
+      type: z.enum(["columns", "tabs", "accordion"]),
+      slots: z.array(
+        z.looseObject({
+          id: z.string(),
+          title: z.string().optional(),
+          config: z.any().optional(),
+          children: z.array(editorNodeSchema),
+        }),
+      ),
+      config: z.any().optional(),
+    }),
 
     /* ---------- REPEATER ---------- */
-    z
-      .looseObject({
-        id: z.string(),
-        kind: z.literal("LAYOUT"),
-        type: z.literal("repeater"),
-        config: z
-          .object({
-            minItems: z.number().optional(),
-            maxItems: z.number().optional(),
-            addLabel: z.string().optional(),
-            itemLabel: z.string().optional(),
-          })
-          .optional(),
-        children: z.array(editorNodeSchema),
-      })
-    ,
+    z.looseObject({
+      id: z.string(),
+      kind: z.literal("LAYOUT"),
+      type: z.literal("repeater"),
+      config: z
+        .object({
+          minItems: z.number().optional(),
+          maxItems: z.number().optional(),
+          addLabel: z.string().optional(),
+          itemLabel: z.string().optional(),
+        })
+        .optional(),
+      children: z.array(editorNodeSchema),
+    }),
 
     /* ---------- STATIC ---------- */
-    z
-      .looseObject({
-        id: z.string(),
-        kind: z.literal("LAYOUT"),
-        type: z.enum(["heading", "divider", "spacer"]),
-        config: z
-          .object({
-            text: z.string().optional(),
-            level: z.number().optional(),
-            size: z.enum(["xs", "sm", "md", "lg"]).optional(),
-          })
-          .optional(),
-      })
-      ,
+    z.looseObject({
+      id: z.string(),
+      kind: z.literal("LAYOUT"),
+      type: z.enum(["heading", "divider", "spacer"]),
+      config: z
+        .object({
+          text: z.string().optional(),
+          level: z.number().optional(),
+          size: z.enum(["xs", "sm", "md", "lg"]).optional(),
+        })
+        .optional(),
+    }),
   ]),
 );
 
@@ -499,30 +491,26 @@ const formSectionSchema = z.looseObject({
   title: z.string(),
   collapsed: z.boolean().optional(),
   nodes: z.array(editorNodeSchema),
-}) ;
+});
 
-export const persistedFormSchemaSchema = z
-  .looseObject({
-    version: z.number(),
-    layout: z.object({
-      sections: z.array(formSectionSchema),
-    }),
-  })
-  
+export const persistedFormSchemaSchema = z.looseObject({
+  version: z.number(),
+  layout: z.object({
+    sections: z.array(formSectionSchema),
+  }),
+});
 
-export const updateMasterObjectSchema = z
-  .looseObject({
-    name: nameSchema.optional(),
-    isActive: z.boolean().optional(),
+export const updateMasterObjectSchema = z.looseObject({
+  name: nameSchema.optional(),
+  isActive: z.boolean().optional(),
 
-    // Layout DSL (editor truth)
-    schema: persistedFormSchemaSchema.optional(),
+  // Layout DSL (editor truth)
+  schema: persistedFormSchemaSchema.optional(),
 
-    // Canonical compiled fields
-    fieldConfig: z.array(fieldConfigSchema).optional(),
-    publish: z.boolean().optional(),
-  })
-  
+  // Canonical compiled fields
+  fieldConfig: z.array(fieldConfigSchema).optional(),
+  publish: z.boolean().optional(),
+});
 
 // export const publishSchemaSchema = z
 //   .looseObject({
@@ -533,7 +521,6 @@ export const updateMasterObjectSchema = z
 export const publishSchemaSchema = z.object({
   draftSchemaId: z.uuid(),
 });
-
 
 export type UpdateMasterObjectInput = z.infer<typeof updateMasterObjectSchema>;
 export type PublishMasterObject = z.infer<typeof publishSchemaSchema>;

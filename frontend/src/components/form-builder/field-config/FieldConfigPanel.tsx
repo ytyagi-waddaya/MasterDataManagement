@@ -98,6 +98,63 @@ export function FieldConfigPanel() {
    FIELD SETTINGS
 ====================================================== */
 
+// function FieldSettings({ fieldKey }: { fieldKey: string }) {
+//   const store = useFormBuilderStore((s) => ({
+//     fieldConfigs: s.fieldConfigs,
+//     removeField: s.removeField,
+//     selectField: s.selectField,
+//     published: s.published,
+//   }));
+
+//   const field = store.fieldConfigs.find((f) => f.meta.key === fieldKey);
+
+//   if (!field) {
+//     return <div className="p-4 text-red-500">Field not found</div>;
+//   }
+
+//   // 🔒 SNAPSHOT VALUES (THIS IS THE KEY)
+//   const fieldKeySafe = field.meta.key;
+
+//   function handleDelete() {
+//     const confirmed = window.confirm(
+//       store.published
+//         ? "This field will be removed from the form layout.\nExisting data remains.\n\nContinue?"
+//         : "This field will be permanently deleted.\n\nContinue?",
+//     );
+
+//     if (!confirmed) return;
+
+//     store.removeField(fieldKeySafe);
+//     store.selectField(undefined);
+//   }
+
+//   return (
+//     <div className="space-y-6 p-4">
+//       <p className="text-xs text-gray-400 italic px-4">
+//         {/* {formatVisibilityRule(field.visibility, store.fieldConfigs)} */}
+//       </p>
+
+//       <MetaTab field={field} />
+//       <DataTab field={field} />
+//       <UITab field={field} />
+//       <ValidationTab field={field} />
+//       <VisibilityTab target="FIELD" fieldKey={field.meta.key} />
+//       <CalculationTab field={field} />
+
+//       <PermissionTab field={field} />
+
+//       <div className="pt-6 border-t">
+//         <button
+//           onClick={handleDelete}
+//           className="text-red-600 text-sm hover:underline"
+//         >
+//           {store.published ? "Remove field" : "Delete field"}
+//         </button>
+//       </div>
+//     </div>
+//   );
+// }
+
 function FieldSettings({ fieldKey }: { fieldKey: string }) {
   const store = useFormBuilderStore((s) => ({
     fieldConfigs: s.fieldConfigs,
@@ -108,39 +165,53 @@ function FieldSettings({ fieldKey }: { fieldKey: string }) {
 
   const field = store.fieldConfigs.find((f) => f.meta.key === fieldKey);
 
+  // ✅ DO NOT RETURN EARLY
   if (!field) {
-    return <div className="p-4 text-red-500">Field not found</div>;
+    return (
+      <div className="p-4 text-sm text-gray-500">
+        Field not found or removed
+      </div>
+    );
   }
 
-  // 🔒 SNAPSHOT VALUES (THIS IS THE KEY)
   const fieldKeySafe = field.meta.key;
 
-  function handleDelete() {
+function handleDelete() {
+  const refs = store.fieldConfigs
+    .filter((f) => f.meta.key !== fieldKeySafe)
+    .filter((f) => JSON.stringify(f).includes(`"${fieldKeySafe}"`))
+    .map((f) => f.meta.key);
+
+  if (refs.length) {
     const confirmed = window.confirm(
-      store.published
-        ? "This field will be removed from the form layout.\nExisting data remains.\n\nContinue?"
-        : "This field will be permanently deleted.\n\nContinue?",
+      `This field is used by:\n\n${refs.join(
+        ", ",
+      )}\n\nDeleting it will break those fields.\n\nContinue anyway?`,
     );
 
     if (!confirmed) return;
-
-    store.removeField(fieldKeySafe);
-    store.selectField(undefined);
   }
+
+  const confirmed = window.confirm(
+    store.published
+      ? "This field will be removed from the form layout.\nExisting data remains.\n\nContinue?"
+      : "This field will be permanently deleted.\n\nContinue?",
+  );
+
+  if (!confirmed) return;
+
+  store.removeField(fieldKeySafe);
+  store.selectField(undefined);
+}
 
   return (
     <div className="space-y-6 p-4">
-      <p className="text-xs text-gray-400 italic px-4">
-        {/* {formatVisibilityRule(field.visibility, store.fieldConfigs)} */}
-      </p>
-
       <MetaTab field={field} />
       <DataTab field={field} />
       <UITab field={field} />
       <ValidationTab field={field} />
       <VisibilityTab target="FIELD" fieldKey={field.meta.key} />
       <CalculationTab field={field} />
-
       <PermissionTab field={field} />
 
       <div className="pt-6 border-t">

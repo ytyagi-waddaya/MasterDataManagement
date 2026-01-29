@@ -2132,14 +2132,671 @@
 //   );
 // }
 
+/////////////////////////////////////////////////////
+// "use client";
+
+// import { useState, useEffect, useMemo } from "react";
+// import { evaluateVisibility } from "../runtime/evaluateVisibility";
+// import { evaluateCalculation } from "../runtime/evaluateCalculation";
+// import { validateField } from "./validateField";
+// import { useReferenceData } from "@/lib/resource/hook/useResource";
+// import { useRuntimeFormStore } from "./runtimeFormStore";
+
+// /* ======================================================
+//    HELPERS
+// ====================================================== */
+
+// function widthToSpan(width?: string): number {
+//   switch (width) {
+//     case "half":
+//       return 6;
+//     case "third":
+//       return 4;
+//     case "quarter":
+//       return 3;
+//     case "two-third":
+//       return 8;
+//     default:
+//       return 12;
+//   }
+// }
+
+// function isRequired(rules: any[] = []) {
+//   return rules.some((r) => r.type === "REQUIRED");
+// }
+
+// /* ======================================================
+//    COMPONENT
+// ====================================================== */
+
+// export function RuntimeField({
+//   fieldKey,
+//   fields,
+//   rowId,
+//   mode = "CREATE",
+// }: {
+//   fieldKey: string;
+//   fields: any[];
+//   rowId?: string; 
+//   mode?: "PREVIEW" | "CREATE" | "VIEW" | "EDIT";
+// }) {
+//   const isPreview = mode === "PREVIEW";
+//   const isView = mode === "VIEW";
+//   const isEditable = mode === "CREATE" || mode === "EDIT";
+
+//   const field = fields.find((f: any) => f.meta.key === fieldKey);
+//   if (!field || field.meta.deprecated) return null;
+
+//   /* ================= STORE ================= */
+
+//   const values = useRuntimeFormStore((s) => s.values);
+//   const setValueFn = useRuntimeFormStore((s) => s.setValue);
+
+//   // const storageKey = fieldKey;
+//   const storageKey = rowId ? `${rowId}.${fieldKey}` : fieldKey;
+
+
+//   /* ================= META ================= */
+
+//   const rules = field.validation?.rules ?? [];
+//   const required = isRequired(rules);
+//   const isCalculated = Boolean(field.calculation);
+//   const ui = field.ui ?? {};
+//   const span = widthToSpan(ui.layout?.width);
+
+//   const readOnly =
+//     isPreview ||
+//     isView ||
+//     field.behavior?.readOnly ||
+//     isCalculated;
+
+//   /* ================= VISIBILITY ================= */
+
+//   if (!evaluateVisibility(field.visibility, values)) return null;
+
+//   /* ================= VALUE ================= */
+
+//   const value =
+//     isPreview ? "" : values[storageKey] ?? "";
+
+//   const [localError, setLocalError] = useState<string | null>(null);
+
+//   /* ================= CALCULATION ================= */
+
+//   const calculatedValue = isCalculated
+//     ? evaluateCalculation(field.calculation, values)
+//     : undefined;
+
+//   useEffect(() => {
+//     if (!isCalculated) return;
+//     if (values[storageKey] === calculatedValue) return;
+
+//     setValueFn(storageKey, calculatedValue);
+//   }, [isCalculated, calculatedValue, storageKey, values, setValueFn]);
+
+//   /* ================= VALIDATION ================= */
+
+//   function runValidation(val: any) {
+//     if (!isEditable) return;
+//     if (isCalculated) return;
+//     setLocalError(validateField(val, rules, field.data.type));
+//   }
+
+//   function update(val: any) {
+//     if (readOnly) return;
+//     setValueFn(storageKey, val);
+//     if (localError) runValidation(val);
+//   }
+
+//   /* ================= OPTIONS ================= */
+
+//   const reference = field.integration?.reference;
+//   const dataSource = field.integration?.dataSource;
+
+//   const parentValue = dataSource?.dependsOn
+//     ? values[dataSource.dependsOn]
+//     : undefined;
+
+//   const { data: referenceOptions = [] } = useReferenceData(
+//     reference?.valueField,
+//     parentValue ? String(parentValue) : undefined
+//   );
+
+//   const options = useMemo(() => {
+//     if (reference) {
+//       return referenceOptions.map((r: any) => ({
+//         label: r.label,
+//         value: String(r.value),
+//       }));
+//     }
+
+//     if (dataSource?.type === "DEPENDENT") {
+//       return dataSource.map?.[String(parentValue)] ?? [];
+//     }
+
+//     return ui.options ?? [];
+//   }, [reference, referenceOptions, dataSource, ui.options, parentValue]);
+
+//   /* ================= RESET DEPENDENT ================= */
+
+//   useEffect(() => {
+//     if (dataSource?.type !== "DEPENDENT") return;
+//     if (dataSource.resetOnChange === false) return;
+
+//     if (value && !options.some((o: any) => o.value === value)) {
+//       setValueFn(storageKey, "");
+//     }
+//   }, [parentValue, options, value, storageKey, setValueFn, dataSource]);
+
+//   /* ================= UI ================= */
+
+//   const baseClass =
+//     "border p-2 w-full rounded " +
+//     (localError ? "border-red-500 " : "") +
+//     (readOnly ? "bg-gray-100 cursor-not-allowed" : "");
+
+//   function renderInput() {
+//     if (isCalculated) {
+//       return <input className={baseClass} value={value} disabled />;
+//     }
+
+//     switch (ui.widget) {
+//       case "TEXT":
+//         return (
+//           <input
+//             className={baseClass}
+//             value={value}
+//             disabled={readOnly}
+//             onChange={(e) => update(e.target.value)}
+//             onBlur={() => runValidation(value)}
+//           />
+//         );
+
+//       case "TEXTAREA":
+//       case "RICH_TEXT":
+//         return (
+//           <textarea
+//             className={baseClass}
+//             value={value}
+//             disabled={readOnly}
+//             onChange={(e) => update(e.target.value)}
+//             onBlur={() => runValidation(value)}
+//           />
+//         );
+
+//       case "NUMBER":
+//       case "CURRENCY":
+//         return (
+//           <input
+//             type="number"
+//             className={baseClass}
+//             value={value}
+//             disabled={readOnly}
+//             onChange={(e) => update(e.target.value)}
+//             onBlur={() => runValidation(value)}
+//           />
+//         );
+
+//       case "DATE":
+//         return (
+//           <input
+//             type="date"
+//             className={baseClass}
+//             value={value}
+//             disabled={readOnly}
+//             onChange={(e) => update(e.target.value)}
+//             onBlur={() => runValidation(value)}
+//           />
+//         );
+
+//       case "DATETIME":
+//         return (
+//           <input
+//             type="datetime-local"
+//             className={baseClass}
+//             value={value}
+//             disabled={readOnly}
+//             onChange={(e) => update(e.target.value)}
+//             onBlur={() => runValidation(value)}
+//           />
+//         );
+
+//       case "CHECKBOX":
+//         return (
+//           <input
+//             type="checkbox"
+//             checked={Boolean(value)}
+//             disabled={readOnly}
+//             onChange={(e) => update(e.target.checked)}
+//           />
+//         );
+
+//       case "FILE":
+//         return (
+//           <input
+//             type="file"
+//             disabled={readOnly}
+//             onChange={(e) =>
+//               update(e.target.files ? Array.from(e.target.files) : [])
+//             }
+//           />
+//         );
+
+//       case "SELECT":
+//         return (
+//           <select
+//             className={baseClass}
+//             value={value}
+//             disabled={readOnly}
+//             onChange={(e) => update(e.target.value)}
+//             onBlur={() => runValidation(value)}
+//           >
+//             <option value="">Select…</option>
+//             {options.map((opt: any) => (
+//               <option key={opt.value} value={opt.value}>
+//                 {opt.label}
+//               </option>
+//             ))}
+//           </select>
+//         );
+
+//       case "RADIO":
+//         return (
+//           <div className="space-y-1">
+//             {options.map((opt: any) => (
+//               <label key={opt.value} className="flex items-center gap-2">
+//                 <input
+//                   type="radio"
+//                   checked={value === opt.value}
+//                   disabled={readOnly}
+//                   onChange={() => update(opt.value)}
+//                 />
+//                 {opt.label}
+//               </label>
+//             ))}
+//           </div>
+//         );
+
+//       default:
+//         return (
+//           <input
+//             className={baseClass}
+//             value={value}
+//             disabled={readOnly}
+//             onChange={(e) => update(e.target.value)}
+//           />
+//         );
+//     }
+//   }
+
+//   /* ================= RENDER ================= */
+
+//   return (
+//     <div className={`col-span-${span}`}>
+//       <label className="block text-sm font-medium mb-1">
+//         {field.meta.label}
+//         {required && <span className="ml-1 text-red-500">*</span>}
+//         {isPreview && (
+//           <span className="ml-2 text-xs text-blue-400">(preview)</span>
+//         )}
+//       </label>
+
+//       {renderInput()}
+
+//       {localError && (
+//         <div className="text-xs text-red-600 mt-1">{localError}</div>
+//       )}
+//     </div>
+//   );
+// }
+
+
+
+// "use client";
+
+// import { useState, useEffect, useMemo } from "react";
+
+// import { useReferenceData } from "@/lib/resource/hook/useResource";
+// import { useRuntimeFormStore } from "./runtimeFormStore";
+// import { evaluateVisibility } from "./evaluateVisibility";
+// import { evaluateCalculation } from "./evaluateCalculation";
+// import { validateField } from "./validateField";
+
+
+
+// /* ======================================================
+//    HELPERS
+// ====================================================== */
+
+// function widthToSpan(width?: string): number {
+//   switch (width) {
+//     case "full":
+//       return 12;
+//     case "half":
+//       return 6;
+//     case "third":
+//       return 4;
+//     case "quarter":
+//       return 3;
+//     case "two-third":
+//       return 8;
+//     default:
+//       return 12;
+//   }
+// }
+
+// function isRequired(rules: any[] = []) {
+//   return rules.some((r) => r.type === "REQUIRED");
+// }
+
+// /* ======================================================
+//    COMPONENT
+// ====================================================== */
+
+// export function RuntimeField({
+//   fieldKey,
+//   fields,
+//   rowId,
+//   mode = "CREATE",
+// }: {
+//   fieldKey: string;
+//   fields: any[];
+//   rowId?: string;
+//   mode?: "PREVIEW" | "CREATE" | "VIEW" | "EDIT";
+// }) {
+//   const isPreview = mode === "PREVIEW";
+//   const isView = mode === "VIEW";
+//   const isEditable = mode === "CREATE" || mode === "EDIT";
+
+//   const field = fields.find((f: any) => f.meta.key === fieldKey);
+//   if (!field || field.meta.deprecated) return null;
+
+//   /* ================= STORE ================= */
+
+//   const values = useRuntimeFormStore((s) => s.values);
+//   const setValueFn = useRuntimeFormStore((s) => s.setValue);
+//   const storageKey = rowId ? `${rowId}.${fieldKey}` : fieldKey;
+
+//   /* ================= META ================= */
+
+//   const rules = field.validation?.rules ?? [];
+//   const required = isRequired(rules);
+//   const isCalculated = Boolean(field.calculation);
+//   const ui = field.ui ?? {};
+//   const span = widthToSpan(ui.layout?.width);
+
+//   const readOnly =
+//     isPreview || isView || field.behavior?.readOnly || isCalculated;
+
+//   /* ================= VISIBILITY ================= */
+
+//   if (!evaluateVisibility(field.visibility, values)) return null;
+
+//   /* ================= DEFAULT VALUE ================= */
+
+//   useEffect(() => {
+//     if (isPreview) return;
+//     if (values[storageKey] != null) return;
+
+//     if (field.data?.default != null) {
+//       setValueFn(storageKey, field.data.default);
+//     }
+//   }, [storageKey]);
+
+//   /* ================= VALUE ================= */
+
+//   const value = isPreview ? "" : values[storageKey] ?? "";
+//   const [localError, setLocalError] = useState<string | null>(null);
+
+//   /* ================= CALCULATION ================= */
+
+//   const calculatedValue = isCalculated
+//     ? evaluateCalculation(field.calculation, values)
+//     : undefined;
+
+//   useEffect(() => {
+//     if (!isCalculated) return;
+//     if (values[storageKey] === calculatedValue) return;
+//     setValueFn(storageKey, calculatedValue);
+//   }, [isCalculated, calculatedValue, storageKey, values]);
+
+//   /* ================= VALIDATION ================= */
+
+//   function runValidation(val: any) {
+//     if (!isEditable || isCalculated) return;
+
+//     if (field.data?.nullable && (val === "" || val == null)) {
+//       setLocalError(null);
+//       return;
+//     }
+
+//     setLocalError(validateField(val, rules, field.data.type));
+//   }
+
+//   function update(val: any) {
+//     if (readOnly) return;
+//     setValueFn(storageKey, val);
+//     if (localError) runValidation(val);
+//   }
+
+//   /* ================= OPTIONS ================= */
+
+//   const reference = field.integration?.reference;
+//   const dataSource = field.integration?.dataSource;
+
+//   const parentValue = dataSource?.dependsOn
+//     ? values[dataSource.dependsOn]
+//     : undefined;
+
+//   const { data: referenceOptions = [] } = useReferenceData(
+//     reference?.valueField,
+//     parentValue ? String(parentValue) : undefined
+//   );
+
+//   const options = useMemo(() => {
+//     if (reference) {
+//       return referenceOptions.map((r: any) => ({
+//         label: r.label,
+//         value: String(r.value),
+//       }));
+//     }
+
+//     if (dataSource?.type === "DEPENDENT") {
+//       return dataSource.map?.[String(parentValue)] ?? [];
+//     }
+
+//     return ui.options ?? [];
+//   }, [reference, referenceOptions, dataSource, ui.options, parentValue]);
+
+//   /* ================= RESET DEPENDENT ================= */
+
+//   useEffect(() => {
+//     if (dataSource?.type !== "DEPENDENT") return;
+//     if (dataSource.resetOnChange === false) return;
+
+//     if (value && !options.some((o: any) => o.value === value)) {
+//       setValueFn(storageKey, "");
+//     }
+//   }, [parentValue, options, value]);
+
+//   /* ================= UI ================= */
+
+//   const baseClass =
+//     "border p-2 w-full rounded " +
+//     (localError ? "border-red-500 " : "") +
+//     (readOnly ? "bg-gray-100 cursor-not-allowed" : "");
+
+//   const commonProps = {
+//     className: baseClass,
+//     disabled: readOnly,
+//     placeholder: ui.placeholder,
+//   };
+
+//   function renderInput() {
+//     if (isCalculated) {
+//       return <input {...commonProps} value={value} disabled />;
+//     }
+
+//     switch (ui.widget) {
+//       case "TEXT":
+//         return (
+//           <input
+//             {...commonProps}
+//             value={value}
+//             onChange={(e) => update(e.target.value)}
+//             onBlur={() => runValidation(value)}
+//           />
+//         );
+
+//       case "TEXTAREA":
+//       case "RICH_TEXT":
+//         return (
+//           <textarea
+//             {...commonProps}
+//             value={value}
+//             onChange={(e) => update(e.target.value)}
+//             onBlur={() => runValidation(value)}
+//           />
+//         );
+
+//       case "NUMBER":
+//       case "CURRENCY":
+//         return (
+//           <input
+//             {...commonProps}
+//             type="number"
+//             step={
+//               field.data?.scale != null
+//                 ? Math.pow(10, -field.data.scale)
+//                 : "any"
+//             }
+//             value={value}
+//             onChange={(e) => update(e.target.value)}
+//             onBlur={() => runValidation(value)}
+//           />
+//         );
+
+//       case "DATE":
+//         return (
+//           <input
+//             {...commonProps}
+//             type="date"
+//             value={value}
+//             onChange={(e) => update(e.target.value)}
+//             onBlur={() => runValidation(value)}
+//           />
+//         );
+
+//       case "DATETIME":
+//         return (
+//           <input
+//             {...commonProps}
+//             type="datetime-local"
+//             value={value}
+//             onChange={(e) => update(e.target.value)}
+//             onBlur={() => runValidation(value)}
+//           />
+//         );
+
+//       case "CHECKBOX":
+//         return (
+//           <input
+//             type="checkbox"
+//             checked={Boolean(value)}
+//             disabled={readOnly}
+//             onChange={(e) => update(e.target.checked)}
+//           />
+//         );
+
+//       case "FILE":
+//         return (
+//           <input
+//             type="file"
+//             disabled={readOnly}
+//             onChange={(e) =>
+//               update(e.target.files ? Array.from(e.target.files) : [])
+//             }
+//           />
+//         );
+
+//       case "SELECT":
+//         return (
+//           <select
+//             {...commonProps}
+//             value={value}
+//             onChange={(e) => update(e.target.value)}
+//             onBlur={() => runValidation(value)}
+//           >
+//             <option value="">Select…</option>
+//             {options.map((opt: any) => (
+//               <option key={opt.value} value={opt.value}>
+//                 {opt.label}
+//               </option>
+//             ))}
+//           </select>
+//         );
+
+//       case "RADIO":
+//         return (
+//           <div className="space-y-1">
+//             {options.map((opt: any) => (
+//               <label key={opt.value} className="flex items-center gap-2">
+//                 <input
+//                   type="radio"
+//                   checked={value === opt.value}
+//                   disabled={readOnly}
+//                   onChange={() => update(opt.value)}
+//                 />
+//                 {opt.label}
+//               </label>
+//             ))}
+//           </div>
+//         );
+
+//       default:
+//         return (
+//           <input
+//             {...commonProps}
+//             value={value}
+//             onChange={(e) => update(e.target.value)}
+//           />
+//         );
+//     }
+//   }
+
+//   /* ================= RENDER ================= */
+
+//   return (
+//     <div className={`col-span-${span}`}>
+//       <label className="block text-sm font-medium mb-1">
+//         {field.meta.label}
+//         {required && <span className="ml-1 text-red-500">*</span>}
+//         {isPreview && (
+//           <span className="ml-2 text-xs text-blue-400">(preview)</span>
+//         )}
+//       </label>
+
+//       {renderInput()}
+
+//       {ui.helpText && !localError && (
+//         <div className="text-xs text-gray-500 mt-1">{ui.helpText}</div>
+//       )}
+
+//       {localError && (
+//         <div className="text-xs text-red-600 mt-1">{localError}</div>
+//       )}
+//     </div>
+//   );
+// }
+
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { evaluateVisibility } from "../runtime/evaluateVisibility";
-import { evaluateCalculation } from "../runtime/evaluateCalculation";
-import { validateField } from "./validateField";
 import { useReferenceData } from "@/lib/resource/hook/useResource";
 import { useRuntimeFormStore } from "./runtimeFormStore";
+import { evaluateVisibility } from "./evaluateVisibility";
+import { evaluateCalculation } from "./evaluateCalculation";
+import { validateField } from "./validateField";
 
 /* ======================================================
    HELPERS
@@ -2147,6 +2804,8 @@ import { useRuntimeFormStore } from "./runtimeFormStore";
 
 function widthToSpan(width?: string): number {
   switch (width) {
+    case "full":
+      return 12;
     case "half":
       return 6;
     case "third":
@@ -2176,81 +2835,104 @@ export function RuntimeField({
 }: {
   fieldKey: string;
   fields: any[];
-  rowId?: string; 
+  rowId?: string;
   mode?: "PREVIEW" | "CREATE" | "VIEW" | "EDIT";
 }) {
+  /* ================= FLAGS ================= */
+
   const isPreview = mode === "PREVIEW";
   const isView = mode === "VIEW";
   const isEditable = mode === "CREATE" || mode === "EDIT";
 
-  const field = fields.find((f: any) => f.meta.key === fieldKey);
-  if (!field || field.meta.deprecated) return null;
+  /* ================= FIELD LOOKUP ================= */
 
-  /* ================= STORE ================= */
+  const field = useMemo(
+    () => fields.find((f: any) => f.meta.key === fieldKey),
+    [fields, fieldKey]
+  );
+
+  /* ================= STORE (HOOKS ALWAYS RUN) ================= */
 
   const values = useRuntimeFormStore((s) => s.values);
   const setValueFn = useRuntimeFormStore((s) => s.setValue);
-
-  // const storageKey = fieldKey;
   const storageKey = rowId ? `${rowId}.${fieldKey}` : fieldKey;
 
+  /* ================= SAFE FALLBACK ================= */
+
+  const safeField = field && !field.meta?.deprecated ? field : null;
 
   /* ================= META ================= */
 
-  const rules = field.validation?.rules ?? [];
+  const rules = safeField?.validation?.rules ?? [];
   const required = isRequired(rules);
-  const isCalculated = Boolean(field.calculation);
-  const ui = field.ui ?? {};
+  const isCalculated = Boolean(safeField?.calculation);
+  const ui = safeField?.ui ?? {};
   const span = widthToSpan(ui.layout?.width);
 
   const readOnly =
-    isPreview ||
-    isView ||
-    field.behavior?.readOnly ||
-    isCalculated;
+    isPreview || isView || safeField?.behavior?.readOnly || isCalculated;
 
-  /* ================= VISIBILITY ================= */
+  /* ================= VISIBILITY (SAFE) ================= */
 
-  if (!evaluateVisibility(field.visibility, values)) return null;
+  const isVisible = safeField
+    ? evaluateVisibility(safeField.visibility, values)
+    : false;
+
+  /* ================= DEFAULT VALUE ================= */
+
+  useEffect(() => {
+    if (!safeField) return;
+    if (isPreview) return;
+    if (values[storageKey] != null) return;
+
+    if (safeField.data?.default != null) {
+      setValueFn(storageKey, safeField.data.default);
+    }
+  }, [safeField, storageKey]);
 
   /* ================= VALUE ================= */
 
-  const value =
-    isPreview ? "" : values[storageKey] ?? "";
-
+  const value = isPreview ? "" : values[storageKey] ?? "";
   const [localError, setLocalError] = useState<string | null>(null);
 
   /* ================= CALCULATION ================= */
 
-  const calculatedValue = isCalculated
-    ? evaluateCalculation(field.calculation, values)
-    : undefined;
+  const calculatedValue = useMemo(() => {
+    if (!isCalculated || !safeField) return undefined;
+    return evaluateCalculation(safeField.calculation, values);
+  }, [isCalculated, safeField, values]);
 
   useEffect(() => {
-    if (!isCalculated) return;
+    if (!isCalculated || !safeField) return;
     if (values[storageKey] === calculatedValue) return;
-
     setValueFn(storageKey, calculatedValue);
-  }, [isCalculated, calculatedValue, storageKey, values, setValueFn]);
+  }, [calculatedValue, isCalculated, safeField, storageKey, values]);
 
   /* ================= VALIDATION ================= */
 
   function runValidation(val: any) {
-    if (!isEditable) return;
-    if (isCalculated) return;
-    setLocalError(validateField(val, rules, field.data.type));
+    if (!isEditable || isCalculated || !safeField) return;
+
+    if (safeField.data?.nullable && (val === "" || val == null)) {
+      setLocalError(null);
+      return;
+    }
+
+    setLocalError(
+      validateField(val, rules, safeField.data?.type)
+    );
   }
 
   function update(val: any) {
-    if (readOnly) return;
+    if (readOnly || !safeField) return;
     setValueFn(storageKey, val);
     if (localError) runValidation(val);
   }
 
   /* ================= OPTIONS ================= */
 
-  const reference = field.integration?.reference;
-  const dataSource = field.integration?.dataSource;
+  const reference = safeField?.integration?.reference;
+  const dataSource = safeField?.integration?.dataSource;
 
   const parentValue = dataSource?.dependsOn
     ? values[dataSource.dependsOn]
@@ -2262,6 +2944,8 @@ export function RuntimeField({
   );
 
   const options = useMemo(() => {
+    if (!safeField) return [];
+
     if (reference) {
       return referenceOptions.map((r: any) => ({
         label: r.label,
@@ -2274,18 +2958,19 @@ export function RuntimeField({
     }
 
     return ui.options ?? [];
-  }, [reference, referenceOptions, dataSource, ui.options, parentValue]);
+  }, [safeField, reference, referenceOptions, dataSource, parentValue, ui.options]);
 
   /* ================= RESET DEPENDENT ================= */
 
   useEffect(() => {
+    if (!safeField) return;
     if (dataSource?.type !== "DEPENDENT") return;
     if (dataSource.resetOnChange === false) return;
 
     if (value && !options.some((o: any) => o.value === value)) {
       setValueFn(storageKey, "");
     }
-  }, [parentValue, options, value, storageKey, setValueFn, dataSource]);
+  }, [value, options, dataSource, safeField, storageKey]);
 
   /* ================= UI ================= */
 
@@ -2294,18 +2979,25 @@ export function RuntimeField({
     (localError ? "border-red-500 " : "") +
     (readOnly ? "bg-gray-100 cursor-not-allowed" : "");
 
+  const commonProps = {
+    className: baseClass,
+    disabled: readOnly,
+    placeholder: ui.placeholder,
+  };
+
   function renderInput() {
+    if (!safeField) return null;
+
     if (isCalculated) {
-      return <input className={baseClass} value={value} disabled />;
+      return <input {...commonProps} value={value} disabled />;
     }
 
     switch (ui.widget) {
       case "TEXT":
         return (
           <input
-            className={baseClass}
+            {...commonProps}
             value={value}
-            disabled={readOnly}
             onChange={(e) => update(e.target.value)}
             onBlur={() => runValidation(value)}
           />
@@ -2315,9 +3007,8 @@ export function RuntimeField({
       case "RICH_TEXT":
         return (
           <textarea
-            className={baseClass}
+            {...commonProps}
             value={value}
-            disabled={readOnly}
             onChange={(e) => update(e.target.value)}
             onBlur={() => runValidation(value)}
           />
@@ -2327,10 +3018,14 @@ export function RuntimeField({
       case "CURRENCY":
         return (
           <input
+            {...commonProps}
             type="number"
-            className={baseClass}
+            step={
+              safeField.data?.scale != null
+                ? Math.pow(10, -safeField.data.scale)
+                : "any"
+            }
             value={value}
-            disabled={readOnly}
             onChange={(e) => update(e.target.value)}
             onBlur={() => runValidation(value)}
           />
@@ -2339,10 +3034,9 @@ export function RuntimeField({
       case "DATE":
         return (
           <input
+            {...commonProps}
             type="date"
-            className={baseClass}
             value={value}
-            disabled={readOnly}
             onChange={(e) => update(e.target.value)}
             onBlur={() => runValidation(value)}
           />
@@ -2351,10 +3045,9 @@ export function RuntimeField({
       case "DATETIME":
         return (
           <input
+            {...commonProps}
             type="datetime-local"
-            className={baseClass}
             value={value}
-            disabled={readOnly}
             onChange={(e) => update(e.target.value)}
             onBlur={() => runValidation(value)}
           />
@@ -2384,9 +3077,8 @@ export function RuntimeField({
       case "SELECT":
         return (
           <select
-            className={baseClass}
+            {...commonProps}
             value={value}
-            disabled={readOnly}
             onChange={(e) => update(e.target.value)}
             onBlur={() => runValidation(value)}
           >
@@ -2419,21 +3111,22 @@ export function RuntimeField({
       default:
         return (
           <input
-            className={baseClass}
+            {...commonProps}
             value={value}
-            disabled={readOnly}
             onChange={(e) => update(e.target.value)}
           />
         );
     }
   }
 
-  /* ================= RENDER ================= */
+  /* ================= FINAL RENDER ================= */
+
+  if (!safeField || !isVisible) return null;
 
   return (
     <div className={`col-span-${span}`}>
       <label className="block text-sm font-medium mb-1">
-        {field.meta.label}
+        {safeField.meta.label}
         {required && <span className="ml-1 text-red-500">*</span>}
         {isPreview && (
           <span className="ml-2 text-xs text-blue-400">(preview)</span>
@@ -2441,6 +3134,10 @@ export function RuntimeField({
       </label>
 
       {renderInput()}
+
+      {ui.helpText && !localError && (
+        <div className="text-xs text-gray-500 mt-1">{ui.helpText}</div>
+      )}
 
       {localError && (
         <div className="text-xs text-red-600 mt-1">{localError}</div>
