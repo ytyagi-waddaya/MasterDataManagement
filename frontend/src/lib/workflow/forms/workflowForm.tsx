@@ -1303,6 +1303,7 @@ import { ReviewStep } from "../ReviewStep";
 import { useWorkflowBuilderStore } from "@/store/useWorkflowBuilderStore";
 import { useRouter } from "next/navigation";
 import { WorkflowBuilderGuide } from "../WorkflowBuilderGuide";
+import { makeId } from "@/utils/id";
 
 /* ===================== TYPES ===================== */
 export type WorkflowFormValues = {
@@ -1332,10 +1333,7 @@ const EMPTY_VALUES: WorkflowFormValues = {
 };
 
 // ✅ stable id generator (client only)
-function makeId() {
-  // @ts-ignore
-  return globalThis?.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
-}
+
 
 /**
  * ✅ IMPORTANT FIX:

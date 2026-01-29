@@ -294,11 +294,8 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { Button } from "@/components/ui/button";
 import { Plus, X, ArrowRight } from "lucide-react";
 import { TransitionRow } from "./TransitionRow";
+import { makeId } from "@/utils/id";
 
-function makeId() {
-  // @ts-ignore
-  return globalThis?.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
-}
 
 function normalizeStages(stages: any[]) {
   return (stages || [])

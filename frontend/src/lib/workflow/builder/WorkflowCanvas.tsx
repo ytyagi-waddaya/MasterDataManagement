@@ -569,14 +569,15 @@ import StageNode from "./nodes/StageNode";
 import FloatingStageLibrary from "./library/FloatingStageLibrary";
 import { TransitionPanel } from "./transitions/TransitionPanel";
 import { getStageColor } from "./library/stageLibrary";
+import { makeId } from "@/utils/id";
 
 const NODE_TYPES = { definition: DefinitionNode, stage: StageNode };
 const EDGE_TYPES = { flow: FlowEdge };
 
-function makeId() {
-  // @ts-ignore
-  return globalThis?.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
-}
+// function makeId() {
+//   // @ts-ignore
+//   return globalThis?.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
+// }
 
 function getStagePosition(index: number) {
   const COLS = 4;

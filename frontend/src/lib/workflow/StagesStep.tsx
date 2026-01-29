@@ -464,6 +464,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useEffect, useState } from "react";
+import { generateId } from "@/utils/id";
 
 const CATEGORY_LABELS: Record<string, string> = {
   DRAFT: "Draft",
@@ -530,7 +531,7 @@ export function StagesStep({ form, stageArray }: any) {
             size="sm"
             onClick={() =>
               stageArray.append({
-                tempId: crypto.randomUUID(),
+                tempId: generateId(),
                 name: "",
                 category: "NORMAL",
                 isInitial: false,
@@ -761,7 +762,7 @@ export function StagesStep({ form, stageArray }: any) {
             size="sm"
             onClick={() =>
               stageArray.append({
-                tempId: crypto.randomUUID(),
+                tempId: generateId(),
                 name: "",
                 category: "NORMAL",
                 isInitial: false,

@@ -298,6 +298,7 @@ import {
   Type
 } from "lucide-react";
 import { useState } from "react";
+import { generateId } from "@/utils/id";
 
 /* ======================================================
    HELPERS
@@ -452,7 +453,7 @@ function ColumnsSettings({
 
                         n.slots = Array.from({ length: count }).map(
                           (_, i) => ({
-                            id: crypto.randomUUID(),
+                            id:generateId(),
                             children: n.slots[i]?.children ?? [],
                           }),
                         );
@@ -631,7 +632,7 @@ function TabsSettings({
                 updateLayoutNode(nodePath, (n) => {
                   if (n.type !== "tabs") return;
                   n.slots.push({
-                    id: crypto.randomUUID(),
+                    id: generateId(),
                     title: `Tab ${n.slots.length + 1}`,
                     children: [],
                   });

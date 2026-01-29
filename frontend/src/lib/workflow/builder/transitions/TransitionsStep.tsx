@@ -4,11 +4,9 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 import { useWatch } from "react-hook-form";
+import { makeId } from "@/utils/id";
 
-function makeId() {
-  // @ts-ignore
-  return globalThis?.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
-}
+
 
 export function TransitionsStep({
   form,

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { RuntimeField } from "../RuntimeField";
+import { generateId } from "@/utils/id";
 
 export function RuntimeRepeater({ node, fields }: any) {
   const min = node.config?.minItems ?? 0;
@@ -9,7 +10,7 @@ export function RuntimeRepeater({ node, fields }: any) {
     node._rows?.length
       ? node._rows
       : Array.from({ length: min }).map(() =>
-          crypto.randomUUID(),
+          generateId()
         ),
   );
 
@@ -19,7 +20,7 @@ export function RuntimeRepeater({ node, fields }: any) {
 
   function addRow() {
     if (rows.length >= max) return;
-    setRows([...rows, crypto.randomUUID()]);
+    setRows([...rows, generateId()]);
   }
 
   function removeRow(rowId: string) {

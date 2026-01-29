@@ -13,6 +13,7 @@ import {
   SpacerLayoutNode,
 } from "../node.types";
 import { evaluateCalculation } from "../runtime/evaluateCalculation";
+import { generateId } from "@/utils/id";
 
 /* ======================================================
    TYPES
@@ -37,14 +38,14 @@ type NodeTarget =
 
 function cloneNode(node: Node): Node {
   if (node.kind === "FIELD") {
-    return { ...node, id: crypto.randomUUID() };
+    return { ...node, id: generateId() };
   }
 
   switch (node.type) {
     case "repeater":
       return {
         ...node,
-        id: crypto.randomUUID(),
+        id: generateId(),
         children: node.children.map(cloneNode),
       };
 
@@ -52,10 +53,10 @@ function cloneNode(node: Node): Node {
     case "tabs":
       return {
         ...node,
-        id: crypto.randomUUID(),
+        id: generateId(),
         slots: node.slots.map((s) => ({
           ...s,
-          id: crypto.randomUUID(),
+          id: generateId(),
           children: s.children.map(cloneNode),
         })),
       };
@@ -65,7 +66,7 @@ function cloneNode(node: Node): Node {
     case "spacer":
       return {
         ...node,
-        id: crypto.randomUUID(),
+        id: generateId(),
       };
 
     default: {
@@ -319,7 +320,7 @@ updateField: (key, patch) =>
     set((s) =>
       updateSchemaWithHistory(s, (schema) => {
         schema.layout.sections.push({
-          id: crypto.randomUUID(),
+          id: generateId(),
           title: "New Section",
           collapsed: false,
           nodes: [],
@@ -356,7 +357,7 @@ updateField: (key, patch) =>
 
         schema.layout.sections.push({
           ...sec,
-          id: crypto.randomUUID(),
+          id: generateId(),
           title: sec.title + " (Copy)",
           nodes: sec.nodes.map(cloneNode),
         });
@@ -576,7 +577,7 @@ updateField: (key, patch) =>
               n.type === "repeater" &&
               n.id === repeaterId
             ) {
-              n._rows = [...(n._rows ?? []), crypto.randomUUID()];
+              n._rows = [...(n._rows ?? []), generateId()];
             }
           });
         });
