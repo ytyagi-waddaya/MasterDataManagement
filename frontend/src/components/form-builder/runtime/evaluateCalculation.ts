@@ -132,4 +132,4 @@ export function evaluateCalculation(
     console.warn("Calculation error:", err);
     return undefined;
   }
-}
+}  
