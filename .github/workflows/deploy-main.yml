@@ -58,8 +58,6 @@ jobs:
           docker pull tyash26/frontend:latest
           docker pull nginx:alpine
 
-
-
           docker compose -f docker/docker-compose.prod.yml up -d --remove-orphans
 
           docker image prune -f
