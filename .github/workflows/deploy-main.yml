@@ -29,13 +29,16 @@ jobs:
       - name: Push backend
         run: docker push $BACKEND_IMAGE:$TAG
 
+      # - name: Build frontend
+      #   run: |
+      #     docker build \
+      #       --build-arg NEXT_PUBLIC_API_URL=http://${{ secrets.PROD_HOST }}:${{ secrets.PROD_PORT }}/api \
+      #       --build-arg NEXT_PUBLIC_SOCKET_URL=http://${{ secrets.PROD_HOST }}:${{ secrets.PROD_PORT }} \
+      #       -t $FRONTEND_IMAGE:$TAG \
+      #       ./frontend
+
       - name: Build frontend
-        run: |
-          docker build \
-            --build-arg NEXT_PUBLIC_API_URL=http://${{ secrets.PROD_HOST }}:${{ secrets.PROD_PORT }}/api \
-            --build-arg NEXT_PUBLIC_SOCKET_URL=http://${{ secrets.PROD_HOST }}:${{ secrets.PROD_PORT }} \
-            -t $FRONTEND_IMAGE:$TAG \
-            ./frontend
+        run: docker build -t $FRONTEND_IMAGE:$TAG ./frontend
 
       - name: Push frontend
         run: docker push $FRONTEND_IMAGE:$TAG
@@ -44,22 +47,25 @@ jobs:
     needs: build-and-push
     runs-on: self-hosted
     steps:
-      - name: Deploy on EC2
+      - name: Deploy on Server
         run: |
           sudo mkdir -p /opt/mdm
           sudo chown -R $USER:$USER /opt/mdm
 
-          cd /opt/mdm
+          cd /opt/mdm || exit 1
 
           docker pull tyash26/backend:latest
           docker pull tyash26/frontend:latest
+          docker pull nginx:alpine
 
-          docker-compose -f docker/docker-compose.prod.yml down || true
-          docker-compose -f docker/docker-compose.prod.yml up -d
+
+
+          docker compose -f docker/docker-compose.prod.yml up -d --remove-orphans
 
           docker image prune -f
 
-
+ # docker-compose -f docker/docker-compose.prod.yml down || true
+# docker-compose -f docker/docker-compose.prod.yml up -d
 # docker exec mdm_backend npx prisma db push
 # docker exec mdm_backend node dist/prisma/seed.js
 

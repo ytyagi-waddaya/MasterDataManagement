@@ -7,8 +7,10 @@ services:
       POSTGRES_USER: "${POSTGRES_USER:-mdmpostgres}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-mdmpostgres}"
       POSTGRES_DB: "${POSTGRES_DB:-mdmDB}"
+    # ports:
+    #   - "${HOST_POSTGRES_PORT:-5438}:5432"
     ports:
-      - "${HOST_POSTGRES_PORT:-5438}:5432"
+      - "5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -32,8 +34,10 @@ services:
         --maxclients 10000
     environment:
       REDIS_PASSWORD: "${REDIS_PASSWORD:-}"
-    ports:
-      - "${HOST_REDIS_PORT:-6379}:6379"
+    expose:
+      - "6379"
+    # ports:
+    #   - "${HOST_REDIS_PORT:-6379}:6379"
     volumes:
       - redisdata:/data
     healthcheck:
@@ -51,8 +55,10 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    ports:
-      - "8000:8000"
+    # ports:
+    #   - "8000:8000"
+    expose:
+      - "8000"
     env_file:
       - backend/.env
 
@@ -60,12 +66,28 @@ services:
     image: tyash26/frontend:latest
     container_name: mdm_frontend
     restart: unless-stopped
-    ports:
-      - "3000:3000"
-    env_file:
-      - frontend/.env.example
+    # ports:
+    #   - "3000:3000"
+    expose:
+      - "3000"
+    # env_file:
+    #   - frontend/.env.example
     depends_on:
       - backend
+
+    nginx:
+      image: nginx:alpine
+      container_name: mdm_nginx
+      restart: unless-stopped
+      ports:
+        - "80:80"
+      volumes:
+        - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      depends_on:
+        - frontend
+        - backend
+
+
 
 volumes:
   pgdata:

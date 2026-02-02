@@ -74,17 +74,18 @@ const allowedOrigins = (config.FRONTEND_ORIGIN || "")
 
 app.use(
   cors({
-    origin: (origin, callback) => {
-      // allow no-origin (curl, server-to-server)
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.length === 0) {
-        // no configured origin list — deny in production
-        if (config.NODE_ENV === "production") return callback(new Error("CORS not allowed"), false);
-        return callback(null, true);
-      }
-      if (allowedOrigins.includes(origin)) return callback(null, true);
-      return callback(new Error("CORS not allowed"), false);
-    },
+    // origin: (origin, callback) => {
+    //   // allow no-origin (curl, server-to-server)
+    //   if (!origin) return callback(null, true);
+    //   if (allowedOrigins.length === 0) {
+    //     // no configured origin list — deny in production
+    //     if (config.NODE_ENV === "production") return callback(new Error("CORS not allowed"), false);
+    //     return callback(null, true);
+    //   }
+    //   if (allowedOrigins.includes(origin)) return callback(null, true);
+    //   return callback(new Error("CORS not allowed"), false);
+    // },
+    origin: true,
     credentials: true,
     exposedHeaders: ["X-Request-Id", "Retry-After", "X-RateLimit-Remaining", "X-RateLimit-Reset"],
   })
