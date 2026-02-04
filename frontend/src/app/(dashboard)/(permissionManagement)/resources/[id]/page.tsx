@@ -407,12 +407,13 @@ export default function ResourceRecordsPage() {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <span className="inline-block">
-                    <CreateButton
+                    {/* <CreateButton
                       triggerText="Create Record"
                       title={`New ${resourceData?.name}`}
                       disabled={!publishedSchema}
-                      size="lg"
+                      size="min-w-[98vw]"
                       showFooter={false}
+                      scrollable
                     >
                       {({ close }) =>
                         normalized?.schema && (
@@ -433,8 +434,6 @@ export default function ResourceRecordsPage() {
                                 );
                               }}
                             />
-
-                            {/* ✅ SUBMIT BUTTON */}
                             <div className="pt-6 border-t flex justify-end">
                               <button
                                 type="submit"
@@ -445,6 +444,46 @@ export default function ResourceRecordsPage() {
                               </button>
                             </div>
                           </>
+                        )
+                      }
+                    </CreateButton> */}
+                    <CreateButton
+                      triggerText="Create Record"
+                      title={`New ${resourceData?.name}`}
+                      disabled={!publishedSchema}
+                      size="min-w-[98vw]"
+                      scrollable
+                      showFooter
+                      footer={
+                        <div className="pt-6 border-t flex justify-end">
+                          <button
+                            type="submit"
+                            form="runtime-form"
+                            className="bg-black text-white px-6 py-2 rounded"
+                          >
+                            Save
+                          </button>
+                        </div>
+                      }
+                    >
+                      {({ close }) =>
+                        normalized?.schema && (
+                          <FormRenderer
+                            schema={normalized.schema}
+                            fields={normalized.fieldConfigs}
+                            mode="CREATE"
+                            onSubmit={(values) => {
+                              createRecord.mutate(
+                                {
+                                  masterObjectId: masterObject.id,
+                                  data: values,
+                                },
+                                {
+                                  onSuccess: () => close(),
+                                },
+                              );
+                            }}
+                          />
                         )
                       }
                     </CreateButton>

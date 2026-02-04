@@ -332,6 +332,7 @@ export default function RecordDetailsPage() {
                   schema={normalized.schema}
                   fields={normalized.fieldConfigs}
                   mode="VIEW"
+                  initialValues={record?.data}
                 />
               </div>
             </div>

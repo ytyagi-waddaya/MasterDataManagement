@@ -8,17 +8,53 @@ import {
    CONDITION EVALUATOR
 ====================================================== */
 
+// function evalCondition(
+//   condition: VisibilityCondition,
+//   values: Record<string, any>,
+// ): boolean {
+//   const fieldValue = values[condition.fieldKey];
+
+//   switch (condition.operator) {
+//     case "EQUALS":
+//       return fieldValue === condition.value;
+
+//     case "NOT_EQUALS":
+//       return fieldValue !== condition.value;
+
+//     case "GREATER_THAN":
+//       return fieldValue > condition.value;
+
+//     case "LESS_THAN":
+//       return fieldValue < condition.value;
+
+//     case "IN":
+//       return Array.isArray(condition.value)
+//         ? condition.value.includes(fieldValue)
+//         : false;
+
+//     case "NOT_IN":
+//       return Array.isArray(condition.value)
+//         ? !condition.value.includes(fieldValue)
+//         : false;
+
+//     default:
+//       return true;
+//   }
+// }
+
 function evalCondition(
   condition: VisibilityCondition,
   values: Record<string, any>,
 ): boolean {
+  if (!condition.fieldKey) return true;
+
   const fieldValue = values[condition.fieldKey];
 
   switch (condition.operator) {
-    case "EQUALS":
+    case "EQUAL":
       return fieldValue === condition.value;
 
-    case "NOT_EQUALS":
+    case "NOT_EQUAL":
       return fieldValue !== condition.value;
 
     case "GREATER_THAN":
@@ -27,20 +63,25 @@ function evalCondition(
     case "LESS_THAN":
       return fieldValue < condition.value;
 
-    case "IN":
-      return Array.isArray(condition.value)
-        ? condition.value.includes(fieldValue)
-        : false;
+    case "IN": {
+      const list = Array.isArray(condition.value)
+        ? condition.value
+        : String(condition.value).split(",").map((v) => v.trim());
+      return list.includes(fieldValue);
+    }
 
-    case "NOT_IN":
-      return Array.isArray(condition.value)
-        ? !condition.value.includes(fieldValue)
-        : false;
+    case "NOT_IN": {
+      const list = Array.isArray(condition.value)
+        ? condition.value
+        : String(condition.value).split(",").map((v) => v.trim());
+      return !list.includes(fieldValue);
+    }
 
     default:
       return true;
   }
 }
+
 
 /* ======================================================
    GROUP (RECURSIVE)

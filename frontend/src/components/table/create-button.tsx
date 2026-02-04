@@ -76,6 +76,7 @@ export function CreateButton<T extends Record<string, any>>({
   size = "md",
   showFooter = true, // ✅ NEW
   footer,
+  scrollable = false,
 }: {
   triggerText: string;
   title: string;
@@ -87,6 +88,7 @@ export function CreateButton<T extends Record<string, any>>({
   size?: DialogSize;
   showFooter?: boolean; // ✅ NEW
   footer?: React.ReactNode; // ✅ NEW
+   scrollable?: boolean;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -106,6 +108,7 @@ export function CreateButton<T extends Record<string, any>>({
       size={size}
       showFooter={showFooter} // ✅ NEW
       footer={footer}
+      scrollable={scrollable}
       trigger={
         <Button className="flex items-center gap-2" disabled={disabled}>
           <Plus className="w-4 h-4" />

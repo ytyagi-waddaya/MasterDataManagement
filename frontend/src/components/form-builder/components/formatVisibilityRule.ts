@@ -21,9 +21,17 @@ function formatCondition(
   condition: VisibilityCondition,
   fieldLabelMap: Record<string, string>,
 ): string {
-  const fieldLabel =
-    fieldLabelMap[condition.fieldKey] ?? condition.fieldKey;
+   const key = condition.fieldKey ?? "";
+  // const fieldLabel =
+  //   fieldLabelMap[condition.fieldKey] ?? condition.fieldKey;
+    const fieldLabel = fieldLabelMap[key] ?? key;
 
+  // const value = Array.isArray(condition.value)
+  //   ? condition.value.join(", ")
+  //   : String(condition.value);
+
+  // return `${fieldLabel} ${OP_TEXT[condition.operator]} ${value}`;
+  
   const value = Array.isArray(condition.value)
     ? condition.value.join(", ")
     : String(condition.value);

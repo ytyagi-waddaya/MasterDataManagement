@@ -78,6 +78,64 @@ export function normalizeRule(r: any) {
     params: r.params ?? {},
   };
 }
+
+// function adaptFieldDefinition(field: any): CanonicalFieldConfig {
+//   const rawFormula = field.config?.behavior?.formula;
+
+//   return {
+//     configVersion: 1,
+//     meta: {
+//       key: field.key,
+//       label: field.label,
+//       category: field.category,
+//       system: field.isSystem,
+//       locked: field.isLocked,
+//       deprecated: !field.isActive,
+//     },
+
+//     data: {
+//       type: field.dataType,
+//       nullable: true,
+//     },
+
+//     ui: {
+//       widget: field.fieldType,
+//       ...(field.config?.ui ?? {}),
+//     },
+
+//     validation: field.fieldValidationRules?.length
+//       ? {
+//           rules: field.fieldValidationRules.map(normalizeRule),
+//         }
+//       : undefined,
+
+//     calculation:
+//       field.category === "CALCULATED" && rawFormula
+//         ? {
+//             expression: rawFormula.expression ?? "",
+//             dependencies: Array.isArray(rawFormula.dependencies)
+//               ? rawFormula.dependencies
+//               : [],
+//           }
+//         : undefined,
+
+//     permissions: field.fieldPermissions
+//       ? normalizePermissions(field.fieldPermissions)
+//       : undefined,
+
+//     // visibility: field.fieldConditionBindings
+//     //   ? normalizeVisibility(field.fieldConditionBindings)
+//     //   : undefined,
+
+//     visibility: field.config?.visibility
+//   ? normalizeVisibilityFromBackend(field.config.visibility)
+//   : undefined,
+
+
+//     integration: field.config?.integration ?? undefined,
+//   };
+// }
+
 function adaptFieldDefinition(field: any): CanonicalFieldConfig {
   const rawFormula = field.config?.behavior?.formula;
 
@@ -103,9 +161,7 @@ function adaptFieldDefinition(field: any): CanonicalFieldConfig {
     },
 
     validation: field.fieldValidationRules?.length
-      ? {
-          rules: field.fieldValidationRules.map(normalizeRule),
-        }
+      ? { rules: field.fieldValidationRules.map(normalizeRule) }
       : undefined,
 
     calculation:
@@ -122,8 +178,9 @@ function adaptFieldDefinition(field: any): CanonicalFieldConfig {
       ? normalizePermissions(field.fieldPermissions)
       : undefined,
 
-    visibility: field.fieldConditionBindings
-      ? normalizeVisibility(field.fieldConditionBindings)
+    // ✅ FIXED
+    visibility: field.config?.visibility
+      ? normalizeVisibilityFromBackend(field.config.visibility)
       : undefined,
 
     integration: field.config?.integration ?? undefined,
@@ -150,7 +207,7 @@ export function normalizeMasterObjectFromBackend(
   published: boolean;
 } {
   const schemas = masterObject?.schemas ?? [];
-
+  console.log("normalizer schema:", masterObject)
   const byVersionDesc = (a: any, b: any) => b.version - a.version;
 
   const draftSchema = schemas
@@ -180,8 +237,8 @@ export function normalizeMasterObjectFromBackend(
     published: activeSchema.status === "PUBLISHED",
   };
 }
-// commonNormalizers.ts
 
+// commonNormalizers.ts
 export function normalizeVisibility(visibility: any) {
   if (!visibility) return undefined;
 
@@ -223,3 +280,35 @@ export function normalizePermissions(perms: any) {
 }
 
 
+export function normalizeVisibilityFromBackend(
+  visibility: any,
+): any {
+  if (!visibility) return undefined;
+
+  const mapNode = (node: any): any => {
+    // GROUP
+    if (node.type === "group") {
+      return {
+        type: "group",
+        logic: node.logic ?? "AND",
+        conditions: (node.conditions ?? [])
+          .map(mapNode)
+          .filter(Boolean),
+      };
+    }
+
+    // CONDITION (backend → editor)
+    if (node.field && node.operator) {
+      return {
+        type: "condition",
+        fieldKey: node.field,    
+        operator: node.operator,  
+        value: node.value,
+      };
+    }
+
+    return undefined;
+  };
+
+  return mapNode(visibility);
+}

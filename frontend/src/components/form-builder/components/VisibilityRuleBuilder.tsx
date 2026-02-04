@@ -650,14 +650,15 @@ type Props = {
   onChange: (rule?: VisibilityRule) => void;
 };
 
-const OP_LABEL: Record<string, string> = {
-  EQUALS: "=",
-  NOT_EQUALS: "≠",
-  GREATER_THAN: ">",
-  LESS_THAN: "<",
-  IN: "in",
-  NOT_IN: "not in",
-};
+const OPERATOR_OPTIONS = [
+  { ui: "EQUALS", value: "EQUAL", label: "=" },
+  { ui: "NOT_EQUALS", value: "NOT_EQUAL", label: "≠" },
+  { ui: "GREATER_THAN", value: "GREATER_THAN", label: ">" },
+  { ui: "LESS_THAN", value: "LESS_THAN", label: "<" },
+  { ui: "IN", value: "IN", label: "in" },
+  { ui: "NOT_IN", value: "NOT_IN", label: "not in" },
+] as const;
+
 
 /* ======================================================
    HELPERS
@@ -701,7 +702,6 @@ function ConditionNode({
   if (node.type === "group") {
     const hasChildren = node.conditions.length > 0;
     const isRoot = depth === 0;
-    
     return (
       <div 
         className={`relative rounded-lg p-3 space-y-3 ${
@@ -800,6 +800,7 @@ function ConditionNode({
 
         {/* ACTION BUTTONS - COMPACT */}
         <div className="flex gap-1.5 pt-1">
+          
           <button
             type="button"
             className="inline-flex items-center gap-1 text-xs px-2 py-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex-1 justify-center text-[10px]"
@@ -810,8 +811,8 @@ function ConditionNode({
                   ...node.conditions,
                   {
                     type: "condition",
-                    fieldKey: fields[0]?.meta.key ?? "",
-                    operator: "EQUALS",
+                    field: fields[0]?.meta.key ?? "",
+                    operator: "EQUAL",
                     value: "",
                   },
                 ],
@@ -861,7 +862,7 @@ function ConditionNode({
             className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 text-xs rounded px-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent appearance-none cursor-pointer truncate"
             value={node.fieldKey}
             onChange={(e) =>
-              onUpdate({ ...node, fieldKey: e.target.value, value: "" })
+              onUpdate({ ...node, field: e.target.value, value: "" })
             }
           >
             <option value="">Field...</option>
@@ -892,9 +893,9 @@ function ConditionNode({
               })
             }
           >
-            {Object.entries(OP_LABEL).map(([op, label]) => (
-              <option key={op} value={op}>
-                {label}
+            {OPERATOR_OPTIONS.map((op) => (
+              <option key={op.value} value={op.value}>
+                {op.label}
               </option>
             ))}
           </select>

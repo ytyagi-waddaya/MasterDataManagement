@@ -78,16 +78,19 @@ export type Node =
   | GenericLayoutNode;
 
 export type VisibilityOperator =
-  | "EQUALS"
-  | "NOT_EQUALS"
+  | "EQUAL"
+  | "NOT_EQUAL"
   | "GREATER_THAN"
   | "LESS_THAN"
+  | "GREATER_THAN_EQUAL"
+  | "LESS_THAN_EQUAL"
   | "IN"
   | "NOT_IN";
 
 export type VisibilityCondition = {
   type: "condition";
-  fieldKey: string;
+   field: string;   
+  fieldKey?: string;
   operator: VisibilityOperator;
   value: any;
 };

@@ -1412,3 +1412,4 @@ enum TriggerStrategy {
 // CREATE UNIQUE INDEX IF NOT EXISTS one_published_schema_per_object
 // ON "MasterObjectSchema" ("masterObjectId")
 // WHERE status = 'PUBLISHED';
+

@@ -733,6 +733,9 @@
 //     </form>
 //   );
 // }
+//////////////////////////////////
+////////////////////////////////////
+//////////////////////////
 
 "use client";
 
@@ -847,11 +850,11 @@ export function FormRenderer({
   onSubmit?: (values: Record<string, any>) => void;
   initialValues?: Record<string, any>;
 }) {
+  console.log("RECORD FORM RENDER", initialValues);
   const values = useRuntimeFormStore((s) => s.values);
   const setFieldConfigs = useRuntimeFormStore((s) => s.setFieldConfigs);
   const hydrate = useRuntimeFormStore((s) => s.hydrate);
   const reset = useRuntimeFormStore((s) => s.reset);
-
   const isEditable = mode === "CREATE" || mode === "EDIT";
 
   /* ================= HYDRATION ================= */
@@ -935,7 +938,7 @@ export function FormRenderer({
       )}
 
       {/* submit button only for editable modes */}
-      {onSubmit && isEditable && (
+      {/* {onSubmit && isEditable && (
         <div className="pt-6 border-t">
           <button
             type="submit"
@@ -944,7 +947,8 @@ export function FormRenderer({
             Submit
           </button>
         </div>
-      )}
+      )} */}
     </form>
   );
 }
+
