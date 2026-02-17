@@ -137,25 +137,49 @@ const usersRepository = {
   findByEmail: ({ email }: UserEmail) => {
     return prisma.user.findUnique({
       where: { email }, // compound unique field
-      include: { roles: { include: { role: true } } },
+      include: {
+        roles: { include: { role: true } },
+        department: {
+          include: {
+            department: true,
+          },
+        },
+      },
     });
   },
 
   findByOnlyEmail: ({ email }: UserEmail) => {
     try {
       return prisma.user.findUnique({
-        where: { email: email }, // compound unique field
-        include: { roles: { include: { role: true } } },
+        where: { email },
+        include: {
+          roles: { include: { role: true } },
+          department: {
+            include: {
+              department: true,
+            },
+          },
+        },
       });
+
     } catch (err: any) {
       if (err?.code === "P1017") {
         logger.warn("[repo:user] prisma connection closed – retrying once");
         return prisma.user.findUnique({
           where: { email },
+          include: {
+            roles: { include: { role: true } },
+            department: {
+              include: {
+                department: true,
+              },
+            },
+          },
         });
       }
       throw err;
     }
+
   },
 
   findByEmails: (emails: string[]): Promise<UserEmail[]> =>
@@ -275,7 +299,18 @@ const buildUserWhere = (filters: userFilterInput) => {
     where.OR = [
       { name: { contains: filters.search, mode: "insensitive" } },
       { email: { contains: filters.search, mode: "insensitive" } },
-      { department: { contains: filters.search, mode: "insensitive" } },
+      {
+        department: {
+          some: {
+            department: {
+              name: {
+                contains: filters.search,
+                mode: "insensitive",
+              },
+            },
+          },
+        },
+      },
       { location: { contains: filters.search, mode: "insensitive" } },
     ];
   }
@@ -285,7 +320,16 @@ const buildUserWhere = (filters: userFilterInput) => {
   }
 
   if (filters.department) {
-    where.department = { contains: filters.department, mode: "insensitive" };
+    where.department = {
+      some: {
+        department: {
+          name: {
+            contains: filters.department,
+            mode: "insensitive",
+          },
+        },
+      },
+    };
   }
 
   if (filters.location) {

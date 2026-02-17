@@ -4,7 +4,19 @@ const refreshTokenRepository = {
   findValidToken: async (tokenHash: string) => {
     return prisma.refreshToken.findFirst({
       where: { tokenHash, isInvalidated: false },
-      include: { user: true },
+      // include: { user: true },
+      include: {
+        user: {
+          include: {
+            department: {
+              include: {
+                department: true,
+              },
+            },
+          },
+        },
+      }
+
     });
   },
 
@@ -55,7 +67,7 @@ const refreshTokenRepository = {
   }) => {
     return prisma.refreshToken.create({ data });
   },
-  
+
   deleteExpiredTokens: async () => {
     return prisma.refreshToken.deleteMany({
       where: { expiresAt: { lt: new Date() } },

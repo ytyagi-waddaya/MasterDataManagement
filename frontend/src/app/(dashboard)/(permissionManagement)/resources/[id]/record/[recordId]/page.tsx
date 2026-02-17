@@ -209,7 +209,7 @@ import { FormRenderer } from "@/components/form-builder/runtime/FormRenderer";
 import { normalizeMasterObjectFromBackend } from "@/components/form-builder/normalizeMasterObject";
 import { useRuntimeFormStore } from "@/components/form-builder/runtime/runtimeFormStore";
 
-import SmartFormDesigner from "@/components/smart-form/SmartFormDesigner";
+// import SmartFormDesigner from "@/components/smart-form/SmartFormDesigner";
 
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
@@ -401,11 +401,11 @@ export default function RecordDetailsPage() {
               ) : (
                 // SMART_FORM mode: make designer full height & pass onBack to restore view
                 <div className="h-[calc(100vh-220px)]">
-                  <SmartFormDesigner
+                  {/* <SmartFormDesigner
                     masterObject={masterObject}
                     record={record}
                     onBack={() => setPageMode("VIEW")}
-                  />
+                  /> */}
                 </div>
               )}
             </div>
