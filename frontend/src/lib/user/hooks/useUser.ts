@@ -409,3 +409,59 @@ export function useBulkRevokeUserRoles() {
     },
   });
 }
+
+
+
+export function useAssignUserDepartment() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      userId,
+      departmentId,
+    }: {
+      userId: string;
+      departmentId: string;
+    }) => {
+      const res = await apiClient.post(
+        `/user/${userId}/assign-department`,
+        { departmentId }
+      );
+      return res.data;
+    },
+
+    onSuccess: (_, { userId }) => {
+      queryClient.invalidateQueries({ queryKey: ["user", userId] });
+    },
+  });
+}
+
+
+export function useRemoveUserDepartment() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      userId,
+      departmentIds,
+    }: {
+      userId: string;
+      departmentIds: string[];
+    }) => {
+      const res = await apiClient.delete(
+        `/user/${userId}/remove-department`,
+        {
+          data: { departmentIds },
+        }
+      );
+
+      return res.data;
+    },
+
+    onSuccess: (_, { userId }) => {
+      toast.success("Department removed");
+      queryClient.invalidateQueries({ queryKey: ["user", userId] });
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+  });
+}

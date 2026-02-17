@@ -80,12 +80,12 @@ export type PrismaVersion = {
 }
 
 /**
- * Prisma Client JS version: 7.0.1
- * Query Engine version: f09f2815f091dbba658cdcd2264306d88bb5bda6
+ * Prisma Client JS version: 7.3.0
+ * Query Engine version: 9d6ad21cbbceab97458517b147a6a09ff43aa735
  */
 export const prismaVersion: PrismaVersion = {
-  client: "7.0.1",
-  engine: "f09f2815f091dbba658cdcd2264306d88bb5bda6"
+  client: "7.3.0",
+  engine: "9d6ad21cbbceab97458517b147a6a09ff43aa735"
 }
 
 /**
@@ -385,6 +385,9 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   User: 'User',
+  Department: 'Department',
+  DepartmentRole: 'DepartmentRole',
+  UserDepartment: 'UserDepartment',
   Role: 'Role',
   RoleHierarchy: 'RoleHierarchy',
   UserRole: 'UserRole',
@@ -444,7 +447,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "roleHierarchy" | "userRole" | "module" | "action" | "resource" | "permission" | "rolePermission" | "conditionFieldRegistry" | "policy" | "masterObject" | "masterObjectSchema" | "fieldDefinition" | "fieldPermission" | "fieldValidationRule" | "fieldFormula" | "fieldReference" | "fieldConditionBinding" | "masterRecord" | "masterObjectCounter" | "recordFieldHistory" | "recordFieldIndex" | "schemaChange" | "formEventHook" | "recordPermission" | "workflowDefinition" | "workflowStage" | "workflowTransition" | "workflowInstance" | "workflowHistory" | "workflowTransitionAllowedRole" | "workflowTransitionAllowedUser" | "workflowApproval" | "task" | "taskAssignment" | "auditLog" | "notificationTemplate" | "notificationBatch" | "notificationDelivery" | "notification" | "outboxEvent" | "eventLog" | "attachment" | "refreshToken"
+    modelProps: "user" | "department" | "departmentRole" | "userDepartment" | "role" | "roleHierarchy" | "userRole" | "module" | "action" | "resource" | "permission" | "rolePermission" | "conditionFieldRegistry" | "policy" | "masterObject" | "masterObjectSchema" | "fieldDefinition" | "fieldPermission" | "fieldValidationRule" | "fieldFormula" | "fieldReference" | "fieldConditionBinding" | "masterRecord" | "masterObjectCounter" | "recordFieldHistory" | "recordFieldIndex" | "schemaChange" | "formEventHook" | "recordPermission" | "workflowDefinition" | "workflowStage" | "workflowTransition" | "workflowInstance" | "workflowHistory" | "workflowTransitionAllowedRole" | "workflowTransitionAllowedUser" | "workflowApproval" | "task" | "taskAssignment" | "auditLog" | "notificationTemplate" | "notificationBatch" | "notificationDelivery" | "notification" | "outboxEvent" | "eventLog" | "attachment" | "refreshToken"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -519,6 +522,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.UserCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.UserCountAggregateOutputType> | number
+        }
+      }
+    }
+    Department: {
+      payload: Prisma.$DepartmentPayload<ExtArgs>
+      fields: Prisma.DepartmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DepartmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DepartmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentPayload>
+        }
+        findFirst: {
+          args: Prisma.DepartmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DepartmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentPayload>
+        }
+        findMany: {
+          args: Prisma.DepartmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentPayload>[]
+        }
+        create: {
+          args: Prisma.DepartmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentPayload>
+        }
+        createMany: {
+          args: Prisma.DepartmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DepartmentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentPayload>[]
+        }
+        delete: {
+          args: Prisma.DepartmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentPayload>
+        }
+        update: {
+          args: Prisma.DepartmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.DepartmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DepartmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DepartmentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentPayload>[]
+        }
+        upsert: {
+          args: Prisma.DepartmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentPayload>
+        }
+        aggregate: {
+          args: Prisma.DepartmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDepartment>
+        }
+        groupBy: {
+          args: Prisma.DepartmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DepartmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DepartmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DepartmentCountAggregateOutputType> | number
+        }
+      }
+    }
+    DepartmentRole: {
+      payload: Prisma.$DepartmentRolePayload<ExtArgs>
+      fields: Prisma.DepartmentRoleFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DepartmentRoleFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentRolePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DepartmentRoleFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentRolePayload>
+        }
+        findFirst: {
+          args: Prisma.DepartmentRoleFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentRolePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DepartmentRoleFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentRolePayload>
+        }
+        findMany: {
+          args: Prisma.DepartmentRoleFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentRolePayload>[]
+        }
+        create: {
+          args: Prisma.DepartmentRoleCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentRolePayload>
+        }
+        createMany: {
+          args: Prisma.DepartmentRoleCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DepartmentRoleCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentRolePayload>[]
+        }
+        delete: {
+          args: Prisma.DepartmentRoleDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentRolePayload>
+        }
+        update: {
+          args: Prisma.DepartmentRoleUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentRolePayload>
+        }
+        deleteMany: {
+          args: Prisma.DepartmentRoleDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DepartmentRoleUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DepartmentRoleUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentRolePayload>[]
+        }
+        upsert: {
+          args: Prisma.DepartmentRoleUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DepartmentRolePayload>
+        }
+        aggregate: {
+          args: Prisma.DepartmentRoleAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDepartmentRole>
+        }
+        groupBy: {
+          args: Prisma.DepartmentRoleGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DepartmentRoleGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DepartmentRoleCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DepartmentRoleCountAggregateOutputType> | number
+        }
+      }
+    }
+    UserDepartment: {
+      payload: Prisma.$UserDepartmentPayload<ExtArgs>
+      fields: Prisma.UserDepartmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.UserDepartmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserDepartmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.UserDepartmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserDepartmentPayload>
+        }
+        findFirst: {
+          args: Prisma.UserDepartmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserDepartmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.UserDepartmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserDepartmentPayload>
+        }
+        findMany: {
+          args: Prisma.UserDepartmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserDepartmentPayload>[]
+        }
+        create: {
+          args: Prisma.UserDepartmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserDepartmentPayload>
+        }
+        createMany: {
+          args: Prisma.UserDepartmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.UserDepartmentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserDepartmentPayload>[]
+        }
+        delete: {
+          args: Prisma.UserDepartmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserDepartmentPayload>
+        }
+        update: {
+          args: Prisma.UserDepartmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserDepartmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.UserDepartmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.UserDepartmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.UserDepartmentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserDepartmentPayload>[]
+        }
+        upsert: {
+          args: Prisma.UserDepartmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserDepartmentPayload>
+        }
+        aggregate: {
+          args: Prisma.UserDepartmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUserDepartment>
+        }
+        groupBy: {
+          args: Prisma.UserDepartmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserDepartmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.UserDepartmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserDepartmentCountAggregateOutputType> | number
         }
       }
     }
@@ -3825,7 +4050,6 @@ export const UserScalarFieldEnum = {
   type: 'type',
   status: 'status',
   attributes: 'attributes',
-  department: 'department',
   location: 'location',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -3833,6 +4057,41 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const DepartmentScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  code: 'code',
+  description: 'description',
+  status: 'status',
+  parentId: 'parentId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type DepartmentScalarFieldEnum = (typeof DepartmentScalarFieldEnum)[keyof typeof DepartmentScalarFieldEnum]
+
+
+export const DepartmentRoleScalarFieldEnum = {
+  id: 'id',
+  departmentId: 'departmentId',
+  roleId: 'roleId',
+  createdAt: 'createdAt'
+} as const
+
+export type DepartmentRoleScalarFieldEnum = (typeof DepartmentRoleScalarFieldEnum)[keyof typeof DepartmentRoleScalarFieldEnum]
+
+
+export const UserDepartmentScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  departmentId: 'departmentId',
+  assignedAt: 'assignedAt'
+} as const
+
+export type UserDepartmentScalarFieldEnum = (typeof UserDepartmentScalarFieldEnum)[keyof typeof UserDepartmentScalarFieldEnum]
 
 
 export const RoleScalarFieldEnum = {
@@ -4643,6 +4902,20 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'DepartmentStatus'
+ */
+export type EnumDepartmentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DepartmentStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'DepartmentStatus[]'
+ */
+export type ListEnumDepartmentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DepartmentStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'Boolean'
  */
 export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
@@ -5117,7 +5390,7 @@ export type PrismaClientOptions = ({
    *  { emit: 'stdout', level: 'error' }
    * 
    * ```
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/logging#the-log-option).
+   * Read more in our [docs](https://pris.ly/d/logging).
    */
   log?: (LogLevel | LogDefinition)[]
   /**
@@ -5145,9 +5418,28 @@ export type PrismaClientOptions = ({
    * ```
    */
   omit?: GlobalOmitConfig
+  /**
+   * SQL commenter plugins that add metadata to SQL queries as comments.
+   * Comments follow the sqlcommenter format: https://google.github.io/sqlcommenter/
+   * 
+   * @example
+   * ```
+   * const prisma = new PrismaClient({
+   *   adapter,
+   *   comments: [
+   *     traceContext(),
+   *     queryInsights(),
+   *   ],
+   * })
+   * ```
+   */
+  comments?: runtime.SqlCommenterPlugin[]
 }
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
+  department?: Prisma.DepartmentOmit
+  departmentRole?: Prisma.DepartmentRoleOmit
+  userDepartment?: Prisma.UserDepartmentOmit
   role?: Prisma.RoleOmit
   roleHierarchy?: Prisma.RoleHierarchyOmit
   userRole?: Prisma.UserRoleOmit

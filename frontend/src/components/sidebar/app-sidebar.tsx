@@ -106,6 +106,7 @@ export function AppSidebar(props: any) {
           title: "Authorization Engine",
           icon: Key,
           items: [
+            { title: "Department", url: "/department", permissionKey: "READ__DEPARTMENT" },
             { title: "Modules", url: "/modules", permissionKey: "READ__MODULE" },
             {
               title: "Resources",

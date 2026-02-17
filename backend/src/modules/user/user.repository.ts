@@ -30,7 +30,14 @@ const usersRepository = {
         orderBy: {
           [filters.sortBy]: filters.sortOrder,
         },
-        include: { roles: { include: { role: true } } },
+        include: {
+          roles: { include: { role: true } },
+          department: {
+            include: {
+              department: true,
+            },
+          },
+        },
       }),
       prisma.user.count({ where }),
     ]);
@@ -43,17 +50,67 @@ const usersRepository = {
     };
   },
 
+  // readOne: ({ userId }: UserId) => {
+  //   return prisma.user.findUnique({
+  //     where: { id: userId },
+  //     include: { roles: { include: { role: true } } },
+  //   });
+  // },
+
+  // me: ({ userId }: { userId: string }) => {
+  //   return prisma.user.findUnique({
+  //     where: { id: userId },
+  //     include: {
+  //       roles: {
+  //         include: {
+  //           role: {
+  //             include: {
+  //               permissions: {
+  //                 include: {
+  //                   permission: {
+  //                     include: {
+  //                       resource: true,
+  //                       action: true,
+  //                     },
+  //                   },
+  //                 },
+  //               },
+  //             },
+  //           },
+  //         },
+  //       },
+  //     },
+  //   });
+  // },
   readOne: ({ userId }: UserId) => {
     return prisma.user.findUnique({
       where: { id: userId },
-      include: { roles: { include: { role: true } } },
+      include: {
+        roles: {
+          include: {
+            role: true,
+          },
+        },
+        department: {
+          include: {
+            department: true,
+          },
+        },
+      },
     });
   },
+
 
   me: ({ userId }: { userId: string }) => {
     return prisma.user.findUnique({
       where: { id: userId },
       include: {
+        department: {
+          include: {
+            department: true,
+
+          },
+        },
         roles: {
           include: {
             role: {
@@ -75,6 +132,7 @@ const usersRepository = {
       },
     });
   },
+
 
   findByEmail: ({ email }: UserEmail) => {
     return prisma.user.findUnique({

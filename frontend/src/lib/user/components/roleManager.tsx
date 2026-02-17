@@ -14,12 +14,17 @@ interface Role {
   description?: string;
   permissionCount?: number;
 }
+interface Department {
+  id: string;
+  name: string;
+}
 
 interface RoleManagerProps {
   roles: Role[];
   userId: string;
-  userName:string;
-
+  userName: string;
+  departments?: { id: string; name: string }[];   // ✅ optional
+  onDepartmentChange?: (departmentId: string) => void;
   assignedRoles: string[];
 
   // SINGLE assignment
@@ -35,7 +40,9 @@ export function RoleManager({
   roles,
   userId,
   userName,
+  departments,
   assignedRoles,
+  onDepartmentChange,
   onAssign,
   onUnassign,
   onAssignMany,
@@ -45,6 +52,7 @@ export function RoleManager({
   const [search, setSearch] = useState("");
   const [bulkLoading, setBulkLoading] = useState(false);
   const [singleLoading, setSingleLoading] = useState<string | null>(null);
+  const [selectedDepartment, setSelectedDepartment] = useState<string>("");
 
   // Sync when user reloads
   useEffect(() => {
@@ -107,19 +115,53 @@ export function RoleManager({
     setBulkLoading(false);
   };
 
+ useEffect(() => {
+  if (!selectedDepartment && departments?.length) {
+    const firstDept = departments[0].id;
+    setSelectedDepartment(firstDept);
+    onDepartmentChange?.(firstDept);
+  }
+}, [departments, selectedDepartment]);
+
+
+
   return (
     <div className="space-y-6">
       {/* Header + Search */}
+      <div className="flex gap-4 items-center">
+        {departments && onDepartmentChange && (
+          <select
+            className="border rounded px-3 py-2 text-sm"
+            value={selectedDepartment}
+            onChange={(e) => {
+              const deptId = e.target.value;
+              setSelectedDepartment(deptId);
+              onDepartmentChange(deptId);
+            }}
+          >
+            <option value="">Select Department</option>
+            {departments.map((dept: Department) => (
+              <option key={dept.id} value={dept.id}>
+                {dept.name}
+              </option>
+            ))}
+          </select>
+        )}
+
+
+        
+      </div>
+
       <div className="flex justify-between items-center">
         {/* <h3 className="text-lg font-semibold">Manage {userName} Roles</h3> */}
-                <div className="mb-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    Manage Roles
-                  </h3>
-                  <p className="text-sm text-gray-600">
-                    Assign or remove roles for {userName}
-                  </p>
-                </div>
+        <div className="mb-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            Manage Roles
+          </h3>
+          <p className="text-sm text-gray-600">
+            Assign or remove roles for {userName}
+          </p>
+        </div>
         <Input
           placeholder="Search roles..."
           className="w-60"
@@ -137,9 +179,8 @@ export function RoleManager({
           return (
             <div
               key={role.id}
-              className={`border rounded-lg p-4 cursor-pointer transition hover:bg-gray-50 ${
-                checked ? "bg-blue-50 border-blue-300" : "bg-white"
-              }`}
+              className={`border rounded-lg p-4 cursor-pointer transition hover:bg-gray-50 ${checked ? "bg-blue-50 border-blue-300" : "bg-white"
+                }`}
               onClick={() => toggleSingleRole(role.id)}
             >
               <div className="flex items-start gap-3">

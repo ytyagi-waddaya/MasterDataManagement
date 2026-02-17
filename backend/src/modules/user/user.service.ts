@@ -39,13 +39,18 @@ const usersService = {
     }
 
     const hashPassword = await bcrypt.hash(validatedData.password, 10);
-
+    const { department, ...rest } = validatedData;
+    // const user = await usersRepository.create({
+    //   ...validatedData,
+    //   password: hashPassword,
+    // });
     const user = await usersRepository.create({
-      ...validatedData,
+      ...rest,
       password: hashPassword,
     });
 
     await createAuditLog({
+
       userId: meta?.actorId ?? null,
       entity: AuditEntity.USER,
       action: AuditAction.CREATE,
@@ -89,9 +94,8 @@ const usersService = {
       userId: meta?.actorId ?? null,
       entity: AuditEntity.USER,
       action: AuditAction.CREATE,
-      comment: `Bulk created ${
-        Array.isArray(createdUsers) ? createdUsers.length : "N"
-      } users`,
+      comment: `Bulk created ${Array.isArray(createdUsers) ? createdUsers.length : "N"
+        } users`,
       after: Array.isArray(createdUsers) ? createdUsers : undefined,
       ipAddress: meta?.ipAddress ?? null,
       userAgent: meta?.userAgent ?? null,
@@ -166,7 +170,15 @@ const usersService = {
       dataToUpdate.password = { set: validatedData.password };
     }
     if (validatedData.department !== undefined) {
-      dataToUpdate.department = { set: validatedData.department };
+      // validatedData.department is a string (departmentId) or null; Prisma expects
+      // UserDepartmentWhereUniqueInput | UserDepartmentWhereUniqueInput[] for set.
+      if (validatedData.department === null) {
+        // clear all department relations
+        dataToUpdate.department = { set: [] };
+      } else {
+        // set to the provided department id (as a unique identifier object)
+        dataToUpdate.department = { set: [{ id: validatedData.department }] };
+      }
     }
     if (validatedData.location !== undefined) {
       dataToUpdate.location = { set: validatedData.location };
@@ -513,18 +525,18 @@ const usersService = {
 
             resource: rp.permission.resource
               ? {
-                  id: rp.permission.resource.id,
-                  key: rp.permission.resource.key,
-                  name: rp.permission.resource.name,
-                }
+                id: rp.permission.resource.id,
+                key: rp.permission.resource.key,
+                name: rp.permission.resource.name,
+              }
               : null,
 
             action: rp.permission.action
               ? {
-                  id: rp.permission.action.id,
-                  key: rp.permission.action.key, // e.g. READ, UPDATE, APPROVE
-                  name: rp.permission.action.name,
-                }
+                id: rp.permission.action.id,
+                key: rp.permission.action.key, // e.g. READ, UPDATE, APPROVE
+                name: rp.permission.action.name,
+              }
               : null,
           },
         });
@@ -539,17 +551,168 @@ const usersService = {
         id: user.id,
         name: user.name,
         email: user.email,
-        department: user.department,
         location: user.location,
         attributes: user.attributes,
         status: user.status,
         type: user.type,
       },
 
+      departments: user.department.map((d) => ({
+        departmentId: d.department.id,
+        departmentName: d.department.name,
+        assignedAt: d.assignedAt,
+      })),
+
+
       roles,
       permissions,
     };
+
   },
+  assignDepartment: async (
+    { userId }: UserId,
+    departmentIds: string[],
+    meta?: ActorMeta
+  ) => {
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId }
+    });
+
+    if (!user) throw new NotFoundException("User not found.");
+
+    const departments = await prisma.department.findMany({
+      where: { id: { in: departmentIds } }
+    });
+
+    if (departments.length !== departmentIds.length) {
+      throw new BadRequestException("One or more departments not found.");
+    }
+
+    const created = await prisma.userDepartment.createMany({
+      data: departmentIds.map(departmentId => ({
+        userId,
+        departmentId
+      })),
+      skipDuplicates: true
+    });
+
+    return {
+      assignedCount: created.count,
+      departmentIds
+    };
+  },
+
+  // GET USER DEPARTMENTS
+  getUserDepartments: async ({ userId }: UserId) => {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        department: {
+          include: {
+            department: true,
+          },
+        },
+      },
+    });
+
+    if (!user) throw new NotFoundException("User not found.");
+
+    return user.department.map((d) => ({
+      departmentId: d.department.id,
+      departmentName: d.department.name,
+      assignedAt: d.assignedAt,
+    }));
+  },
+
+
+  // REMOVE DEPARTMENTS
+  removeDepartment: async (
+    { userId }: UserId,
+    departmentIds: string[]
+  ) => {
+
+    if (!Array.isArray(departmentIds) || departmentIds.length === 0) {
+      throw new BadRequestException("departmentIds array is required");
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new NotFoundException("User not found.");
+    }
+
+    const existing = await prisma.userDepartment.findMany({
+      where: {
+        userId,
+        departmentId: { in: departmentIds },
+      },
+    });
+
+    if (!existing.length) {
+      throw new BadRequestException(
+        "User is not assigned to provided department(s)."
+      );
+    }
+
+    const deleted = await prisma.userDepartment.deleteMany({
+      where: {
+        userId,
+        departmentId: { in: departmentIds },
+      },
+    });
+
+    return {
+      removedCount: deleted.count,
+      removedDepartmentIds: existing.map(d => d.departmentId),
+    };
+  },
+
+
+  getAvailableRolesForUser: async (
+    userId: string,
+    departmentId?: string
+  ) => {
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) throw new NotFoundException("User not found");
+
+    let departmentIds: string[] = [];
+
+    if (departmentId) {
+      departmentIds = [departmentId];
+    } else {
+      const userDepartments = await prisma.userDepartment.findMany({
+        where: { userId },
+      });
+
+      departmentIds = userDepartments.map(d => d.departmentId);
+    }
+
+    if (!departmentIds.length) return [];
+
+    const roles = await prisma.role.findMany({
+      where: {
+        departmentRoles: {
+          some: {
+            departmentId: { in: departmentIds },
+          },
+        },
+      },
+    });
+
+    return roles;
+
+  },
+
+
+
 };
+
 
 export default usersService;

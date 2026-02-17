@@ -9,6 +9,9 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/User.js'
+export type * from './models/Department.js'
+export type * from './models/DepartmentRole.js'
+export type * from './models/UserDepartment.js'
 export type * from './models/Role.js'
 export type * from './models/RoleHierarchy.js'
 export type * from './models/UserRole.js'

@@ -105,6 +105,7 @@ export function CreateButton<T extends Record<string, any>>({
       onOpenChange={handleOpenChange}
       size={size}
       showFooter={showFooter} // ✅ NEW
+      scrollable={true} 
       footer={footer}
       trigger={
         <Button className="flex items-center gap-2" disabled={disabled}>

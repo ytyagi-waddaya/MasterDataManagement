@@ -72,4 +72,30 @@ router.delete(
   asyncHandler(usersController.deleteUser)
 );
 
+router.post(
+  "/:userId/assign-department",
+  validate(userIdSchema, "params"),
+  asyncHandler(usersController.assignDepartment)
+);
+
+// GET all departments of user
+router.get(
+  "/:userId/departments",
+  validate(userIdSchema, "params"),
+  asyncHandler(usersController.getUserDepartments)
+);
+
+// REMOVE department(s) from user
+router.delete(
+  "/:userId/remove-department",
+  validate(userIdSchema, "params"),
+  asyncHandler(usersController.removeDepartment)
+);
+
+router.get(
+  "/:userId/available-roles",
+  validate(userIdSchema, "params"),
+  asyncHandler(usersController.getAvailableRoles)
+);
+
 export default router;

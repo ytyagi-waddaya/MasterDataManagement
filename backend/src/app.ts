@@ -35,7 +35,7 @@ import { requestIdMiddleware } from "./middlewares/requestIdMiddleware.js";
 
 // typed morgan -> logger wrapper
 import { httpLogger } from "./utils/logger.js";
-
+import departmentRoutes from "./modules/department/department.routes.js";
 
 const app = express();
 // Security basics
@@ -124,7 +124,7 @@ app.use("/api/notifications", notificationsRoutes);
 app.use("/api/workflow", workflowRoutes);
 app.use("/api/master-object", masterObjectRoutes);
 app.use("/api/master-record", masterRecordRoutes);
-
+app.use("/api/department", departmentRoutes);
 // 404 handler — returns standard error via your global error handler
 app.use((req, _res, next) => {
   next(new AppError("Route not found", HTTPSTATUS.NOT_FOUND, ErrorCodeEnum.RESOURCE_NOT_FOUND));
