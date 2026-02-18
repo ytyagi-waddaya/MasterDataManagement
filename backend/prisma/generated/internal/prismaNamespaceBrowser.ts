@@ -52,6 +52,9 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  Department: 'Department',
+  DepartmentRole: 'DepartmentRole',
+  UserDepartment: 'UserDepartment',
   Role: 'Role',
   RoleHierarchy: 'RoleHierarchy',
   UserRole: 'UserRole',
@@ -85,6 +88,7 @@ export const ModelName = {
   WorkflowTransitionAllowedRole: 'WorkflowTransitionAllowedRole',
   WorkflowTransitionAllowedUser: 'WorkflowTransitionAllowedUser',
   WorkflowApproval: 'WorkflowApproval',
+  WorkflowTransitionAllowedDepartment: 'WorkflowTransitionAllowedDepartment',
   Task: 'Task',
   TaskAssignment: 'TaskAssignment',
   AuditLog: 'AuditLog',
@@ -104,12 +108,12 @@ export type ModelName = (typeof ModelName)[keyof typeof ModelName]
  * Enums
  */
 
-export const TransactionIsolationLevel = {
+export const TransactionIsolationLevel = runtime.makeStrictEnum({
   ReadUncommitted: 'ReadUncommitted',
   ReadCommitted: 'ReadCommitted',
   RepeatableRead: 'RepeatableRead',
   Serializable: 'Serializable'
-} as const
+} as const)
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
@@ -122,7 +126,6 @@ export const UserScalarFieldEnum = {
   type: 'type',
   status: 'status',
   attributes: 'attributes',
-  department: 'department',
   location: 'location',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -130,6 +133,41 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const DepartmentScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  code: 'code',
+  description: 'description',
+  status: 'status',
+  parentId: 'parentId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type DepartmentScalarFieldEnum = (typeof DepartmentScalarFieldEnum)[keyof typeof DepartmentScalarFieldEnum]
+
+
+export const DepartmentRoleScalarFieldEnum = {
+  id: 'id',
+  departmentId: 'departmentId',
+  roleId: 'roleId',
+  createdAt: 'createdAt'
+} as const
+
+export type DepartmentRoleScalarFieldEnum = (typeof DepartmentRoleScalarFieldEnum)[keyof typeof DepartmentRoleScalarFieldEnum]
+
+
+export const UserDepartmentScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  departmentId: 'departmentId',
+  assignedAt: 'assignedAt'
+} as const
+
+export type UserDepartmentScalarFieldEnum = (typeof UserDepartmentScalarFieldEnum)[keyof typeof UserDepartmentScalarFieldEnum]
 
 
 export const RoleScalarFieldEnum = {
@@ -636,6 +674,16 @@ export const WorkflowApprovalScalarFieldEnum = {
 export type WorkflowApprovalScalarFieldEnum = (typeof WorkflowApprovalScalarFieldEnum)[keyof typeof WorkflowApprovalScalarFieldEnum]
 
 
+export const WorkflowTransitionAllowedDepartmentScalarFieldEnum = {
+  id: 'id',
+  transitionId: 'transitionId',
+  departmentId: 'departmentId',
+  createdAt: 'createdAt'
+} as const
+
+export type WorkflowTransitionAllowedDepartmentScalarFieldEnum = (typeof WorkflowTransitionAllowedDepartmentScalarFieldEnum)[keyof typeof WorkflowTransitionAllowedDepartmentScalarFieldEnum]
+
+
 export const TaskScalarFieldEnum = {
   id: 'id',
   masterRecordId: 'masterRecordId',
@@ -824,15 +872,15 @@ export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
 export const NullableJsonNullValueInput = {
-  DbNull: 'DbNull',
-  JsonNull: 'JsonNull'
+  DbNull: DbNull,
+  JsonNull: JsonNull
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const JsonNullValueInput = {
-  JsonNull: 'JsonNull'
+  JsonNull: JsonNull
 } as const
 
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
@@ -847,9 +895,9 @@ export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
 export const JsonNullValueFilter = {
-  DbNull: 'DbNull',
-  JsonNull: 'JsonNull',
-  AnyNull: 'AnyNull'
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
 } as const
 
 export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]

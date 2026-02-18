@@ -316,10 +316,15 @@ export function TransitionPanel({
   stages,
   roleList: rawRoleList = [],
   userList: rawUserList = [],
+  departmentList: rawDepartmentList = [],
   activeStageId,
 }: any) {
   const roleList = Array.isArray(rawRoleList) ? rawRoleList : [];
   const userList = Array.isArray(rawUserList) ? rawUserList : [];
+  const departmentList = Array.isArray(rawDepartmentList)
+  ? rawDepartmentList
+  : [];
+
 
   const allTransitions =
     useWatch({ control: form?.control, name: "transitions" }) || [];
@@ -560,6 +565,7 @@ export function TransitionPanel({
               stages={stages}   
               roleList={roleList}
               userList={userList}
+              departmentList={departmentList}
               errors={form?.formState?.errors}
               onDelete={handleDeleteFromPanel}
             />

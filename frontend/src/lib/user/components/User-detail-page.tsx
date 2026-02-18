@@ -421,7 +421,12 @@ import {
   useBulkRevokeUserRoles,
   useRevokeUserRole,
   useUser,
+
 } from "../hooks";
+import { useAssignUserDepartment } from "../hooks/useUser";
+import { useDepartmentRoles } from "@/lib/department/hooks/useDepartment";
+import { DepartmentManager } from "./DepartmentManager";
+import { useRemoveUserDepartment } from "../hooks/useUser";
 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useRoles } from "@/lib/role/hooks";
@@ -451,6 +456,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ComingSoonTooltip } from "@/components/ComingSoonTooltip";
+import { useDepartments } from "@/lib/department/hooks/useDepartment";
 
 export default function UserDetail({ userId }: { userId: string }) {
   const [page] = useState(1);
@@ -476,6 +482,17 @@ export default function UserDetail({ userId }: { userId: string }) {
   const revokeRole = useRevokeUserRole();
   const bulkAssign = useBulkAssignUserRoles();
   const bulkRevoke = useBulkRevokeUserRoles();
+  const { data: allDepartments = [] } = useDepartments();
+  const assignDepartment = useAssignUserDepartment();
+
+  const [selectedDepartment, setSelectedDepartment] = useState<string>("");
+
+  const {
+    data: departmentRoles = [],
+    refetch: refreshDepartmentRoles,
+  } = useDepartmentRoles(selectedDepartment);
+
+  const removeDepartment = useRemoveUserDepartment();
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -484,6 +501,8 @@ export default function UserDetail({ userId }: { userId: string }) {
       year: "numeric",
     });
   };
+  console.log("USER DATA:", userData);
+
 
   const statusColor =
     userData?.status === "ACTIVE"
@@ -627,9 +646,17 @@ export default function UserDetail({ userId }: { userId: string }) {
                     </div>
                     <div>
                       <div className="text-xs text-gray-500">Department</div>
-                      <div className="text-sm font-medium text-gray-900">
+                      {/* <div className="text-sm font-medium text-gray-900">
                         {userData?.department || "—"}
+                      </div> */}
+                      <div className="text-sm font-medium text-gray-900">
+                        {userData?.department?.length
+                          ? userData.department
+                            .map((d: any) => d.department?.name)
+                            .join(", ")
+                          : "—"}
                       </div>
+
                     </div>
                     <div>
                       <div className="text-xs text-gray-500">Location</div>
@@ -650,25 +677,23 @@ export default function UserDetail({ userId }: { userId: string }) {
             <div className="flex space-x-8">
               <button
                 onClick={() => setActiveTab("details")}
-                className={`py-3 px-1 text-sm font-medium transition-colors border-b-2 flex items-center gap-2 ${
-                  activeTab === "details"
-                    ? "text-gray-900 border-gray-900"
-                    : "text-gray-500 hover:text-gray-700 border-transparent"
-                }`}
+                className={`py-3 px-1 text-sm font-medium transition-colors border-b-2 flex items-center gap-2 ${activeTab === "details"
+                  ? "text-gray-900 border-gray-900"
+                  : "text-gray-500 hover:text-gray-700 border-transparent"
+                  }`}
               >
                 <User className="h-4 w-4" />
                 Overview
               </button>
               <button
                 onClick={() => setActiveTab("roles")}
-                className={`py-3 px-1 text-sm font-medium transition-colors border-b-2 flex items-center gap-2 ${
-                  activeTab === "roles"
-                    ? "text-gray-900 border-gray-900"
-                    : "text-gray-500 hover:text-gray-700 border-transparent"
-                }`}
+                className={`py-3 px-1 text-sm font-medium transition-colors border-b-2 flex items-center gap-2 ${activeTab === "roles"
+                  ? "text-gray-900 border-gray-900"
+                  : "text-gray-500 hover:text-gray-700 border-transparent"
+                  }`}
               >
                 <Shield className="h-4 w-4" />
-                Role Management
+                Department Management
                 {userData?.roles?.length > 0 && (
                   <span className="ml-1 px-1.5 py-0.5 text-xs bg-gray-100 text-gray-600 rounded">
                     {userData.roles.length}
@@ -769,21 +794,21 @@ export default function UserDetail({ userId }: { userId: string }) {
                     </div>
                   </div>
                 )) || (
-                  <div className="text-center py-4">
-                    <Shield className="h-8 w-8 text-gray-300 mx-auto mb-2" />
-                    <p className="text-sm text-gray-500 mb-2">
-                      No roles assigned
-                    </p>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="text-blue-600 hover:text-blue-700"
-                      onClick={() => setActiveTab("roles")}
-                    >
-                      Assign Roles
-                    </Button>
-                  </div>
-                )}
+                    <div className="text-center py-4">
+                      <Shield className="h-8 w-8 text-gray-300 mx-auto mb-2" />
+                      <p className="text-sm text-gray-500 mb-2">
+                        No roles assigned
+                      </p>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-blue-600 hover:text-blue-700"
+                        onClick={() => setActiveTab("roles")}
+                      >
+                        Assign Roles
+                      </Button>
+                    </div>
+                  )}
               </div>
             </div>
           </div>
@@ -839,18 +864,16 @@ export default function UserDetail({ userId }: { userId: string }) {
                         </div>
                         <div className="flex items-center gap-2">
                           <CheckCircle2
-                            className={`h-4 w-4 ${
-                              userData?.status === "ACTIVE"
-                                ? "text-green-500"
-                                : "text-gray-400"
-                            }`}
+                            className={`h-4 w-4 ${userData?.status === "ACTIVE"
+                              ? "text-green-500"
+                              : "text-gray-400"
+                              }`}
                           />
                           <span
-                            className={`font-medium ${
-                              userData?.status === "ACTIVE"
-                                ? "text-green-600"
-                                : "text-gray-600"
-                            }`}
+                            className={`font-medium ${userData?.status === "ACTIVE"
+                              ? "text-green-600"
+                              : "text-gray-600"
+                              }`}
                           >
                             {userData?.status}
                           </span>
@@ -864,7 +887,14 @@ export default function UserDetail({ userId }: { userId: string }) {
                         </div>
                         <div className="flex items-center gap-2 text-gray-900">
                           <Building className="h-4 w-4 text-gray-400" />
-                          {userData?.department || "Not specified"}
+                          {/* {userData?.department || "Not specified"} */}
+
+                          {userData?.department?.length
+                            ? userData.department
+                              .map((d: any) => d.department?.name)
+                              .join(", ")
+                            : "Not specified"}
+
                         </div>
                       </div>
                       <div>
@@ -883,27 +913,69 @@ export default function UserDetail({ userId }: { userId: string }) {
             ) : (
               /* Role Management Content */
               <div className="bg-white rounded-xl border border-gray-200 p-6">
-                <RoleManager
-                  roles={roles}
-                  userId={userId}
-                  userName={userData?.name}
-                  assignedRoles={
-                    userData?.roles?.map((r: any) => r.roleId) ?? []
-                  }
-                  onAssign={(roleId) =>
-                    assignRole.mutateAsync({ userId: userId, roleId })
-                  }
-                  onUnassign={(roleId) =>
-                    revokeRole.mutateAsync({ userId: userId, roleId })
-                  }
-                  onAssignMany={(roleIds) =>
-                    bulkAssign.mutateAsync({ userId: userId, roleIds })
-                  }
-                  onUnassignMany={(roleIds) =>
-                    bulkRevoke.mutateAsync({ userId: userId, roleIds })
-                  }
-                />
+                <div className="mt-8">
+                  <DepartmentManager
+                    departments={allDepartments}
+                    assignedDepartments={
+                      userData?.department?.map((d: any) => d.departmentId) ?? []
+                    }
+                    activeDepartmentId={selectedDepartment}
+                    onSelectDepartment={(deptId) =>
+                      setSelectedDepartment(deptId || "")
+                    }
+                    onAssign={(departmentId) =>
+                      assignDepartment.mutateAsync({
+                        userId,
+                        departmentId,
+                      })
+                    }
+                    onRemove={async (departmentIds) => {
+                      await removeDepartment.mutateAsync({
+                        userId,
+                        departmentIds,
+                      });
+
+                      if (departmentIds.includes(selectedDepartment)) {
+                        setSelectedDepartment("");
+                      }
+                    }}
+                  />
+                </div>
+                {selectedDepartment ? (
+                  <RoleManager
+                    roles={departmentRoles}
+                    userId={userId}
+                    userName={userData?.name}
+                    assignedRoles={
+                      userData?.roles?.map((r: any) => r.roleId) ?? []
+                    }
+                    onAssign={async (roleId) => {
+                      await assignRole.mutateAsync({ userId, roleId });
+                      refreshDepartmentRoles();
+                    }}
+                    onUnassign={async (roleId) => {
+                      await revokeRole.mutateAsync({ userId, roleId });
+                      refreshDepartmentRoles();
+                    }}
+                    onAssignMany={async (roleIds) => {
+                      await bulkAssign.mutateAsync({ userId, roleIds });
+                      refreshDepartmentRoles();
+                    }}
+                    onUnassignMany={async (roleIds) => {
+                      await bulkRevoke.mutateAsync({ userId, roleIds });
+                      refreshDepartmentRoles();
+                    }}
+                  />
+                ) : (
+                  <div className="text-center py-10 text-gray-500">
+                    Select a department to manage roles
+                  </div>
+                )}
+
+
+
               </div>
+
             )}
           </div>
         </div>

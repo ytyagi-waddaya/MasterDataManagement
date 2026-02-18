@@ -61,14 +61,14 @@ const usersController = {
   },
 
   me: async (req: Request, res: Response) => {
-       const userId = req.user?.id;
-      //  const userId = req.params?.id ;
+    const userId = req.user?.id;
+    //  const userId = req.params?.id ;
 
     if (!userId) {
       throw new BadRequestException("UserId is required");
     }
 
-    const me = await usersService.me({userId});
+    const me = await usersService.me({ userId });
 
     sendResponse({
       res,
@@ -278,6 +278,123 @@ const usersController = {
       data: users,
     });
   },
+assignDepartment: async (req: Request, res: Response) => {
+  const userId = req.params?.userId;
+  let { departmentId, departmentIds } = req.body;
+
+  if (!userId) {
+    throw new BadRequestException("UserId is required");
+  }
+
+  // Normalize to array
+  if (departmentId && !departmentIds) {
+    departmentIds = [departmentId];
+  }
+
+  if (!Array.isArray(departmentIds) || departmentIds.length === 0) {
+    throw new BadRequestException(
+      "departmentId or departmentIds array is required"
+    );
+  }
+
+  const result = await usersService.assignDepartment(
+    { userId },
+    departmentIds,
+    {
+      actorId: req.user?.id ?? null,
+      ipAddress: req.ip,
+      userAgent: req.get("user-agent") ?? null,
+      performedBy: PerformedByType.USER,
+    }
+  );
+
+  sendResponse({
+    res,
+    statusCode: HTTPSTATUS.CREATED,
+    success: true,
+    message: "Department(s) assigned successfully",
+    data: result,
+  });
+},
+// GET USER DEPARTMENTS
+getUserDepartments: async (req: Request, res: Response) => {
+  const userId = req.params?.userId;
+
+  if (!userId) {
+    throw new BadRequestException("UserId is required");
+  }
+
+  const departments = await usersService.getUserDepartments({ userId });
+
+  sendResponse({
+    res,
+    statusCode: HTTPSTATUS.OK,
+    success: true,
+    message: "User departments fetched successfully",
+    data: departments,
+  });
+},
+
+
+// REMOVE DEPARTMENT (single + multiple supported)
+removeDepartment: async (req: Request, res: Response) => {
+  const userId = req.params?.userId;
+  let { departmentId, departmentIds } = req.body;
+
+  if (!userId) {
+    throw new BadRequestException("UserId is required");
+  }
+
+  // Normalize
+  if (Array.isArray(departmentId)) {
+    departmentIds = departmentId;
+  } else if (typeof departmentId === "string") {
+    departmentIds = [departmentId];
+  }
+
+  if (!Array.isArray(departmentIds) || departmentIds.length === 0) {
+    throw new BadRequestException(
+      "departmentId (string/array) or departmentIds array is required"
+    );
+  }
+
+  const result = await usersService.removeDepartment(
+    { userId },
+    departmentIds
+  );
+
+  sendResponse({
+    res,
+    statusCode: HTTPSTATUS.OK,
+    success: true,
+    message: "Department(s) removed successfully",
+    data: result,
+  });
+},
+
+getAvailableRoles: async (req: Request, res: Response) => {
+  const userId = req.params?.userId;
+
+  if (!userId) {
+    throw new BadRequestException("UserId is required");
+  }
+
+const { departmentId } = req.query;
+
+const roles = await usersService.getAvailableRolesForUser(
+  userId,
+  departmentId as string | undefined
+);
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: "Available roles fetched successfully",
+    data: { roles },
+  });
+},
+
 };
 
 export default usersController;

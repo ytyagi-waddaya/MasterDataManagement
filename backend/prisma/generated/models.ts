@@ -9,6 +9,9 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/User.js'
+export type * from './models/Department.js'
+export type * from './models/DepartmentRole.js'
+export type * from './models/UserDepartment.js'
 export type * from './models/Role.js'
 export type * from './models/RoleHierarchy.js'
 export type * from './models/UserRole.js'
@@ -42,6 +45,7 @@ export type * from './models/WorkflowHistory.js'
 export type * from './models/WorkflowTransitionAllowedRole.js'
 export type * from './models/WorkflowTransitionAllowedUser.js'
 export type * from './models/WorkflowApproval.js'
+export type * from './models/WorkflowTransitionAllowedDepartment.js'
 export type * from './models/Task.js'
 export type * from './models/TaskAssignment.js'
 export type * from './models/AuditLog.js'

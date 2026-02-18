@@ -1293,7 +1293,7 @@ import { useResourceList } from "@/lib/resource/hook";
 import { useRoleList } from "@/lib/role/hooks";
 import { useUserList } from "@/lib/user/hooks";
 
-import { useSaveWorkflowGraph, useWorkflow } from "../hooks/useWorkflow";
+import { useDepartments, useSaveWorkflowGraph, useWorkflow } from "../hooks/useWorkflow";
 import { Stepper } from "../Stepper";
 import { WorkflowInfoStep } from "../WorkflowInfoStep";
 import { StagesStep } from "../StagesStep";
@@ -1505,6 +1505,7 @@ export default function WorkflowBuilder({
   const { data: resources } = useResourceList();
   const { data: roles } = useRoleList();
   const { data: users } = useUserList();
+  const { data: departments = [] } = useDepartments();
 
   /* ---------- VALIDATION ---------- */
   const isWorkflowInfoValid = () => {
@@ -1662,6 +1663,7 @@ export default function WorkflowBuilder({
                 stages={watchedStages}
                 roleList={roles ?? []}
                 userList={users ?? []}
+                departmentList={departments}
               />
             )}
 

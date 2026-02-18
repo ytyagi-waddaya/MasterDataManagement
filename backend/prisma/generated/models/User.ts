@@ -31,7 +31,6 @@ export type UserMinAggregateOutputType = {
   password: string | null
   type: $Enums.UserType | null
   status: $Enums.UserStatus | null
-  department: string | null
   location: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -45,7 +44,6 @@ export type UserMaxAggregateOutputType = {
   password: string | null
   type: $Enums.UserType | null
   status: $Enums.UserStatus | null
-  department: string | null
   location: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -60,7 +58,6 @@ export type UserCountAggregateOutputType = {
   type: number
   status: number
   attributes: number
-  department: number
   location: number
   createdAt: number
   updatedAt: number
@@ -76,7 +73,6 @@ export type UserMinAggregateInputType = {
   password?: true
   type?: true
   status?: true
-  department?: true
   location?: true
   createdAt?: true
   updatedAt?: true
@@ -90,7 +86,6 @@ export type UserMaxAggregateInputType = {
   password?: true
   type?: true
   status?: true
-  department?: true
   location?: true
   createdAt?: true
   updatedAt?: true
@@ -105,7 +100,6 @@ export type UserCountAggregateInputType = {
   type?: true
   status?: true
   attributes?: true
-  department?: true
   location?: true
   createdAt?: true
   updatedAt?: true
@@ -193,7 +187,6 @@ export type UserGroupByOutputType = {
   type: $Enums.UserType
   status: $Enums.UserStatus
   attributes: runtime.JsonValue | null
-  department: string | null
   location: string | null
   createdAt: Date
   updatedAt: Date
@@ -229,11 +222,11 @@ export type UserWhereInput = {
   type?: Prisma.EnumUserTypeFilter<"User"> | $Enums.UserType
   status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
   attributes?: Prisma.JsonNullableFilter<"User">
-  department?: Prisma.StringNullableFilter<"User"> | string | null
   location?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  department?: Prisma.UserDepartmentListRelationFilter
   roles?: Prisma.UserRoleListRelationFilter
   taskAssignments?: Prisma.TaskAssignmentListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
@@ -266,11 +259,11 @@ export type UserOrderByWithRelationInput = {
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
   attributes?: Prisma.SortOrderInput | Prisma.SortOrder
-  department?: Prisma.SortOrderInput | Prisma.SortOrder
   location?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  department?: Prisma.UserDepartmentOrderByRelationAggregateInput
   roles?: Prisma.UserRoleOrderByRelationAggregateInput
   taskAssignments?: Prisma.TaskAssignmentOrderByRelationAggregateInput
   notifications?: Prisma.NotificationOrderByRelationAggregateInput
@@ -306,11 +299,11 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   type?: Prisma.EnumUserTypeFilter<"User"> | $Enums.UserType
   status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
   attributes?: Prisma.JsonNullableFilter<"User">
-  department?: Prisma.StringNullableFilter<"User"> | string | null
   location?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  department?: Prisma.UserDepartmentListRelationFilter
   roles?: Prisma.UserRoleListRelationFilter
   taskAssignments?: Prisma.TaskAssignmentListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
@@ -343,7 +336,6 @@ export type UserOrderByWithAggregationInput = {
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
   attributes?: Prisma.SortOrderInput | Prisma.SortOrder
-  department?: Prisma.SortOrderInput | Prisma.SortOrder
   location?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -364,7 +356,6 @@ export type UserScalarWhereWithAggregatesInput = {
   type?: Prisma.EnumUserTypeWithAggregatesFilter<"User"> | $Enums.UserType
   status?: Prisma.EnumUserStatusWithAggregatesFilter<"User"> | $Enums.UserStatus
   attributes?: Prisma.JsonNullableWithAggregatesFilter<"User">
-  department?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   location?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -379,11 +370,11 @@ export type UserCreateInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -416,11 +407,11 @@ export type UserUncheckedCreateInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentUncheckedCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -453,11 +444,11 @@ export type UserUpdateInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -490,11 +481,11 @@ export type UserUncheckedUpdateInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUncheckedUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -527,7 +518,6 @@ export type UserCreateManyInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -542,7 +532,6 @@ export type UserUpdateManyMutationInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -557,7 +546,6 @@ export type UserUncheckedUpdateManyInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -572,7 +560,6 @@ export type UserCountOrderByAggregateInput = {
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
   attributes?: Prisma.SortOrder
-  department?: Prisma.SortOrder
   location?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -586,7 +573,6 @@ export type UserMaxOrderByAggregateInput = {
   password?: Prisma.SortOrder
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  department?: Prisma.SortOrder
   location?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -600,7 +586,6 @@ export type UserMinOrderByAggregateInput = {
   password?: Prisma.SortOrder
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  department?: Prisma.SortOrder
   location?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -639,6 +624,20 @@ export type DateTimeFieldUpdateOperationsInput = {
 
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
+}
+
+export type UserCreateNestedOneWithoutDepartmentInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDepartmentInput, Prisma.UserUncheckedCreateWithoutDepartmentInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDepartmentInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutDepartmentNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDepartmentInput, Prisma.UserUncheckedCreateWithoutDepartmentInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDepartmentInput
+  upsert?: Prisma.UserUpsertWithoutDepartmentInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDepartmentInput, Prisma.UserUpdateWithoutDepartmentInput>, Prisma.UserUncheckedUpdateWithoutDepartmentInput>
 }
 
 export type UserCreateNestedOneWithoutRolesInput = {
@@ -983,6 +982,166 @@ export type UserUpdateOneRequiredWithoutRefreshTokenNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRefreshTokenInput, Prisma.UserUpdateWithoutRefreshTokenInput>, Prisma.UserUncheckedUpdateWithoutRefreshTokenInput>
 }
 
+export type UserCreateWithoutDepartmentInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  type?: $Enums.UserType
+  status?: $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  location?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  createdRecords?: Prisma.MasterRecordCreateNestedManyWithoutCreatedByInput
+  createdBatches?: Prisma.NotificationBatchCreateNestedManyWithoutCreatedByInput
+  deliveries?: Prisma.NotificationDeliveryCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  linkedRecords?: Prisma.MasterRecordCreateNestedManyWithoutLinkedUserInput
+  RefreshToken?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  workflowHistories?: Prisma.WorkflowHistoryCreateNestedManyWithoutPerformedByInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskCreateNestedManyWithoutAssignedToInput
+}
+
+export type UserUncheckedCreateWithoutDepartmentInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  type?: $Enums.UserType
+  status?: $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  location?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  createdRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutCreatedByInput
+  createdBatches?: Prisma.NotificationBatchUncheckedCreateNestedManyWithoutCreatedByInput
+  deliveries?: Prisma.NotificationDeliveryUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  linkedRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutLinkedUserInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  workflowHistories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutPerformedByInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutUserInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedCreateNestedManyWithoutCreatedByInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedCreateNestedManyWithoutUserInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedCreateNestedManyWithoutUserInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutApproverInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutCreatedByInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutPublishedByInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStartedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutCreatedByInput
+  primaryTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedToInput
+}
+
+export type UserCreateOrConnectWithoutDepartmentInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDepartmentInput, Prisma.UserUncheckedCreateWithoutDepartmentInput>
+}
+
+export type UserUpsertWithoutDepartmentInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDepartmentInput, Prisma.UserUncheckedUpdateWithoutDepartmentInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDepartmentInput, Prisma.UserUncheckedCreateWithoutDepartmentInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutDepartmentInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDepartmentInput, Prisma.UserUncheckedUpdateWithoutDepartmentInput>
+}
+
+export type UserUpdateWithoutDepartmentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  createdRecords?: Prisma.MasterRecordUpdateManyWithoutCreatedByNestedInput
+  createdBatches?: Prisma.NotificationBatchUpdateManyWithoutCreatedByNestedInput
+  deliveries?: Prisma.NotificationDeliveryUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  linkedRecords?: Prisma.MasterRecordUpdateManyWithoutLinkedUserNestedInput
+  RefreshToken?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  workflowHistories?: Prisma.WorkflowHistoryUpdateManyWithoutPerformedByNestedInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUpdateManyWithoutAssignedToNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDepartmentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  createdRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdBatches?: Prisma.NotificationBatchUncheckedUpdateManyWithoutCreatedByNestedInput
+  deliveries?: Prisma.NotificationDeliveryUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  linkedRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutLinkedUserNestedInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  workflowHistories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutPerformedByNestedInput
+  allowedTransitions?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutUserNestedInput
+  masterObjectSchemas?: Prisma.MasterObjectSchemaUncheckedUpdateManyWithoutCreatedByNestedInput
+  recordPermissions?: Prisma.RecordPermissionUncheckedUpdateManyWithoutUserNestedInput
+  fieldPermissions?: Prisma.FieldPermissionUncheckedUpdateManyWithoutUserNestedInput
+  recordFieldHistories?: Prisma.RecordFieldHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  createdWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutCreatedByNestedInput
+  publishedWorkflows?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutPublishedByNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  startedWorkflows?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStartedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutCreatedByNestedInput
+  primaryTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignedToNestedInput
+}
+
 export type UserCreateWithoutRolesInput = {
   id?: string
   name: string
@@ -991,11 +1150,11 @@ export type UserCreateWithoutRolesInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   createdRecords?: Prisma.MasterRecordCreateNestedManyWithoutCreatedByInput
@@ -1027,11 +1186,11 @@ export type UserUncheckedCreateWithoutRolesInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentUncheckedCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   createdRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutCreatedByInput
@@ -1079,11 +1238,11 @@ export type UserUpdateWithoutRolesInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   createdRecords?: Prisma.MasterRecordUpdateManyWithoutCreatedByNestedInput
@@ -1115,11 +1274,11 @@ export type UserUncheckedUpdateWithoutRolesInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUncheckedUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   createdRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -1151,11 +1310,11 @@ export type UserCreateWithoutMasterObjectSchemasInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -1187,11 +1346,11 @@ export type UserUncheckedCreateWithoutMasterObjectSchemasInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentUncheckedCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -1239,11 +1398,11 @@ export type UserUpdateWithoutMasterObjectSchemasInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -1275,11 +1434,11 @@ export type UserUncheckedUpdateWithoutMasterObjectSchemasInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUncheckedUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -1311,11 +1470,11 @@ export type UserCreateWithoutFieldPermissionsInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -1347,11 +1506,11 @@ export type UserUncheckedCreateWithoutFieldPermissionsInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentUncheckedCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -1399,11 +1558,11 @@ export type UserUpdateWithoutFieldPermissionsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -1435,11 +1594,11 @@ export type UserUncheckedUpdateWithoutFieldPermissionsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUncheckedUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -1471,11 +1630,11 @@ export type UserCreateWithoutCreatedRecordsInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -1507,11 +1666,11 @@ export type UserUncheckedCreateWithoutCreatedRecordsInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentUncheckedCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -1548,11 +1707,11 @@ export type UserCreateWithoutLinkedRecordsInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -1584,11 +1743,11 @@ export type UserUncheckedCreateWithoutLinkedRecordsInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentUncheckedCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -1636,11 +1795,11 @@ export type UserUpdateWithoutCreatedRecordsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -1672,11 +1831,11 @@ export type UserUncheckedUpdateWithoutCreatedRecordsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUncheckedUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -1719,11 +1878,11 @@ export type UserUpdateWithoutLinkedRecordsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -1755,11 +1914,11 @@ export type UserUncheckedUpdateWithoutLinkedRecordsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUncheckedUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -1791,11 +1950,11 @@ export type UserCreateWithoutRecordFieldHistoriesInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -1827,11 +1986,11 @@ export type UserUncheckedCreateWithoutRecordFieldHistoriesInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentUncheckedCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -1879,11 +2038,11 @@ export type UserUpdateWithoutRecordFieldHistoriesInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -1915,11 +2074,11 @@ export type UserUncheckedUpdateWithoutRecordFieldHistoriesInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUncheckedUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -1951,11 +2110,11 @@ export type UserCreateWithoutRecordPermissionsInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -1987,11 +2146,11 @@ export type UserUncheckedCreateWithoutRecordPermissionsInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentUncheckedCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -2039,11 +2198,11 @@ export type UserUpdateWithoutRecordPermissionsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -2075,11 +2234,11 @@ export type UserUncheckedUpdateWithoutRecordPermissionsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUncheckedUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -2111,11 +2270,11 @@ export type UserCreateWithoutCreatedWorkflowsInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -2147,11 +2306,11 @@ export type UserUncheckedCreateWithoutCreatedWorkflowsInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentUncheckedCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -2188,11 +2347,11 @@ export type UserCreateWithoutPublishedWorkflowsInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -2224,11 +2383,11 @@ export type UserUncheckedCreateWithoutPublishedWorkflowsInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentUncheckedCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -2276,11 +2435,11 @@ export type UserUpdateWithoutCreatedWorkflowsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -2312,11 +2471,11 @@ export type UserUncheckedUpdateWithoutCreatedWorkflowsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUncheckedUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -2359,11 +2518,11 @@ export type UserUpdateWithoutPublishedWorkflowsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -2395,11 +2554,11 @@ export type UserUncheckedUpdateWithoutPublishedWorkflowsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUncheckedUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -2431,11 +2590,11 @@ export type UserCreateWithoutCreatedWorkflowInstancesInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -2467,11 +2626,11 @@ export type UserUncheckedCreateWithoutCreatedWorkflowInstancesInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentUncheckedCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -2508,11 +2667,11 @@ export type UserCreateWithoutStartedWorkflowsInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -2544,11 +2703,11 @@ export type UserUncheckedCreateWithoutStartedWorkflowsInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentUncheckedCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -2596,11 +2755,11 @@ export type UserUpdateWithoutCreatedWorkflowInstancesInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -2632,11 +2791,11 @@ export type UserUncheckedUpdateWithoutCreatedWorkflowInstancesInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUncheckedUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -2679,11 +2838,11 @@ export type UserUpdateWithoutStartedWorkflowsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -2715,11 +2874,11 @@ export type UserUncheckedUpdateWithoutStartedWorkflowsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUncheckedUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -2751,11 +2910,11 @@ export type UserCreateWithoutWorkflowHistoriesInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -2787,11 +2946,11 @@ export type UserUncheckedCreateWithoutWorkflowHistoriesInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentUncheckedCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -2839,11 +2998,11 @@ export type UserUpdateWithoutWorkflowHistoriesInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -2875,11 +3034,11 @@ export type UserUncheckedUpdateWithoutWorkflowHistoriesInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUncheckedUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -2911,11 +3070,11 @@ export type UserCreateWithoutAllowedTransitionsInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -2947,11 +3106,11 @@ export type UserUncheckedCreateWithoutAllowedTransitionsInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentUncheckedCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -2999,11 +3158,11 @@ export type UserUpdateWithoutAllowedTransitionsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -3035,11 +3194,11 @@ export type UserUncheckedUpdateWithoutAllowedTransitionsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUncheckedUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -3071,11 +3230,11 @@ export type UserCreateWithoutWorkflowApprovalsInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -3107,11 +3266,11 @@ export type UserUncheckedCreateWithoutWorkflowApprovalsInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentUncheckedCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -3159,11 +3318,11 @@ export type UserUpdateWithoutWorkflowApprovalsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -3195,11 +3354,11 @@ export type UserUncheckedUpdateWithoutWorkflowApprovalsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUncheckedUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -3231,11 +3390,11 @@ export type UserCreateWithoutPrimaryTasksInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -3267,11 +3426,11 @@ export type UserUncheckedCreateWithoutPrimaryTasksInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentUncheckedCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -3308,11 +3467,11 @@ export type UserCreateWithoutAssignedTasksInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -3344,11 +3503,11 @@ export type UserUncheckedCreateWithoutAssignedTasksInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentUncheckedCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -3396,11 +3555,11 @@ export type UserUpdateWithoutPrimaryTasksInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -3432,11 +3591,11 @@ export type UserUncheckedUpdateWithoutPrimaryTasksInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUncheckedUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -3479,11 +3638,11 @@ export type UserUpdateWithoutAssignedTasksInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -3515,11 +3674,11 @@ export type UserUncheckedUpdateWithoutAssignedTasksInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUncheckedUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -3551,11 +3710,11 @@ export type UserCreateWithoutTaskAssignmentsInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   createdRecords?: Prisma.MasterRecordCreateNestedManyWithoutCreatedByInput
@@ -3587,11 +3746,11 @@ export type UserUncheckedCreateWithoutTaskAssignmentsInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentUncheckedCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   createdRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutCreatedByInput
@@ -3639,11 +3798,11 @@ export type UserUpdateWithoutTaskAssignmentsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   createdRecords?: Prisma.MasterRecordUpdateManyWithoutCreatedByNestedInput
@@ -3675,11 +3834,11 @@ export type UserUncheckedUpdateWithoutTaskAssignmentsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUncheckedUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   createdRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -3711,11 +3870,11 @@ export type UserCreateWithoutAuditLogsInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -3747,11 +3906,11 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentUncheckedCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -3799,11 +3958,11 @@ export type UserUpdateWithoutAuditLogsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -3835,11 +3994,11 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUncheckedUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -3871,11 +4030,11 @@ export type UserCreateWithoutCreatedBatchesInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -3907,11 +4066,11 @@ export type UserUncheckedCreateWithoutCreatedBatchesInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentUncheckedCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -3959,11 +4118,11 @@ export type UserUpdateWithoutCreatedBatchesInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -3995,11 +4154,11 @@ export type UserUncheckedUpdateWithoutCreatedBatchesInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUncheckedUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -4031,11 +4190,11 @@ export type UserCreateWithoutDeliveriesInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -4067,11 +4226,11 @@ export type UserUncheckedCreateWithoutDeliveriesInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentUncheckedCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -4119,11 +4278,11 @@ export type UserUpdateWithoutDeliveriesInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -4155,11 +4314,11 @@ export type UserUncheckedUpdateWithoutDeliveriesInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUncheckedUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -4191,11 +4350,11 @@ export type UserCreateWithoutNotificationsInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
   createdRecords?: Prisma.MasterRecordCreateNestedManyWithoutCreatedByInput
@@ -4227,11 +4386,11 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentUncheckedCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
   createdRecords?: Prisma.MasterRecordUncheckedCreateNestedManyWithoutCreatedByInput
@@ -4279,11 +4438,11 @@ export type UserUpdateWithoutNotificationsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
   createdRecords?: Prisma.MasterRecordUpdateManyWithoutCreatedByNestedInput
@@ -4315,11 +4474,11 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUncheckedUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
   createdRecords?: Prisma.MasterRecordUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -4351,11 +4510,11 @@ export type UserCreateWithoutRefreshTokenInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -4387,11 +4546,11 @@ export type UserUncheckedCreateWithoutRefreshTokenInput = {
   type?: $Enums.UserType
   status?: $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: string | null
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  department?: Prisma.UserDepartmentUncheckedCreateNestedManyWithoutUserInput
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -4439,11 +4598,11 @@ export type UserUpdateWithoutRefreshTokenInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -4475,11 +4634,11 @@ export type UserUncheckedUpdateWithoutRefreshTokenInput = {
   type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  department?: Prisma.UserDepartmentUncheckedUpdateManyWithoutUserNestedInput
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   taskAssignments?: Prisma.TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -4509,6 +4668,7 @@ export type UserUncheckedUpdateWithoutRefreshTokenInput = {
  */
 
 export type UserCountOutputType = {
+  department: number
   roles: number
   taskAssignments: number
   notifications: number
@@ -4534,6 +4694,7 @@ export type UserCountOutputType = {
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  department?: boolean | UserCountOutputTypeCountDepartmentArgs
   roles?: boolean | UserCountOutputTypeCountRolesArgs
   taskAssignments?: boolean | UserCountOutputTypeCountTaskAssignmentsArgs
   notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
@@ -4566,6 +4727,13 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
    * Select specific fields to fetch from the UserCountOutputType
    */
   select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountDepartmentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserDepartmentWhereInput
 }
 
 /**
@@ -4731,11 +4899,11 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   type?: boolean
   status?: boolean
   attributes?: boolean
-  department?: boolean
   location?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
+  department?: boolean | Prisma.User$departmentArgs<ExtArgs>
   roles?: boolean | Prisma.User$rolesArgs<ExtArgs>
   taskAssignments?: boolean | Prisma.User$taskAssignmentsArgs<ExtArgs>
   notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
@@ -4769,7 +4937,6 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   type?: boolean
   status?: boolean
   attributes?: boolean
-  department?: boolean
   location?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -4784,7 +4951,6 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   type?: boolean
   status?: boolean
   attributes?: boolean
-  department?: boolean
   location?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -4799,15 +4965,15 @@ export type UserSelectScalar = {
   type?: boolean
   status?: boolean
   attributes?: boolean
-  department?: boolean
   location?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "type" | "status" | "attributes" | "department" | "location" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "type" | "status" | "attributes" | "location" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  department?: boolean | Prisma.User$departmentArgs<ExtArgs>
   roles?: boolean | Prisma.User$rolesArgs<ExtArgs>
   taskAssignments?: boolean | Prisma.User$taskAssignmentsArgs<ExtArgs>
   notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
@@ -4838,6 +5004,7 @@ export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
+    department: Prisma.$UserDepartmentPayload<ExtArgs>[]
     roles: Prisma.$UserRolePayload<ExtArgs>[]
     taskAssignments: Prisma.$TaskAssignmentPayload<ExtArgs>[]
     notifications: Prisma.$NotificationPayload<ExtArgs>[]
@@ -4869,7 +5036,6 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     type: $Enums.UserType
     status: $Enums.UserStatus
     attributes: runtime.JsonValue | null
-    department: string | null
     location: string | null
     createdAt: Date
     updatedAt: Date
@@ -5268,6 +5434,7 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  department<T extends Prisma.User$departmentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$departmentArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserDepartmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   roles<T extends Prisma.User$rolesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$rolesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserRolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   taskAssignments<T extends Prisma.User$taskAssignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$taskAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   notifications<T extends Prisma.User$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -5326,7 +5493,6 @@ export interface UserFieldRefs {
   readonly type: Prisma.FieldRef<"User", 'UserType'>
   readonly status: Prisma.FieldRef<"User", 'UserStatus'>
   readonly attributes: Prisma.FieldRef<"User", 'Json'>
-  readonly department: Prisma.FieldRef<"User", 'String'>
   readonly location: Prisma.FieldRef<"User", 'String'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
@@ -5716,6 +5882,30 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Limit how many Users to delete.
    */
   limit?: number
+}
+
+/**
+ * User.department
+ */
+export type User$departmentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserDepartment
+   */
+  select?: Prisma.UserDepartmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserDepartment
+   */
+  omit?: Prisma.UserDepartmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserDepartmentInclude<ExtArgs> | null
+  where?: Prisma.UserDepartmentWhereInput
+  orderBy?: Prisma.UserDepartmentOrderByWithRelationInput | Prisma.UserDepartmentOrderByWithRelationInput[]
+  cursor?: Prisma.UserDepartmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserDepartmentScalarFieldEnum | Prisma.UserDepartmentScalarFieldEnum[]
 }
 
 /**

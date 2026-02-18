@@ -661,6 +661,7 @@ export default function WorkflowCanvas({
   mode,
   roleList = [],
   userList = [],
+  departmentList = [], 
 }: any) {
   const isReadOnly = mode === "view";
 
@@ -1180,6 +1181,7 @@ export default function WorkflowCanvas({
         stages={stagesForRender}
         roleList={roleList}
         userList={userList}
+        departmentList={departmentList} 
       />
     </div>
   );

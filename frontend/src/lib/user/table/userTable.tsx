@@ -102,6 +102,7 @@ export default function UsersTable() {
   const handleBulkArchive = (ids: string[]) => bulkArchive.mutate(ids);
   const handleBulkRestore = (ids: string[]) => bulkRestore.mutate(ids);
   const handleBulkDelete = (ids: string[]) => bulkDelete.mutate(ids);
+  console.log("TABLE DATA 👉", data?.users?.data);
 
   return (
     <DataTable

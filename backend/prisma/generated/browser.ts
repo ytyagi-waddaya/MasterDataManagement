@@ -23,6 +23,21 @@ export * from './enums.js';
  */
 export type User = Prisma.UserModel
 /**
+ * Model Department
+ * 
+ */
+export type Department = Prisma.DepartmentModel
+/**
+ * Model DepartmentRole
+ * 
+ */
+export type DepartmentRole = Prisma.DepartmentRoleModel
+/**
+ * Model UserDepartment
+ * 
+ */
+export type UserDepartment = Prisma.UserDepartmentModel
+/**
  * Model Role
  * 
  */
@@ -187,6 +202,11 @@ export type WorkflowTransitionAllowedUser = Prisma.WorkflowTransitionAllowedUser
  * 
  */
 export type WorkflowApproval = Prisma.WorkflowApprovalModel
+/**
+ * Model WorkflowTransitionAllowedDepartment
+ * 
+ */
+export type WorkflowTransitionAllowedDepartment = Prisma.WorkflowTransitionAllowedDepartmentModel
 /**
  * Model Task
  * 

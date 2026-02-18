@@ -20,13 +20,34 @@ const roleRepository = {
         orderBy: {
           [filters.sortBy]: filters.sortOrder,
         },
+        // include: {
+        //   permissions: {
+        //     include: {
+        //       permission: true,
+        //     },
+        //   },
+        // },
         include: {
           permissions: {
             include: {
               permission: true,
             },
           },
+
+          // ✅ correct relation path
+          departmentRoles: {
+            include: {
+              department: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
         },
+
+
       }),
       prisma.role.count({ where }),
     ]);

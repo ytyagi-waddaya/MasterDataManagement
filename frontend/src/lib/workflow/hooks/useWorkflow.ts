@@ -856,3 +856,12 @@ export const useWorkflowHistory = (recordId?: string) => {
     },
   });
 };
+
+export const useDepartments = () =>
+  useQuery({
+    queryKey: ["departments"],
+    queryFn: async () => {
+      const res = await apiClient.get("/department");
+      return res.data.data.departments;
+    },
+  });

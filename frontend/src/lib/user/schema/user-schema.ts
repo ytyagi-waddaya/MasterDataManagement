@@ -52,7 +52,7 @@ export const updateUserSchema = z.object({
     .optional()
     .transform((val) => val ?? null),
   status: z.enum(["ACTIVE", "INACTIVE", "SUSPENDED", "LOCKED"]).optional(),
-  
+
 });
 
 
@@ -90,7 +90,7 @@ export interface User {
   email: string;
   type: "INTERNAL" | "EXTERNAL" | "SERVICE";
   status: "ACTIVE" | "INACTIVE" | "SUSPENDED" | "LOCKED";
-  department?: string | null;
+  department?: UserDepartmentRelation[];
   location?: string | null;
   attributes?: Record<string, any> | null;
   roles?: Array<{ id: string; name: string; key?: string }>;
@@ -98,6 +98,17 @@ export interface User {
   updatedAt: string;
   deletedAt?: string | null;
 }
+export interface UserDepartmentRelation {
+  id: string;
+  userId: string;
+  departmentId: string;
+  assignedAt: string;
+  department?: {
+    id: string;
+    name: string;
+  };
+}
+
 
 export const USER_STATUS: Record<
   "ACTIVE" | "INACTIVE" | "SUSPENDED" | "LOCKED",

@@ -34,11 +34,13 @@ router.post(
   validate(createRoleSchema, "body"),
   asyncHandler(roleController.createRole)
 );
+///
 router.get(
   "/",
   validate(roleFilterSchema, "query"),
   asyncHandler(roleController.getRoles)
 );
+///
 router.get(
   "/:roleId",
   validate(roleIdSchema, "params"),

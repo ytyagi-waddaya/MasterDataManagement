@@ -79,6 +79,25 @@ export function useRoles<T = any>({
   });
 }
 
+// export function useRoleList() {
+//   return useQuery({
+//     queryKey: ["roles"],
+//     queryFn: async () => {
+//       const res = await apiClient.get("/role", {
+//         params: { skip: 0, take: 100 },
+//       });
+
+//       const roles =
+//         res.data.data?.roles?.data?.map((m: any) => ({
+//           label: m.name,
+//           value: m.id,
+//         })) ?? [];
+
+//       return roles;
+//     },
+
+//   });
+// }
 export function useRoleList() {
   return useQuery({
     queryKey: ["roles"],
@@ -87,17 +106,23 @@ export function useRoleList() {
         params: { skip: 0, take: 100 },
       });
 
-      const roles =
-        res.data.data?.roles?.data?.map((m: any) => ({
-          label: m.name,
-          value: m.id,
-        })) ?? [];
+      return (
+        res.data.data?.roles?.data?.map((r: any) => ({
+          label: r.name,
+          value: r.id,
 
-      return roles;
+          // ✅ FIXED (join table aware)
+          departmentIds:
+            r.departmentRoles?.map(
+              (dr: any) => dr.department?.id
+            ).filter(Boolean) ?? [],
+        })) ?? []
+      );
     },
-
   });
 }
+
+
 
 export function useRole(roleId: string) {
   return useQuery({

@@ -36,6 +36,7 @@ export interface Transition {
   workflowId: string;
   fromStageId: string;
   toStageId: string;
+  allowedDepartmentIds?: string[];
   allowedUserIds?: string[];
   allowedRoleIds?: string[];
 }
@@ -157,6 +158,7 @@ export const createTransitionSchema = z.object({
   fromStageId: zUUID,
   toStageId: zUUID,
   label: z.string().optional(),
+  allowedDepartmentIds: z.array(z.string()).default([]),
   allowedRoleIds: z.array(z.string()).default([]),
   allowedUserIds: z.array(z.string()).default([]),
   condition: zJson.optional(),
@@ -168,6 +170,7 @@ export const createTransitionSchema = z.object({
 
 export const updateTransitionSchema = z.object({
   label: z.string().optional(),
+  allowedDepartmentIds: z.array(z.string()).optional(),
   allowedRoleIds: z.array(z.string()).optional(),
   allowedUserIds: z.array(z.string()).optional(),
   condition: z.any().optional(),
@@ -328,7 +331,8 @@ export const transitionSchema = z
     autoTrigger: z.boolean().default(false),
     condition: zJson.optional(),
     metadata: zJson.optional(),
-
+    
+    allowedDepartmentIds: z.array(zUUID).default([]),
     allowedRoleIds: z.array(zUUID).default([]),
     allowedUserIds: z.array(zUUID).default([]),
   })
@@ -451,7 +455,7 @@ export const transitionSchema = z
 
     if (
       t.transitionType === "AUTO" &&
-      (t.allowedRoleIds.length || t.allowedUserIds.length)
+      ( t.allowedDepartmentIds.length ||t.allowedRoleIds.length || t.allowedUserIds.length)
     ) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,

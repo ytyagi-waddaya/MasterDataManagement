@@ -89,6 +89,7 @@ export async function enforceTransitionPermission(
     triggerStrategy: string;
     allowedUsers: { userId: string }[];
     allowedRoles: { roleId: string }[];
+    allowedDepartments?: { departmentId: string }[];
   },
   tx: Prisma.TransactionClient
 ) {
@@ -146,8 +147,36 @@ export async function enforceTransitionPermission(
   if (transition.allowedRoles.some((r) => roleIds.includes(r.roleId))) {
     return;
   }
+  /* ------------------------------
+     DEPARTMENT PERMISSION
+  ------------------------------ */
+
+  if (transition.allowedDepartments?.length) {
+    const userDepartments = await tx.userDepartment.findMany({
+      where: { userId },
+      select: { departmentId: true },
+    });
+
+    const userDepartmentIds = userDepartments.map(
+      (d) => d.departmentId
+    );
+
+    const departmentAllowed =
+      transition.allowedDepartments.some((d) =>
+        userDepartmentIds.includes(d.departmentId)
+      );
+
+    if (departmentAllowed) {
+      return;
+    }
+  }
+
+
   throw new ForbiddenException("Transition not allowed");
+
+
 }
+
 
 
 /* ======================================================

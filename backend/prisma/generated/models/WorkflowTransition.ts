@@ -274,6 +274,7 @@ export type WorkflowTransitionWhereInput = {
   histories?: Prisma.WorkflowHistoryListRelationFilter
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleListRelationFilter
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserListRelationFilter
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentListRelationFilter
   workflowApprovals?: Prisma.WorkflowApprovalListRelationFilter
 }
 
@@ -297,6 +298,7 @@ export type WorkflowTransitionOrderByWithRelationInput = {
   histories?: Prisma.WorkflowHistoryOrderByRelationAggregateInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleOrderByRelationAggregateInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserOrderByRelationAggregateInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentOrderByRelationAggregateInput
   workflowApprovals?: Prisma.WorkflowApprovalOrderByRelationAggregateInput
 }
 
@@ -323,6 +325,7 @@ export type WorkflowTransitionWhereUniqueInput = Prisma.AtLeast<{
   histories?: Prisma.WorkflowHistoryListRelationFilter
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleListRelationFilter
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserListRelationFilter
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentListRelationFilter
   workflowApprovals?: Prisma.WorkflowApprovalListRelationFilter
 }, "id">
 
@@ -383,6 +386,7 @@ export type WorkflowTransitionCreateInput = {
   histories?: Prisma.WorkflowHistoryCreateNestedManyWithoutWorkflowTransitionInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleCreateNestedManyWithoutTransitionInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutTransitionInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentCreateNestedManyWithoutTransitionInput
   workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutTransitionInput
 }
 
@@ -403,6 +407,7 @@ export type WorkflowTransitionUncheckedCreateInput = {
   histories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutWorkflowTransitionInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedCreateNestedManyWithoutTransitionInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutTransitionInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentUncheckedCreateNestedManyWithoutTransitionInput
   workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutTransitionInput
 }
 
@@ -423,6 +428,7 @@ export type WorkflowTransitionUpdateInput = {
   histories?: Prisma.WorkflowHistoryUpdateManyWithoutWorkflowTransitionNestedInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUpdateManyWithoutTransitionNestedInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutTransitionNestedInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentUpdateManyWithoutTransitionNestedInput
   workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutTransitionNestedInput
 }
 
@@ -443,6 +449,7 @@ export type WorkflowTransitionUncheckedUpdateInput = {
   histories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutWorkflowTransitionNestedInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedUpdateManyWithoutTransitionNestedInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutTransitionNestedInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentUncheckedUpdateManyWithoutTransitionNestedInput
   workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutTransitionNestedInput
 }
 
@@ -757,6 +764,20 @@ export type WorkflowTransitionUpdateOneRequiredWithoutWorkflowApprovalsNestedInp
   update?: Prisma.XOR<Prisma.XOR<Prisma.WorkflowTransitionUpdateToOneWithWhereWithoutWorkflowApprovalsInput, Prisma.WorkflowTransitionUpdateWithoutWorkflowApprovalsInput>, Prisma.WorkflowTransitionUncheckedUpdateWithoutWorkflowApprovalsInput>
 }
 
+export type WorkflowTransitionCreateNestedOneWithoutAllowedDepartmentsInput = {
+  create?: Prisma.XOR<Prisma.WorkflowTransitionCreateWithoutAllowedDepartmentsInput, Prisma.WorkflowTransitionUncheckedCreateWithoutAllowedDepartmentsInput>
+  connectOrCreate?: Prisma.WorkflowTransitionCreateOrConnectWithoutAllowedDepartmentsInput
+  connect?: Prisma.WorkflowTransitionWhereUniqueInput
+}
+
+export type WorkflowTransitionUpdateOneRequiredWithoutAllowedDepartmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkflowTransitionCreateWithoutAllowedDepartmentsInput, Prisma.WorkflowTransitionUncheckedCreateWithoutAllowedDepartmentsInput>
+  connectOrCreate?: Prisma.WorkflowTransitionCreateOrConnectWithoutAllowedDepartmentsInput
+  upsert?: Prisma.WorkflowTransitionUpsertWithoutAllowedDepartmentsInput
+  connect?: Prisma.WorkflowTransitionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WorkflowTransitionUpdateToOneWithWhereWithoutAllowedDepartmentsInput, Prisma.WorkflowTransitionUpdateWithoutAllowedDepartmentsInput>, Prisma.WorkflowTransitionUncheckedUpdateWithoutAllowedDepartmentsInput>
+}
+
 export type WorkflowTransitionCreateWithoutWorkflowInput = {
   id?: string
   label?: string | null
@@ -773,6 +794,7 @@ export type WorkflowTransitionCreateWithoutWorkflowInput = {
   histories?: Prisma.WorkflowHistoryCreateNestedManyWithoutWorkflowTransitionInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleCreateNestedManyWithoutTransitionInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutTransitionInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentCreateNestedManyWithoutTransitionInput
   workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutTransitionInput
 }
 
@@ -792,6 +814,7 @@ export type WorkflowTransitionUncheckedCreateWithoutWorkflowInput = {
   histories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutWorkflowTransitionInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedCreateNestedManyWithoutTransitionInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutTransitionInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentUncheckedCreateNestedManyWithoutTransitionInput
   workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutTransitionInput
 }
 
@@ -856,6 +879,7 @@ export type WorkflowTransitionCreateWithoutFromStageInput = {
   histories?: Prisma.WorkflowHistoryCreateNestedManyWithoutWorkflowTransitionInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleCreateNestedManyWithoutTransitionInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutTransitionInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentCreateNestedManyWithoutTransitionInput
   workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutTransitionInput
 }
 
@@ -875,6 +899,7 @@ export type WorkflowTransitionUncheckedCreateWithoutFromStageInput = {
   histories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutWorkflowTransitionInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedCreateNestedManyWithoutTransitionInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutTransitionInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentUncheckedCreateNestedManyWithoutTransitionInput
   workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutTransitionInput
 }
 
@@ -904,6 +929,7 @@ export type WorkflowTransitionCreateWithoutToStageInput = {
   histories?: Prisma.WorkflowHistoryCreateNestedManyWithoutWorkflowTransitionInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleCreateNestedManyWithoutTransitionInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutTransitionInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentCreateNestedManyWithoutTransitionInput
   workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutTransitionInput
 }
 
@@ -923,6 +949,7 @@ export type WorkflowTransitionUncheckedCreateWithoutToStageInput = {
   histories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutWorkflowTransitionInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedCreateNestedManyWithoutTransitionInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutTransitionInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentUncheckedCreateNestedManyWithoutTransitionInput
   workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutTransitionInput
 }
 
@@ -984,6 +1011,7 @@ export type WorkflowTransitionCreateWithoutHistoriesInput = {
   toStage: Prisma.WorkflowStageCreateNestedOneWithoutIncomingTransitionsInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleCreateNestedManyWithoutTransitionInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutTransitionInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentCreateNestedManyWithoutTransitionInput
   workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutTransitionInput
 }
 
@@ -1003,6 +1031,7 @@ export type WorkflowTransitionUncheckedCreateWithoutHistoriesInput = {
   toStageId: string
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedCreateNestedManyWithoutTransitionInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutTransitionInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentUncheckedCreateNestedManyWithoutTransitionInput
   workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutTransitionInput
 }
 
@@ -1038,6 +1067,7 @@ export type WorkflowTransitionUpdateWithoutHistoriesInput = {
   toStage?: Prisma.WorkflowStageUpdateOneRequiredWithoutIncomingTransitionsNestedInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUpdateManyWithoutTransitionNestedInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutTransitionNestedInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentUpdateManyWithoutTransitionNestedInput
   workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutTransitionNestedInput
 }
 
@@ -1057,6 +1087,7 @@ export type WorkflowTransitionUncheckedUpdateWithoutHistoriesInput = {
   toStageId?: Prisma.StringFieldUpdateOperationsInput | string
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedUpdateManyWithoutTransitionNestedInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutTransitionNestedInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentUncheckedUpdateManyWithoutTransitionNestedInput
   workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutTransitionNestedInput
 }
 
@@ -1076,6 +1107,7 @@ export type WorkflowTransitionCreateWithoutAllowedRolesInput = {
   toStage: Prisma.WorkflowStageCreateNestedOneWithoutIncomingTransitionsInput
   histories?: Prisma.WorkflowHistoryCreateNestedManyWithoutWorkflowTransitionInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutTransitionInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentCreateNestedManyWithoutTransitionInput
   workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutTransitionInput
 }
 
@@ -1095,6 +1127,7 @@ export type WorkflowTransitionUncheckedCreateWithoutAllowedRolesInput = {
   toStageId: string
   histories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutWorkflowTransitionInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutTransitionInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentUncheckedCreateNestedManyWithoutTransitionInput
   workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutTransitionInput
 }
 
@@ -1130,6 +1163,7 @@ export type WorkflowTransitionUpdateWithoutAllowedRolesInput = {
   toStage?: Prisma.WorkflowStageUpdateOneRequiredWithoutIncomingTransitionsNestedInput
   histories?: Prisma.WorkflowHistoryUpdateManyWithoutWorkflowTransitionNestedInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutTransitionNestedInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentUpdateManyWithoutTransitionNestedInput
   workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutTransitionNestedInput
 }
 
@@ -1149,6 +1183,7 @@ export type WorkflowTransitionUncheckedUpdateWithoutAllowedRolesInput = {
   toStageId?: Prisma.StringFieldUpdateOperationsInput | string
   histories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutWorkflowTransitionNestedInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutTransitionNestedInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentUncheckedUpdateManyWithoutTransitionNestedInput
   workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutTransitionNestedInput
 }
 
@@ -1168,6 +1203,7 @@ export type WorkflowTransitionCreateWithoutAllowedUsersInput = {
   toStage: Prisma.WorkflowStageCreateNestedOneWithoutIncomingTransitionsInput
   histories?: Prisma.WorkflowHistoryCreateNestedManyWithoutWorkflowTransitionInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleCreateNestedManyWithoutTransitionInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentCreateNestedManyWithoutTransitionInput
   workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutTransitionInput
 }
 
@@ -1187,6 +1223,7 @@ export type WorkflowTransitionUncheckedCreateWithoutAllowedUsersInput = {
   toStageId: string
   histories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutWorkflowTransitionInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedCreateNestedManyWithoutTransitionInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentUncheckedCreateNestedManyWithoutTransitionInput
   workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutTransitionInput
 }
 
@@ -1222,6 +1259,7 @@ export type WorkflowTransitionUpdateWithoutAllowedUsersInput = {
   toStage?: Prisma.WorkflowStageUpdateOneRequiredWithoutIncomingTransitionsNestedInput
   histories?: Prisma.WorkflowHistoryUpdateManyWithoutWorkflowTransitionNestedInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUpdateManyWithoutTransitionNestedInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentUpdateManyWithoutTransitionNestedInput
   workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutTransitionNestedInput
 }
 
@@ -1241,6 +1279,7 @@ export type WorkflowTransitionUncheckedUpdateWithoutAllowedUsersInput = {
   toStageId?: Prisma.StringFieldUpdateOperationsInput | string
   histories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutWorkflowTransitionNestedInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedUpdateManyWithoutTransitionNestedInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentUncheckedUpdateManyWithoutTransitionNestedInput
   workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutTransitionNestedInput
 }
 
@@ -1261,6 +1300,7 @@ export type WorkflowTransitionCreateWithoutWorkflowApprovalsInput = {
   histories?: Prisma.WorkflowHistoryCreateNestedManyWithoutWorkflowTransitionInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleCreateNestedManyWithoutTransitionInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutTransitionInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentCreateNestedManyWithoutTransitionInput
 }
 
 export type WorkflowTransitionUncheckedCreateWithoutWorkflowApprovalsInput = {
@@ -1280,6 +1320,7 @@ export type WorkflowTransitionUncheckedCreateWithoutWorkflowApprovalsInput = {
   histories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutWorkflowTransitionInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedCreateNestedManyWithoutTransitionInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutTransitionInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentUncheckedCreateNestedManyWithoutTransitionInput
 }
 
 export type WorkflowTransitionCreateOrConnectWithoutWorkflowApprovalsInput = {
@@ -1315,6 +1356,7 @@ export type WorkflowTransitionUpdateWithoutWorkflowApprovalsInput = {
   histories?: Prisma.WorkflowHistoryUpdateManyWithoutWorkflowTransitionNestedInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUpdateManyWithoutTransitionNestedInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutTransitionNestedInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentUpdateManyWithoutTransitionNestedInput
 }
 
 export type WorkflowTransitionUncheckedUpdateWithoutWorkflowApprovalsInput = {
@@ -1334,6 +1376,103 @@ export type WorkflowTransitionUncheckedUpdateWithoutWorkflowApprovalsInput = {
   histories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutWorkflowTransitionNestedInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedUpdateManyWithoutTransitionNestedInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutTransitionNestedInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentUncheckedUpdateManyWithoutTransitionNestedInput
+}
+
+export type WorkflowTransitionCreateWithoutAllowedDepartmentsInput = {
+  id?: string
+  label?: string | null
+  condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  autoTrigger?: boolean
+  transitionType?: $Enums.TransitionType
+  triggerStrategy?: $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: $Enums.ApprovalStrategy
+  priority?: number
+  workflow: Prisma.WorkflowDefinitionCreateNestedOneWithoutTransitionsInput
+  fromStage: Prisma.WorkflowStageCreateNestedOneWithoutOutgoingTransitionsInput
+  toStage: Prisma.WorkflowStageCreateNestedOneWithoutIncomingTransitionsInput
+  histories?: Prisma.WorkflowHistoryCreateNestedManyWithoutWorkflowTransitionInput
+  allowedRoles?: Prisma.WorkflowTransitionAllowedRoleCreateNestedManyWithoutTransitionInput
+  allowedUsers?: Prisma.WorkflowTransitionAllowedUserCreateNestedManyWithoutTransitionInput
+  workflowApprovals?: Prisma.WorkflowApprovalCreateNestedManyWithoutTransitionInput
+}
+
+export type WorkflowTransitionUncheckedCreateWithoutAllowedDepartmentsInput = {
+  id?: string
+  label?: string | null
+  condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  autoTrigger?: boolean
+  transitionType?: $Enums.TransitionType
+  triggerStrategy?: $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: $Enums.ApprovalStrategy
+  priority?: number
+  workflowId: string
+  fromStageId: string
+  toStageId: string
+  histories?: Prisma.WorkflowHistoryUncheckedCreateNestedManyWithoutWorkflowTransitionInput
+  allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedCreateNestedManyWithoutTransitionInput
+  allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedCreateNestedManyWithoutTransitionInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedCreateNestedManyWithoutTransitionInput
+}
+
+export type WorkflowTransitionCreateOrConnectWithoutAllowedDepartmentsInput = {
+  where: Prisma.WorkflowTransitionWhereUniqueInput
+  create: Prisma.XOR<Prisma.WorkflowTransitionCreateWithoutAllowedDepartmentsInput, Prisma.WorkflowTransitionUncheckedCreateWithoutAllowedDepartmentsInput>
+}
+
+export type WorkflowTransitionUpsertWithoutAllowedDepartmentsInput = {
+  update: Prisma.XOR<Prisma.WorkflowTransitionUpdateWithoutAllowedDepartmentsInput, Prisma.WorkflowTransitionUncheckedUpdateWithoutAllowedDepartmentsInput>
+  create: Prisma.XOR<Prisma.WorkflowTransitionCreateWithoutAllowedDepartmentsInput, Prisma.WorkflowTransitionUncheckedCreateWithoutAllowedDepartmentsInput>
+  where?: Prisma.WorkflowTransitionWhereInput
+}
+
+export type WorkflowTransitionUpdateToOneWithWhereWithoutAllowedDepartmentsInput = {
+  where?: Prisma.WorkflowTransitionWhereInput
+  data: Prisma.XOR<Prisma.WorkflowTransitionUpdateWithoutAllowedDepartmentsInput, Prisma.WorkflowTransitionUncheckedUpdateWithoutAllowedDepartmentsInput>
+}
+
+export type WorkflowTransitionUpdateWithoutAllowedDepartmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  autoTrigger?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transitionType?: Prisma.EnumTransitionTypeFieldUpdateOperationsInput | $Enums.TransitionType
+  triggerStrategy?: Prisma.EnumTriggerStrategyFieldUpdateOperationsInput | $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: Prisma.EnumApprovalStrategyFieldUpdateOperationsInput | $Enums.ApprovalStrategy
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  workflow?: Prisma.WorkflowDefinitionUpdateOneRequiredWithoutTransitionsNestedInput
+  fromStage?: Prisma.WorkflowStageUpdateOneRequiredWithoutOutgoingTransitionsNestedInput
+  toStage?: Prisma.WorkflowStageUpdateOneRequiredWithoutIncomingTransitionsNestedInput
+  histories?: Prisma.WorkflowHistoryUpdateManyWithoutWorkflowTransitionNestedInput
+  allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUpdateManyWithoutTransitionNestedInput
+  allowedUsers?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutTransitionNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutTransitionNestedInput
+}
+
+export type WorkflowTransitionUncheckedUpdateWithoutAllowedDepartmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  autoTrigger?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  transitionType?: Prisma.EnumTransitionTypeFieldUpdateOperationsInput | $Enums.TransitionType
+  triggerStrategy?: Prisma.EnumTriggerStrategyFieldUpdateOperationsInput | $Enums.TriggerStrategy
+  approvalConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStrategy?: Prisma.EnumApprovalStrategyFieldUpdateOperationsInput | $Enums.ApprovalStrategy
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  workflowId?: Prisma.StringFieldUpdateOperationsInput | string
+  fromStageId?: Prisma.StringFieldUpdateOperationsInput | string
+  toStageId?: Prisma.StringFieldUpdateOperationsInput | string
+  histories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutWorkflowTransitionNestedInput
+  allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedUpdateManyWithoutTransitionNestedInput
+  allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutTransitionNestedInput
+  workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutTransitionNestedInput
 }
 
 export type WorkflowTransitionCreateManyWorkflowInput = {
@@ -1367,6 +1506,7 @@ export type WorkflowTransitionUpdateWithoutWorkflowInput = {
   histories?: Prisma.WorkflowHistoryUpdateManyWithoutWorkflowTransitionNestedInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUpdateManyWithoutTransitionNestedInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutTransitionNestedInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentUpdateManyWithoutTransitionNestedInput
   workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutTransitionNestedInput
 }
 
@@ -1386,6 +1526,7 @@ export type WorkflowTransitionUncheckedUpdateWithoutWorkflowInput = {
   histories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutWorkflowTransitionNestedInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedUpdateManyWithoutTransitionNestedInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutTransitionNestedInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentUncheckedUpdateManyWithoutTransitionNestedInput
   workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutTransitionNestedInput
 }
 
@@ -1450,6 +1591,7 @@ export type WorkflowTransitionUpdateWithoutFromStageInput = {
   histories?: Prisma.WorkflowHistoryUpdateManyWithoutWorkflowTransitionNestedInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUpdateManyWithoutTransitionNestedInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutTransitionNestedInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentUpdateManyWithoutTransitionNestedInput
   workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutTransitionNestedInput
 }
 
@@ -1469,6 +1611,7 @@ export type WorkflowTransitionUncheckedUpdateWithoutFromStageInput = {
   histories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutWorkflowTransitionNestedInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedUpdateManyWithoutTransitionNestedInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutTransitionNestedInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentUncheckedUpdateManyWithoutTransitionNestedInput
   workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutTransitionNestedInput
 }
 
@@ -1503,6 +1646,7 @@ export type WorkflowTransitionUpdateWithoutToStageInput = {
   histories?: Prisma.WorkflowHistoryUpdateManyWithoutWorkflowTransitionNestedInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUpdateManyWithoutTransitionNestedInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUpdateManyWithoutTransitionNestedInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentUpdateManyWithoutTransitionNestedInput
   workflowApprovals?: Prisma.WorkflowApprovalUpdateManyWithoutTransitionNestedInput
 }
 
@@ -1522,6 +1666,7 @@ export type WorkflowTransitionUncheckedUpdateWithoutToStageInput = {
   histories?: Prisma.WorkflowHistoryUncheckedUpdateManyWithoutWorkflowTransitionNestedInput
   allowedRoles?: Prisma.WorkflowTransitionAllowedRoleUncheckedUpdateManyWithoutTransitionNestedInput
   allowedUsers?: Prisma.WorkflowTransitionAllowedUserUncheckedUpdateManyWithoutTransitionNestedInput
+  allowedDepartments?: Prisma.WorkflowTransitionAllowedDepartmentUncheckedUpdateManyWithoutTransitionNestedInput
   workflowApprovals?: Prisma.WorkflowApprovalUncheckedUpdateManyWithoutTransitionNestedInput
 }
 
@@ -1549,6 +1694,7 @@ export type WorkflowTransitionCountOutputType = {
   histories: number
   allowedRoles: number
   allowedUsers: number
+  allowedDepartments: number
   workflowApprovals: number
 }
 
@@ -1556,6 +1702,7 @@ export type WorkflowTransitionCountOutputTypeSelect<ExtArgs extends runtime.Type
   histories?: boolean | WorkflowTransitionCountOutputTypeCountHistoriesArgs
   allowedRoles?: boolean | WorkflowTransitionCountOutputTypeCountAllowedRolesArgs
   allowedUsers?: boolean | WorkflowTransitionCountOutputTypeCountAllowedUsersArgs
+  allowedDepartments?: boolean | WorkflowTransitionCountOutputTypeCountAllowedDepartmentsArgs
   workflowApprovals?: boolean | WorkflowTransitionCountOutputTypeCountWorkflowApprovalsArgs
 }
 
@@ -1593,6 +1740,13 @@ export type WorkflowTransitionCountOutputTypeCountAllowedUsersArgs<ExtArgs exten
 /**
  * WorkflowTransitionCountOutputType without action
  */
+export type WorkflowTransitionCountOutputTypeCountAllowedDepartmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WorkflowTransitionAllowedDepartmentWhereInput
+}
+
+/**
+ * WorkflowTransitionCountOutputType without action
+ */
 export type WorkflowTransitionCountOutputTypeCountWorkflowApprovalsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.WorkflowApprovalWhereInput
 }
@@ -1618,6 +1772,7 @@ export type WorkflowTransitionSelect<ExtArgs extends runtime.Types.Extensions.In
   histories?: boolean | Prisma.WorkflowTransition$historiesArgs<ExtArgs>
   allowedRoles?: boolean | Prisma.WorkflowTransition$allowedRolesArgs<ExtArgs>
   allowedUsers?: boolean | Prisma.WorkflowTransition$allowedUsersArgs<ExtArgs>
+  allowedDepartments?: boolean | Prisma.WorkflowTransition$allowedDepartmentsArgs<ExtArgs>
   workflowApprovals?: boolean | Prisma.WorkflowTransition$workflowApprovalsArgs<ExtArgs>
   _count?: boolean | Prisma.WorkflowTransitionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["workflowTransition"]>
@@ -1684,6 +1839,7 @@ export type WorkflowTransitionInclude<ExtArgs extends runtime.Types.Extensions.I
   histories?: boolean | Prisma.WorkflowTransition$historiesArgs<ExtArgs>
   allowedRoles?: boolean | Prisma.WorkflowTransition$allowedRolesArgs<ExtArgs>
   allowedUsers?: boolean | Prisma.WorkflowTransition$allowedUsersArgs<ExtArgs>
+  allowedDepartments?: boolean | Prisma.WorkflowTransition$allowedDepartmentsArgs<ExtArgs>
   workflowApprovals?: boolean | Prisma.WorkflowTransition$workflowApprovalsArgs<ExtArgs>
   _count?: boolean | Prisma.WorkflowTransitionCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -1707,6 +1863,7 @@ export type $WorkflowTransitionPayload<ExtArgs extends runtime.Types.Extensions.
     histories: Prisma.$WorkflowHistoryPayload<ExtArgs>[]
     allowedRoles: Prisma.$WorkflowTransitionAllowedRolePayload<ExtArgs>[]
     allowedUsers: Prisma.$WorkflowTransitionAllowedUserPayload<ExtArgs>[]
+    allowedDepartments: Prisma.$WorkflowTransitionAllowedDepartmentPayload<ExtArgs>[]
     workflowApprovals: Prisma.$WorkflowApprovalPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -2123,6 +2280,7 @@ export interface Prisma__WorkflowTransitionClient<T, Null = never, ExtArgs exten
   histories<T extends Prisma.WorkflowTransition$historiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkflowTransition$historiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkflowHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   allowedRoles<T extends Prisma.WorkflowTransition$allowedRolesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkflowTransition$allowedRolesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkflowTransitionAllowedRolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   allowedUsers<T extends Prisma.WorkflowTransition$allowedUsersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkflowTransition$allowedUsersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkflowTransitionAllowedUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  allowedDepartments<T extends Prisma.WorkflowTransition$allowedDepartmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkflowTransition$allowedDepartmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkflowTransitionAllowedDepartmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   workflowApprovals<T extends Prisma.WorkflowTransition$workflowApprovalsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkflowTransition$workflowApprovalsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkflowApprovalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2631,6 +2789,30 @@ export type WorkflowTransition$allowedUsersArgs<ExtArgs extends runtime.Types.Ex
   take?: number
   skip?: number
   distinct?: Prisma.WorkflowTransitionAllowedUserScalarFieldEnum | Prisma.WorkflowTransitionAllowedUserScalarFieldEnum[]
+}
+
+/**
+ * WorkflowTransition.allowedDepartments
+ */
+export type WorkflowTransition$allowedDepartmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WorkflowTransitionAllowedDepartment
+   */
+  select?: Prisma.WorkflowTransitionAllowedDepartmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WorkflowTransitionAllowedDepartment
+   */
+  omit?: Prisma.WorkflowTransitionAllowedDepartmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkflowTransitionAllowedDepartmentInclude<ExtArgs> | null
+  where?: Prisma.WorkflowTransitionAllowedDepartmentWhereInput
+  orderBy?: Prisma.WorkflowTransitionAllowedDepartmentOrderByWithRelationInput | Prisma.WorkflowTransitionAllowedDepartmentOrderByWithRelationInput[]
+  cursor?: Prisma.WorkflowTransitionAllowedDepartmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WorkflowTransitionAllowedDepartmentScalarFieldEnum | Prisma.WorkflowTransitionAllowedDepartmentScalarFieldEnum[]
 }
 
 /**

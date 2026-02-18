@@ -12,6 +12,7 @@ export function TransitionsStep({
   form,
   transitionArray,
   stages,
+  departmentList = [],
   onEdit,      // (index:number)=>void
   activeIndex, // current open editor index (optional)
 }: any) {

@@ -436,13 +436,13 @@ export default function ResourceRecordsPage() {
 
                             {/* ✅ SUBMIT BUTTON */}
                             <div className="pt-6 border-t flex justify-end">
-                              <button
+                              {/* <button
                                 type="submit"
                                 form="runtime-form"
                                 className="bg-black text-white px-6 py-2 rounded"
                               >
                                 Save
-                              </button>
+                              </button> */}
                             </div>
                           </>
                         )

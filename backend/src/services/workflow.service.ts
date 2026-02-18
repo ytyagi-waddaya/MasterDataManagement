@@ -507,6 +507,7 @@ const WorkflowService = {
         ...t,
         approvalConfig: t.approvalConfig ?? undefined,
         approvalStrategy: t.approvalStrategy ?? undefined,
+        allowedDepartmentIds: t.allowedDepartmentIds ?? [],
         allowedRoleIds: t.allowedRoleIds ?? [],
         allowedUserIds: t.allowedUserIds ?? [],
       })),
@@ -578,6 +579,11 @@ const WorkflowService = {
               t.transitionType === "APPROVAL"
                 ? (t.approvalConfig as Prisma.InputJsonValue)
                 : Prisma.JsonNull,
+            allowedDepartments: {
+              create: t.allowedDepartmentIds.map((departmentId) => ({
+                departmentId,
+              })),
+            },
 
             allowedRoles: {
               create: t.allowedRoleIds.map((roleId) => ({ roleId })),
@@ -708,20 +714,51 @@ const WorkflowService = {
     if (!workflow) throw new NotFoundException("Workflow not found");
 
     // return workflow;
-      return {
-    ...workflow,
-    transitions: workflow.transitions.map((t) => ({
-      ...t,
+    return {
+      ...workflow,
+      // transitions: workflow.transitions.map((t) => ({
+      //   ...t,
+      //   allowedDepartmentIds:
+      //     t.allowedDepartments?.map((d) => d.departmentId) ?? [],
 
-      // ✅ flatten permissions
-      allowedRoleIds: t.allowedRoles?.map((r) => r.roleId) ?? [],
-      allowedUserIds: t.allowedUsers?.map((u) => u.userId) ?? [],
+      //   // ✅ flatten permissions
+      //   allowedRoleIds: t.allowedRoles?.map((r) => r.roleId) ?? [],
+      //   allowedUserIds: t.allowedUsers?.map((u) => u.userId) ?? [],
 
-      // ❌ hide join tables from frontend
-      allowedRoles: undefined,
-      allowedUsers: undefined,
-    })),
-  };
+      //   // ❌ hide join tables from frontend
+      //   allowedDepartments: undefined,
+      //   allowedRoles: undefined,
+      //   allowedUsers: undefined,
+      // })),
+
+      transitions: workflow.transitions.map((t) => ({
+        ...t,
+
+        // ✅ flatten department permissions
+        allowedDepartmentIds:
+          (t.allowedDepartments ?? []).map(
+            (d: { departmentId: string }) => d.departmentId
+          ),
+
+        // ✅ flatten role permissions
+        allowedRoleIds:
+          (t.allowedRoles ?? []).map(
+            (r: { roleId: string }) => r.roleId
+          ),
+
+        // ✅ flatten user permissions
+        allowedUserIds:
+          (t.allowedUsers ?? []).map(
+            (u: { userId: string }) => u.userId
+          ),
+
+        // ✅ hide join tables from frontend
+        allowedDepartments: undefined,
+        allowedRoles: undefined,
+        allowedUsers: undefined,
+      })),
+
+    };
   },
 
   updateWorkflow: async (
@@ -1384,6 +1421,7 @@ const WorkflowService = {
           label,
           allowedUserIds,
           allowedRoleIds,
+          allowedDepartmentIds,
         } = t;
 
         // Validate stage existence
@@ -1457,6 +1495,15 @@ const WorkflowService = {
             data: allowedUserIds.map((userId: any) => ({
               transitionId: created.id,
               userId,
+            })),
+          });
+        }
+
+        if (allowedDepartmentIds?.length) {
+          await tx.workflowTransitionAllowedDepartment.createMany({
+            data: allowedDepartmentIds.map((departmentId: any) => ({
+              transitionId: created.id,
+              departmentId,
             })),
           });
         }
@@ -2228,6 +2275,7 @@ async function getNotificationTargetsForStage(
     include: {
       allowedUsers: true,
       allowedRoles: true,
+      allowedDepartments: true,
     },
   });
 

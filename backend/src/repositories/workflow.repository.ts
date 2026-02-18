@@ -87,6 +87,7 @@ const WorkflowRepository = {
             toStage: true,
             allowedRoles: true,
             allowedUsers: true,
+            allowedDepartments: true,
           },
         },
 
@@ -400,6 +401,7 @@ const WorkflowRepository = {
       include: {
         allowedUsers: { select: { userId: true } },
         allowedRoles: { select: { roleId: true } },
+        allowedDepartments: { select: { departmentId: true } },
       },
     });
   },
@@ -415,7 +417,18 @@ const WorkflowRepository = {
   getWorkflowWithStages: async (workflowId: string, tx = prisma) => {
     return tx.workflowDefinition.findUnique({
       where: { id: workflowId },
-      include: { stages: { orderBy: { order: "asc" } }, transitions: true },
+      // include: { stages: { orderBy: { order: "asc" } }, transitions: true },
+      include: {
+        stages: { orderBy: { order: "asc" } },
+        transitions: {
+          include: {
+            allowedDepartments: true,
+            allowedRoles: true,
+            allowedUsers: true,
+          },
+        },
+      },
+
     });
   },
 

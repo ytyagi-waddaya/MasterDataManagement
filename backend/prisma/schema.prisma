@@ -24,9 +24,9 @@ model User {
   status UserStatus @default(ACTIVE)
 
   attributes Json?
-  department String?
+  department UserDepartment[]
   location   String?
-
+  
   roles              UserRole[]
   taskAssignments    TaskAssignment[]
   notifications      Notification[]                  @relation("UserNotifications")
@@ -55,12 +55,71 @@ model User {
   createdWorkflowInstances WorkflowInstance[]   @relation("WorkflowInstanceCreatedBy")
   primaryTasks             Task[]               @relation("PrimaryTaskAssignee")
 
-  @@index([department])
   @@index([location])
   @@index([createdAt])
   @@index([status])
   @@index([type])
 }
+
+
+
+model Department {
+  id          String   @id @default(uuid())
+  name        String
+  code        String   @unique
+  description String?
+
+  status      DepartmentStatus @default(ACTIVE)
+
+  parentId    String?
+  parent      Department?  @relation("DepartmentHierarchy", fields: [parentId], references: [id])
+  children    Department[] @relation("DepartmentHierarchy")
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  deletedAt   DateTime?
+
+  departmentRoles DepartmentRole[]
+  users UserDepartment[]
+  workflowTransitionPermissions WorkflowTransitionAllowedDepartment[]
+
+
+  @@index([parentId])
+  @@index([status])
+}
+
+ 
+model DepartmentRole {
+  id String @id @default(uuid())
+
+  departmentId String
+  department   Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+
+  roleId String
+  role   Role   @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([departmentId, roleId])
+  @@index([departmentId])
+  @@index([roleId])
+}
+model UserDepartment {
+  id String @id @default(uuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  departmentId String
+  department   Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+
+  assignedAt DateTime @default(now())
+
+  @@unique([userId, departmentId])
+  @@index([userId])
+  @@index([departmentId])
+}
+
 
 model Role {
   id          String  @id @default(uuid())
@@ -77,7 +136,7 @@ model Role {
   children RoleHierarchy[] @relation("ChildRoles")
 
   allowedTransitions WorkflowTransitionAllowedRole[]
-
+  departmentRoles DepartmentRole[] 
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
   deletedAt         DateTime?
@@ -742,6 +801,9 @@ model WorkflowTransition {
   histories         WorkflowHistory[]
   allowedRoles      WorkflowTransitionAllowedRole[]
   allowedUsers      WorkflowTransitionAllowedUser[]
+
+  allowedDepartments WorkflowTransitionAllowedDepartment[]
+
   workflowApprovals WorkflowApproval[]
 
   @@index([workflowId])
@@ -749,6 +811,7 @@ model WorkflowTransition {
   @@index([toStageId])
   @@index([workflowId, fromStageId, toStageId])
 }
+
 
 model WorkflowInstance {
   id           String @id @default(uuid())
@@ -877,6 +940,24 @@ model WorkflowApproval {
   @@unique([workflowInstanceId, transitionId, approverId])
   @@index([workflowInstanceId, transitionId])
 }
+
+model WorkflowTransitionAllowedDepartment {
+  id String @id @default(uuid())
+
+  transitionId String
+  transition WorkflowTransition @relation(fields: [transitionId], references: [id], onDelete: Cascade)
+
+  departmentId String
+  department Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([transitionId, departmentId])
+  @@index([transitionId])
+  @@index([departmentId])
+}
+
+
 
 // ====================================
 // 7. TASKS & ASSIGNMENTS
@@ -1387,6 +1468,11 @@ enum TriggerStrategy {
   ASSIGNEE_ONLY
   APPROVER_ONLY
   SYSTEM_ONLY
+}
+
+enum DepartmentStatus {
+  ACTIVE
+  INACTIVE
 }
 
 // model Feature {

@@ -1543,15 +1543,35 @@ const TRANSITION_TYPES = [
   // },
 ] as const;
 
+// function normalizeOptions(list: any[]) {
+//   return (list || [])
+//     .map((x) => ({
+//       label: String(x?.label ?? x?.name ?? x?.title ?? ""),
+//       value: String(x?.value ?? x?.id ?? x?._id ?? ""),
+//       roleIds: Array.isArray(x?.roleIds) ? x.roleIds.map(String) : undefined,
+//     }))
+//     .filter((o) => o.label && o.value);
+// }
+
 function normalizeOptions(list: any[]) {
   return (list || [])
     .map((x) => ({
       label: String(x?.label ?? x?.name ?? x?.title ?? ""),
       value: String(x?.value ?? x?.id ?? x?._id ?? ""),
-      roleIds: Array.isArray(x?.roleIds) ? x.roleIds.map(String) : undefined,
+
+      // ✅ USER FILTERING
+      roleIds: Array.isArray(x?.roleIds)
+        ? x.roleIds.map(String)
+        : undefined,
+
+      // ✅ NEW (ROLE FILTERING)
+      departmentIds: Array.isArray(x?.departmentIds)
+        ? x.departmentIds.map(String)
+        : undefined,
     }))
     .filter((o) => o.label && o.value);
 }
+
 
 function normalizeValueArray(v: any) {
   if (!Array.isArray(v)) return [];
@@ -1670,7 +1690,7 @@ function ApprovalLevelsEditor({
                         field.onChange(normalizeValueArray(v))
                       }
                       placeholder="Approver roles"
-                      // size="sm"
+                    // size="sm"
                     />
                   )}
                 />
@@ -1686,7 +1706,7 @@ function ApprovalLevelsEditor({
                         field.onChange(normalizeValueArray(v))
                       }
                       placeholder="Specific users"
-                      // size="sm"
+                    // size="sm"
                     />
                   )}
                 />
@@ -1744,12 +1764,12 @@ function TransitionTypeCard({
               bgColor.includes("blue")
                 ? "text-blue-600"
                 : bgColor.includes("green")
-                ? "text-green-600"
-                : bgColor.includes("amber")
-                ? "text-amber-600"
-                : bgColor.includes("purple")
-                ? "text-purple-600"
-                : "text-gray-600"
+                  ? "text-green-600"
+                  : bgColor.includes("amber")
+                    ? "text-amber-600"
+                    : bgColor.includes("purple")
+                      ? "text-purple-600"
+                      : "text-gray-600"
             )}
           />
         </div>
@@ -1787,6 +1807,7 @@ export function TransitionRow({
   stages,
   roleList,
   userList,
+  departmentList,
   errors,
   onDelete,
 }: any) {
@@ -1823,6 +1844,11 @@ export function TransitionRow({
     name: `transitions.${index}.allowedRoleIds`,
   });
 
+  const allowedDepartmentIdsRaw = useWatch({
+    control,
+    name: `transitions.${index}.allowedDepartmentIds`,
+  });
+
   const allowedUserIdsRaw = useWatch({
     control,
     name: `transitions.${index}.allowedUserIds`,
@@ -1837,12 +1863,31 @@ export function TransitionRow({
   const showTriggerPermissions =
     showTriggerStrategy && (triggerStrategy ?? "ANY_ALLOWED") === "ANY_ALLOWED";
 
-  const roleOptions = useMemo(() => normalizeOptions(roleList), [roleList]);
+  // const roleOptions = useMemo(() => normalizeOptions(roleList), [roleList]);
+  const allowedDepartmentIds = useMemo(
+    () => normalizeValueArray(allowedDepartmentIdsRaw),
+    [allowedDepartmentIdsRaw]
+  );
 
   const allowedRoleIds = useMemo(
     () => normalizeValueArray(allowedRoleIdsRaw),
     [allowedRoleIdsRaw]
   );
+
+  const roleOptions = useMemo(() => {
+    const roles = normalizeOptions(roleList);
+
+    if (!allowedDepartmentIds.length) return [];
+
+    return roles.filter((role: any) =>
+      (role.departmentIds || []).some((d: string) =>
+        allowedDepartmentIds.includes(String(d))
+      )
+    );
+  }, [roleList, allowedDepartmentIds]);
+
+
+
 
   const filteredUsersRaw = useMemo(() => {
     const users = normalizeOptions(userList);
@@ -1872,6 +1917,15 @@ export function TransitionRow({
       })),
     [userList]
   );
+
+
+  useEffect(() => {
+    if (!allowedRoleIds.length) {
+      setValue(`transitions.${index}.allowedUserIds`, [], {
+        shouldDirty: true,
+      });
+    }
+  }, [allowedRoleIds, index, setValue]);
 
   useEffect(() => {
     if (transitionType === "APPROVAL") return;
@@ -2353,6 +2407,31 @@ export function TransitionRow({
                 description="Restrict to specific roles and users"
                 icon={User}
               >
+                <div className="space-y-1.5">
+                  <Label className="text-xs font-medium text-gray-700">
+                    Allowed Departments
+                  </Label>
+
+                  <Controller
+                    name={`transitions.${index}.allowedDepartmentIds`}
+                    control={control}
+                    render={({ field }) => (
+                      <MultiSelect
+                        options={normalizeOptions(departmentList)}
+                        value={normalizeValueArray(field.value)}
+                        onChange={(v: any) => {
+                          field.onChange(normalizeValueArray(v));
+
+                          // cascade reset
+                          setValue(`transitions.${index}.allowedRoleIds`, []);
+                          setValue(`transitions.${index}.allowedUserIds`, []);
+                        }}
+                        placeholder="Select departments"
+                      />
+                    )}
+                  />
+                </div>
+
                 <div className="space-y-3">
                   <div className="space-y-1.5">
                     <Label className="text-xs font-medium text-gray-700">
@@ -2369,7 +2448,7 @@ export function TransitionRow({
                             field.onChange(normalizeValueArray(v))
                           }
                           placeholder="Select allowed roles"
-                          // size="sm"
+                        // size="sm"
                         />
                       )}
                     />

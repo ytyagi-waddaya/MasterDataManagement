@@ -92,6 +92,8 @@ export const transitionSchema = z
 
     allowedRoleIds: z.array(zUUID).default([]),
     allowedUserIds: z.array(zUUID).default([]),
+    allowedDepartmentIds: z.array(zUUID).default([]),
+
   })
   .superRefine((t, ctx) => {
     /* ---------- REVIEW ---------- */
@@ -187,7 +189,8 @@ export const transitionSchema = z
         t.triggerStrategy === "ALL_ALLOWED") &&
       t.transitionType !== "APPROVAL" && // approval uses approvers instead
       !t.allowedRoleIds.length &&
-      !t.allowedUserIds.length
+      !t.allowedUserIds.length && 
+      !t.allowedDepartmentIds.length
     ) {
       ctx.addIssue(`${t.triggerStrategy} requires at least one role or user`);
     }

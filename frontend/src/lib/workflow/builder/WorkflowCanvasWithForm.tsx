@@ -23,6 +23,7 @@ export default function WorkflowCanvasWithForm({
   onSave,
   roleList = [],
   userList = [],
+  departmentList=[],
 }: any) {
   const stageArray = useFieldArray({ control: form.control, name: "stages" });
   const transitionArray = useFieldArray({ control: form.control, name: "transitions" });
@@ -193,6 +194,7 @@ export default function WorkflowCanvasWithForm({
           mode="edit"
           roleList={roleList}
           userList={userList}
+          departmentList={departmentList}
         />
       </div>
     </div>

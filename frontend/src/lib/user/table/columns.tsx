@@ -47,6 +47,7 @@ import {
 } from "../hooks/index";
 import { cn } from "@/lib/utils";
 import { IfAllowed } from "@/store/auth";
+import { row } from "mathjs";
 
 export const userColumns: ColumnDef<User>[] = [
   {
@@ -68,7 +69,10 @@ export const userColumns: ColumnDef<User>[] = [
     },
     cell: ({ row }) => (
       <RowCheckbox rowId={row.id} isSelected={row.getIsSelected()} />
+
     ),
+
+
   },
   {
     accessorKey: "name",
@@ -99,6 +103,46 @@ export const userColumns: ColumnDef<User>[] = [
       );
     },
   },
+
+  {
+    id: "department",
+    header: "Department",
+    enableSorting: false,
+
+    cell: ({ row }) => {
+      const departments = row.original.department ?? [];
+
+      const names = departments
+        .map((d) => d?.department?.name)
+        .filter((name): name is string => Boolean(name));
+
+      if (!names.length) {
+        return (
+          <span className="text-sm text-muted-foreground">—</span>
+        );
+      }
+
+      return (
+        <div className="flex flex-wrap gap-1">
+          {names.slice(0, 2).map((name: string, i: number) => (
+            <Badge key={i} variant="secondary" className="text-xs">
+              {name}
+            </Badge>
+          ))}
+
+          {names.length > 2 && (
+            <Badge variant="outline" className="text-xs">
+              +{names.length - 2}
+            </Badge>
+          )}
+        </div>
+      );
+    },
+  },
+
+
+
+
   {
     accessorKey: "roles",
     header: "Roles",
@@ -181,7 +225,7 @@ export const userColumns: ColumnDef<User>[] = [
       const status = row.getValue("status") as string;
       const isActive = status === "ACTIVE";
 
-      
+
       const [openArchive, setOpenArchive] = React.useState(false);
       const [openRestore, setOpenRestore] = React.useState(false);
       const [openDelete, setOpenDelete] = React.useState(false);
@@ -205,7 +249,7 @@ export const userColumns: ColumnDef<User>[] = [
                 <EllipsisVertical className="w-4 h-4" />
               </Button>
             </DropdownMenuTrigger>
- 
+
             <DropdownMenuContent align="end">
               <IfAllowed
                 action="READ"
@@ -300,10 +344,12 @@ export const userColumns: ColumnDef<User>[] = [
               name: user.name,
               type: user.type,
               status: user.status,
-              department: user.department ?? null,
+              department:
+                user.department?.[0]?.departmentId ?? null,
+
               location: user.location ?? null,
             }}
-            onSave={(data) =>{
+            onSave={(data) => {
               console.log("[FormDialog] onSave called:", data)
               updateUser.mutate(
                 {
@@ -312,7 +358,8 @@ export const userColumns: ColumnDef<User>[] = [
                 },
 
                 { onSuccess: () => setOpenEdit(false) }
-              )}
+              )
+            }
             }
             FormComponent={EditUserForm}
             disabled={false}
@@ -336,3 +383,5 @@ const RowCheckbox: React.FC<{ rowId: string; isSelected: boolean }> = ({
     />
   );
 };
+
+

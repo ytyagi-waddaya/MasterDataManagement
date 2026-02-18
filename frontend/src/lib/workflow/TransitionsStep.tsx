@@ -1799,8 +1799,18 @@ function Section({ title, description, children, icon }: any) {
 /* ======================================================
    APPROVAL LEVELS
 ====================================================== */
-function ApprovalLevelsEditor({ control, name, roleList, userList }: any) {
+function ApprovalLevelsEditor({
+  control,
+  name,
+  roleList = [],
+  userList = [],
+  departmentList = [],
+}: any) {
   const { fields, append, remove } = useFieldArray({ control, name });
+  const levels = useWatch({
+    control,
+    name,
+  }) ?? [];
 
   return (
     <div className="space-y-3">
@@ -1846,13 +1856,42 @@ function ApprovalLevelsEditor({ control, name, roleList, userList }: any) {
               <Trash2 className="h-4 w-4" />
             </Button>
           </div>
+          <Controller
+            name={`${name}.${i}.departmentIds`}
+            control={control}
+            render={({ field }) => (
+              <MultiSelect
+                options={departmentList}
+                value={field.value ?? []}
+                onChange={(value) => {
+                  field.onChange(value);
+
+                  // reset cascade
+                  // control._formValues[name][i].roleIds = [];
+                  // control._formValues[name][i].userIds = [];
+                  control.setValue(`${name}.${i}.roleIds`, []);
+                  control.setValue(`${name}.${i}.userIds`, []);
+
+                }}
+                placeholder="Select departments"
+              />
+            )}
+          />
 
           <Controller
             name={`${name}.${i}.roleIds`}
             control={control}
             render={({ field }) => (
               <MultiSelect
-                options={roleList}
+                options={
+                  roleList.filter((role: any) =>
+                    (levels?.[i]?.departmentIds ?? []).some(
+                      (d: string) => role.departmentIds?.includes(d)
+                    )
+                  )
+                }
+
+
                 value={field.value ?? []}
                 onChange={field.onChange}
                 placeholder="Select approver roles"
@@ -1865,7 +1904,15 @@ function ApprovalLevelsEditor({ control, name, roleList, userList }: any) {
             control={control}
             render={({ field }) => (
               <MultiSelect
-                options={userList}
+                options={
+                  userList.filter((user: any) =>
+                    (levels?.[i]?.roleIds ?? []).some(
+                      (r: string) => user.roleIds?.includes(r)
+                    )
+                  )
+                }
+
+
                 value={field.value ?? []}
                 onChange={field.onChange}
                 placeholder="Select specific users"
@@ -1909,6 +1956,7 @@ function TransitionCard({
   stages,
   roleList,
   userList,
+  departmentList,
 }: {
   index: number;
   control: any;
@@ -1919,6 +1967,8 @@ function TransitionCard({
   stages: Stage[];
   roleList: any[];
   userList: any[];
+  departmentList: any[];
+
 }) {
   const transitionType = useWatch({
     control,
@@ -1944,6 +1994,24 @@ function TransitionCard({
     control,
     name: `transitions.${index}.toStageId`,
   });
+  console.log("ROLES:", roleList);
+
+
+  /* ===============================
+   PERMISSION CASCADE WATCHERS
+================================ */
+
+  const selectedDepartments =
+    useWatch({
+      control,
+      name: `transitions.${index}.allowedDepartmentIds`,
+    }) ?? [];
+
+  const selectedRoles =
+    useWatch({
+      control,
+      name: `transitions.${index}.allowedRoleIds`,
+    }) ?? [];
 
   const requiresApproval = transitionType === "APPROVAL";
   const showTriggerPermissions =
@@ -2046,6 +2114,8 @@ function TransitionCard({
       ]);
       return;
     }
+
+
 
     // If any level was missing / invalid → rewrite safely
     const hasInvalid = levels.some(
@@ -2253,10 +2323,9 @@ function TransitionCard({
                     onClick={() => field.onChange(type.value)}
                     className={`
                       flex flex-col items-center gap-2 p-3 rounded-lg border transition-all
-                      ${
-                        field.value === type.value
-                          ? "border-gray-900 bg-gray-900 text-white"
-                          : "border-gray-200 bg-white text-gray-700 hover:border-gray-300"
+                      ${field.value === type.value
+                        ? "border-gray-900 bg-gray-900 text-white"
+                        : "border-gray-200 bg-white text-gray-700 hover:border-gray-300"
                       }
                     `}
                   >
@@ -2297,7 +2366,7 @@ function TransitionCard({
         </Section>
       )}
       {/* WHO CAN TRIGGER → PERMISSIONS */}
-      {showTriggerPermissions && (
+      {/* {showTriggerPermissions && (
         <Section
           title="Who is allowed to perform this action"
           description="Limit who can use this transition"
@@ -2330,7 +2399,87 @@ function TransitionCard({
             />
           </div>
         </Section>
+      )} */}
+
+
+      {showTriggerPermissions && (
+        <Section
+          title="Who is allowed to perform this action"
+          description="Limit who can use this transition"
+        >
+          <div className="space-y-4">
+
+            {/* ✅ DEPARTMENT */}
+            <Controller
+              name={`transitions.${index}.allowedDepartmentIds`}
+              control={control}
+              render={({ field }) => (
+                <MultiSelect
+                  options={departmentList}
+                  value={field.value ?? []}
+                  onChange={(value) => {
+                    field.onChange(value);
+
+                    // reset cascade
+                    setValue(`transitions.${index}.allowedRoleIds`, []);
+                    setValue(`transitions.${index}.allowedUserIds`, []);
+                  }}
+                  placeholder="Select departments"
+                />
+              )}
+            />
+
+            {/* ✅ ROLE (filtered by department) */}
+            <Controller
+              name={`transitions.${index}.allowedRoleIds`}
+              control={control}
+              render={({ field }) => (
+                <MultiSelect
+                  options={
+                    selectedDepartments.length === 0
+                      ? []
+                      : roleList.filter((role: any) =>
+                        role.departmentIds?.some((d: string) =>
+                          selectedDepartments.includes(d)
+                        )
+                      )
+                  }
+                  value={field.value ?? []}
+                  onChange={(value) => {
+                    field.onChange(value);
+                    setValue(`transitions.${index}.allowedUserIds`, []);
+                  }}
+                  placeholder="Select roles"
+                />
+              )}
+            />
+
+            {/* ✅ USERS (filtered by role) */}
+            <Controller
+              name={`transitions.${index}.allowedUserIds`}
+              control={control}
+              render={({ field }) => (
+                <MultiSelect
+                  options={
+                    selectedRoles.length === 0
+                      ? []
+                      : userList.filter((user: any) =>
+                        user.roleIds?.some((r: string) =>
+                          selectedRoles.includes(r)
+                        )
+                      )
+                  }
+                  value={field.value ?? []}
+                  onChange={field.onChange}
+                  placeholder="Select users"
+                />
+              )}
+            />
+
+          </div>
+        </Section>
       )}
+
 
       {/* APPROVAL CONFIG */}
       {requiresApproval && approvalConfig && (
@@ -2433,6 +2582,7 @@ function TransitionCard({
                   name={`transitions.${index}.approvalConfig.levels`}
                   roleList={roleList}
                   userList={userList}
+                  departmentList={departmentList}
                 />
               )}
 
@@ -2442,6 +2592,7 @@ function TransitionCard({
                   name={`transitions.${index}.approvalConfig.levels`}
                   roleList={roleList}
                   userList={userList}
+                  departmentList={departmentList}
                 />
               )}
             </div>
@@ -2461,6 +2612,7 @@ export function TransitionsStep({
   stages,
   roleList = [],
   userList = [],
+  departmentList = [],
 }: any) {
   const { register, control, setValue } = form;
 
@@ -2551,6 +2703,7 @@ export function TransitionsStep({
             stages={stages}
             roleList={roleList}
             userList={userList}
+            departmentList={departmentList}
           />
         ))}
       </div>

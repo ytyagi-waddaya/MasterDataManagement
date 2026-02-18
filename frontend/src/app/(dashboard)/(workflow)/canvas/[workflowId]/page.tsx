@@ -286,6 +286,7 @@ import { useForm } from "react-hook-form";
 import { useWorkflow, useWorkflowVisualizer } from "@/lib/workflow/hooks/useWorkflow";
 import { useRoleList } from "@/lib/role/hooks";
 import { useUserList } from "@/lib/user/hooks";
+import { useDepartments } from "@/lib/department/hooks/useDepartment";
 
 import { useWorkflowBuilderStore } from "@/store/useWorkflowBuilderStore";
 import WorkflowCanvasWithForm from "@/lib/workflow/builder/WorkflowCanvasWithForm";
@@ -382,6 +383,7 @@ export default function WorkflowCanvasPage() {
 
   const { data: roleList = [] } = useRoleList();
   const { data: userList = [] } = useUserList();
+  const { data: departmentList = [] } = useDepartments();
 
   const draft = useWorkflowBuilderStore((s) =>
     workflowId ? s.drafts?.[workflowId] ?? null : null
@@ -509,6 +511,7 @@ export default function WorkflowCanvasPage() {
       WorkflowStatus={workflow.status}
       roleList={roleList}
       userList={userList}
+      departmentList={departmentList} 
       onBack={() => router.push(`/create-workflow/${workflowId}`)}
     />
   );
