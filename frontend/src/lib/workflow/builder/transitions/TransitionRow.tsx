@@ -1874,6 +1874,19 @@ export function TransitionRow({
     [allowedRoleIdsRaw]
   );
 
+    const approvalRoleIds = useMemo(() => {
+    if (!requiresApproval) return [];
+
+    const levels =
+      control?._formValues?.transitions?.[index]?.approvalConfig?.levels;
+
+    if (!Array.isArray(levels)) return [];
+
+    return levels.flatMap((lvl: any) =>
+      Array.isArray(lvl?.roleIds) ? lvl.roleIds.map(String) : []
+    );
+  }, [approvalLevels, requiresApproval]);
+
   const roleOptions = useMemo(() => {
     const roles = normalizeOptions(roleList);
 
@@ -1889,19 +1902,38 @@ export function TransitionRow({
 
 
 
+  // const filteredUsersRaw = useMemo(() => {
+  //   const users = normalizeOptions(userList);
+  //   if (!allowedRoleIds.length) return users;
+
+  //   const hasRoleMeta = users.some((u: any) => Array.isArray(u?.roleIds));
+  //   if (!hasRoleMeta) return users;
+
+  //   return users.filter((u: any) =>
+  //     (u.roleIds || []).some((rid: string) =>
+  //       allowedRoleIds.includes(String(rid))
+  //     )
+  //   );
+  // }, [userList, allowedRoleIds]);
   const filteredUsersRaw = useMemo(() => {
     const users = normalizeOptions(userList);
-    if (!allowedRoleIds.length) return users;
+
+    // choose role source based on transition type
+    const roleSource = requiresApproval
+      ? approvalRoleIds
+      : allowedRoleIds;
+
+    if (!roleSource.length) return users;
 
     const hasRoleMeta = users.some((u: any) => Array.isArray(u?.roleIds));
     if (!hasRoleMeta) return users;
 
     return users.filter((u: any) =>
       (u.roleIds || []).some((rid: string) =>
-        allowedRoleIds.includes(String(rid))
+        roleSource.includes(String(rid))
       )
     );
-  }, [userList, allowedRoleIds]);
+  }, [userList, allowedRoleIds, approvalRoleIds, requiresApproval]);
 
   const userOptionsFiltered = useMemo(
     () =>
@@ -1917,6 +1949,8 @@ export function TransitionRow({
       })),
     [userList]
   );
+
+
 
 
   useEffect(() => {
@@ -1976,7 +2010,7 @@ export function TransitionRow({
 
   useEffect(() => {
     if (!requiresApproval) return;
-
+    if (!allowedDepartmentIds.length) return;
     if (triggerStrategy !== "APPROVER_ONLY") {
       setValue(`transitions.${index}.triggerStrategy`, "APPROVER_ONLY", {
         shouldDirty: true,
@@ -2013,6 +2047,30 @@ export function TransitionRow({
       });
     }
   }, [requiresApproval, triggerStrategy, approvalConfig, index, setValue]);
+
+  // 
+  useEffect(() => {
+    if (!requiresApproval) return;
+
+    const levels =
+      control?._formValues?.transitions?.[index]?.approvalConfig?.levels;
+
+    if (!Array.isArray(levels)) return;
+
+    const resetLevels = levels.map((lvl: any, i: number) => ({
+      order: i + 1,
+      roleIds: [],
+      userIds: [],
+    }));
+
+    setValue(
+      `transitions.${index}.approvalConfig.levels`,
+      resetLevels,
+      { shouldDirty: true }
+    );
+  }, [allowedDepartmentIds.join(","), requiresApproval]);
+
+
 
   useEffect(() => {
     if (!showTriggerStrategy) return;
@@ -2505,6 +2563,27 @@ export function TransitionRow({
             description="Set up approval workflow rules"
             icon={Shield}
           >
+            <div className="space-y-1.5">
+              <Label className="text-xs font-medium text-gray-700">
+                Allowed Departments
+              </Label>
+
+              <Controller
+                name={`transitions.${index}.allowedDepartmentIds`}
+                control={control}
+                render={({ field }) => (
+                  <MultiSelect
+                    options={normalizeOptions(departmentList)}
+                    value={normalizeValueArray(field.value)}
+                    onChange={(v: any) =>
+                      field.onChange(normalizeValueArray(v))
+                    }
+                    placeholder="Select departments"
+                  />
+                )}
+              />
+            </div>
+
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1.5">
@@ -2561,7 +2640,8 @@ export function TransitionRow({
                 control={control}
                 name={`transitions.${index}.approvalConfig.levels`}
                 roleOptions={roleOptions}
-                userOptions={userOptionsAll}
+                // userOptions={userOptionsAll}
+                userOptions={userOptionsFiltered}
                 errors={errors}
                 index={index}
               />
