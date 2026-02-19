@@ -144,19 +144,37 @@ const usersRepository = {
   findByOnlyEmail: ({ email }: UserEmail) => {
     try {
       return prisma.user.findUnique({
-        where: { email: email }, // compound unique field
-        include: { roles: { include: { role: true } } },
+        where: { email },
+        include: {
+          roles: {
+            include: { role: true },
+          },
+          department: {
+            include: {
+              department: true,
+            },
+          },
+        },
       });
     } catch (err: any) {
       if (err?.code === "P1017") {
         logger.warn("[repo:user] prisma connection closed – retrying once");
+
         return prisma.user.findUnique({
           where: { email },
+          include: {
+            department: {
+              include: {
+                department: true,
+              },
+            },
+          },
         });
       }
       throw err;
     }
   },
+
 
   findByEmails: (emails: string[]): Promise<UserEmail[]> =>
     prisma.user.findMany({

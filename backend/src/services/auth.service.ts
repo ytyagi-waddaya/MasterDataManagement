@@ -44,7 +44,10 @@ const authService = {
       email: user.email,
       type: user.type,
       status: user.status,
-      department: user.department,
+      departmentIds:
+        user.department?.map(
+          (d: { department: { id: string } }) => d.department.id
+        ) ?? [],
       location: user.location,
       attributes: user.attributes,
     });
@@ -104,7 +107,7 @@ const authService = {
     const existingToken = await refreshTokenRepository.findValidToken(
       tokenHash
     );
-    
+
     if (!existingToken) {
       throw new BadRequestException("Invalid refresh token");
     }
@@ -120,7 +123,11 @@ const authService = {
       email: existingToken.user.email,
       type: existingToken.user.type,
       status: existingToken.user.status,
-      department: existingToken.user.department,
+      departmentIds:
+        existingToken.user.department?.map(
+          (d: { department: { id: string } }) => d.department.id
+        ) ?? [],
+
       location: existingToken.user.location,
       attributes: existingToken.user.attributes,
     });

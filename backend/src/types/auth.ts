@@ -5,7 +5,7 @@ export interface UserJwtPayload {
 
   type: string;        // INTERNAL | EXTERNAL
   status: string;      // ACTIVE | SUSPENDED
-  department?: string | null;
+  departmentIds: string[];
   location?: string | null;
   attributes?: any;
 
